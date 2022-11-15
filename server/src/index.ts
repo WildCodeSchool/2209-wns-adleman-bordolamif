@@ -1,21 +1,20 @@
 import "reflect-metadata";
 import express from 'express';
 import cors from 'cors';
-import dataSource from './utils';
-require('dotenv').config()
-import { ApolloServer } from "apollo-server";
-import { buildSchema } from 'type-graphql';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+
+import {config} from "dotenv";
+
+config()
 
 
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: process.env.FRONT_DEV_URL }));
+app.use(cors({origin: process.env.FRONT_DEV_URL}));
 
 
 const start = async (): Promise<void> => {
-  console.log("Connecting to database ...");
+    console.log("Connecting to database ...");
 //
 //   await dataSource.initialize();
 //
@@ -30,13 +29,12 @@ const start = async (): Promise<void> => {
 //     plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
 //   });
 
-  // await server.listen().then(({ url }) => {
-  //   console.log(`🚀  Server is very ready at ${url}`);
-  // });
-
-  app.listen(5001, () => {
-    console.log("listening on port 5001");
-  });
+    // await server.listen().then(({ url }) => {
+    //   console.log(`🚀  Server is very ready at ${url}`);
+    // });
+    app.listen(5001, () => {
+        console.log("listening on port 5001");
+    });
 };
 
 void start();
