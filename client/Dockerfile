@@ -7,11 +7,11 @@ COPY package*.json ./
 
 RUN npm i
 
+COPY public ./public
 COPY index.html ./
 COPY tsconfig.json ./
 COPY tsconfig.node.json ./
 COPY src ./src
-COPY public ./public
 COPY tailwind.config.cjs ./
 COPY postcss.config.cjs ./
 COPY vite.config.ts ./
