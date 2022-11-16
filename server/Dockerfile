@@ -8,5 +8,6 @@ RUN npm i
 
 COPY tsconfig.json ./
 COPY src ./src
+COPY .env ./
 
 CMD npm start
