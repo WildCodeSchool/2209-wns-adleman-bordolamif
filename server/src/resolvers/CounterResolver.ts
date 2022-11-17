@@ -3,22 +3,23 @@ import Counter, {CounterInput} from "../entity/Counter";
 import dataSource from "../db";
 
 @Resolver(Counter)
-export class CounterResolver{
+export class CounterResolver {
 
     /*************************************
-                    QUERY
+     QUERY
      *************************************/
 
-    @Query(()=> [Counter])
-    async getAllCounters(): Promise<Counter[]>{
+    @Query(() => [Counter])
+    async getAllCounters(): Promise<Counter[]> {
         return await dataSource.getRepository(Counter).find()
     }
+
     /*************************************
-                   MUTATION
+     MUTATION
      *************************************/
 
-    @Mutation(()=>Counter)
-    async createCounter(@Arg("data") data:CounterInput):Promise<Counter>{
+    @Mutation(() => Counter)
+    async createCounter(@Arg("data") data: CounterInput): Promise<Counter> {
         return await dataSource.getRepository(Counter).save(data);
     }
 }

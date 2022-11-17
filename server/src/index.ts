@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import datasource from './db';
 
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { ApolloServer } from 'apollo-server';
-import { buildSchema } from 'type-graphql';
-import { CounterResolver } from './resolvers/CounterResolver';
-import { WaitingRoomResolver } from './resolvers/WaitingRoomResolver';
+import {ApolloServerPluginLandingPageLocalDefault} from 'apollo-server-core';
+import {ApolloServer} from 'apollo-server';
+import {buildSchema} from 'type-graphql';
+import {CounterResolver} from './resolvers/CounterResolver';
+import {WaitingRoomResolver} from './resolvers/WaitingRoomResolver';
 
 const start = async (): Promise<void> => {
   await datasource.initialize();
@@ -18,10 +18,10 @@ const start = async (): Promise<void> => {
     schema,
     csrfPrevention: true,
     cache: 'bounded',
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    plugins: [ApolloServerPluginLandingPageLocalDefault({embed: true})],
   });
 
-  await server.listen().then(({ url }) => {
+  await server.listen().then(({url}) => {
     console.log(`💻 Apollo Server Sandbox on ${url} 💻`);
   });
 };
