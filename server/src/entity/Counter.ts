@@ -18,6 +18,7 @@ class Counter {
 export class CounterInput {
     @Field()
     @MaxLength(100)
-    name: string;}
+    name: string;
+}
 
 export default Counter
