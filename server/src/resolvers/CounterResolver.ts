@@ -14,7 +14,7 @@ export class CounterResolver{
         return await dataSource.getRepository(Counter).find()
     }
     /*************************************
-                MUTATION
+                   MUTATION
      *************************************/
 
     @Mutation(()=>Counter)

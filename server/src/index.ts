@@ -21,7 +21,7 @@ const start = async (): Promise<void> => {
   });
 
     await server.listen().then(({ url }) => {
-      console.log(`💻 GQL Playground on ${url} 💻`);
+      console.log(`💻 Apollo Server Sandbox on ${url} 💻`);
     });
 };
 
