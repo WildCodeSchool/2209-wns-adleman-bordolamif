@@ -10,5 +10,5 @@ export default new DataSource({
     database: process.env.POSTGRES_DB,
     synchronize: true,
     entities: [Counter],
-    logging: ["query", "error"],
+    logging: ["error"],
 });
