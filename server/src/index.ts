@@ -6,12 +6,13 @@ import {ApolloServer} from 'apollo-server';
 import {buildSchema} from 'type-graphql';
 import {CounterResolver} from './resolvers/CounterResolver';
 import {WaitingRoomResolver} from './resolvers/WaitingRoomResolver';
+import { UserResolver } from './resolvers/UserResolver';
 
 const start = async (): Promise<void> => {
   await datasource.initialize();
 
   const schema = await buildSchema({
-    resolvers: [CounterResolver, WaitingRoomResolver],
+    resolvers: [CounterResolver, WaitingRoomResolver, UserResolver],
   });
 
   const server = new ApolloServer({

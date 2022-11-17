@@ -21,4 +21,4 @@ export class CounterInput {
     name: string;
 }
 
-export default Counter
+export default Counter;
