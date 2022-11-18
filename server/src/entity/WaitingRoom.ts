@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType } from "type-graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { MaxLength } from "class-validator";
+import Service from "./Service";
 
 @Entity()
 @ObjectType()
@@ -12,6 +13,9 @@ class WaitingRoom {
     @Field()
     @Column({ length: 100 })
     name: string;
+
+    @OneToMany(() => Service, (service) => service.waitingRoom)
+    service?: Service;
 }
 
 @InputType()
