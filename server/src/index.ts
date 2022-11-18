@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import datasource from "./db";
-
 import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import { CounterResolver } from "./resolvers/CounterResolver";
 import { WaitingRoomResolver } from "./resolvers/WaitingRoomResolver";
+import { UserResolver } from "./resolvers/UserResolver";
 import { ServiceResolver } from "./resolvers/ServiceResolver";
 import { TicketResolver } from "./resolvers/TicketResolver";
 
@@ -18,6 +18,7 @@ const start = async (): Promise<void> => {
             WaitingRoomResolver,
             ServiceResolver,
             TicketResolver,
+            UserResolver,
         ],
     });
 
