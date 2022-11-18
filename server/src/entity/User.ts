@@ -1,7 +1,8 @@
-import {Field, InputType, ObjectType} from "type-graphql";
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {MaxLength} from "class-validator";
+import { Field, InputType, ObjectType } from "type-graphql";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { MaxLength } from "class-validator";
 import RoleEnum from "../RoleEnum";
+import Ticket from "./Ticket";
 
 @Entity()
 @ObjectType()
@@ -11,24 +12,27 @@ class User {
     id: number;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     firstname: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     lastname: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     email: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     password: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     role: RoleEnum;
+
+    @OneToMany(() => Ticket, (ticket) => ticket.service)
+    tickets?: Ticket[];
 }
 
 @InputType()
@@ -38,19 +42,19 @@ export class UserInput {
     firstname: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     lastname: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     email: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     password: string;
 
     @Field()
-    @Column({length: 100})
+    @Column({ length: 100 })
     role: RoleEnum;
 }
 

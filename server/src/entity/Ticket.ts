@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { MaxLength } from "class-validator";
 import Service from "./Service";
+import User from "./User";
 
 @Entity()
 @ObjectType()
@@ -39,8 +40,8 @@ class Ticket {
     @ManyToOne(() => Service, (service) => service.tickets)
     service?: Service;
 
-    // @ManyToOne(() => User, (user) => user.tickets, { nullable: true })
-    // user?: User;
+    @ManyToOne(() => User, (user) => user.tickets, { nullable: true })
+    user?: User;
 }
 
 @InputType()

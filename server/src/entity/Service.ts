@@ -11,6 +11,7 @@ import {
 import { MaxLength } from "class-validator";
 import WaitingRoom from "./WaitingRoom";
 import Ticket from "./Ticket";
+import User from "./User";
 
 @Entity()
 @ObjectType()
@@ -45,9 +46,9 @@ class Service {
     @OneToMany(() => Ticket, (ticket) => ticket.service)
     tickets?: Ticket[];
 
-    // @ManyToMany(() => User)
-    // @JoinTable()
-    // users: User[];
+    @ManyToMany(() => User)
+    @JoinTable()
+    users: User[];
 }
 
 @InputType()
