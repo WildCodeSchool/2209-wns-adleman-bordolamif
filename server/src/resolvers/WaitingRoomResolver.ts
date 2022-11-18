@@ -13,6 +13,19 @@ export class WaitingRoomResolver {
     async getAllWaitingRooms(): Promise<WaitingRoom[]> {
         return await dataSource.getRepository(WaitingRoom).find();
     }
+
+    @Query(() => WaitingRoom)
+    async getOneWaitingRoom(
+        @Arg("id", () => Int) id: number
+    ): Promise<WaitingRoom> {
+        const waitingRoom = await dataSource
+            .getRepository(WaitingRoom)
+            .findOne({ where: { id } });
+        if (waitingRoom === null)
+            throw new ApolloError("Waiting room not found", "NOT_FOUND");
+        return waitingRoom;
+    }
+
     /*************************************
                    MUTATION
      *************************************/
