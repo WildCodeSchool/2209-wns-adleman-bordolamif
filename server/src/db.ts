@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { env, loadEnv } from './env';
 import Counter from './entity/Counter';
 import WaitingRoom from './entity/WaitingRoom';
+import User from "./entity/User";
 
 loadEnv();
 
@@ -13,6 +14,6 @@ export default new DataSource({
     password: env.POSTGRES_PASSWORD,
     database: env.POSTGRES_DB,
     synchronize: true,
-    entities: [Counter, WaitingRoom],
-    logging: ['error'],
+    entities: [Counter,WaitingRoom,User],
+    logging: ["error"],
 });
