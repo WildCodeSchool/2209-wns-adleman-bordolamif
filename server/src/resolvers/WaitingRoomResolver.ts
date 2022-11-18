@@ -25,7 +25,8 @@ export class WaitingRoomResolver {
         return await dataSource.getRepository(WaitingRoom).save(data);
     }
 
-    @Mutation(() => WaitingRoom)
+    // @Authorized<Role>(['admin'])
+    @Mutation(() => Boolean)
     async deleteWaitingRoom(
         @Arg("id", () => Int) id: number
     ): Promise<boolean> {
@@ -37,8 +38,9 @@ export class WaitingRoomResolver {
         return true;
     }
 
+    // @Authorized<Role>(['admin'])
     @Mutation(() => WaitingRoom)
-    async updtateWilder(
+    async updtateWaitingRoom(
         @Arg("id", () => Int) id: number,
         @Arg("data") { name }: WaitingRoomInput
     ): Promise<WaitingRoom> {
@@ -47,7 +49,7 @@ export class WaitingRoomResolver {
             .update(id, { name });
 
         if (affected === 0)
-            throw new ApolloError("skill not found", "NOT_FOUND");
+            throw new ApolloError("Waiting room not found", "NOT_FOUND");
 
         return { id, name };
     }
