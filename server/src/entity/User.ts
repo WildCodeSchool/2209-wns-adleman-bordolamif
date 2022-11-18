@@ -28,7 +28,7 @@ class User {
     password: string;
 
     @Field()
-    @Column({ length: 100 })
+    @Column()
     role: RoleEnum;
 
     @OneToMany(() => Ticket, (ticket) => ticket.service)
