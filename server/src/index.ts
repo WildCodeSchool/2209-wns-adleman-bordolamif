@@ -26,4 +26,5 @@ const start = async (): Promise<void> => {
   });
 };
 
+// eslint-disable-next-line no-void
 void start();

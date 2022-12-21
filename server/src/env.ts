@@ -1,5 +1,6 @@
 import { EnvType, load } from 'ts-dotenv';
 
+// eslint-disable-next-line no-use-before-define
 export type Env = EnvType<typeof schema>;
 
 export const schema = {
@@ -9,6 +10,7 @@ export const schema = {
   POSTGRES_DB: String,
 };
 
+// eslint-disable-next-line import/no-mutable-exports
 export let env: Env;
 
 export function loadEnv(): void {

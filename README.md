@@ -25,6 +25,11 @@ Apollo Sandbox run on http://localhost:4000/
 
 
 ## ESlint config
+First, you need to run at the root of the project: 
+```sh
+npm run setup
+```
+
 If you use VScode, install the ESlint extension which will allow you to choose it as the default code formatter.
 
 If you use WebStorm, in config window, search **"Action on Save"** option and select **"Run eslint --fix"**.
