@@ -22,3 +22,9 @@ docker compose up
 Client run on http://localhost:3000/
 
 Apollo Sandbox run on http://localhost:4000/
+
+
+## ESlint config
+If you use VScode, install the ESlint extension which will allow you to choose it as the default code formatter.
+
+If you use WebStorm, in config window, search **"Action on Save"** option and select **"Run eslint --fix"**.

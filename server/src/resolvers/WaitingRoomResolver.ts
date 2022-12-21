@@ -1,69 +1,68 @@
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
-import WaitingRoom, { WaitingRoomInput } from "../entity/WaitingRoom";
-import dataSource from "../db";
-import { ApolloError } from "apollo-server-errors";
+import {
+  Arg, Int, Mutation, Query, Resolver,
+} from 'type-graphql';
+import { ApolloError } from 'apollo-server-errors';
+import WaitingRoom, { WaitingRoomInput } from '../entity/WaitingRoom';
+import dataSource from '../db';
 
 @Resolver(WaitingRoom)
 export class WaitingRoomResolver {
-    /*************************************
+  /** ***********************************
                     QUERY
-     *************************************/
+     ************************************ */
 
     @Query(() => [WaitingRoom])
-    async getAllWaitingRooms(): Promise<WaitingRoom[]> {
-        return await dataSource.getRepository(WaitingRoom).find();
-    }
+  async getAllWaitingRooms(): Promise<WaitingRoom[]> {
+    return await dataSource.getRepository(WaitingRoom).find();
+  }
 
     @Query(() => WaitingRoom)
     async getOneWaitingRoom(
-        @Arg("id", () => Int) id: number
+        @Arg('id', () => Int) id: number,
     ): Promise<WaitingRoom> {
-        const waitingRoom = await dataSource
-            .getRepository(WaitingRoom)
-            .findOne({ where: { id } });
-        if (waitingRoom === null)
-            throw new ApolloError("Waiting room not found", "NOT_FOUND");
-        return waitingRoom;
+      const waitingRoom = await dataSource
+        .getRepository(WaitingRoom)
+        .findOne({ where: { id } });
+      if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+      return waitingRoom;
     }
 
-    /*************************************
+    /** ***********************************
                    MUTATION
-     *************************************/
+     ************************************ */
 
     // @Authorized<Role>(['admin'])
     @Mutation(() => WaitingRoom)
     async createWaitingRoom(
-        @Arg("data") data: WaitingRoomInput
+        @Arg('data') data: WaitingRoomInput,
     ): Promise<WaitingRoom> {
-        return await dataSource.getRepository(WaitingRoom).save(data);
+      return await dataSource.getRepository(WaitingRoom).save(data);
     }
 
     // @Authorized<Role>(['admin'])
     @Mutation(() => Boolean)
     async deleteWaitingRoom(
-        @Arg("id", () => Int) id: number
+        @Arg('id', () => Int) id: number,
     ): Promise<boolean> {
-        const { affected } = await dataSource
-            .getRepository(WaitingRoom)
-            .delete(id);
-        if (affected === 0)
-            throw new ApolloError("Waiting room not found", "NOT_FOUND");
-        return true;
+      const { affected } = await dataSource
+        .getRepository(WaitingRoom)
+        .delete(id);
+      if (affected === 0) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+      return true;
     }
 
     // @Authorized<Role>(['admin'])
     @Mutation(() => WaitingRoom)
     async updtateWaitingRoom(
-        @Arg("id", () => Int) id: number,
-        @Arg("data") { name }: WaitingRoomInput
+        @Arg('id', () => Int) id: number,
+        @Arg('data') { name }: WaitingRoomInput,
     ): Promise<WaitingRoom> {
-        const { affected } = await dataSource
-            .getRepository(WaitingRoom)
-            .update(id, { name });
+      const { affected } = await dataSource
+        .getRepository(WaitingRoom)
+        .update(id, { name });
 
-        if (affected === 0)
-            throw new ApolloError("Waiting room not found", "NOT_FOUND");
+      if (affected === 0) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
 
-        return { id, name };
+      return { id, name };
     }
 }
