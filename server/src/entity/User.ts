@@ -3,7 +3,7 @@ import {
   Column, Entity, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MaxLength } from 'class-validator';
-import RoleEnum from '../RoleEnum';
+import { RoleEnum } from '../RoleEnum';
 import Ticket from './Ticket';
 
 @Entity()
@@ -30,7 +30,7 @@ class User {
     password: string;
 
   @Field()
-  @Column()
+  @Column({ type: 'enum', enum: RoleEnum })
     role: RoleEnum;
 
   @OneToMany(() => Ticket, (ticket) => ticket.service)
