@@ -33,9 +33,9 @@ class Ticket {
     @Column({ nullable: true })
       ClosedAt?: Date;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
-      isFirstTime?: boolean;
+    @Field()
+    @Column()
+      isFirstTime: boolean;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
