@@ -1,3 +1,5 @@
+import Service from './entity/Service';
+import Ticket from './entity/Ticket';
 import { DataSource } from 'typeorm';
 import { env, loadEnv } from './env';
 import Counter from './entity/Counter';
@@ -14,6 +16,6 @@ export default new DataSource({
   password: env.POSTGRES_PASSWORD,
   database: env.POSTGRES_DB,
   synchronize: true,
-  entities: [Counter, WaitingRoom, User],
+  entities: [Counter, WaitingRoom, Service, Ticket, User],
   logging: ['error'],
 });
