@@ -21,14 +21,30 @@ export class CounterResolver {
     });
   }
 
+  @Query(() => Counter)
+    async getOneCounter(
+        @Arg('id', () => Int) id: number,
+    ): Promise<Counter> {
+      const counter = await dataSource
+        .getRepository(Counter)
+        .findOne({
+          where: { id },
+          relations: {
+            waitingRoom: true,
+            user: true,
+          },
+        });
+      if (counter === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
+      return counter;
+    }
     /** ***********************************
      MUTATION
      ************************************ */
 
     @Mutation(() => Counter)
-    async createCounter(@Arg('data') data: CounterInput): Promise<Counter> {
-      return await dataSource.getRepository(Counter).save(data);
-    }
+  async createCounter(@Arg('data') data: CounterInput): Promise<Counter> {
+    return await dataSource.getRepository(Counter).save(data);
+  }
 
     @Mutation(() => Boolean)
     async deleteCouter(
