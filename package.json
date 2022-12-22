@@ -5,10 +5,22 @@
   "scripts": {
     "setup": "npm i && npm --prefix ./client i && npm --prefix ./server i",
     "lint": "eslint --ext js --ext jsx --ext ts --ext tsx .",
-    "fix": "eslint --fix --ext js --ext jsx --ext ts --ext tsx ."
+    "fix": "eslint --fix --ext js --ext jsx --ext ts --ext tsx .",
+    "prepare": "husky install"
   },
   "author": "Joffrey Chevalier",
   "license": "ISC",
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ]
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
@@ -17,6 +29,7 @@
     "eslint-import-resolver-custom-alias": "^1.3.0",
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-react": "^7.31.11"
+    "eslint-plugin-react": "^7.31.11",
+    "husky": "^8.0.2"
   }
 }
