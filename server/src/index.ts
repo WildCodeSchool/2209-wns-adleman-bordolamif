@@ -12,8 +12,6 @@ import { TicketResolver } from './resolvers/TicketResolver';
 const start = async (): Promise<void> => {
   await datasource.initialize();
 
-  console.log('toto');
-
   const schema = await buildSchema({
     resolvers: [
       CounterResolver,
