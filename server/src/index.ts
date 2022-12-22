@@ -30,6 +30,7 @@ const start = async (): Promise<void> => {
   });
 
   await server.listen().then(({ url }) => {
+    // eslint-disable-next-line no-restricted-syntax
     console.log(`💻 Apollo Server Sandbox on ${url} 💻`);
   });
 };
