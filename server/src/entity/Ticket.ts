@@ -35,7 +35,11 @@ class Ticket {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-      ServiceId?: number;
+      isFirstTime?: boolean;
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+      isReturned?: boolean;
 
     @ManyToOne(() => Service, (service) => service.tickets)
       service?: Service;

@@ -11,26 +11,28 @@ export class ServiceResolver {
                     QUERY
      ************************************ */
 
-    @Query(() => [Service])
+  @Query(() => [Service])
   async getAllServices(): Promise<Service[]> {
     return await dataSource.getRepository(Service).find();
   }
 
-    @Query(() => Service)
-    async getOneService(@Arg('id', () => Int) id: number): Promise<Service> {
-      const service = await dataSource
-        .getRepository(Service)
-        .findOne({ where: { id } });
-      if (service === null) throw new ApolloError('Service not found', 'NOT_FOUND');
-      return service;
+  @Query(() => Service)
+  async getOneService(@Arg('id', () => Int) id: number): Promise<Service> {
+    const service = await dataSource
+      .getRepository(Service)
+      .findOne({ where: { id } });
+    if (service === null) {
+      throw new ApolloError('Service not found', 'NOT_FOUND');
     }
+    return service;
+  }
 
-    /** ***********************************
+  /** ***********************************
                    MUTATION
      ************************************ */
 
-    @Mutation(() => Service)
-    async createService(@Arg('data') data: ServiceInput): Promise<Service> {
-      return await dataSource.getRepository(Service).save(data);
-    }
+  @Mutation(() => Service)
+  async createService(@Arg('data') data: ServiceInput): Promise<Service> {
+    return await dataSource.getRepository(Service).save(data);
+  }
 }
