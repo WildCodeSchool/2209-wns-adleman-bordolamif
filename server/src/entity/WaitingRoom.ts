@@ -4,6 +4,7 @@ import {
 } from 'typeorm';
 import { MaxLength } from 'class-validator';
 import Service from './Service';
+import Counter from './Counter';
 
 @Entity()
 @ObjectType()
@@ -18,6 +19,9 @@ class WaitingRoom {
 
   @OneToMany(() => Service, (service) => service.waitingRoom)
     service?: Service;
+
+  @OneToMany(() => Counter, (counter) => counter.waitingRoom)
+    counter?: Counter;
 }
 
 @InputType()

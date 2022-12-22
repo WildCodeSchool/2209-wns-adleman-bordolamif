@@ -16,60 +16,56 @@ import User from './User';
 @Entity()
 @ObjectType()
 class Service {
-    @Field()
-    @PrimaryGeneratedColumn()
-      id: number;
+  @Field()
+  @PrimaryGeneratedColumn()
+    id: number;
 
-    @Field()
-    @Column({ length: 100 })
-      name: string;
+  @Field()
+  @Column({ length: 100 })
+    name: string;
 
-    @Field()
-    @Column({ length: 3 })
-      acronym: string;
+  @Field()
+  @Column({ length: 3 })
+    acronym: string;
 
-    @Field()
-    @Column()
-      open: boolean;
+  @Field()
+  @Column()
+    open: boolean;
 
-    @Field()
-    @Column({ length: 6 })
-      color: string;
+  @Field()
+  @Column({ length: 6 })
+    color: string;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
-      waitingRoomId?: number;
+  @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.service)
+    waitingRoom?: WaitingRoom;
 
-    @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.service)
-      waitingRoom?: WaitingRoom;
+  @OneToMany(() => Ticket, (ticket) => ticket.service)
+    tickets?: Ticket[];
 
-    @OneToMany(() => Ticket, (ticket) => ticket.service)
-      tickets?: Ticket[];
-
-    @ManyToMany(() => User)
-    @JoinTable()
-      users: User[];
+  @ManyToMany(() => User)
+  @JoinTable()
+    users?: User[];
 }
 
 @InputType()
 export class ServiceInput {
-    @Field()
-    @MaxLength(100)
-      name: string;
+  @Field()
+  @MaxLength(100)
+    name: string;
 
-    @Field()
-    @MaxLength(3)
-      acronym: string;
+  @Field()
+  @MaxLength(3)
+    acronym: string;
 
-    @Field()
-      open: boolean;
+  @Field()
+    open: boolean;
 
-    @Field()
-    @MaxLength(6)
-      color: string;
+  @Field()
+  @MaxLength(6)
+    color: string;
 
-    @Field({ nullable: true })
-      waitingRoomId?: number;
+  @Field({ nullable: true })
+    waitingRoomId?: number;
 }
 
 export default Service;
