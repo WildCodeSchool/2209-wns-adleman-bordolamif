@@ -1,0 +1,91 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "overrides": [
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import"
+  ],
+  "rules": {
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "jsx-a11y/label-has-for": [
+      "error",
+      {
+        "required": {
+          "some": [
+            "nesting",
+            "id"
+          ]
+        }
+      }
+    ],
+    "class-methods-use-this": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
+    "import/prefer-default-export": "off",
+    "max-classes-per-file": "off",
+    "no-console": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "no-return-await": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/no-array-index-key": "off",
+    "react/no-unescaped-entities": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
+
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": true,
+      "node": true,
+      "eslint-import-resolver-custom-alias": {
+        "alias": {
+          "@apollo/client": "./client/node_modules/@apollo/client",
+          "@assets": "./client/src/assets",
+          "@components": "./client/src/components",
+          "@pages": "./client/src/pages"
+        },
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  }
+}
