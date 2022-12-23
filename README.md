@@ -1,8 +1,12 @@
 # Getting started
+First, you need to run this command :
+```sh
+npm run setup
+```
 
 Copy each **".env.sample"** file and Paste it has **".env"** file.
 
-Filled every environment variables with the corresponding data.
+You must fill every environment variables with the corresponding data.
 
 ### To launch the project, use this command in your terminal :
 
@@ -25,11 +29,16 @@ Apollo Sandbox run on http://localhost:4000/
 
 
 ## ESlint config
-First, you need to run at the root of the project: 
-```sh
-npm run setup
-```
 
 If you use VScode, install the ESlint extension which will allow you to choose it as the default code formatter.
 
-If you use WebStorm, in config window, search **"Action on Save"** option and select **"Run eslint --fix"**.
+If you use WebStorm, in config window, search **"Action on Save"** option and check **"Run eslint --fix"**.
+
+## Husky pre-commit checking
+
+When you commit your work, a code fix is started automatically. It will correct your code according to the 
+rules of ESlint. If one of the code errors cannot be corrected by the fixer, you will have to go back to your
+code and correct it yourself. An interface with the concerned errors will be displayed in your terminal so that you can 
+locate them more easily.
+
+Once the correction is done, relaunch your commit.
