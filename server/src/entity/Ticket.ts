@@ -27,11 +27,11 @@ class Ticket {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-      CalledAt?: Date;
+      calledAt?: Date;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-      ClosedAt?: Date;
+      closedAt?: Date;
 
     @Field()
     @Column()
@@ -53,6 +53,18 @@ export class TicketInput {
     @Field()
     @MaxLength(100)
       name: string;
+
+    @Field({ nullable: true })
+      calledAt?: Date;
+
+    @Field({ nullable: true })
+      closedAt?: Date;
+
+    @Field()
+      isFirstTime: boolean;
+
+    @Field({ nullable: true })
+      isReturned?: boolean;
 }
 
 export default Ticket;
