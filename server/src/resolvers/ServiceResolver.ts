@@ -40,37 +40,34 @@ export class ServiceResolver {
     return await dataSource.getRepository(Service).save(data);
   }
 
-  @Mutation(() => Service)
-  async updateService(
-    @Arg('id', () => Int) id: number,
-    @Arg('data') data: ServiceInput,
-  ): Promise<Service> {
-    // if (!isDataValid) {
-    //   throw new ApolloError('wrong credentials', 'BAD_USER_INPUT');
-    // }
-
-    const serviceToUpdate = await dataSource
-      .getRepository(Service)
-      .findOne({ where: { id } });
-
-    if (serviceToUpdate === null) {
-      throw new ApolloError('service not found', 'NOT_FOUND');
-    }
-
-    return await dataSource.getRepository(Service).save(data);
-  }
-
-  // @Authorized<Role>(["admin"])
   @Mutation(() => Boolean)
   async deleteService(@Arg('id', () => Int) id: number): Promise<boolean> {
-    const serviceToDelete = await dataSource
-      .getRepository(Service)
-      .findOne({ where: { id } });
-
-    if (serviceToDelete === null) {
-      throw new ApolloError('service not found', 'NOT_FOUND');
-    }
-    await dataSource.getRepository(Service).delete(id);
+    const { affected } = await dataSource.getRepository(Service).delete(id);
+    if (affected === 0) throw new ApolloError('Service not found', 'NOT_FOUND');
     return true;
+  }
+
+  @Mutation(() => Service)
+  async updateService(
+      @Arg('id', () => Int) id: number,
+      @Arg('data') data: ServiceInput,
+  ): Promise<Service> {
+    const {
+      name, acronym, open, color,
+    } = data;
+    const UserToUpdate = await dataSource.getRepository(Service).findOne({
+      where: { id },
+    });
+
+    if (UserToUpdate === null) { throw new ApolloError('Service not found', 'NOT_FOUND'); }
+
+    UserToUpdate.name = name;
+    UserToUpdate.acronym = acronym;
+    UserToUpdate.open = open;
+    UserToUpdate.color = color;
+
+    await dataSource.getRepository(Service).save(UserToUpdate);
+
+    return UserToUpdate;
   }
 }
