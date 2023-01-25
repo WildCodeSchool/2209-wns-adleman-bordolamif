@@ -1,8 +1,7 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
   Column, Entity, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MaxLength } from 'class-validator';
 import Service from './Service';
 import Counter from './Counter';
 
@@ -17,18 +16,13 @@ class WaitingRoom {
   @Column({ length: 100 })
     name: string;
 
+  @Field(() => Service, { nullable: true })
   @OneToMany(() => Service, (service) => service.waitingRoom)
     service?: Service;
 
+  @Field(() => Counter, { nullable: true })
   @OneToMany(() => Counter, (counter) => counter.waitingRoom)
     counter?: Counter;
-}
-
-@InputType()
-export class WaitingRoomInput {
-  @Field()
-  @MaxLength(100)
-    name: string;
 }
 
 export default WaitingRoom;

@@ -2,8 +2,9 @@ import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import { ApolloError } from 'apollo-server-errors';
-import WaitingRoom, { WaitingRoomInput } from '../entity/WaitingRoom';
+import WaitingRoom from '../entity/WaitingRoom';
 import dataSource from '../db';
+import { WaitingRoomInput } from '../types/InputTypes';
 
 @Resolver(WaitingRoom)
 export class WaitingRoomResolver {

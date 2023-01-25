@@ -1,9 +1,11 @@
 import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import User, { UserInput } from '../entity/User';
+import User from '../entity/User';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import Service from '../entity/Service';
+import { UserInput } from '../types/InputTypes';
 
 @Resolver(User)
 export class UserResolver {
@@ -13,14 +15,16 @@ export class UserResolver {
 
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
-    return await dataSource.getRepository(User).find();
+    return await dataSource
+      .getRepository(User)
+      .find({ relations: { services: true } });
   }
 
   @Query(() => User)
     async getUserById(@Arg('id', () => Int) id: number): Promise<User> {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { id } });
+        .findOne({ where: { id }, relations: { services: true } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
       return user;
@@ -50,22 +54,25 @@ export class UserResolver {
       @Arg('data') data: UserInput,
   ): Promise<User> {
     const {
-      firstname, lastname, email, password, role,
+      firstname, lastname, email, password, role, services,
     } = data;
-    const UserToUpdate = await dataSource.getRepository(User).findOne({
-      where: { id },
+    const userToUpdate = await dataSource.getRepository(User).findOne({
+      where: { id }, relations: { services: true },
     });
 
-    if (UserToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
 
-    UserToUpdate.firstname = firstname;
-    UserToUpdate.lastname = lastname;
-    UserToUpdate.email = email;
-    UserToUpdate.password = password;
-    UserToUpdate.role = role;
+    userToUpdate.firstname = firstname;
+    userToUpdate.lastname = lastname;
+    userToUpdate.email = email;
+    userToUpdate.password = password;
+    userToUpdate.role = role;
+    userToUpdate.services = await Promise.all(services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
 
-    await dataSource.getRepository(User).save(UserToUpdate);
+    await dataSource.getRepository(User).save(userToUpdate);
 
-    return UserToUpdate;
+    return userToUpdate;
   }
 }

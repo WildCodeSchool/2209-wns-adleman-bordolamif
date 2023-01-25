@@ -1,9 +1,10 @@
 import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import Counter, { CounterInput } from '../entity/Counter';
+import Counter from '../entity/Counter';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import { CounterInput } from '../types/InputTypes';
 
 @Resolver(Counter)
 export class CounterResolver {

@@ -1,9 +1,10 @@
 import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import Ticket, { TicketInput } from '../entity/Ticket';
+import Ticket from '../entity/Ticket';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import { TicketInput } from '../types/InputTypes';
 
 @Resolver(Ticket)
 export class TicketResolver {

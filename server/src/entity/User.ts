@@ -1,10 +1,11 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
-  Column, Entity, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MaxLength } from 'class-validator';
+
 import { RoleEnum } from '../RoleEnum';
 import Ticket from './Ticket';
+import Service from './Service';
 
 @Entity()
 @ObjectType()
@@ -33,31 +34,14 @@ class User {
   @Column({ type: 'enum', enum: RoleEnum })
     role: RoleEnum;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.service)
-    tickets?: Ticket[];
-}
+  @Field(() => [Ticket], { nullable: true })
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
+    tickets: Ticket[];
 
-@InputType()
-export class UserInput {
-  @Field()
-  @MaxLength(100)
-    firstname: string;
-
-  @Field()
-  @Column({ length: 100 })
-    lastname: string;
-
-  @Field()
-  @Column({ length: 100 })
-    email: string;
-
-  @Field()
-  @Column({ length: 100 })
-    password: string;
-
-  @Field()
-  @Column({ length: 100 })
-    role: RoleEnum;
+  @Field(() => [Service], { nullable: true })
+  @ManyToMany(() => Service, (service) => service.users, { cascade: true })
+  @JoinTable()
+    services: Service[];
 }
 
 export default User;

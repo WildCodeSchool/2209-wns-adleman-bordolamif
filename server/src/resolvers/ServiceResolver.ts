@@ -1,9 +1,10 @@
 import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import Service, { ServiceInput } from '../entity/Service';
+import Service from '../entity/Service';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import { ServiceInput } from '../types/InputTypes';
 
 // const isDataValid = ()=> {
 //   //TODO

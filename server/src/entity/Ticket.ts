@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
   Column,
   CreateDateColumn,
@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MaxLength } from 'class-validator';
+
 import Service from './Service';
 import User from './User';
 
@@ -41,30 +41,13 @@ class Ticket {
     @Column({ nullable: true })
       isReturned?: boolean;
 
+    @Field(() => Service, { nullable: true })
     @ManyToOne(() => Service, (service) => service.tickets)
-      service?: Service;
+      service: Service;
 
+    @Field(() => User, { nullable: true })
     @ManyToOne(() => User, (user) => user.tickets, { nullable: true })
       user?: User;
-}
-
-@InputType()
-export class TicketInput {
-    @Field()
-    @MaxLength(100)
-      name: string;
-
-    @Field({ nullable: true })
-      calledAt?: Date;
-
-    @Field({ nullable: true })
-      closedAt?: Date;
-
-    @Field()
-      isFirstTime: boolean;
-
-    @Field({ nullable: true })
-      isReturned?: boolean;
 }
 
 export default Ticket;
