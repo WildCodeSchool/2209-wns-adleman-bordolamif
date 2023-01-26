@@ -28,7 +28,7 @@ class User {
   @Column({ length: 100 })
     email: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
     hashedPassword?: string;
 

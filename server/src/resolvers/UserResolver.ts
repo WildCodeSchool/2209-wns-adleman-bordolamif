@@ -20,7 +20,9 @@ export class UserResolver {
 
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
-    return await dataSource.getRepository(User).find();
+    const users = await dataSource.getRepository(User).find();
+    const safeUsers = users.map((user) => getSafeAttributes(user));
+    return safeUsers;
   }
 
   @Query(() => User)
@@ -30,9 +32,14 @@ export class UserResolver {
         .findOne({ where: { id } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
-      return user;
+      return getSafeAttributes(user);
     }
 
+  @Authorized()
+  @Query(() => User)
+  async profile(@Ctx() ctx: ContextType): Promise<User> {
+    return getSafeAttributes(ctx.currentUser as User);
+  }
   /** ***********************************
      MUTATION
      ************************************ */
@@ -67,10 +74,8 @@ export class UserResolver {
       || !(await verifyPassword(password, user.hashedPassword))
     ) { throw new ApolloError('invalid credentials'); }
 
-    // https://www.npmjs.com/package/jsonwebtoken
     const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
 
-    // https://stackoverflow.com/a/40135050
     ctx.res.cookie('token', token, {
       secure: env.NODE_ENV === 'production',
       httpOnly: true,
@@ -83,12 +88,6 @@ export class UserResolver {
   async logout(@Ctx() ctx: ContextType): Promise<string> {
     ctx.res.clearCookie('token');
     return 'OK';
-  }
-
-  @Authorized()
-  @Query(() => User)
-  async profile(@Ctx() ctx: ContextType): Promise<User> {
-    return getSafeAttributes(ctx.currentUser as User);
   }
 
   // @Authorized<RoleEnum>([1])
