@@ -27,10 +27,10 @@ services:
       CHOKIDAR_USEPOLLING: 'true'
 
   client:
-    build: ./client
+    build: ./client_web
     ports:
       - 3000:3000
     volumes:
-      - ./client/src:/app/src
+      - ./client_web/src:/app/src
     environment:
       CHOKIDAR_USEPOLLING: 'true'
