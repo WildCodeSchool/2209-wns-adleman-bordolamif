@@ -7,8 +7,8 @@ import User, {
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
 import jwt from 'jsonwebtoken';
-import { ContextType } from '..';
 import { env, loadEnv } from '../env';
+import { ContextType } from '../utils/interfaces';
 
 loadEnv();
 

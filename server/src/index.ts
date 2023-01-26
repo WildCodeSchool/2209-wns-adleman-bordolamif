@@ -8,19 +8,12 @@ import { WaitingRoomResolver } from './resolvers/WaitingRoomResolver';
 import { UserResolver } from './resolvers/UserResolver';
 import { ServiceResolver } from './resolvers/ServiceResolver';
 import { TicketResolver } from './resolvers/TicketResolver';
-import express from 'express';
 import User from './entity/User';
 import jwt from 'jsonwebtoken';
 import { env, loadEnv } from './env';
+import { ContextType } from './utils/interfaces';
 
 loadEnv();
-
-export interface ContextType {
-  req: express.Request;
-  res: express.Response;
-  currentUser?: User;
-  jwtPayload?: jwt.JwtPayload;
-}
 
 const start = async (): Promise<void> => {
   await datasource.initialize();
