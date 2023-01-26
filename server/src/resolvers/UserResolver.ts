@@ -1,9 +1,16 @@
 import {
-  Arg, Int, Mutation, Query, Resolver,
+  Arg, Authorized, Ctx, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import User, { UserInput } from '../entity/User';
+import User, {
+  getSafeAttributes, hashPassword, UserConnexion, UserInput, verifyPassword,
+} from '../entity/User';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import jwt from 'jsonwebtoken';
+import { env, loadEnv } from '../env';
+import { ContextType } from '../utils/interfaces';
+
+loadEnv();
 
 @Resolver(User)
 export class UserResolver {
@@ -13,7 +20,9 @@ export class UserResolver {
 
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
-    return await dataSource.getRepository(User).find();
+    const users = await dataSource.getRepository(User).find();
+    const safeUsers = users.map((user) => getSafeAttributes(user));
+    return safeUsers;
   }
 
   @Query(() => User)
@@ -23,9 +32,14 @@ export class UserResolver {
         .findOne({ where: { id } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
-      return user;
+      return getSafeAttributes(user);
     }
 
+  @Authorized()
+  @Query(() => User)
+  async profile(@Ctx() ctx: ContextType): Promise<User> {
+    return getSafeAttributes(ctx.currentUser as User);
+  }
   /** ***********************************
      MUTATION
      ************************************ */
@@ -33,7 +47,47 @@ export class UserResolver {
   // @Authorized<RoleEnum>([1])
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserInput): Promise<User> {
-    return await dataSource.getRepository(User).save(data);
+    const exisitingUser = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email: data.email } });
+
+    if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
+
+    const hashedPassword = await hashPassword(data.password);
+    return await dataSource
+      .getRepository(User)
+      .save({ ...data, hashedPassword });
+  }
+
+  @Mutation(() => String)
+  async login(
+    @Arg('data') { email, password }: UserConnexion,
+    @Ctx() ctx: ContextType,
+  ): Promise<string> {
+    const user = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email } });
+
+    if (
+      user === null
+      || typeof user.hashedPassword !== 'string'
+      || !(await verifyPassword(password, user.hashedPassword))
+    ) { throw new ApolloError('invalid credentials'); }
+
+    const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
+
+    ctx.res.cookie('token', token, {
+      secure: env.NODE_ENV === 'production',
+      httpOnly: true,
+    });
+
+    return token;
+  }
+
+  @Mutation(() => String)
+  async logout(@Ctx() ctx: ContextType): Promise<string> {
+    ctx.res.clearCookie('token');
+    return 'OK';
   }
 
   // @Authorized<RoleEnum>([1])
@@ -61,7 +115,7 @@ export class UserResolver {
     UserToUpdate.firstname = firstname;
     UserToUpdate.lastname = lastname;
     UserToUpdate.email = email;
-    UserToUpdate.password = password;
+    UserToUpdate.hashedPassword = password;
     UserToUpdate.role = role;
 
     await dataSource.getRepository(User).save(UserToUpdate);
