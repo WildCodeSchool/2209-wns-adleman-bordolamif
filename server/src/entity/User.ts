@@ -83,8 +83,9 @@ const hashingOptions = {
   type: argon2id,
 };
 
-// eslint-disable-next-line max-len
-export const hashPassword = async (plainPassword: string): Promise<string> => await hash(plainPassword, hashingOptions);
+export const hashPassword = async (
+  plainPassword: string,
+): Promise<string> => await hash(plainPassword, hashingOptions);
 
 export const verifyPassword = async (
   plainPassword: string,
