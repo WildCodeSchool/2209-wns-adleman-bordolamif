@@ -2,9 +2,12 @@ import { Field, InputType, ObjectType } from 'type-graphql';
 import {
   Column, Entity, OneToMany, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MaxLength } from 'class-validator';
+import {
+  IsEmail, Matches, MaxLength, MinLength,
+} from 'class-validator';
 import { RoleEnum } from '../RoleEnum';
 import Ticket from './Ticket';
+import { argon2id, hash, verify } from 'argon2';
 
 @Entity()
 @ObjectType()
@@ -26,8 +29,8 @@ class User {
     email: string;
 
   @Field()
-  @Column({ length: 100 })
-    password: string;
+  @Column({ nullable: true })
+    hashedPassword?: string;
 
   @Field()
   @Column({ type: 'enum', enum: RoleEnum })
@@ -44,20 +47,53 @@ export class UserInput {
     firstname: string;
 
   @Field()
-  @Column({ length: 100 })
+  @MaxLength(100)
     lastname: string;
 
   @Field()
-  @Column({ length: 100 })
+  @MaxLength(100)
+  @IsEmail()
     email: string;
 
   @Field()
-  @Column({ length: 100 })
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
     password: string;
 
   @Field()
-  @Column({ length: 100 })
     role: RoleEnum;
 }
+
+@InputType()
+export class UserConnexion {
+  @Field()
+  @MaxLength(100)
+  @IsEmail()
+    email: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    password: string;
+}
+
+const hashingOptions = {
+  memoryCost: 2 ** 16,
+  timeCost: 5,
+  type: argon2id,
+};
+
+// eslint-disable-next-line max-len
+export const hashPassword = async (plainPassword: string): Promise<string> => await hash(plainPassword, hashingOptions);
+
+export const verifyPassword = async (
+  plainPassword: string,
+  hashedPassword: string,
+): Promise<boolean> => await verify(hashedPassword, plainPassword, hashingOptions);
+
+export const getSafeAttributes = (user: User): User => ({
+  ...user,
+  hashedPassword: undefined,
+});
 
 export default User;
