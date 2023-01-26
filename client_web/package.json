@@ -1,7 +1,7 @@
 {
-  "name": "wait-for-it-client",
+  "name": "wait-for-it-web-client",
   "version": "1.0.0",
-  "description": "Client side Wait for iT app",
+  "description": "Client web side Wait for iT app",
   "main": "index.html",
   "type": "module",
   "scripts": {
