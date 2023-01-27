@@ -9,6 +9,9 @@ export const schema = {
   POSTGRES_USER: String,
   POSTGRES_DB: String,
   JWT_PRIVATE_KEY: String,
+  CORS_ALLOWED_ORIGINS: String,
+  SERVER_HOST: String,
+  SERVER_PORT: Number,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
