@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Main package.json app",
   "scripts": {
+    "start:mobile": "npm --prefix ./client_mobile start",
     "setup": "npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i",
-    "lint": "eslint --ext js --ext jsx --ext ts --ext tsx .",
-    "fix": "eslint --fix --ext js --ext jsx --ext ts --ext tsx .",
+    "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
+    "fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "prepare": "husky install"
   },
   "author": "Joffrey Chevalier",
@@ -30,6 +31,7 @@
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-native": "^4.0.0",
     "husky": "^8.0.2"
   }
 }
