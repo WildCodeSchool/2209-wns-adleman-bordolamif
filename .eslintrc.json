@@ -2,10 +2,12 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "react-native/react-native": true
   },
   "extends": [
     "airbnb",
+    "airbnb/hooks",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
@@ -25,6 +27,7 @@
   },
   "plugins": [
     "react",
+    "react-native",
     "@typescript-eslint",
     "import"
   ],
@@ -74,12 +77,25 @@
       }
     ],
     "no-return-await": "off",
-    "no-use-before-define": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "variables": false
+      }
+    ],
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/no-array-index-key": "off",
     "react/no-unescaped-entities": "off",
-    "react/prop-types": "off",
+    "react/prop-types": [
+      "error",
+      {
+        "ignore": [
+          "navigation",
+          "navigation.navigate"
+        ]
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "react/style-prop-object": "off"
   },
