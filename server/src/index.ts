@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import datasource from './db';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { ApolloServer } from 'apollo-server';
+import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { CounterResolver } from './resolvers/CounterResolver';
 import { WaitingRoomResolver } from './resolvers/WaitingRoomResolver';
@@ -12,11 +12,33 @@ import User from './entity/User';
 import jwt from 'jsonwebtoken';
 import { env, loadEnv } from './env';
 import { ContextType } from './utils/interfaces';
+import http from 'http';
+import cors from 'cors';
+import express from 'express';
+import cookieParser from 'cookie-parser';
 
 loadEnv();
 
 const start = async (): Promise<void> => {
   await datasource.initialize();
+
+  const app = express();
+  const httpServer = http.createServer(app);
+  const allowedOrigins = env.CORS_ALLOWED_ORIGINS.split(',');
+
+  app.use(
+    cors({
+      credentials: true,
+      origin: (origin, callback) => {
+        if (typeof origin === 'undefined' || allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+      },
+    }),
+  );
+
+  app.use(cookieParser());
 
   const schema = await buildSchema({
     resolvers: [
@@ -58,13 +80,17 @@ const start = async (): Promise<void> => {
     schema,
     csrfPrevention: true,
     cache: 'bounded',
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    context: ({ req, res }) => ({ req, res }),
   });
 
-  await server.listen().then(({ url }) => {
-    // eslint-disable-next-line no-restricted-syntax
-    console.log(`💻 Apollo Server Sandbox on ${url} 💻`);
-  });
+  await server.start();
+  server.applyMiddleware({ app, cors: false, path: '/' });
+  // eslint-disable-next-line no-restricted-syntax
+  httpServer.listen({ port: env.SERVER_PORT }, () => console.log(
+    `🚀 Server ready at http://${env.SERVER_HOST}:${env.SERVER_PORT}${server.graphqlPath}`,
+  ));
 };
 
 // eslint-disable-next-line no-void

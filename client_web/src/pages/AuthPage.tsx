@@ -1,29 +1,60 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from '@apollo/client';
+import { useState } from 'react';
+import { LOGIN, LOGOUT } from '@graphQL/mutations/userMutations';
+import { PROFILE } from '@graphQL/query/userQuery';
 
-type Inputs = {
-  email: string,
-  password: string,
-};
 function AuthPage() {
-  const {
-    register, handleSubmit,
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => data;
+  const { register, handleSubmit } = useForm();
+  const [error, setError] = useState('');
+  const [login, { loading }] = useMutation(LOGIN);
+  const [logout] = useMutation(LOGOUT);
+  const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const onLoggin = async (formData:any) => {
+    try {
+      await login({ variables: { data: formData } });
+      await client.resetStore();
+    } catch (e) {
+      setError('invalid Credentials');
+    }
+  };
+
+  const onLogout = async () => {
+    await logout();
+    await client.resetStore();
+  };
+
+  if (loading) return <div>Submitting ...</div>;
+  if (error) return <div>`Submission error ! ${error}`</div>;
 
   return (
     <div className="flex h-screen justify-center items-center bg-gray-200">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-        <div className="flex flex-col items-center">
-          <h1 className="mb-7">Connexion</h1>
-
-          <input placeholder="email" {...register('email')} className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-7" />
-          <input placeholder="password" {...register('password')} className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-7" />
-          <button type="submit" className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-3/6">Se connecter</button>
+      {currentUser ? (
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
+          <div className="flex flex-col items-center">
+            <p className="mb-7 text-gray-700">logged in as {currentUser.profile.email}</p>
+            <button type="button" onClick={onLogout} className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Log out</button>
+          </div>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit(onLoggin)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
+          <div className="flex flex-col items-center">
+            <h1 className="mb-7 text-gray-700">Connexion</h1>
+            <input placeholder="email" {...register('email')} className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7" />
+            <div className="flex w-full mb-7">
+              <input type={showPassword ? 'text' : 'password'} placeholder="password" {...register('password')} className="border rounded py-2 px-3 text-gray-700 focus:outline-none" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="shadow bg-orange-500 hover:bg-orange-600 text-white rounded">
+                {showPassword ? 'Masquer' : 'Afficher'}
+              </button>
+            </div>
+            <button type="submit" className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Se connecter</button>
+          </div>
+        </form>
+      )}
     </div>
-
   );
 }
 

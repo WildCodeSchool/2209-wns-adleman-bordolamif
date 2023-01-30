@@ -61,17 +61,17 @@ export class UserResolver {
 
   @Mutation(() => String)
   async login(
-    @Arg('data') { email, password }: UserConnexion,
+    @Arg('data') data: UserConnexion,
     @Ctx() ctx: ContextType,
   ): Promise<string> {
     const user = await dataSource
       .getRepository(User)
-      .findOne({ where: { email } });
+      .findOne({ where: { email: data.email } });
 
     if (
       user === null
       || typeof user.hashedPassword !== 'string'
-      || !(await verifyPassword(password, user.hashedPassword))
+      || !(await verifyPassword(data.password, user.hashedPassword))
     ) { throw new ApolloError('invalid credentials'); }
 
     const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);

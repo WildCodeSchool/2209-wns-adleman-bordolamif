@@ -33,7 +33,7 @@ class User {
     hashedPassword?: string;
 
   @Field()
-  @Column({ type: 'enum', enum: RoleEnum })
+  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.Client })
     role: RoleEnum;
 
   @OneToMany(() => Ticket, (ticket) => ticket.service)
@@ -60,7 +60,7 @@ export class UserInput {
   @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
     password: string;
 
-  @Field()
+  @Field({ defaultValue: RoleEnum.Client })
     role: RoleEnum;
 }
 
