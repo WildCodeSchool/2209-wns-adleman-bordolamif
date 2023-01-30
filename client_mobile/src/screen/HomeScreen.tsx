@@ -7,7 +7,6 @@ import { RootStackParamList } from '../types/RootStackParamList';
 
 type NavigationProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
-// eslint-disable-next-line
 export default function HomeScreen({ navigation }: NavigationProps) {
   return (
     <View style={styles.container}>
