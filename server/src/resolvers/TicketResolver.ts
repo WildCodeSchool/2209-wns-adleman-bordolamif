@@ -4,7 +4,7 @@ import {
 import Ticket from '../entity/Ticket';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
-import { TicketInput } from '../types/InputTypes';
+import { TicketInput } from '../utils/types/InputTypes';
 import User from '../entity/User';
 import Service from '../entity/Service';
 

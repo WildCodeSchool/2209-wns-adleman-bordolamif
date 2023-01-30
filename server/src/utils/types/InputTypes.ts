@@ -1,9 +1,24 @@
-import { MaxLength } from 'class-validator';
+import {
+  IsEmail, Matches, MaxLength, MinLength,
+} from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { RoleEnum } from '../RoleEnum';
+import { RoleEnum } from '../../RoleEnum';
 import {
   CounterId, ServiceId, UserId, WaitingRoomId,
 } from './InputIdTypes';
+
+@InputType()
+export class UserConnexion {
+  @Field()
+  @MaxLength(100)
+  @IsEmail()
+    email: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    password: string;
+}
 
 @InputType()
 export class UserInput {
@@ -17,13 +32,15 @@ export class UserInput {
 
     @Field()
     @MaxLength(100)
+    @IsEmail()
       email: string;
 
-    @Field()
-    @MaxLength(100)
-      password: string;
+    @Field({ nullable: true })
+    @MinLength(8)
+    @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+      password?: string;
 
-    @Field()
+    @Field({ defaultValue: RoleEnum.Client })
       role: RoleEnum;
 
     @Field(() => CounterId, { nullable: true })

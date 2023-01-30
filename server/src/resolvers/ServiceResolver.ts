@@ -4,7 +4,7 @@ import {
 import Service from '../entity/Service';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
-import { ServiceInput } from '../types/InputTypes';
+import { ServiceInput } from '../utils/types/InputTypes';
 import WaitingRoom from '../entity/WaitingRoom';
 
 // const isDataValid = ()=> {

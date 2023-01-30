@@ -4,7 +4,7 @@ import {
 import Counter from '../entity/Counter';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
-import { CounterInput } from '../types/InputTypes';
+import { CounterInput } from '../utils/types/InputTypes';
 import WaitingRoom from '../entity/WaitingRoom';
 import User from '../entity/User';
 

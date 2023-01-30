@@ -4,7 +4,7 @@ import {
 import { ApolloError } from 'apollo-server-errors';
 import WaitingRoom from '../entity/WaitingRoom';
 import dataSource from '../db';
-import { WaitingRoomInput } from '../types/InputTypes';
+import { WaitingRoomInput } from '../utils/types/InputTypes';
 
 @Resolver(WaitingRoom)
 export class WaitingRoomResolver {

@@ -23,7 +23,8 @@ export class UserResolver {
 
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
-    const users = await dataSource.getRepository(User).find({ relations: { services: true, counter: true } });
+    const users = await dataSource.getRepository(User)
+      .find({ relations: { services: true, counter: true } });
     const safeUsers = users.map((user) => getSafeAttributes(user));
     return safeUsers;
   }
@@ -53,16 +54,15 @@ export class UserResolver {
     const {
       firstname, lastname, email, password, role,
     } = data;
-    
+
     const exisitingUser = await dataSource
-    .getRepository(User)
-    .findOne({ where: { email: email } });
+      .getRepository(User)
+      .findOne({ where: { email } });
 
-  if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
-  if (!password) throw new ApolloError('PASSWORD REQUIRED')
-  
+    if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
+    if (!password) throw new ApolloError('PASSWORD REQUIRED');
+
     const hashedPassword = await hashPassword(password);
-
 
     const userServices = await Promise.all(data.services?.map(
       (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
@@ -71,7 +71,6 @@ export class UserResolver {
     return await dataSource.getRepository(User).save({
       firstname, lastname, email, hashedPassword, role, services: userServices, counter,
     });
-
   }
 
   @Mutation(() => String)
