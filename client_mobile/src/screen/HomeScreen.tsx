@@ -14,7 +14,6 @@ export default function HomeScreen({ navigation }: NavigationProps) {
       <Text style={styles.text}>En construction</Text>
       <Button
         title="Go to QrCodeScanner"
-        // eslint-disable-next-line
         onPress={() => navigation.navigate('QrCodeScanner')}
       />
       <StatusBar style="auto" />
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'black',
     fontSize: 50,
     height: 80,
     width: 300,
