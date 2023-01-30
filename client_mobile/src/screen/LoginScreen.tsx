@@ -7,6 +7,7 @@ import { LOGIN_MUTATION, LOGOUT_MUTATION } from '../../graphQL/mutation/UserMuta
 import { useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { GET_PROFILE } from '../../graphQL/query/UserQuery';
+import { UserConnexion } from '../types/InputTypes';
 
 function Screen() {
   const [error, setError] = useState('');
@@ -16,14 +17,14 @@ function Screen() {
 
   const {
     reset, control, handleSubmit, formState: { errors },
-  } = useForm({
+  } = useForm<UserConnexion>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onLogin = (formData: any) => {
+  const onLogin = (formData: UserConnexion) => {
     login({ variables: { data: formData } })
       .then((res) => {
         client.resetStore();

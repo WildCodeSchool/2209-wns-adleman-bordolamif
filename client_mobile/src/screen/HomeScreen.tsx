@@ -11,6 +11,12 @@ export default function HomeScreen({ navigation }: NavigationProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>En construction</Text>
+      <View style={{ marginBottom: 20 }}>
+        <Button
+          title="Login"
+          onPress={() => navigation.navigate('LoginScreen')}
+        />
+      </View>
       <Button
         title="Go to QrCodeScanner"
         onPress={() => navigation.navigate('QrCodeScanner')}
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 50,
+    fontSize: 30,
     height: 80,
     width: 300,
     textAlign: 'center',
