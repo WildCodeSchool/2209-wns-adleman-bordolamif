@@ -51,7 +51,7 @@ function AuthPage() {
             <button type="submit" className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Se connecter</button>
             <div>
               {loading && <div>Submitting ...</div>}
-              {error && <div>`Submission error ! ${error}`</div>}
+              {error && <div>{error}</div>}
             </div>
           </div>
         </form>

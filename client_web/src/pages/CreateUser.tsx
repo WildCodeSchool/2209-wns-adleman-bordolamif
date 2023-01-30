@@ -13,7 +13,7 @@ function CreateUser() {
     try {
       createUser({ variables: { data } });
     } catch (e) {
-      setError('Error while triing to create user');
+      setError('Error while trying to create user');
     }
   };
 
@@ -29,7 +29,7 @@ function CreateUser() {
           <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Activer le compte</button>
           <div>
             {loading && <div>Submitting ...</div>}
-            {error && <div>`Submission error ! ${error}`</div>}
+            {error && <div>{error}</div>}
           </div>
         </div>
       </form>
