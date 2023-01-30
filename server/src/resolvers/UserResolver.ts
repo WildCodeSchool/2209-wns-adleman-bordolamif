@@ -6,6 +6,7 @@ import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
 import Service from '../entity/Service';
 import { UserInput } from '../types/InputTypes';
+import Counter from '../entity/Counter';
 
 @Resolver(User)
 export class UserResolver {
@@ -17,14 +18,14 @@ export class UserResolver {
   async getAllUsers(): Promise<User[]> {
     return await dataSource
       .getRepository(User)
-      .find({ relations: { services: true } });
+      .find({ relations: { services: true, counter: true } });
   }
 
   @Query(() => User)
     async getUserById(@Arg('id', () => Int) id: number): Promise<User> {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { id }, relations: { services: true } });
+        .findOne({ where: { id }, relations: { services: true, counter: true } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
       return user;
@@ -37,7 +38,16 @@ export class UserResolver {
   // @Authorized<RoleEnum>([1])
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserInput): Promise<User> {
-    return await dataSource.getRepository(User).save(data);
+    const {
+      firstname, lastname, email, password, role,
+    } = data;
+    const userServices = await Promise.all(data.services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
+    const counter = null;
+    return await dataSource.getRepository(User).save({
+      firstname, lastname, email, password, role, services: userServices, counter,
+    });
   }
 
   // @Authorized<RoleEnum>([1])
@@ -54,10 +64,10 @@ export class UserResolver {
       @Arg('data') data: UserInput,
   ): Promise<User> {
     const {
-      firstname, lastname, email, password, role, services,
+      firstname, lastname, email, password, role, services, counter,
     } = data;
     const userToUpdate = await dataSource.getRepository(User).findOne({
-      where: { id }, relations: { services: true },
+      where: { id }, relations: { services: true, counter: true },
     });
 
     if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
@@ -67,9 +77,17 @@ export class UserResolver {
     userToUpdate.email = email;
     userToUpdate.password = password;
     userToUpdate.role = role;
+
     userToUpdate.services = await Promise.all(services?.map(
       (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
     ) || []);
+
+    if (counter !== null && typeof (counter) !== 'undefined') {
+      userToUpdate.counter = await dataSource.getRepository(Counter)
+        .findOneOrFail({ where: { id: counter?.id } }) || null;
+    } else {
+      userToUpdate.counter = null;
+    }
 
     await dataSource.getRepository(User).save(userToUpdate);
 

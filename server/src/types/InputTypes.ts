@@ -1,7 +1,9 @@
 import { MaxLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { RoleEnum } from '../RoleEnum';
-import { ServiceId, UserId, WaitingRoomId } from './InputIdTypes';
+import {
+  CounterId, ServiceId, UserId, WaitingRoomId,
+} from './InputIdTypes';
 
 @InputType()
 export class UserInput {
@@ -23,6 +25,9 @@ export class UserInput {
 
     @Field()
       role: RoleEnum;
+
+    @Field(() => CounterId, { nullable: true })
+      counter?: CounterId | null;
 
     @Field(() => [ServiceId], { nullable: true })
       services?: ServiceId[];
@@ -47,10 +52,10 @@ export class TicketInput {
       isReturned?: boolean;
 
     @Field(() => UserId, { nullable: true })
-      userId: UserId;
+      user?: UserId;
 
-    @Field(() => ServiceId, { nullable: true })
-      serviceId: ServiceId;
+    @Field(() => ServiceId)
+      service: ServiceId;
 }
 
 @InputType()
@@ -58,9 +63,6 @@ export class WaitingRoomInput {
     @Field()
     @MaxLength(100)
       name: string;
-
-    @Field(() => [ServiceId], { nullable: true })
-      services?: ServiceId[];
 }
 
 @InputType()
@@ -70,10 +72,10 @@ export class CounterInput {
       name: string;
 
     @Field(() => WaitingRoomId, { nullable: true })
-      waitingRoomId: WaitingRoomId;
+      waitingRoom: WaitingRoomId;
 
     @Field(() => UserId, { nullable: true })
-      userId: UserId;
+      user?: UserId;
 }
 
 @InputType()
@@ -94,5 +96,5 @@ export class ServiceInput {
       color: string;
 
     @Field(() => WaitingRoomId, { nullable: true })
-      waitingRoomId?: WaitingRoomId;
+      waitingRoom?: WaitingRoomId;
 }

@@ -23,7 +23,13 @@ export class WaitingRoomResolver {
     ): Promise<WaitingRoom> {
       const waitingRoom = await dataSource
         .getRepository(WaitingRoom)
-        .findOne({ where: { id } });
+        .findOne({
+          where: { id },
+          relations: {
+            service: true,
+            counter: true,
+          },
+        });
       if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
       return waitingRoom;
     }

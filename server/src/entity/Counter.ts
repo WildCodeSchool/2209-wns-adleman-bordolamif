@@ -14,19 +14,19 @@ import WaitingRoom from './WaitingRoom';
 @ObjectType()
 class Counter {
   @Field()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
   @Field()
   @Column({ length: 100 })
     name: string;
 
-  @Field(() => WaitingRoom, { nullable: true })
+  @Field(() => WaitingRoom)
   @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.counter)
-    waitingRoom?: WaitingRoom;
+    waitingRoom: WaitingRoom;
 
   @Field(() => User, { nullable: true })
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user: User | null) => user?.counter, { nullable: true })
   @JoinColumn()
     user?: User;
 }

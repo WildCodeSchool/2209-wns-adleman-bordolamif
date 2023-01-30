@@ -5,6 +5,7 @@ import Service from '../entity/Service';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
 import { ServiceInput } from '../types/InputTypes';
+import WaitingRoom from '../entity/WaitingRoom';
 
 // const isDataValid = ()=> {
 //   //TODO
@@ -38,7 +39,15 @@ export class ServiceResolver {
 
   @Mutation(() => Service)
   async createService(@Arg('data') data: ServiceInput): Promise<Service> {
-    return await dataSource.getRepository(Service).save(data);
+    const waitingRoom = await dataSource.getRepository(WaitingRoom)
+      .findOneOrFail({ where: { id: data.waitingRoom?.id } }) || null;
+    const {
+      name, acronym, open, color,
+    } = data;
+    const serviceToCreate = {
+      name, acronym, open, color, waitingRoom,
+    };
+    return await dataSource.getRepository(Service).save(serviceToCreate);
   }
 
   @Mutation(() => Boolean)
@@ -66,6 +75,8 @@ export class ServiceResolver {
     UserToUpdate.acronym = acronym;
     UserToUpdate.open = open;
     UserToUpdate.color = color;
+    UserToUpdate.waitingRoom = await dataSource.getRepository(WaitingRoom)
+      .findOneOrFail({ where: { id: data.waitingRoom?.id } }) || null;
 
     await dataSource.getRepository(Service).save(UserToUpdate);
 

@@ -1,25 +1,25 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 
 @InputType()
 export class ServiceId {
-  @Field()
+  @Field(() => Int)
     id: number;
 }
 
 @InputType()
 export class UserId {
-  @Field()
+  @Field(() => Int)
     id: number;
 }
 
 @InputType()
 export class CounterId {
-  @Field()
+  @Field(() => Int)
     id: number;
 }
 
 @InputType()
 export class WaitingRoomId {
-  @Field()
+  @Field(() => Int)
     id: number;
 }
