@@ -1,10 +1,20 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  Button, StyleSheet, Text, View,
+} from 'react-native';
+import { RootStackParamList } from '../types/RootStackParamList';
 
-export default function HomeScreen() {
+type NavigationProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+
+export default function HomeScreen({ navigation }: NavigationProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>LET'S GO</Text>
+      <Text style={styles.text}>En construction</Text>
+      <Button
+        title="Go to QrCodeScanner"
+        onPress={() => navigation.navigate('QrCodeScanner')}
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -18,8 +28,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'red',
-    backgroundColor: 'yellow',
     fontSize: 50,
     height: 80,
     width: 300,
