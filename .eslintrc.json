@@ -2,10 +2,12 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "react-native/react-native": true
   },
   "extends": [
     "airbnb",
+    "airbnb/hooks",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
@@ -13,8 +15,7 @@
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
-  "overrides": [
-  ],
+  "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -23,11 +24,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import"
-  ],
+  "plugins": ["react", "react-native", "@typescript-eslint", "import"],
   "rules": {
     "no-restricted-syntax": [
       "error",
@@ -40,10 +37,7 @@
       "error",
       {
         "required": {
-          "some": [
-            "nesting",
-            "id"
-          ]
+          "some": ["nesting", "id"]
         }
       }
     ],
@@ -51,30 +45,45 @@
       "error",
       {
         "required": {
-          "some": [
-            "nesting",
-            "id"
-          ]
+          "some": ["nesting", "id"]
         }
       }
     ],
     "class-methods-use-this": "off",
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
     "import/order": "off",
     "import/prefer-default-export": "off",
     "import/no-cycle": "off",
     "max-classes-per-file": "off",
     "no-console": "off",
-    "no-param-reassign": ["error", { "props": false }],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
     "no-return-await": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "variables": false
+      }
+    ],
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/no-array-index-key": "off",
     "react/no-unescaped-entities": "off",
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off"
-
+    "react/prop-types": [
+      "error",
+      {
+        "ignore": ["navigation", "navigation.navigate"]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/style-prop-object": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "settings": {
     "import/resolver": {
@@ -87,12 +96,7 @@
           "@components": "./client/src/components",
           "@pages": "./client/src/pages"
         },
-        "extensions": [
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx"
-        ]
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   }
