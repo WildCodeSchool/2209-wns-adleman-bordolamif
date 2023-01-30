@@ -12,6 +12,7 @@ export const schema = {
   CORS_ALLOWED_ORIGINS: String,
   SERVER_HOST: String,
   SERVER_PORT: Number,
+
 };
 
 // eslint-disable-next-line import/no-mutable-exports
