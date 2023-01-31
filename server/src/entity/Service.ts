@@ -19,11 +19,11 @@ class Service {
     id: number;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
     name: string;
 
   @Field()
-  @Column({ length: 3 })
+  @Column({ length: 3, unique: true })
     acronym: string;
 
   @Field()
@@ -31,7 +31,7 @@ class Service {
     open: boolean;
 
   @Field()
-  @Column({ length: 6 })
+  @Column({ length: 6, unique: true })
     color: string;
 
   @Field(() => WaitingRoom, { nullable: true })
@@ -39,12 +39,12 @@ class Service {
     waitingRoom?: WaitingRoom;
 
   @Field(() => [Ticket], { nullable: true })
-  @OneToMany(() => Ticket, (ticket) => ticket.service)
+  @OneToMany(() => Ticket, (ticket) => ticket.service, { nullable: true })
     tickets?: Ticket[];
 
   @Field(() => [User], { nullable: true })
-  @ManyToMany(() => User, (user) => user.services)
-    users: User[];
+  @ManyToMany(() => User, (user) => user.services, { nullable: true })
+    users?: User[];
 }
 
 export default Service;

@@ -18,7 +18,7 @@ class Counter {
     id: number;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
     name: string;
 
   @Field(() => WaitingRoom)

@@ -41,7 +41,7 @@ class Ticket {
     @Column({ nullable: true })
       isReturned?: boolean;
 
-    @Field(() => Service, { nullable: true })
+    @Field(() => Service)
     @ManyToOne(() => Service, (service) => service.tickets)
       service: Service;
 

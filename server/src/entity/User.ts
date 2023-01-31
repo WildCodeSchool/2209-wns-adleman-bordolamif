@@ -7,6 +7,7 @@ import Ticket from './Ticket';
 import { argon2id, hash, verify } from 'argon2';
 import Counter from './Counter';
 import Service from './Service';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 @ObjectType()
@@ -24,7 +25,8 @@ class User {
     lastname: string;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
+  @IsEmail()
     email: string;
 
   @Field({ nullable: true })
@@ -44,12 +46,12 @@ class User {
 
   @Field(() => [Ticket], { nullable: true })
   @OneToMany(() => Ticket, (ticket) => ticket.user)
-    tickets: Ticket[];
+    tickets?: Ticket[];
 
   @Field(() => [Service], { nullable: true })
-  @ManyToMany(() => Service, (service) => service.users, { cascade: true })
+  @ManyToMany(() => Service, (service) => service.users, { nullable: true, cascade: true })
   @JoinTable()
-    services: Service[];
+    services?: Service[];
 }
 
 const hashingOptions = {

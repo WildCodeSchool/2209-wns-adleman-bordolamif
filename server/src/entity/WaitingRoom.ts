@@ -21,7 +21,7 @@ class WaitingRoom {
     service?: Service;
 
   @Field(() => Counter, { nullable: true })
-  @OneToMany(() => Counter, (counter) => counter.waitingRoom)
+  @OneToMany(() => Counter, (counter) => counter.waitingRoom, { nullable: true })
     counter?: Counter;
 }
 
