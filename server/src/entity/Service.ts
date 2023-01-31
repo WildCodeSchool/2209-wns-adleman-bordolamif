@@ -1,14 +1,12 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { MaxLength } from 'class-validator';
 import WaitingRoom from './WaitingRoom';
 import Ticket from './Ticket';
 import User from './User';
@@ -21,11 +19,11 @@ class Service {
     id: number;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
     name: string;
 
   @Field()
-  @Column({ length: 3 })
+  @Column({ length: 3, unique: true })
     acronym: string;
 
   @Field()
@@ -33,39 +31,20 @@ class Service {
     open: boolean;
 
   @Field()
-  @Column({ length: 6 })
+  @Column({ length: 6, unique: true })
     color: string;
 
+  @Field(() => WaitingRoom, { nullable: true })
   @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.service)
     waitingRoom?: WaitingRoom;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.service)
+  @Field(() => [Ticket], { nullable: true })
+  @OneToMany(() => Ticket, (ticket) => ticket.service, { nullable: true })
     tickets?: Ticket[];
 
-  @ManyToMany(() => User)
-  @JoinTable()
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User, (user) => user.services, { nullable: true })
     users?: User[];
-}
-
-@InputType()
-export class ServiceInput {
-  @Field()
-  @MaxLength(100)
-    name: string;
-
-  @Field()
-  @MaxLength(3)
-    acronym: string;
-
-  @Field()
-    open: boolean;
-
-  @Field()
-  @MaxLength(6)
-    color: string;
-
-  @Field({ nullable: true })
-    waitingRoomId?: number;
 }
 
 export default Service;

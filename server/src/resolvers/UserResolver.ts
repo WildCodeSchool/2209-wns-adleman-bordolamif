@@ -2,13 +2,16 @@ import {
   Arg, Authorized, Ctx, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import User, {
-  getSafeAttributes, hashPassword, UserConnexion, UserInput, verifyPassword,
+  getSafeAttributes, hashPassword, verifyPassword,
 } from '../entity/User';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
 import jwt from 'jsonwebtoken';
 import { env, loadEnv } from '../env';
 import { ContextType } from '../utils/interfaces';
+import { UserConnexion, UserInput } from '../utils/types/InputTypes';
+import Service from '../entity/Service';
+import Counter from '../entity/Counter';
 
 loadEnv();
 
@@ -20,7 +23,8 @@ export class UserResolver {
 
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
-    const users = await dataSource.getRepository(User).find();
+    const users = await dataSource.getRepository(User)
+      .find({ relations: { services: true, counter: true } });
     const safeUsers = users.map((user) => getSafeAttributes(user));
     return safeUsers;
   }
@@ -29,7 +33,7 @@ export class UserResolver {
     async getUserById(@Arg('id', () => Int) id: number): Promise<User> {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { id } });
+        .findOne({ where: { id }, relations: { services: true, counter: true } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
       return getSafeAttributes(user);
@@ -47,16 +51,26 @@ export class UserResolver {
   // @Authorized<RoleEnum>([1])
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserInput): Promise<User> {
+    const {
+      firstname, lastname, email, password, role,
+    } = data;
+
     const exisitingUser = await dataSource
       .getRepository(User)
-      .findOne({ where: { email: data.email } });
+      .findOne({ where: { email } });
 
     if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
+    if (!password) throw new ApolloError('PASSWORD REQUIRED');
 
-    const hashedPassword = await hashPassword(data.password);
-    return await dataSource
-      .getRepository(User)
-      .save({ ...data, hashedPassword });
+    const hashedPassword = await hashPassword(password);
+
+    const userServices = await Promise.all(data.services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
+    const counter = null;
+    return await dataSource.getRepository(User).save({
+      firstname, lastname, email, hashedPassword, role, services: userServices, counter,
+    });
   }
 
   @Mutation(() => String)
@@ -104,22 +118,32 @@ export class UserResolver {
       @Arg('data') data: UserInput,
   ): Promise<User> {
     const {
-      firstname, lastname, email, password, role,
+      firstname, lastname, email, role, services, counter,
     } = data;
-    const UserToUpdate = await dataSource.getRepository(User).findOne({
-      where: { id },
+    const userToUpdate = await dataSource.getRepository(User).findOne({
+      where: { id }, relations: { services: true, counter: true },
     });
 
-    if (UserToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
 
-    UserToUpdate.firstname = firstname;
-    UserToUpdate.lastname = lastname;
-    UserToUpdate.email = email;
-    UserToUpdate.hashedPassword = password;
-    UserToUpdate.role = role;
+    userToUpdate.firstname = firstname;
+    userToUpdate.lastname = lastname;
+    userToUpdate.email = email;
+    userToUpdate.role = role;
 
-    await dataSource.getRepository(User).save(UserToUpdate);
+    userToUpdate.services = await Promise.all(services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
 
-    return UserToUpdate;
+    if (counter !== null && typeof (counter) !== 'undefined') {
+      userToUpdate.counter = await dataSource.getRepository(Counter)
+        .findOneOrFail({ where: { id: counter?.id } }) || null;
+    } else {
+      userToUpdate.counter = null;
+    }
+
+    await dataSource.getRepository(User).save(userToUpdate);
+
+    return userToUpdate;
   }
 }

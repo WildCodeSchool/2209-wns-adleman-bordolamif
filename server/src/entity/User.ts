@@ -1,19 +1,19 @@
-import { Field, InputType, ObjectType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 import {
-  Column, Entity, OneToMany, PrimaryGeneratedColumn,
+  Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
-import {
-  IsEmail, Matches, MaxLength, MinLength,
-} from 'class-validator';
 import { RoleEnum } from '../RoleEnum';
 import Ticket from './Ticket';
 import { argon2id, hash, verify } from 'argon2';
+import Counter from './Counter';
+import Service from './Service';
+import { IsEmail } from 'class-validator';
 
 @Entity()
 @ObjectType()
 class User {
   @Field()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
   @Field()
@@ -25,7 +25,8 @@ class User {
     lastname: string;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
+  @IsEmail()
     email: string;
 
   @Field({ nullable: true })
@@ -36,45 +37,21 @@ class User {
   @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.Client })
     role: RoleEnum;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.service)
+  @Field(() => Counter, { nullable: true })
+  @OneToOne(() => Counter, (counter: Counter | null) => counter?.user, {
+    nullable: true,
+    eager: true,
+  })
+    counter?: Counter | null;
+
+  @Field(() => [Ticket], { nullable: true })
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
     tickets?: Ticket[];
-}
 
-@InputType()
-export class UserInput {
-  @Field()
-  @MaxLength(100)
-    firstname: string;
-
-  @Field()
-  @MaxLength(100)
-    lastname: string;
-
-  @Field()
-  @MaxLength(100)
-  @IsEmail()
-    email: string;
-
-  @Field()
-  @MinLength(8)
-  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
-    password: string;
-
-  @Field({ defaultValue: RoleEnum.Client })
-    role: RoleEnum;
-}
-
-@InputType()
-export class UserConnexion {
-  @Field()
-  @MaxLength(100)
-  @IsEmail()
-    email: string;
-
-  @Field()
-  @MinLength(8)
-  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
-    password: string;
+  @Field(() => [Service], { nullable: true })
+  @ManyToMany(() => Service, (service) => service.users, { nullable: true, cascade: true })
+  @JoinTable()
+    services?: Service[];
 }
 
 const hashingOptions = {

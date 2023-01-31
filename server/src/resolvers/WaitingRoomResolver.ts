@@ -2,8 +2,9 @@ import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import { ApolloError } from 'apollo-server-errors';
-import WaitingRoom, { WaitingRoomInput } from '../entity/WaitingRoom';
+import WaitingRoom from '../entity/WaitingRoom';
 import dataSource from '../db';
+import { WaitingRoomInput } from '../utils/types/InputTypes';
 
 @Resolver(WaitingRoom)
 export class WaitingRoomResolver {
@@ -22,7 +23,13 @@ export class WaitingRoomResolver {
     ): Promise<WaitingRoom> {
       const waitingRoom = await dataSource
         .getRepository(WaitingRoom)
-        .findOne({ where: { id } });
+        .findOne({
+          where: { id },
+          relations: {
+            service: true,
+            counter: true,
+          },
+        });
       if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
       return waitingRoom;
     }

@@ -1,9 +1,12 @@
 import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
-import Ticket, { TicketInput } from '../entity/Ticket';
+import Ticket from '../entity/Ticket';
 import dataSource from '../db';
 import { ApolloError } from 'apollo-server-errors';
+import { TicketInput } from '../utils/types/InputTypes';
+import User from '../entity/User';
+import Service from '../entity/Service';
 
 @Resolver(Ticket)
 export class TicketResolver {
@@ -42,7 +45,17 @@ export class TicketResolver {
 
     @Mutation(() => Ticket)
     async createTicket(@Arg('data') data: TicketInput): Promise<Ticket> {
-      return await dataSource.getRepository(Ticket).save(data);
+      const {
+        name, calledAt, closedAt, isFirstTime, isReturned,
+      } = data;
+      const user = await dataSource.getRepository(User)
+        .findOneOrFail({ where: { id: data.user?.id } }) || null;
+      const service = await dataSource.getRepository(Service)
+        .findOneOrFail({ where: { id: data.service.id } }) || null;
+      const ticketToCreate = {
+        name, calledAt, closedAt, isFirstTime, isReturned, user, service,
+      };
+      return await dataSource.getRepository(Ticket).save(ticketToCreate);
     }
 
     @Mutation(() => Boolean)
@@ -62,7 +75,7 @@ export class TicketResolver {
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {
       const {
-        name, calledAt, closedAt, isReturned, isFirstTime,
+        name, calledAt, closedAt, isReturned, isFirstTime, user, service,
       } = data;
       const ticketToUpdate = await dataSource
         .getRepository(Ticket)
@@ -81,6 +94,10 @@ export class TicketResolver {
       ticketToUpdate.closedAt = closedAt;
       ticketToUpdate.isReturned = isReturned;
       ticketToUpdate.isFirstTime = isFirstTime;
+      ticketToUpdate.user = await dataSource.getRepository(User)
+        .findOneOrFail({ where: { id: user?.id } }) || null;
+      ticketToUpdate.service = await dataSource.getRepository(Service)
+        .findOneOrFail({ where: { id: service.id } }) || null;
 
       await dataSource.getRepository(Ticket).save(ticketToUpdate);
 
