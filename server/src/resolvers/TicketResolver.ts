@@ -7,6 +7,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { TicketInput } from '../utils/types/InputTypes';
 import User from '../entity/User';
 import Service from '../entity/Service';
+import { MoreThanOrEqual, Raw } from 'typeorm';
 
 @Resolver(Ticket)
 export class TicketResolver {
@@ -46,14 +47,36 @@ export class TicketResolver {
     @Mutation(() => Ticket)
     async createTicket(@Arg('data') data: TicketInput): Promise<Ticket> {
       const {
-        name, calledAt, closedAt, isFirstTime, isReturned,
+        calledAt, closedAt, isFirstTime, isReturned,
       } = data;
       const user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: data.user?.id } }) || null;
-      const service = await dataSource.getRepository(Service)
+      const myService = await dataSource.getRepository(Service)
         .findOneOrFail({ where: { id: data.service.id } }) || null;
+      if (myService === null) throw new ApolloError('Service not found', 'NOT_FOUND');
+
+      const prefix = myService.acronym;
+
+      const todaysTicketsServices = await dataSource.getRepository(Ticket)
+        .find({ where: { createdAt: Raw((alias) => `${alias} > DATE(NOW())`), service: { id: myService.id } }, order: { createdAt: 'DESC' } });
+
+      let suffix;
+      if (!todaysTicketsServices.length || todaysTicketsServices === undefined || todaysTicketsServices[0].name.substring(4, 7) === '999') {
+        suffix = '001';
+      } else {
+        suffix = (parseInt(todaysTicketsServices[0].name.substring(4, 7), 10) + 1).toString().padStart(3, '0');
+      }
+
+      const name = `${prefix}-${suffix}`;
+
       const ticketToCreate = {
-        name, calledAt, closedAt, isFirstTime, isReturned, user, service,
+        name,
+        calledAt,
+        closedAt,
+        isFirstTime,
+        isReturned,
+        user,
+        service: myService,
       };
       return await dataSource.getRepository(Ticket).save(ticketToCreate);
     }
@@ -75,7 +98,7 @@ export class TicketResolver {
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {
       const {
-        name, calledAt, closedAt, isReturned, isFirstTime, user, service,
+        calledAt, closedAt, isReturned, isFirstTime, user, service,
       } = data;
       const ticketToUpdate = await dataSource
         .getRepository(Ticket)
@@ -89,7 +112,6 @@ export class TicketResolver {
 
       if (ticketToUpdate === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
 
-      ticketToUpdate.name = name;
       ticketToUpdate.calledAt = calledAt;
       ticketToUpdate.closedAt = closedAt;
       ticketToUpdate.isReturned = isReturned;

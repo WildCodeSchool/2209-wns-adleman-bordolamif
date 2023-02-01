@@ -18,12 +18,12 @@ class Ticket {
       id: number;
 
     @Field()
-    @Column({ length: 100 })
+    @Column()
       name: string;
 
     @Field()
     @CreateDateColumn()
-      CreatedAt?: Date;
+      createdAt?: Date;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
