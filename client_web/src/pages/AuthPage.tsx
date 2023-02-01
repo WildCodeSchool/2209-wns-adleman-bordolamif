@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { LOGIN, LOGOUT } from '@graphQL/mutations/userMutations';
 import { PROFILE } from '@graphQL/query/userQuery';
-import { UserConnexion } from 'src/utils/types/inputTypes';
+import { UserConnexion } from '@utils/types/inputTypes';
 
 function AuthPage() {
   const { register, handleSubmit } = useForm<UserConnexion>();
