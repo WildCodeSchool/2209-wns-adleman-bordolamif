@@ -11,7 +11,7 @@ function CreateUser() {
 
   const onCreateUser = async (data: UserInput) => {
     try {
-      createUser({ variables: { data } });
+      await createUser({ variables: { data } });
     } catch (e) {
       setError('Error while trying to create user');
     }

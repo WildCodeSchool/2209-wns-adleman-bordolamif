@@ -70,7 +70,7 @@ export class TicketResolver {
     }
 
     @Mutation(() => Ticket)
-    async updtateTicket(
+    async updateTicket(
         @Arg('id', () => Int) id: number,
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {

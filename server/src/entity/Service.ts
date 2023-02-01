@@ -35,7 +35,7 @@ class Service {
     color: string;
 
   @Field(() => WaitingRoom, { nullable: true })
-  @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.service)
+  @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.services)
     waitingRoom?: WaitingRoom;
 
   @Field(() => [Ticket], { nullable: true })

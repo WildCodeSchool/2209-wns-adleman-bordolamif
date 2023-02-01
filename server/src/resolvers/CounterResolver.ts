@@ -53,7 +53,7 @@ export class CounterResolver {
   }
 
     @Mutation(() => Boolean)
-    async deleteCouter(
+    async deleteCounter(
         @Arg('id', () => Int) id: number,
     ): Promise<boolean> {
       const { affected } = await dataSource
@@ -64,7 +64,7 @@ export class CounterResolver {
     }
 
   @Mutation(() => Counter)
-    async updtateCounter(
+    async updateCounter(
       @Arg('id', () => Int) id: number,
       @Arg('data') data: CounterInput,
     ): Promise<Counter> {

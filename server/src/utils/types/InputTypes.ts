@@ -131,5 +131,5 @@ export class ServiceInput {
       color: string;
 
     @Field(() => WaitingRoomId, { nullable: true })
-      waitingRoom?: WaitingRoomId;
+      waitingRoom: WaitingRoomId | null;
 }

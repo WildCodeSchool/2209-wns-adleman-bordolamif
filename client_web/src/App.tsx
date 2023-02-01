@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/create-operator" element={<CreateUser />} />
+        <Route path="/create-user" element={<CreateUser />} />
       </Routes>
     </BrowserRouter>
   );

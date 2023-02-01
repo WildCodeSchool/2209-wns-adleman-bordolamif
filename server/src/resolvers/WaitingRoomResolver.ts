@@ -14,7 +14,8 @@ export class WaitingRoomResolver {
 
     @Query(() => [WaitingRoom])
   async getAllWaitingRooms(): Promise<WaitingRoom[]> {
-    return await dataSource.getRepository(WaitingRoom).find();
+    return await dataSource.getRepository(WaitingRoom)
+      .find({ relations: { services: true, counters: true } });
   }
 
     @Query(() => WaitingRoom)
@@ -26,8 +27,8 @@ export class WaitingRoomResolver {
         .findOne({
           where: { id },
           relations: {
-            service: true,
-            counter: true,
+            services: true,
+            counters: true,
           },
         });
       if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
@@ -60,16 +61,20 @@ export class WaitingRoomResolver {
 
     // @Authorized<Role>(['admin'])
     @Mutation(() => WaitingRoom)
-    async updtateWaitingRoom(
+    async updateWaitingRoom(
         @Arg('id', () => Int) id: number,
         @Arg('data') { name }: WaitingRoomInput,
     ): Promise<WaitingRoom> {
-      const { affected } = await dataSource
-        .getRepository(WaitingRoom)
-        .update(id, { name });
+      const waitingRoomToUpdate = await dataSource.getRepository(WaitingRoom).findOne({
+        where: { id }, relations: { services: true, counters: true },
+      });
 
-      if (affected === 0) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+      if (waitingRoomToUpdate === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
 
-      return { id, name };
+      waitingRoomToUpdate.name = name;
+
+      await dataSource.getRepository(WaitingRoom).save(waitingRoomToUpdate);
+
+      return waitingRoomToUpdate;
     }
 }

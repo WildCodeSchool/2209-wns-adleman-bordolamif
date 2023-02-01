@@ -26,16 +26,16 @@ export class UserResolver {
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users = await dataSource.getRepository(User)
-      .find({ relations: { services: true, counter: true } });
+      .find({ relations: { services: true, counter: true, tickets: true } });
     const safeUsers = users.map((user) => getSafeAttributes(user));
     return safeUsers;
   }
 
   @Query(() => User)
-    async getUserById(@Arg('id', () => Int) id: number): Promise<User> {
+    async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { id }, relations: { services: true, counter: true } });
+        .findOne({ where: { id }, relations: { services: true, counter: true, tickets: true } });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
       return getSafeAttributes(user);
@@ -155,7 +155,7 @@ export class UserResolver {
       firstname, lastname, email, role, services, counter,
     } = data;
     const userToUpdate = await dataSource.getRepository(User).findOne({
-      where: { id }, relations: { services: true, counter: true },
+      where: { id }, relations: { services: true, counter: true, tickets: true },
     });
 
     if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
@@ -164,7 +164,6 @@ export class UserResolver {
     userToUpdate.lastname = lastname;
     userToUpdate.email = email;
     userToUpdate.role = role;
-
     userToUpdate.services = await Promise.all(services?.map(
       (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
     ) || []);

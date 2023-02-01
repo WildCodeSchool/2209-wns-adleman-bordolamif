@@ -16,13 +16,13 @@ class WaitingRoom {
   @Column({ length: 100 })
     name: string;
 
-  @Field(() => Service, { nullable: true })
-  @OneToMany(() => Service, (service) => service.waitingRoom)
-    service?: Service;
+  @Field(() => [Service], { nullable: true })
+  @OneToMany(() => Service, (service) => service.waitingRoom, { cascade: true })
+    services?: Service[];
 
-  @Field(() => Counter, { nullable: true })
-  @OneToMany(() => Counter, (counter) => counter.waitingRoom, { nullable: true })
-    counter?: Counter;
+  @Field(() => [Counter], { nullable: true })
+  @OneToMany(() => Counter, (counter) => counter.waitingRoom)
+    counters?: Counter[];
 }
 
 export default WaitingRoom;

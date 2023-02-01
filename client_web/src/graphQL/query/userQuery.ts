@@ -11,3 +11,58 @@ query getProfile {
   }
 }
 `;
+
+export const GET_ALL_USERS = gql`
+query GetAllUsers {
+  getAllUsers {
+    id
+    firstname
+    lastname
+    email
+    role
+    services {
+      acronym
+      color
+      id
+      name
+      open
+    }
+    counter {
+      id
+      name
+    }
+  }
+}
+`;
+
+export const GET_ONE_USER = gql`
+query GetOneUser($getOneUserId: Int!) {
+  getOneUser(id: $getOneUserId) {
+    id
+    firstname
+    lastname
+    role
+    email
+    counter {
+      id
+      name
+    }
+    services {
+      id
+      name
+      color
+      acronym
+      open
+    }
+    tickets {
+      id
+      name
+      CreatedAt
+      calledAt
+      closedAt
+      isFirstTime
+      isReturned
+    }
+  }
+}
+`;
