@@ -51,14 +51,14 @@ export class TicketResolver {
       } = data;
       const user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: data.user?.id } }) || null;
-      const myService = await dataSource.getRepository(Service)
+      const ticketService = await dataSource.getRepository(Service)
         .findOneOrFail({ where: { id: data.service.id } }) || null;
-      if (myService === null) throw new ApolloError('Service not found', 'NOT_FOUND');
+      if (ticketService === null) throw new ApolloError('Service not found', 'NOT_FOUND');
 
-      const prefix = myService.acronym;
+      const prefix = ticketService.acronym;
 
       const todaysTicketsServices = await dataSource.getRepository(Ticket)
-        .find({ where: { createdAt: Raw((alias) => `${alias} > DATE(NOW())`), service: { id: myService.id } }, order: { createdAt: 'DESC' } });
+        .find({ where: { createdAt: Raw((alias) => `${alias} > DATE(NOW())`), service: { id: ticketService.id } }, order: { createdAt: 'DESC' } });
 
       let suffix;
       if (!todaysTicketsServices.length || todaysTicketsServices === undefined || todaysTicketsServices[0].name.substring(4, 7) === '999') {
@@ -76,7 +76,7 @@ export class TicketResolver {
         isFirstTime,
         isReturned,
         user,
-        service: myService,
+        service: ticketService,
       };
       return await dataSource.getRepository(Ticket).save(ticketToCreate);
     }
