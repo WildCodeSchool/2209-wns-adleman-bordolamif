@@ -20,7 +20,8 @@
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
-      "@graphQL/*": ["src/graphQL/*"]
+      "@graphQL/*": ["src/graphQL/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["src"],
