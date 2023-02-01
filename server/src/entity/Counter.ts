@@ -22,7 +22,7 @@ class Counter {
     name: string;
 
   @Field(() => WaitingRoom)
-  @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.counter)
+  @ManyToOne(() => WaitingRoom, (waitingRoom) => waitingRoom.counters)
     waitingRoom: WaitingRoom;
 
   @Field(() => User, { nullable: true })

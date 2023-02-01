@@ -19,14 +19,15 @@ export class ServiceResolver {
 
   @Query(() => [Service])
   async getAllServices(): Promise<Service[]> {
-    return await dataSource.getRepository(Service).find();
+    return await dataSource.getRepository(Service)
+      .find({ relations: { waitingRoom: true, tickets: true, users: true } });
   }
 
   @Query(() => Service)
   async getOneService(@Arg('id', () => Int) id: number): Promise<Service> {
     const service = await dataSource
       .getRepository(Service)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: { waitingRoom: true, tickets: true, users: true } });
     if (service === null) {
       throw new ApolloError('Service not found', 'NOT_FOUND');
     }
@@ -65,21 +66,21 @@ export class ServiceResolver {
     const {
       name, acronym, open, color,
     } = data;
-    const UserToUpdate = await dataSource.getRepository(Service).findOne({
+    const ServiceToUpdate = await dataSource.getRepository(Service).findOne({
       where: { id },
     });
 
-    if (UserToUpdate === null) { throw new ApolloError('Service not found', 'NOT_FOUND'); }
+    if (ServiceToUpdate === null) { throw new ApolloError('Service not found', 'NOT_FOUND'); }
 
-    UserToUpdate.name = name;
-    UserToUpdate.acronym = acronym;
-    UserToUpdate.open = open;
-    UserToUpdate.color = color;
-    UserToUpdate.waitingRoom = await dataSource.getRepository(WaitingRoom)
-      .findOneOrFail({ where: { id: data.waitingRoom?.id } }) || null;
+    ServiceToUpdate.name = name;
+    ServiceToUpdate.acronym = acronym;
+    ServiceToUpdate.open = open;
+    ServiceToUpdate.color = color;
+    ServiceToUpdate.waitingRoom = await dataSource.getRepository(WaitingRoom)
+      .findOneOrFail({ where: { id: data.waitingRoom?.id } });
 
-    await dataSource.getRepository(Service).save(UserToUpdate);
+    await dataSource.getRepository(Service).save(ServiceToUpdate);
 
-    return UserToUpdate;
+    return ServiceToUpdate;
   }
 }
