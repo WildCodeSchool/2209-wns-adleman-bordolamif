@@ -57,20 +57,19 @@ export class UserResolver {
     const {
       firstname, lastname, email, role,
     } = data;
-    let { password } = data;
 
     const exisitingUser = await dataSource
       .getRepository(User)
       .findOne({ where: { email } });
 
     if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
-    if (!password) {
+    if (!data.password) {
       if (role !== 2) throw new ApolloError('PASSWORD REQUIRED');
       else {
-        password = `${firstname}${lastname}00!`;
+        data.password = `${firstname}${lastname}00!`;
       }
     }
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashPassword(data.password);
 
     const userServices = await Promise.all(data.services?.map(
       (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
@@ -195,29 +194,30 @@ export class UserResolver {
 
     await dataSource.getRepository(User).save(user);
 
-    const testAccount = await nodemailer.createTestAccount();
+    if (env.NODE_ENV === 'development') {
+      const testAccount = await nodemailer.createTestAccount();
 
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
 
-    const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
-    const mailOptions = {
-      from: 'email@example.com',
-      to: email,
-      subject: 'Réinitialisation de votre mot de passe',
-      text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
-    };
-    const info = await transporter.sendMail(mailOptions);
-    // eslint-disable-next-line no-restricted-syntax
-    console.log('mail available at : ', nodemailer.getTestMessageUrl(info));
-
+      const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
+      const mailOptions = {
+        from: 'email@example.com',
+        to: email,
+        subject: 'Réinitialisation de votre mot de passe',
+        text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
+      };
+      const info = await transporter.sendMail(mailOptions);
+      // eslint-disable-next-line no-restricted-syntax
+      console.log('mail available at : ', nodemailer.getTestMessageUrl(info));
+    }
     return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
   }
 
