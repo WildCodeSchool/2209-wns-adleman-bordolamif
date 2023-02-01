@@ -21,6 +21,24 @@ export class UserConnexion {
 }
 
 @InputType()
+export class UserUpdatePassword {
+  @Field()
+  @MaxLength(100)
+  @IsEmail()
+    email: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    oldPassword: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    newPassword: string;
+}
+
+@InputType()
 export class UserInput {
     @Field()
     @MaxLength(100)

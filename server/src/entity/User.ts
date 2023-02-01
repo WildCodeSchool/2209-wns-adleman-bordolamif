@@ -37,6 +37,14 @@ class User {
   @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.Client })
     role: RoleEnum;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+    resetPasswordToken?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+    resetPasswordExpires?: Date;
+
   @Field(() => Counter, { nullable: true })
   @OneToOne(() => Counter, (counter: Counter | null) => counter?.user, {
     nullable: true,
