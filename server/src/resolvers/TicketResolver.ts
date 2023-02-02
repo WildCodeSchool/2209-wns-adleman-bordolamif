@@ -7,7 +7,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { TicketInput } from '../utils/types/InputTypes';
 import User from '../entity/User';
 import Service from '../entity/Service';
-import { Raw } from 'typeorm';
+import { MoreThanOrEqual, Raw } from 'typeorm';
 
 @Resolver(Ticket)
 export class TicketResolver {
