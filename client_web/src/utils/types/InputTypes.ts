@@ -14,7 +14,7 @@ export interface UserInput {
   }
 
 export interface TicketInput {
-      name: string;
+      name?: string;
       calledAt?: Date;
       closedAt?: Date;
       isFirstTime: boolean;

@@ -5,7 +5,7 @@ mutation CreateTicket($data: TicketInput!) {
   createTicket(data: $data) {
     id
     name
-    CreatedAt
+    createdAt
     calledAt
     closedAt
     isFirstTime
@@ -51,7 +51,7 @@ mutation UpdateTicket($data: TicketInput!, $updateTicketId: Int!) {
     id
     closedAt
     calledAt
-    CreatedAt
+    createdAt
   }
 }
 `;

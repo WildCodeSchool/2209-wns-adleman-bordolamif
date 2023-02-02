@@ -5,7 +5,7 @@ query GetAllTickets {
   getAllTickets {
     id
     name
-    CreatedAt
+    createdAt
     calledAt
     closedAt
     isFirstTime
@@ -33,7 +33,7 @@ query GetOneTicket($getOneTicketId: Int!) {
   getOneTicket(id: $getOneTicketId) {
     id
     name
-    CreatedAt
+    createdAt
     calledAt
     closedAt
     isFirstTime

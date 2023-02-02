@@ -27,7 +27,7 @@ mutation UpdateService($data: ServiceInput!, $updateServiceId: Int!) {
     tickets {
       id
       name
-      CreatedAt
+      createdAt
       calledAt
       closedAt
       isFirstTime

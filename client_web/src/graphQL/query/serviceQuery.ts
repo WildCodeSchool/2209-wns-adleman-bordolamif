@@ -18,7 +18,7 @@ query GetAllServices {
     tickets {
       id
       name
-      CreatedAt
+      createdAt
       calledAt
       closedAt
       isFirstTime
@@ -43,7 +43,7 @@ query GetOneService($getOneServiceId: Int!) {
     tickets {
       id
       name
-      CreatedAt
+      createdAt
       calledAt
       closedAt
       isFirstTime

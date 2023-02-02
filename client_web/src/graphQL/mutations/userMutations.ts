@@ -53,7 +53,7 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
     tickets {
       id
       name
-      CreatedAt
+      createdAt
       calledAt
       closedAt
       isFirstTime
