@@ -57,7 +57,7 @@ query GetOneUser($getOneUserId: Int!) {
     tickets {
       id
       name
-      CreatedAt
+      createdAt
       calledAt
       closedAt
       isFirstTime
