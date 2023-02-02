@@ -1,6 +1,12 @@
+import Menu from '@components/Menu';
+
 function AdminPage() {
   return (
-    <p>ADMIN</p>
+    <>
+      <Menu />
+      <p>ADMIN</p>
+
+    </>
 
   );
 }
