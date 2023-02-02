@@ -71,10 +71,6 @@ export class UserInput {
 @InputType()
 export class TicketInput {
     @Field({ nullable: true })
-    @MaxLength(100)
-      name?: string;
-
-    @Field({ nullable: true })
       calledAt?: Date;
 
     @Field({ nullable: true })
