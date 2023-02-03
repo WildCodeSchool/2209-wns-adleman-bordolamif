@@ -10,9 +10,9 @@ function StaffLayout() {
     <div>
       {currentUser !== undefined ? (
         <div className="flex bg-gray-200 h-screen">
-          <Menu currentUser={currentUser} />
+          <Menu userProfile={currentUser.profile} />
           <div className="w-full bg-white m-5 p-5 rounded">
-            <Outlet context={{ currentUser }} />
+            <Outlet context={{ userProfile: currentUser.profile }} />
           </div>
         </div>
       ) : <p>Unauthorized</p>}

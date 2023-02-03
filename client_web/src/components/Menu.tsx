@@ -1,12 +1,17 @@
+import { UserProfile } from '@utils/types/DataTypes';
 import { NavLink } from 'react-router-dom';
 
-function Menu({ currentUser }:any) {
+interface Props {
+  userProfile: UserProfile
+}
+
+function Menu({ userProfile }:Props) {
   return (
-    <div> {currentUser !== undefined && (
+    <div> {userProfile !== undefined && (
     <div className="m-5 p-5 w-full">
-      {currentUser.profile.role === 1 ? (
+      {userProfile.role === 1 ? (
         <div>
-          <h1 className="pb-5">Admin {currentUser.profile.email}</h1>
+          <h1 className="pb-5">Admin {userProfile.lastname} {userProfile.firstname}</h1>
           <ul className="flex flex-col pb-5">
             <NavLink className="pb-2" to="/admin">Tableau de bord</NavLink>
             <NavLink className="pb-2" to="/admin/services">Gérer les services</NavLink>
@@ -25,7 +30,7 @@ function Menu({ currentUser }:any) {
       )
         : (
           <div>
-            <h1>Opérateur {currentUser.profile.email}</h1>
+            <h1>Opérateur {userProfile.email}</h1>
             <ul>
               <NavLink to="/operator">Mise en service</NavLink>
               <NavLink to="/operator/board">Tableau de bord</NavLink>
