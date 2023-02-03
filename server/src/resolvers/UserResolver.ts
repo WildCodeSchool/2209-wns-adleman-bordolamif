@@ -204,6 +204,9 @@ export class UserResolver {
           user: testAccount.user,
           pass: testAccount.pass,
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
       });
 
       const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
