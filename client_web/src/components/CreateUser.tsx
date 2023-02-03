@@ -18,7 +18,7 @@ function CreateUser() {
   };
 
   return (
-    <div className="flex h-screen justify-center items-center bg-gray-200">
+    <div className="flex h-full justify-center items-center">
       <form onSubmit={handleSubmit(onCreateUser)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
         <div className="flex flex-col items-center">
           <h1 className="mb-7 text-gray-700">Créer un nouvel opérateur</h1>
