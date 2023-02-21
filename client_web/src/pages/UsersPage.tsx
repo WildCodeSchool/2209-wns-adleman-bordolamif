@@ -11,7 +11,7 @@ function UsersPage() {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const [userToUpdate, setUserToUpdate] = useState<UserData | null>(null);
-  const [DeleteUser, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_USER);
+  const [DeleteUser] = useMutation(DELETE_USER);
   const {
     loading: usersListLoading,
     data: usersList,
@@ -35,6 +35,7 @@ function UsersPage() {
   return (
     <div>
       <h1>UsersPage</h1>
+      {usersListLoading && <p>loading...</p>}
       <UsersList
         usersList={usersList && usersList.getAllUsers}
         handleOpenModal={handleOpenModal}

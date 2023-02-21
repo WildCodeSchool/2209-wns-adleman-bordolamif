@@ -24,8 +24,8 @@ const formNullValues = {
 function UserForm(props : Props) {
   const { userToUpdate, handleCloseModal } = props;
 
-  const [CreateUser, { loading: creationLoading, error: creationError }] = useMutation(CREATE_USER);
-  const [UpdateUser, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_USER);
+  const [CreateUser, { loading: creationLoading }] = useMutation(CREATE_USER);
+  const [UpdateUser, { loading: updateLoading }] = useMutation(UPDATE_USER);
   const { loading: servicesListLoading, data: servicesList } = useQuery(GET_ALL_SERVICES);
 
   const [error, setError] = useState('');
@@ -69,7 +69,8 @@ function UserForm(props : Props) {
       // refetch
       handleCloseModal();
     } catch (submitError) {
-      setError('Error while trying to create user');
+      if (userToUpdate) setError('Error while trying to create user');
+      else setError('Error while trying to edit user');
     }
   };
 
@@ -81,6 +82,7 @@ function UserForm(props : Props) {
           <input placeholder="First Name" {...register('firstname')} required className={inputClassName} />
           <input placeholder="Last Name" {...register('lastname')} required className={inputClassName} />
           <input placeholder="email" {...register('email')} required className={inputClassName} />
+          {servicesListLoading && <p>loading...</p>}
           <ServicesCheckboxesList
             checkList={userServices}
             servicesList={servicesList && servicesList.getAllServices}
