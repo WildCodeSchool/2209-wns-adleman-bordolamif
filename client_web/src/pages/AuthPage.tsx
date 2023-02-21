@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LOGIN, LOGOUT } from '@graphQL/mutations/userMutations';
 import { PROFILE } from '@graphQL/query/userQuery';
 import { UserConnexion } from '@utils/types/inputTypes';
+import { useNavigate } from 'react-router';
 
 function AuthPage() {
   const { register, handleSubmit } = useForm<UserConnexion>();
@@ -13,6 +14,7 @@ function AuthPage() {
   const [logout] = useMutation(LOGOUT);
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const onLogin = async (formData:UserConnexion) => {
     try {
@@ -22,6 +24,12 @@ function AuthPage() {
       setError('invalid Credentials');
     }
   };
+
+  useEffect(() => {
+    if (currentUser && currentUser.profile.role === 1) {
+      setTimeout(() => navigate('/admin'), 2000);
+    }
+  }, [currentUser, navigate]);
 
   const onLogout = async () => {
     await logout();
