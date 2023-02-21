@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER, UPDATE_USER } from '@graphQL/mutations/userMutations';
 import { useEffect, useState } from 'react';
-import { UserInput } from 'src/utils/types/inputTypes';
+import { UserInput } from '@utils/types/InputTypes';
 import { UserData } from '@utils/types/DataTypes';
 import { UserFormDefaultValues } from '@utils/types/FormTypes';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
