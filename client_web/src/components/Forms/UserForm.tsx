@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER, UPDATE_USER } from '@graphQL/mutations/userMutations';
