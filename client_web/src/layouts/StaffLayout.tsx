@@ -1,18 +1,24 @@
-import { useQuery } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import Menu from '@components/Menu';
-import { PROFILE } from '@graphQL/query/userQuery';
+import { UserProfile } from '@utils/types/DataTypes';
 import { Outlet } from 'react-router';
 
-function StaffLayout() {
-  const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
+interface Props {
+  currentUser: UserProfile | null,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  client: ApolloClient<any>
+}
+
+function StaffLayout(props:Props) {
+  const { currentUser, client } = props;
 
   return (
     <div>
-      {currentUser !== undefined && currentUser !== null ? (
+      {currentUser && currentUser! ? (
         <div className="flex bg-gray-200 h-screen">
-          <Menu userProfile={currentUser.profile} client={client} />
+          <Menu userProfile={currentUser} client={client} />
           <div className="w-full bg-white m-5 p-5 rounded">
-            <Outlet context={{ userProfile: currentUser.profile }} />
+            <Outlet context={{ userProfile: currentUser }} />
           </div>
         </div>
       ) : <p>Unauthorized</p>}
