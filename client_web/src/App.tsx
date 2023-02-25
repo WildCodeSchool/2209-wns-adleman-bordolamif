@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from '@pages/HomePage';
-import AuthPage from '@pages/AuthPage';
-import AdminPage from '@pages/AdminPage';
-import OperatorBoard from '@pages/OperatorBoard';
-import OperatorPage from '@pages/OperatorPage';
-import AdminServicesPage from '@pages/AdminServicesPage';
-import AdminWaitingRoomsAndCountersPage from '@pages/AdminWaitingRoomsAndCountersPage';
-import AdminStatisticsPage from '@pages/AdminStatisticsPage';
-import StaffLayout from './layouts/StaffLayout';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
-import AdminUsersPage from '@pages/AdminUsersPage';
+import StaffLayout from './layouts/StaffLayout';
+import HomePage from '@pages/HomePage';
+import AuthPage from '@pages/AuthPage';
+import AdminPage from '@pages/admin/AdminPage';
+import OperatorBoard from '@pages/operator/OperatorBoard';
+import AdminWaitingRoomsAndCountersPage from '@pages/admin/AdminWaitingRoomsAndCountersPage';
+import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
+import AdminUsersPage from '@pages/admin/AdminUsersPage';
+import AdminServicesPage from '@pages/admin/AdminServicesPage';
+import OperatorPage from '@pages/operator/OperatorPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });

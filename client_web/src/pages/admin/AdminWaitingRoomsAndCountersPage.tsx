@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import WaitingRoomsList from '@components/Lists/WaitingRoomsList';
+import WaitingRoomsList from '@components/lists/WaitingRoomsList';
 import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
 
 function AdminWaitingRoomsAndCountersPage() {

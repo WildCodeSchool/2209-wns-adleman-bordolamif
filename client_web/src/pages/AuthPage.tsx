@@ -4,7 +4,7 @@ import { LOGIN, LOGOUT } from '@graphQL/mutations/userMutations';
 import { UserConnexion } from '@utils/types/InputTypes';
 import { useNavigate } from 'react-router';
 import { UserProfile } from '@utils/types/DataTypes';
-import AuthForm from '@components/Forms/AuthForm';
+import AuthForm from '@components/forms/AuthForm';
 
 interface Props {
   currentUser: UserProfile | null,

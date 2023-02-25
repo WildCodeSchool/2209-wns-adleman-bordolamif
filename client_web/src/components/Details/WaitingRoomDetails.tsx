@@ -1,6 +1,6 @@
 import { WaitingRoomData } from '@utils/types/DataTypes';
-import CountersList from '../Lists/CountersList';
-import ServicesList from '../Lists/ServicesList';
+import CountersList from '../lists/CountersList';
+import ServicesList from '../lists/ServicesList';
 
 interface Props {
     waitingRoom: WaitingRoomData

@@ -1,5 +1,5 @@
 import { UserData } from '@utils/types/DataTypes';
-import UserForm from '../Forms/UserForm';
+import UserForm from '../forms/UserForm';
 
 interface Props {
     userToUpdate: UserData | null;

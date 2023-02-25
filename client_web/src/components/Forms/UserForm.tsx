@@ -6,8 +6,9 @@ import { UserInput } from '@utils/types/InputTypes';
 import { UserData } from '@utils/types/DataTypes';
 import { UserFormDefaultValues } from '@utils/types/FormTypes';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
-import ServicesCheckboxesList from './ServicesCheckboxesList';
+
 import { ServiceId } from '@utils/types/InputIdTypes';
+import ServicesCheckboxesList from './ServicesCheckboxesList';
 
 interface Props {
     userToUpdate: UserData | null;
