@@ -1,5 +1,5 @@
 import { WaitingRoomData } from '@utils/types/DataTypes';
-import CountersList from '../CountersList';
+import CountersList from '../Lists/CountersList';
 import ServicesList from '../Lists/ServicesList';
 
 interface Props {
