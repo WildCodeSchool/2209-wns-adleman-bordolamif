@@ -1,12 +1,19 @@
 import { Counter } from '@utils/types/DataTypes';
+import { CounterInput } from '@utils/types/InputTypes';
 import CounterDetails from '../details/CounterDetails';
 
 interface Props {
     countersList: Counter[],
+    waitingRoomId: number,
+    handleUpdateCounter: (data: CounterInput, id: number) => void
+    handleDeleteCounter:(id: number) => void
+
 }
 
 function CountersList(props:Props) {
-  const { countersList } = props;
+  const {
+    countersList, waitingRoomId, handleUpdateCounter, handleDeleteCounter,
+  } = props;
 
   return (
     <div>
@@ -14,7 +21,9 @@ function CountersList(props:Props) {
         <CounterDetails
           key={counter.id}
           counter={counter}
-
+          waitingRoomId={waitingRoomId}
+          handleUpdateCounter={handleUpdateCounter}
+          handleDeleteCounter={handleDeleteCounter}
         />
       ))}
     </div>
