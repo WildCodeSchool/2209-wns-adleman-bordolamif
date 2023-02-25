@@ -5,12 +5,12 @@ import AdminPage from '@pages/AdminPage';
 import OperatorBoard from '@pages/OperatorBoard';
 import OperatorPage from '@pages/OperatorPage';
 import AdminServicesPage from '@pages/AdminServicesPage';
-import AdminCountersPage from '@pages/AdminCountersPage';
+import AdminWaitingRoomsAndCountersPage from '@pages/AdminWaitingRoomsAndCountersPage';
 import AdminStatisticsPage from '@pages/AdminStatisticsPage';
-import UsersPage from '@pages/UsersPage';
 import StaffLayout from './layouts/StaffLayout';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
+import AdminUsersPage from '@pages/AdminUsersPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -25,9 +25,9 @@ function App() {
         <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
           <Route index element={<AdminPage />} />
           <Route path="services" element={<AdminServicesPage />} />
-          <Route path="counters" element={<AdminCountersPage />} />
+          <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
           <Route path="statistics" element={<AdminStatisticsPage />} />
-          <Route path="users" element={<UsersPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
         </Route>
         )}
 

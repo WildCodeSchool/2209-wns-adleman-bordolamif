@@ -7,7 +7,7 @@ import useModal from '@utils/hooks/UseModal';
 import { UserData } from '@utils/types/DataTypes';
 import { useState } from 'react';
 
-function UsersPage() {
+function AdminUsersPage() {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const [userToUpdate, setUserToUpdate] = useState<UserData | null>(null);
@@ -56,4 +56,4 @@ function UsersPage() {
     </div>
   );
 }
-export default UsersPage;
+export default AdminUsersPage;

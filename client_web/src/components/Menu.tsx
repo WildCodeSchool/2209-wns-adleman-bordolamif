@@ -27,7 +27,7 @@ function Menu({ userProfile, client }:Props) {
           <ul className="flex flex-col pb-5">
             <NavLink className="pb-2" to="/admin">Tableau de bord</NavLink>
             <NavLink className="pb-2" to="/admin/services">Gérer les services</NavLink>
-            <NavLink className="pb-2" to="/admin/counters">Gérer les guichets</NavLink>
+            <NavLink className="pb-2" to="/admin/waitingroomsandcounters">Gérer les guichets</NavLink>
             <NavLink className="pb-2" to="/admin/statistics">Statistiques</NavLink>
           </ul>
           <div className="bg-white p-2 rounded -ml-2">
