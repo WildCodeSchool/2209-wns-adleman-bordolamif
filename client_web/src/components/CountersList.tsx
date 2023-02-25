@@ -1,5 +1,5 @@
 import { Counter } from '@utils/types/DataTypes';
-import CounterDetails from './CounterDetails';
+import CounterDetails from './Details/CounterDetails';
 
 interface Props {
     countersList: Counter[],

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import UserModal from '@components/UserModal';
-import UsersList from '@components/UsersList';
+import UsersList from '@components/Lists/UsersList';
 import { DELETE_USER } from '@graphQL/mutations/userMutations';
 import { GET_ALL_USERS } from '@graphQL/query/userQuery';
 import useModal from '@utils/hooks/UseModal';
