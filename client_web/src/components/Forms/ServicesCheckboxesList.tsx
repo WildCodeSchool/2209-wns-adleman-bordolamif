@@ -9,6 +9,7 @@ toggleCheckList: (id: number) => void;
 
 function ServicesCheckboxesList(props: Props) {
   const { checkList, servicesList, toggleCheckList } = props;
+  console.log(checkList);
   return (
     <div>
       {servicesList && servicesList.map((service: Service) => (

@@ -19,8 +19,6 @@ function WaitingRoomCreateForm(props: Props) {
 
   const { register, handleSubmit } = useForm<WaitingRoomInput>();
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
-
   const toggleWaitingRoomServices = (idToSearch:number) => {
     if (waitingRoomServices.find((service) => service.id === idToSearch)) {
       setWaitingRoomServices(
@@ -37,8 +35,10 @@ function WaitingRoomCreateForm(props: Props) {
     await handleCreateWaitingRoom(waitingRoomToCreate);
     setIsCreateWaitingRoom(false);
   };
+
+  const inputClassName = 'border rounded w-2/6 py-2 px-3 text-gray-700 focus:outline-none mb-7';
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="mx-10">
       <input placeholder="Name" {...register('name')} required className={inputClassName} />
       {servicesListLoading && <p>Loading...</p>}
       <ServicesCheckboxesList
@@ -46,18 +46,19 @@ function WaitingRoomCreateForm(props: Props) {
         servicesList={servicesList && servicesList.getAllServices}
         toggleCheckList={toggleWaitingRoomServices}
       />
-      <div className="flex flex-col">
+      <div className="flex">
         <button
-          className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
+          className="p-2 mx-2 bg-red-600 rounded text-white"
           type="button"
-          aria-label="cancel"
           onClick={() => setIsCreateWaitingRoom(false)}
-        />
+        >Annuler
+        </button>
         <button
-          className="p-2 my-2 bg-green-600 rounded-xl w-2 h-2"
+          className="p-2 mx-2 bg-green-600 rounded text-white"
           type="submit"
-          aria-label="submit"
-        />
+        >
+          Créer
+        </button>
       </div>
     </form>
   );

@@ -16,7 +16,8 @@ interface Props {
 function WaitingRoomUpdateForm(props: Props) {
   const { waitingRoomToUpdate, setIsUpdateWaitingRoom, handleUpdateWaitingRoom } = props;
   const [waitingRoomServices,
-    setWaitingRoomServices] = useState<ServiceId[]>(waitingRoomToUpdate.services);
+    setWaitingRoomServices] = useState<ServiceId[]>(waitingRoomToUpdate.services.map((service) => (
+      { id: service.id })));
 
   const { loading: servicesListLoading, data: servicesList } = useQuery(GET_ALL_SERVICES);
 
@@ -39,6 +40,8 @@ function WaitingRoomUpdateForm(props: Props) {
       name: data.name,
       services: waitingRoomServices,
     };
+    console.log('waitingRoomServices', waitingRoomServices);
+    console.log(updatedWaitingRoom);
     await handleUpdateWaitingRoom(updatedWaitingRoom, waitingRoomToUpdate.id);
     setIsUpdateWaitingRoom(false);
   };
