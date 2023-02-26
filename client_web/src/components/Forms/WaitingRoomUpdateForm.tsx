@@ -40,8 +40,7 @@ function WaitingRoomUpdateForm(props: Props) {
       name: data.name,
       services: waitingRoomServices,
     };
-    console.log('waitingRoomServices', waitingRoomServices);
-    console.log(updatedWaitingRoom);
+
     await handleUpdateWaitingRoom(updatedWaitingRoom, waitingRoomToUpdate.id);
     setIsUpdateWaitingRoom(false);
   };
