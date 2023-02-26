@@ -36,7 +36,7 @@ function UserForm(props : Props) {
     defaultValues: userToUpdate || formNullValues,
   });
 
-  const toggleuserServices = (idToSearch:number) => {
+  const toggleUserServices = (idToSearch:number) => {
     if (userServices.find((service) => service.id === idToSearch)) {
       setUserServices(
         userServices.filter((serviceId) => serviceId.id !== idToSearch),
@@ -87,7 +87,7 @@ function UserForm(props : Props) {
           <ServicesCheckboxesList
             checkList={userServices}
             servicesList={servicesList && servicesList.getAllServices}
-            toggleCheckList={toggleuserServices}
+            toggleCheckList={toggleUserServices}
           />
           <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Activer le compte</button>
           <div>

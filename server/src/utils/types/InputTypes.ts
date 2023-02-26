@@ -98,6 +98,9 @@ export class WaitingRoomInput {
     @Field()
     @MaxLength(100)
       name: string;
+
+    @Field(() => [ServiceId], { nullable: true })
+      services?: ServiceId[];
 }
 
 @InputType()
