@@ -40,8 +40,11 @@ export class ServiceResolver {
 
   @Mutation(() => Service)
   async createService(@Arg('data') data: ServiceInput): Promise<Service> {
-    const waitingRoom = await dataSource.getRepository(WaitingRoom)
-      .findOneOrFail({ where: { id: data.waitingRoom?.id } }) || null;
+    let waitingRoom;
+    if (data.waitingRoom) {
+      waitingRoom = await dataSource.getRepository(WaitingRoom)
+        .findOneOrFail({ where: { id: data.waitingRoom?.id } });
+    } else waitingRoom = undefined;
     const {
       name, acronym, open, color,
     } = data;

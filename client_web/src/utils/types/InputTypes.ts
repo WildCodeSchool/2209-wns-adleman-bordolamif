@@ -4,13 +4,13 @@ import {
 } from './InputIdTypes';
 
 export interface UserInput {
-    firstname: string;
-    lastname: string;
-    email: string;
-    password: string;
-    role: RoleEnum;
-    counter?: CounterId;
-    services?: ServiceId;
+      firstname: string;
+      lastname: string;
+      email: string;
+      password?: string;
+      role?: RoleEnum;
+      counter?: CounterId;
+      services?: ServiceId[];
   }
 
 export interface TicketInput {
@@ -25,6 +25,7 @@ export interface TicketInput {
 
 export interface WaitingRoomInput {
       name: string;
+      services: ServiceId[]
 }
 
 export interface CounterInput {
