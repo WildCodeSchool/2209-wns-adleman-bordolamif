@@ -1,10 +1,10 @@
-import CounterCreateForm from '@components/2/CounterCreateForm';
-import WaitingRoomUpdateForm from '@components/2/WaitingRoomUpdateForm';
+import CounterCreateForm from '@components/forms/CounterCreateForm';
+import WaitingRoomUpdateForm from '@components/forms/WaitingRoomUpdateForm';
 import { WaitingRoomData } from '@utils/types/DataTypes';
 import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
-import CountersList from '../4/CountersList';
-import ServicesList from '../4/ServicesList';
+import CountersList from '../lists/CountersList';
+import ServicesList from '../lists/ServicesList';
 
 interface Props {
     waitingRoom: WaitingRoomData,

@@ -1,4 +1,4 @@
-import CounterEditForm from '@components/2/CounterEditForm';
+import CounterEditForm from '@components/forms/CounterEditForm';
 import { Counter } from '@utils/types/DataTypes';
 import { CounterInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
