@@ -32,11 +32,6 @@ function Menu({ userProfile, client }:Props) {
           </ul>
           <div className="bg-white p-2 rounded -ml-2">
             <NavLink className="text-orange-500" to="/admin/users">Opérateurs</NavLink>
-            <ul className="flex flex-col">
-              <NavLink className="py-2 pl-3" to="/admin/users/create">Créer un opérateur</NavLink>
-              <NavLink className="pb-2 pl-3" to="/admin/users/update">Modifier un opérateur</NavLink>
-              <NavLink className="pb-2 pl-3" to="/admin/users/delete">Supprimer un opérateur</NavLink>
-            </ul>
           </div>
           <button type="button" onClick={onLogout} className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Log out</button>
 
