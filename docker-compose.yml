@@ -24,6 +24,8 @@ services:
     volumes:
       - ./server/src:/app/src
     environment:
+      NODE_ENV: 'development'
+      DB_HOST: db
       CHOKIDAR_USEPOLLING: 'true'
 
   client:

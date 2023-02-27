@@ -7,7 +7,8 @@
     "setup": "npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i",
     "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:docker": "docker-compose -f docker-compose.integration.yml up --build"
   },
   "author": "Joffrey Chevalier",
   "license": "ISC",
