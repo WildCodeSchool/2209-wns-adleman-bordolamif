@@ -1,16 +1,18 @@
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_USER, UPDATE_USER } from '@graphQL/mutations/userMutations';
 import { useEffect, useState } from 'react';
 import { UserInput } from '@utils/types/InputTypes';
 import { UserData } from '@utils/types/DataTypes';
 import { UserFormDefaultValues } from '@utils/types/FormTypes';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
-import ServicesCheckboxesList from './ServicesCheckboxesList';
+
 import { ServiceId } from '@utils/types/InputIdTypes';
+import ServicesCheckboxesList from './ServicesCheckboxesList';
+import { useQuery } from '@apollo/client';
 
 interface Props {
     userToUpdate: UserData | null;
+    handleCreateUser: (data:UserInput) => void
+    handleUpdateUser: (data:UserInput, id:number) => void
     handleCloseModal: () => void
 }
 
@@ -22,10 +24,10 @@ const formNullValues = {
 };
 
 function UserForm(props : Props) {
-  const { userToUpdate, handleCloseModal } = props;
+  const {
+    userToUpdate, handleCloseModal, handleCreateUser, handleUpdateUser,
+  } = props;
 
-  const [CreateUser, { loading: creationLoading }] = useMutation(CREATE_USER);
-  const [UpdateUser, { loading: updateLoading }] = useMutation(UPDATE_USER);
   const { loading: servicesListLoading, data: servicesList } = useQuery(GET_ALL_SERVICES);
 
   const [error, setError] = useState('');
@@ -35,7 +37,7 @@ function UserForm(props : Props) {
     defaultValues: userToUpdate || formNullValues,
   });
 
-  const toggleuserServices = (idToSearch:number) => {
+  const toggleUserServices = (idToSearch:number) => {
     if (userServices.find((service) => service.id === idToSearch)) {
       setUserServices(
         userServices.filter((serviceId) => serviceId.id !== idToSearch),
@@ -64,8 +66,8 @@ function UserForm(props : Props) {
         services: userServices,
       };
       if (userToUpdate) {
-        await UpdateUser({ variables: { data: userToSend, updateUserId: userToUpdate.id } });
-      } else await CreateUser({ variables: { data: userToSend } });
+        await handleUpdateUser(userToSend, userToUpdate.id);
+      } else await handleCreateUser(userToSend);
       // refetch
       handleCloseModal();
     } catch (submitError) {
@@ -86,11 +88,10 @@ function UserForm(props : Props) {
           <ServicesCheckboxesList
             checkList={userServices}
             servicesList={servicesList && servicesList.getAllServices}
-            toggleCheckList={toggleuserServices}
+            toggleCheckList={toggleUserServices}
           />
           <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Activer le compte</button>
           <div>
-            {(creationLoading || updateLoading) && <div>Submitting ...</div>}
             {error && <div>{error}</div>}
           </div>
         </div>

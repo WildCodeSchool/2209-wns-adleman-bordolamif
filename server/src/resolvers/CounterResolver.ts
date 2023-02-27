@@ -68,20 +68,23 @@ export class CounterResolver {
       @Arg('id', () => Int) id: number,
       @Arg('data') data: CounterInput,
     ): Promise<Counter> {
-      const waitingRoom = await dataSource.getRepository(WaitingRoom)
-        .findOneOrFail({ where: { id: data.waitingRoom.id } });
-      const user = await dataSource.getRepository(User)
-        .findOneOrFail({ where: { id: data.user?.id } });
-      const { affected } = await dataSource
-        .getRepository(Counter)
-        .update(id, { name: data.name, waitingRoom, user });
+      const counterToUpdate = await dataSource.getRepository(Counter).findOne({
+        where: { id }, relations: { waitingRoom: true, user: true },
+      });
 
-      if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
-      if (user === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
-      if (affected === 0) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
+      if (counterToUpdate === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
 
-      return {
-        id, name: data.name, waitingRoom, user,
-      };
+      counterToUpdate.name = data.name;
+
+      if (data.user) {
+        counterToUpdate.user = await dataSource.getRepository(User)
+          .findOneOrFail({ where: { id: data.user?.id } });
+        if (counterToUpdate.user === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+      } else {
+        counterToUpdate.user = data.user;
+      }
+
+      await dataSource.getRepository(Counter).save(counterToUpdate);
+      return counterToUpdate;
     }
 }

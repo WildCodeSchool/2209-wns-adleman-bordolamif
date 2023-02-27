@@ -5,6 +5,8 @@ import { ApolloError } from 'apollo-server-errors';
 import WaitingRoom from '../entity/WaitingRoom';
 import dataSource from '../db';
 import { WaitingRoomInput } from '../utils/types/InputTypes';
+import Service from '../entity/Service';
+import Counter from '../entity/Counter';
 
 @Resolver(WaitingRoom)
 export class WaitingRoomResolver {
@@ -44,7 +46,11 @@ export class WaitingRoomResolver {
     async createWaitingRoom(
         @Arg('data') data: WaitingRoomInput,
     ): Promise<WaitingRoom> {
-      return await dataSource.getRepository(WaitingRoom).save(data);
+      const waitingRoomServices = await Promise.all(data.services?.map(
+        (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+      ) || []);
+      return await dataSource.getRepository(WaitingRoom)
+        .save({ ...data, services: waitingRoomServices });
     }
 
     // @Authorized<Role>(['admin'])
@@ -52,10 +58,24 @@ export class WaitingRoomResolver {
     async deleteWaitingRoom(
         @Arg('id', () => Int) id: number,
     ): Promise<boolean> {
-      const { affected } = await dataSource
-        .getRepository(WaitingRoom)
-        .delete(id);
-      if (affected === 0) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+      const waitingRoomToDelete = await dataSource.getRepository(WaitingRoom).findOne({
+        where: { id }, relations: { services: true, counters: true },
+      });
+      if (waitingRoomToDelete === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+
+      if (waitingRoomToDelete!.counters && waitingRoomToDelete?.counters.length !== 0) {
+        waitingRoomToDelete!.counters.map(async (counter) => await dataSource
+          .getRepository(Counter)
+          .delete(counter.id));
+      }
+
+      if (waitingRoomToDelete!.services && waitingRoomToDelete?.services.length !== 0) {
+        await dataSource
+          .getRepository(WaitingRoom)
+          .save({ ...waitingRoomToDelete, services: [] });
+      }
+
+      await dataSource.getRepository(WaitingRoom).delete(id);
       return true;
     }
 
@@ -63,8 +83,9 @@ export class WaitingRoomResolver {
     @Mutation(() => WaitingRoom)
     async updateWaitingRoom(
         @Arg('id', () => Int) id: number,
-        @Arg('data') { name }: WaitingRoomInput,
+        @Arg('data') data: WaitingRoomInput,
     ): Promise<WaitingRoom> {
+      const { name, services } = data;
       const waitingRoomToUpdate = await dataSource.getRepository(WaitingRoom).findOne({
         where: { id }, relations: { services: true, counters: true },
       });
@@ -72,6 +93,9 @@ export class WaitingRoomResolver {
       if (waitingRoomToUpdate === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
 
       waitingRoomToUpdate.name = name;
+      waitingRoomToUpdate.services = await Promise.all(services?.map(
+        (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+      ) || []);
 
       await dataSource.getRepository(WaitingRoom).save(waitingRoomToUpdate);
 

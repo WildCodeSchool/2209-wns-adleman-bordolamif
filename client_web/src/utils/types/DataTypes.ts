@@ -41,3 +41,19 @@ export interface UserData extends UserProfile{
   tickets: Ticket[];
 
   }
+
+export interface WaitingRoom {
+    id: number;
+    name: string;
+  }
+
+export interface Counter {
+    id: number;
+    name: string;
+  }
+
+export interface WaitingRoomData extends WaitingRoom {
+    __typename: string;
+    services: Service[];
+    counters: Counter[]
+  }

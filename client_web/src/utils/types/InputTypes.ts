@@ -25,6 +25,7 @@ export interface TicketInput {
 
 export interface WaitingRoomInput {
       name: string;
+      services: ServiceId[]
 }
 
 export interface CounterInput {

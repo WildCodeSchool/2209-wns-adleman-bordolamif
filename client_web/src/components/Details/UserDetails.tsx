@@ -3,11 +3,11 @@ import { UserData } from '@utils/types/DataTypes';
 interface Props {
     user: UserData,
     handleOpenModal: (user:UserData | null) => void
-    handleDelete: (id:number) => void
+    handleDeleteUser: (id:number) => void
 }
 
 function UserDetails(props: Props) {
-  const { user, handleOpenModal, handleDelete } = props;
+  const { user, handleOpenModal, handleDeleteUser } = props;
 
   return (
     <div className="flex flex-row justify-between">
@@ -22,7 +22,7 @@ function UserDetails(props: Props) {
       </button>
       <button
         type="button"
-        onClick={() => handleDelete(user.id)}
+        onClick={() => handleDeleteUser(user.id)}
         className="shadow bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded"
       >DELETE
       </button>

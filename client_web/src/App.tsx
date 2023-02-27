@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from '@pages/HomePage';
-import AuthPage from '@pages/AuthPage';
-import AdminPage from '@pages/AdminPage';
-import OperatorBoard from '@pages/OperatorBoard';
-import OperatorPage from '@pages/OperatorPage';
-import AdminServicesPage from '@pages/AdminServicesPage';
-import AdminCountersPage from '@pages/AdminCountersPage';
-import AdminStatisticsPage from '@pages/AdminStatisticsPage';
-import UsersPage from '@pages/UsersPage';
-import StaffLayout from './layouts/StaffLayout';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
+import StaffLayout from './layouts/StaffLayout';
+import HomePage from '@pages/HomePage';
+import AuthPage from '@pages/AuthPage';
+import AdminPage from '@pages/admin/AdminPage';
+import OperatorBoard from '@pages/operator/OperatorBoard';
+import AdminWaitingRoomsAndCountersPage from '@pages/admin/AdminWaitingRoomsAndCountersPage';
+import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
+import AdminUsersPage from '@pages/admin/AdminUsersPage';
+import AdminServicesPage from '@pages/admin/AdminServicesPage';
+import OperatorPage from '@pages/operator/OperatorPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -25,9 +25,9 @@ function App() {
         <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
           <Route index element={<AdminPage />} />
           <Route path="services" element={<AdminServicesPage />} />
-          <Route path="counters" element={<AdminCountersPage />} />
+          <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
           <Route path="statistics" element={<AdminStatisticsPage />} />
-          <Route path="users" element={<UsersPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
         </Route>
         )}
 

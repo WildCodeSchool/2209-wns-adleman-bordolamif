@@ -1,14 +1,14 @@
 import { UserData } from '@utils/types/DataTypes';
-import UserDetails from './UserDetails';
+import UserDetails from '../details/UserDetails';
 
 interface Props {
     usersList: [UserData],
     handleOpenModal: (user:UserData | null) => void
-    handleDelete: (id:number) => void
+    handleDeleteUser: (id:number) => void
 }
 
 function UsersList(props:Props) {
-  const { usersList, handleOpenModal, handleDelete } = props;
+  const { usersList, handleOpenModal, handleDeleteUser } = props;
   return (
     <div>
       {usersList! && usersList.map((user) => (
@@ -16,7 +16,7 @@ function UsersList(props:Props) {
           key={user.id}
           user={user}
           handleOpenModal={handleOpenModal}
-          handleDelete={handleDelete}
+          handleDeleteUser={handleDeleteUser}
         />
       ))}
     </div>
