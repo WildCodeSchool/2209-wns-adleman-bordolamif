@@ -9,20 +9,27 @@ import AdminCountersPage from '@pages/AdminCountersPage';
 import AdminStatisticsPage from '@pages/AdminStatisticsPage';
 import UsersPage from '@pages/UsersPage';
 import StaffLayout from './layouts/StaffLayout';
+import { useQuery } from '@apollo/client';
+import { PROFILE } from '@graphQL/query/userQuery';
 
 function App() {
+  const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="auth" element={<AuthPage />} />
-        <Route path="admin" element={<StaffLayout />}>
+        <Route path="auth" element={<AuthPage currentUser={currentUser! && currentUser.profile} client={client} />} />
+        {currentUser && currentUser!.profile.role === 1
+        && (
+        <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
           <Route index element={<AdminPage />} />
           <Route path="services" element={<AdminServicesPage />} />
           <Route path="counters" element={<AdminCountersPage />} />
           <Route path="statistics" element={<AdminStatisticsPage />} />
           <Route path="users" element={<UsersPage />} />
         </Route>
+        )}
 
         <Route path="operator" element={<OperatorPage />}>
           <Route path="board" element={<OperatorBoard />} />
