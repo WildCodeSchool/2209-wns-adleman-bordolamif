@@ -195,18 +195,18 @@ export class UserResolver {
       if (process.env.NODE_ENV === 'development' || 'test') {
         const testAccount = await nodemailer.createTestAccount();
 
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-      });
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.ethereal.email',
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+          tls: {
+            rejectUnauthorized: false,
+          },
+        });
 
         const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
         const mailOptions = {
