@@ -4,7 +4,7 @@
   "description": "Main package.json app",
   "scripts": {
     "start:mobile": "npm --prefix ./client_mobile start",
-    "setup": "npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i",
+    "setup": "npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i && npm --prefix ./test i",
     "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "prepare": "husky install",
