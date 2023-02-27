@@ -4,10 +4,11 @@ import { EnvType, load } from 'ts-dotenv';
 export type Env = EnvType<typeof schema>;
 
 export const schema = {
-  NODE_ENV: ['production' as const, 'development' as const],
+  NODE_ENV: ['production' as const, 'development' as const, 'test' as const],
   POSTGRES_PASSWORD: String,
   POSTGRES_USER: String,
   POSTGRES_DB: String,
+  POSTGRES_DB_TEST: String,
   JWT_PRIVATE_KEY: String,
   CORS_ALLOWED_ORIGINS: String,
   SERVER_HOST: String,
