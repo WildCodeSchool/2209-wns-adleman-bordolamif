@@ -24,7 +24,11 @@ export class UserResolver {
     @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users = await dataSource.getRepository(User)
-      .find({ relations: { services: true, counter: true, tickets: true } });
+      .find({
+        relations: {
+          services: true, counter: true, tickets: true, currentService: true,
+        },
+      });
     const safeUsers = users.map((user) => getSafeAttributes(user));
     return safeUsers;
   }
@@ -33,7 +37,12 @@ export class UserResolver {
     async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { id }, relations: { services: true, counter: true, tickets: true } });
+        .findOne({
+          where: { id },
+          relations: {
+            services: true, counter: true, tickets: true, currentService: true,
+          },
+        });
 
       if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
       return getSafeAttributes(user);
@@ -150,10 +159,13 @@ export class UserResolver {
         @Arg('data') data: UserInput,
     ): Promise<User> {
       const {
-        firstname, lastname, email, role, services, counter,
+        firstname, lastname, email, role, services, counter, currentService,
       } = data;
       const userToUpdate = await dataSource.getRepository(User).findOne({
-        where: { id }, relations: { services: true, counter: true, tickets: true },
+        where: { id },
+        relations: {
+          services: true, counter: true, tickets: true, currentService: true,
+        },
       });
 
       if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
@@ -171,6 +183,13 @@ export class UserResolver {
           .findOneOrFail({ where: { id: counter?.id } }) || null;
       } else {
         userToUpdate.counter = null;
+      }
+
+      if (currentService !== null && typeof (currentService) !== 'undefined') {
+        userToUpdate.currentService = await dataSource.getRepository(Service)
+          .findOneOrFail({ where: { id: currentService?.id } }) || null;
+      } else {
+        userToUpdate.currentService = null;
       }
 
       await dataSource.getRepository(User).save(userToUpdate);
