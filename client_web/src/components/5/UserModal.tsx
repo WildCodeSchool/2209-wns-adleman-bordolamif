@@ -1,6 +1,6 @@
 import { UserData } from '@utils/types/DataTypes';
 import { UserInput } from '@utils/types/InputTypes';
-import UserForm from '../forms/UserForm';
+import UserForm from '../2/UserForm';
 
 interface Props {
     userToUpdate: UserData | null;
@@ -18,7 +18,7 @@ function UserModal(props: Props) {
     <div
       className={
         isModalOpen
-          ? 'absolute inset-0 m-12 filter backdrop-blur-sm m-auto z-10 flex flex-col items-center justify-center'
+          ? 'absolute inset-0 filter backdrop-blur-sm m-auto z-10 flex flex-col items-center justify-center'
           : 'hidden'
       }
     >
