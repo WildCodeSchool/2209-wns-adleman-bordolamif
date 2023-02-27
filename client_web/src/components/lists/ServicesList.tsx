@@ -1,6 +1,6 @@
 import { Service } from '@utils/types/DataTypes';
-import ServiceDetails from '../1/ServiceDetails';
-import ServiceIcon from '../3/ServiceIcon';
+import ServiceDetails from '../details/ServiceDetails';
+import ServiceIcon from '../icons/ServiceIcon';
 
 interface Props {
     servicesList: Service[],

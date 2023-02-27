@@ -1,6 +1,6 @@
 import { UserData } from '@utils/types/DataTypes';
 import { UserInput } from '@utils/types/InputTypes';
-import UserForm from '../2/UserForm';
+import UserForm from '../forms/UserForm';
 
 interface Props {
     userToUpdate: UserData | null;

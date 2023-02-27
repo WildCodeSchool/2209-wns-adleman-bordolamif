@@ -1,6 +1,6 @@
 import { WaitingRoomData } from '@utils/types/DataTypes';
 import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
-import WaitingRoomDetails from '../1/WaitingRoomDetails';
+import WaitingRoomDetails from '../details/WaitingRoomDetails';
 
 interface Props {
     waitingRoomsList: WaitingRoomData[],
