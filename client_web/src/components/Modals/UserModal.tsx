@@ -1,14 +1,19 @@
 import { UserData } from '@utils/types/DataTypes';
+import { UserInput } from '@utils/types/InputTypes';
 import UserForm from '../forms/UserForm';
 
 interface Props {
     userToUpdate: UserData | null;
     isModalOpen : boolean;
     handleCloseModal: () => void;
+    handleCreateUser: (data:UserInput) => void
+    handleUpdateUser: (data:UserInput, id:number) => void
 }
 
 function UserModal(props: Props) {
-  const { userToUpdate, isModalOpen, handleCloseModal } = props;
+  const {
+    userToUpdate, isModalOpen, handleCloseModal, handleCreateUser, handleUpdateUser,
+  } = props;
   return (
     <div
       className={
@@ -27,6 +32,8 @@ function UserModal(props: Props) {
 
         <UserForm
           userToUpdate={userToUpdate}
+          handleCreateUser={handleCreateUser}
+          handleUpdateUser={handleUpdateUser}
           handleCloseModal={handleCloseModal}
 
         />
