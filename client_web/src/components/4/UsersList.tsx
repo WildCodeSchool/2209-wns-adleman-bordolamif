@@ -1,5 +1,5 @@
 import { UserData } from '@utils/types/DataTypes';
-import UserDetails from '../details/UserDetails';
+import UserDetails from '../1/UserDetails';
 
 interface Props {
     usersList: [UserData],

@@ -1,6 +1,6 @@
 import { Counter } from '@utils/types/DataTypes';
 import { CounterInput } from '@utils/types/InputTypes';
-import CounterDetails from '../details/CounterDetails';
+import CounterDetails from '../1/CounterDetails';
 
 interface Props {
     countersList: Counter[],
