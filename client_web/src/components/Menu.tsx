@@ -2,6 +2,15 @@ import { ApolloClient, useMutation } from '@apollo/client';
 import { LOGOUT } from '@graphQL/mutations/userMutations';
 import { UserProfile } from '@utils/types/DataTypes';
 import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  HomeIcon,
+  ComputerDesktopIcon,
+  TicketIcon,
+  PresentationChartBarIcon,
+  UserGroupIcon,
+  ArrowLeftOnRectangleIcon,
+} from '@heroicons/react/24/outline';
+import DarkLogo from '@assets/DarkLogo';
 
 interface Props {
   userProfile: UserProfile
@@ -18,34 +27,73 @@ function Menu({ userProfile, client }:Props) {
     navigate('/auth');
   };
 
+  const firstNameLetter = `${userProfile.firstname.charAt(0).toUpperCase()}.`;
+
   return (
     <div> {userProfile !== undefined && (
-    <div className="m-5 p-5 w-full">
+    <div className="pl-2 py-6 w-[15rem]">
       {userProfile.role === 1 ? (
-        <div>
-          <h1 className="pb-5">Admin {userProfile.lastname} {userProfile.firstname}</h1>
-          <ul className="flex flex-col pb-5">
-            <NavLink className="pb-2" to="/admin">Tableau de bord</NavLink>
-            <NavLink className="pb-2" to="/admin/services">Gérer les services</NavLink>
-            <NavLink className="pb-2" to="/admin/waitingroomsandcounters">Gérer les guichets</NavLink>
-            <NavLink className="pb-2" to="/admin/statistics">Statistiques</NavLink>
-          </ul>
-          <div className="bg-white p-2 rounded -ml-2">
-            <NavLink className="text-orange-500" to="/admin/users">Opérateurs</NavLink>
-          </div>
-          <button type="button" onClick={onLogout} className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Log out</button>
-
-        </div>
-      )
-        : (
+        <div className="flex flex-col justify-between h-screen">
           <div>
-            <h1>Opérateur {userProfile.email}</h1>
-            <ul>
-              <NavLink to="/operator">Mise en service</NavLink>
-              <NavLink to="/operator/board">Tableau de bord</NavLink>
+            <div className="ml-6 scale-125">
+              <NavLink to="/admin">
+                <DarkLogo />
+              </NavLink>
+            </div>
+            <h1 className="pb-8 nunito-bold text-xl mt-6">Admin {firstNameLetter} {userProfile.lastname} </h1>
+            <ul className="flex flex-col pb-8 pl-4">
+              <NavLink to="/admin">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <HomeIcon className="w-7 mr-4" />
+                  Tableau de bord
+                </div>
+              </NavLink>
+              <NavLink to="/admin/services">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <ComputerDesktopIcon className="w-7 mr-4" />
+                  Services
+                </div>
+              </NavLink>
+              <NavLink to="/admin/waitingroomsandcounters">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <TicketIcon className="w-7 mr-4" />
+                  Guichets
+                </div>
+              </NavLink>
+              <NavLink to="/admin/statistics">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <PresentationChartBarIcon className="w-7 mr-4" />
+                  Statistiques
+                </div>
+              </NavLink>
+              <NavLink to="/admin/users">
+                <div className="flex flex-raw text-outline text-orange-500 items-center hover:underline decoration-2 cursor-pointer">
+                  <UserGroupIcon className="w-7 mr-4" />
+                  Gestion des opérateurs
+                </div>
+              </NavLink>
             </ul>
           </div>
-        )}
+          <div className="pl-4 flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer mb-10 pt-6">
+            <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
+            <button
+              type="button"
+              onClick={onLogout}
+              className=""
+            >
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h1 className="pb-12 nunito-bold text-xl">Opérateur {userProfile.email}</h1>
+          <ul className="flex flex-col pb-10 pl-4">
+            <NavLink to="/operator">Mise en service</NavLink>
+            <NavLink to="/operator/board">Tableau de bord</NavLink>
+          </ul>
+        </div>
+      )}
     </div>
     )}
     </div>
