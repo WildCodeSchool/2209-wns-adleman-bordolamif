@@ -20,7 +20,6 @@ function ServiceCreateForm(props: Props) {
   const [serviceWaitingRoom, setServiceWaitingRoom] = useState<WaitingRoomId | undefined>();
   const [color, setColor] = useState<string>('#50d71e');
 
-
   const {
     loading: waitingRoomsListLoading,
     data: waitingRoomsList,
