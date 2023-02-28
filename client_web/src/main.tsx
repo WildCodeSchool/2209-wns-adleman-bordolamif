@@ -7,7 +7,7 @@ import {
 } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: import.meta.env.REACT_APP_GRAPHQL_API_URL,
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {
@@ -15,7 +15,7 @@ const client = new ApolloClient({
     },
   },
   link: createHttpLink({
-    uri: 'http://localhost:4000',
+    uri: import.meta.env.REACT_APP_GRAPHQL_API_URL,
     credentials: 'include',
   }),
 });
