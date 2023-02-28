@@ -41,7 +41,13 @@ query GetAllUsers {
       isReturned
       status
     }
-    currentService
+    currentService {
+      acronym
+      color
+      id
+      name
+      open
+    }
   }
 }
 `;
@@ -75,7 +81,13 @@ query GetOneUser($getOneUserId: Int!) {
       isReturned
       status
     }
-    currentService
+    currentService {
+      acronym
+      color
+      id
+      name
+      open
+    }
   }
 }
 `;
