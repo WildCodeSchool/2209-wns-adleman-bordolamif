@@ -41,6 +41,7 @@ query GetAllUsers {
       isReturned
       status
     }
+    currentService
   }
 }
 `;
@@ -74,6 +75,7 @@ query GetOneUser($getOneUserId: Int!) {
       isReturned
       status
     }
+    currentService
   }
 }
 `;
