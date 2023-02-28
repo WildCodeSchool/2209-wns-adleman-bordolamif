@@ -66,6 +66,9 @@ export class UserInput {
 
     @Field(() => [ServiceId], { nullable: true })
       services?: ServiceId[];
+
+    @Field(() => ServiceId, { nullable: true })
+      currentService?: ServiceId | null;
 }
 
 @InputType()

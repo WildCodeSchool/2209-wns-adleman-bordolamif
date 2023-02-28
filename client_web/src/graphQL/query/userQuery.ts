@@ -31,6 +31,7 @@ query GetAllUsers {
       id
       name
     }
+    currentService
   }
 }
 `;
@@ -63,6 +64,7 @@ query GetOneUser($getOneUserId: Int!) {
       isFirstTime
       isReturned
     }
+    currentService
   }
 }
 `;

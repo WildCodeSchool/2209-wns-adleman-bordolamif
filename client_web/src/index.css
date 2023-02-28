@@ -2,3 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* font-family: 'Nunito', sans-serif; */
+
+@layer base {
+    @font-face {
+        font-family: 'Nunito-bold';
+        src: url('./assets/font/Nunito-Bold.ttf') format('truetype');
+    }
+    
+    @font-face {
+        font-family: 'Nunito-light';
+        src: url('./assets/font/Nunito-ExtraLight.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Nunito-regular';
+        src: url('./assets/font/Nunito-Regular.ttf') format('truetype');
+    }
+
+    html {
+        font-family: 'Nunito-regular', sans-serif;
+    }
+
+    .nunito-bold {
+        font-family: 'Nunito-bold', sans-serif;
+    }
+
+    .nunito-light {
+        font-family: 'Nunito-light', sans-serif;
+    }
+
+    .nunito-regular {
+        font-family: 'Nunito-regular', sans-serif;
+    }
+}

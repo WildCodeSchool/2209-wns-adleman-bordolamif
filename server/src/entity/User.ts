@@ -1,6 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
-  Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn,
+  Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RoleEnum } from '../RoleEnum';
 import Ticket from './Ticket';
@@ -60,6 +60,10 @@ class User {
   @ManyToMany(() => Service, (service) => service.users, { nullable: true, cascade: true })
   @JoinTable()
     services?: Service[];
+
+  @Field(() => Service, { nullable: true })
+  @ManyToOne(() => Service, (service: Service | null) => service?.currentUsers)
+    currentService?: Service | null;
 }
 
 const hashingOptions = {
