@@ -32,6 +32,7 @@ mutation UpdateService($data: ServiceInput!, $updateServiceId: Int!) {
       closedAt
       isFirstTime
       isReturned
+      status
     }
     users {
       id

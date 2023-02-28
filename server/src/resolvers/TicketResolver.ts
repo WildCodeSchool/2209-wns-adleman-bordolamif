@@ -112,9 +112,20 @@ export class TicketResolver {
 
       if (ticketToUpdate === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
 
-      ticketToUpdate.calledAt = calledAt;
-      ticketToUpdate.closedAt = closedAt;
-      ticketToUpdate.isReturned = isReturned;
+      if (ticketToUpdate.calledAt !== calledAt!) {
+        ticketToUpdate.calledAt = calledAt;
+        ticketToUpdate.status = 3;
+      }
+
+      if (ticketToUpdate.closedAt !== closedAt!) {
+        ticketToUpdate.closedAt = closedAt;
+        ticketToUpdate.status = 4;
+      }
+
+      if (ticketToUpdate.isReturned !== isReturned!) {
+        ticketToUpdate.isReturned = isReturned;
+        ticketToUpdate.status = 2;
+      }
       ticketToUpdate.isFirstTime = isFirstTime;
       ticketToUpdate.user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: user?.id } }) || null;

@@ -10,6 +10,7 @@ query GetAllTickets {
     closedAt
     isFirstTime
     isReturned
+    status
     service {
       id
       name
@@ -38,6 +39,7 @@ query GetOneTicket($getOneTicketId: Int!) {
     closedAt
     isFirstTime
     isReturned
+    status
     service {
       id
       name

@@ -58,6 +58,7 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
       closedAt
       isFirstTime
       isReturned
+      status
     }
   }
 }
