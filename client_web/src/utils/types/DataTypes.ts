@@ -1,4 +1,5 @@
 import { RoleEnum } from '@utils/enum/RoleEnum';
+import { StatusEnum } from '@utils/enum/StatusEnum';
 
 export interface UserProfile {
     id: number;
@@ -37,6 +38,7 @@ export interface Ticket {
   closedAt : string;
   isFirstTime : boolean;
   isReturned : boolean;
+  status : StatusEnum
 }
 
 export interface UserData extends UserProfile{
@@ -44,6 +46,7 @@ export interface UserData extends UserProfile{
   counter: UserCounter;
   services: Service[];
   tickets: Ticket[];
+  currentService?: Service | null
 
   }
 
