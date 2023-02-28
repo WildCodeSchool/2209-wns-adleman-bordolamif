@@ -1,8 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
-  Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn,
+  Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { RoleEnum } from '../RoleEnum';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 import Ticket from './Ticket';
 import { argon2id, hash, verify } from 'argon2';
 import Counter from './Counter';
@@ -60,6 +60,10 @@ class User {
   @ManyToMany(() => Service, (service) => service.users, { nullable: true, cascade: true })
   @JoinTable()
     services?: Service[];
+
+  @Field(() => Service, { nullable: true })
+  @ManyToOne(() => Service, (service: Service | null) => service?.currentUsers)
+    currentService?: Service | null;
 }
 
 const hashingOptions = {

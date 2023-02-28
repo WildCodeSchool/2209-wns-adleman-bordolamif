@@ -31,7 +31,7 @@ class Service {
     open: boolean;
 
   @Field()
-  @Column({ length: 6, unique: true })
+  @Column({ length: 7, unique: true })
     color: string;
 
   @Field(() => WaitingRoom, { nullable: true })
@@ -45,6 +45,10 @@ class Service {
   @Field(() => [User], { nullable: true })
   @ManyToMany(() => User, (user) => user.services, { nullable: true })
     users?: User[];
+
+  @Field(() => [User], { nullable: true })
+  @OneToMany(() => User, (user) => user.currentService)
+    currentUsers?: User[];
 }
 
 export default Service;
