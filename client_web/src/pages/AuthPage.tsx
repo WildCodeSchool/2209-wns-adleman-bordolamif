@@ -24,7 +24,7 @@ function AuthPage(props: Props) {
       await login({ variables: { data: formData } });
       await client.resetStore();
     } catch (e) {
-      setError('invalid Credentials');
+      setError('Email ou mot de passe incorrect');
     }
   };
 
