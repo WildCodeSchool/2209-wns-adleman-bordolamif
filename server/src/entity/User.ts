@@ -2,7 +2,7 @@ import { Field, ObjectType } from 'type-graphql';
 import {
   Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
-import { RoleEnum } from '../RoleEnum';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 import Ticket from './Ticket';
 import { argon2id, hash, verify } from 'argon2';
 import Counter from './Counter';

@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { StatusEnum } from '../utils/enums/StatusEnum';
 
 import Service from './Service';
 import User from './User';
@@ -36,6 +37,10 @@ class Ticket {
     @Field()
     @Column()
       isFirstTime: boolean;
+
+    @Field()
+    @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.EnAttente })
+      status: StatusEnum;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
