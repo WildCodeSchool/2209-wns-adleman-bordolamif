@@ -1,14 +1,19 @@
-import { Service } from '@utils/types/DataTypes';
+import { ServiceData } from '@utils/types/DataTypes';
+import { ServiceInput } from '@utils/types/InputTypes';
 import ServiceDetails from '../details/ServiceDetails';
 import ServiceIcon from '../icons/ServiceIcon';
 
 interface Props {
-    servicesList: Service[],
+    servicesList: ServiceData[],
+    handleUpdateService: (data: ServiceInput, id: number) => void
+    handleDeleteService: (id: number) => void
     mode: string
-}
+  }
 
 function ServicesList(props:Props) {
-  const { servicesList, mode } = props;
+  const {
+    servicesList, handleUpdateService, handleDeleteService, mode,
+  } = props;
 
   return (
     <div>
@@ -16,6 +21,8 @@ function ServicesList(props:Props) {
       && servicesList.map((service) => (
         mode === 'details' ? (
           <ServiceDetails
+            handleUpdateService={handleUpdateService}
+            handleDeleteService={handleDeleteService}
             key={service.id}
             service={service}
           />
@@ -27,7 +34,6 @@ function ServicesList(props:Props) {
             />
           )
       ))}
-
     </div>
   );
 }

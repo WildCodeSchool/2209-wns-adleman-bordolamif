@@ -133,7 +133,7 @@ export class ServiceInput {
       open: boolean;
 
     @Field()
-    @MaxLength(6)
+    @MaxLength(7)
       color: string;
 
     @Field(() => WaitingRoomId, { nullable: true })

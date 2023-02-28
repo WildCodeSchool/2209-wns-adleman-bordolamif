@@ -31,7 +31,7 @@ class Service {
     open: boolean;
 
   @Field()
-  @Column({ length: 6, unique: true })
+  @Column({ length: 7, unique: true })
     color: string;
 
   @Field(() => WaitingRoom, { nullable: true })

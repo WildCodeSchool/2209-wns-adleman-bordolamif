@@ -81,6 +81,7 @@ function AdminWaitingRoomsAndCountersPage() {
       )}
       {waitingRoomsListLoading && <p>loading...</p>}
       <WaitingRoomsList
+        mode="details"
         waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
         handleUpdateCounter={handleUpdateCounter}
         handleCreateCounter={handleCreateCounter}
