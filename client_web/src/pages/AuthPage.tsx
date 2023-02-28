@@ -24,7 +24,7 @@ function AuthPage(props: Props) {
       await login({ variables: { data: formData } });
       await client.resetStore();
     } catch (e) {
-      setError('invalid Credentials');
+      setError('Email ou mot de passe incorrect');
     }
   };
 
@@ -42,11 +42,10 @@ function AuthPage(props: Props) {
   return (
     <div className="flex h-screen justify-center items-center bg-gray-200">
       {currentUser ? (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-          <div className="flex flex-col items-center">
-            <p className="mb-7 text-gray-700">logged in as {currentUser.email}</p>
-            <button type="button" onClick={onLogout} className="shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Log out</button>
-          </div>
+        <div className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm flex flex-col items-center justify-center">
+          <p className="mb-2 text-gray-700">Connecté en tant que</p>
+          <span className="nunito-bold mb-7 text-xl">{currentUser.email}</span>
+          <button type="button" onClick={onLogout} className="shadow-xl bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Annuler</button>
         </div>
       ) : (
         <AuthForm

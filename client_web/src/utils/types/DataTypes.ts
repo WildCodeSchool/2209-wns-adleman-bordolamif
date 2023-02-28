@@ -16,6 +16,11 @@ export interface UserCounter {
     id: number;
     name: string;
   }
+
+export interface WaitingRoom {
+    id: number;
+    name: string;
+  }
 export interface Service {
   id : number;
   name : string;
@@ -42,11 +47,6 @@ export interface UserData extends UserProfile{
 
   }
 
-export interface WaitingRoom {
-    id: number;
-    name: string;
-  }
-
 export interface Counter {
     id: number;
     name: string;
@@ -56,4 +56,9 @@ export interface WaitingRoomData extends WaitingRoom {
     __typename: string;
     services: Service[];
     counters: Counter[]
+  }
+
+export interface ServiceData extends Service {
+    __typename: string;
+    waitingRoom: WaitingRoom
   }

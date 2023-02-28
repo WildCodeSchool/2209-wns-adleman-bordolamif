@@ -5,6 +5,7 @@ import {
   EyeIcon, EyeSlashIcon, AtSymbolIcon, LockClosedIcon,
 } from '@heroicons/react/24/solid';
 import DarkLogo from '@assets/DarkLogo';
+import Loader from '@assets/Loader';
 
 interface Props {
     onLogin: (formData:UserConnexion) => void,
@@ -56,9 +57,14 @@ function AuthForm(props: Props) {
             >
               Se connecter
             </button>
-            <div>
-              {loading && <div>Submitting ...</div>}
-              {error && <div>{error}</div>}
+            <div className="mt-4">
+              {loading && (
+              <div className="flex flex-raw justify-center items-center">
+                <div className="mr-4">Connexion...</div>
+                <Loader />
+              </div>
+              )}
+              {error && <div className="text-red-600">{error}</div>}
             </div>
           </div>
         </form>
