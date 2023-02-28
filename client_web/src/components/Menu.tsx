@@ -42,29 +42,39 @@ function Menu({ userProfile, client }:Props) {
             </div>
             <h1 className="pb-8 nunito-bold text-xl mt-6">Admin {firstNameLetter} {userProfile.lastname} </h1>
             <ul className="flex flex-col pb-8 pl-4">
-              <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
-                <HomeIcon className="w-7 mr-4" />
-                <NavLink to="/admin">Tableau de bord</NavLink>
-              </div>
-              <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
-                <ComputerDesktopIcon className="w-7 mr-4" />
-                <NavLink to="/admin/services">Services</NavLink>
-              </div>
-              <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
-                <TicketIcon className="w-7 mr-4" />
-                <NavLink to="/admin/waitingroomsandcounters">Guichets</NavLink>
-              </div>
-              <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
-                <PresentationChartBarIcon className="w-7 mr-4" />
-                <NavLink to="/admin/statistics">Statistiques</NavLink>
-              </div>
-              <div className="flex flex-raw text-outline text-orange-500 items-center hover:underline decoration-2 cursor-pointer">
-                <UserGroupIcon className="w-7 mr-4" />
-                <NavLink to="/admin/users">Gestion des opérateurs</NavLink>
-              </div>
+              <NavLink to="/admin">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <HomeIcon className="w-7 mr-4" />
+                  Tableau de bord
+                </div>
+              </NavLink>
+              <NavLink to="/admin/services">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <ComputerDesktopIcon className="w-7 mr-4" />
+                  Services
+                </div>
+              </NavLink>
+              <NavLink to="/admin/waitingroomsandcounters">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <TicketIcon className="w-7 mr-4" />
+                  Guichets
+                </div>
+              </NavLink>
+              <NavLink to="/admin/statistics">
+                <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+                  <PresentationChartBarIcon className="w-7 mr-4" />
+                  Statistiques
+                </div>
+              </NavLink>
+              <NavLink to="/admin/users">
+                <div className="flex flex-raw text-outline text-orange-500 items-center hover:underline decoration-2 cursor-pointer">
+                  <UserGroupIcon className="w-7 mr-4" />
+                  Gestion des opérateurs
+                </div>
+              </NavLink>
             </ul>
           </div>
-          <div className="pl-4 flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer mb-10 mt-6">
+          <div className="pl-4 flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer mb-10 pt-6">
             <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
             <button
               type="button"
