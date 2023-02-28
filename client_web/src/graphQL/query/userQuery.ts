@@ -31,6 +31,17 @@ query GetAllUsers {
       id
       name
     }
+    tickets {
+      id
+      name
+      createdAt
+      calledAt
+      closedAt
+      isFirstTime
+      isReturned
+      status
+    }
+    currentService
   }
 }
 `;
@@ -62,7 +73,9 @@ query GetOneUser($getOneUserId: Int!) {
       closedAt
       isFirstTime
       isReturned
+      status
     }
+    currentService
   }
 }
 `;

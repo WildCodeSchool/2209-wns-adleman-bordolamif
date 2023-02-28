@@ -13,7 +13,6 @@ query GetAllServices {
       firstname
       lastname
       email
-      role
     }
     tickets {
       id
@@ -23,10 +22,18 @@ query GetAllServices {
       closedAt
       isFirstTime
       isReturned
+      status
     }
     waitingRoom {
       id
       name
+    }
+    currentUsers {
+      id
+      firstname
+      lastname
+      email
+      role
     }
   }
 }
@@ -48,6 +55,7 @@ query GetOneService($getOneServiceId: Int!) {
       closedAt
       isFirstTime
       isReturned
+      status
     }
     users {
       id
@@ -59,6 +67,12 @@ query GetOneService($getOneServiceId: Int!) {
     waitingRoom {
       id
       name
+    }
+    currentUsers {
+      id
+      firstname
+      lastname
+      email
     }
   }
 }

@@ -20,14 +20,23 @@ export class ServiceResolver {
   @Query(() => [Service])
   async getAllServices(): Promise<Service[]> {
     return await dataSource.getRepository(Service)
-      .find({ relations: { waitingRoom: true, tickets: true, users: true } });
+      .find({
+        relations: {
+          waitingRoom: true, tickets: true, users: true, currentUsers: true,
+        },
+      });
   }
 
   @Query(() => Service)
   async getOneService(@Arg('id', () => Int) id: number): Promise<Service> {
     const service = await dataSource
       .getRepository(Service)
-      .findOne({ where: { id }, relations: { waitingRoom: true, tickets: true, users: true } });
+      .findOne({
+        where: { id },
+        relations: {
+          waitingRoom: true, tickets: true, users: true, currentUsers: true,
+        },
+      });
     if (service === null) {
       throw new ApolloError('Service not found', 'NOT_FOUND');
     }

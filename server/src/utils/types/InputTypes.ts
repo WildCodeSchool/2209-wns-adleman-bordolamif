@@ -2,7 +2,7 @@ import {
   IsEmail, Matches, MaxLength, MinLength,
 } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { RoleEnum } from '../../RoleEnum';
+import { RoleEnum } from '../enums/RoleEnum';
 import {
   CounterId, ServiceId, UserId, WaitingRoomId,
 } from './InputIdTypes';
@@ -66,6 +66,9 @@ export class UserInput {
 
     @Field(() => [ServiceId], { nullable: true })
       services?: ServiceId[];
+
+    @Field(() => ServiceId, { nullable: true })
+      currentService?: ServiceId | null;
 }
 
 @InputType()
