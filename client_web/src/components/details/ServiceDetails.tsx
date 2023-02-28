@@ -1,5 +1,4 @@
 import ServiceUpdateForm from '@components/forms/ServiceUpdateForm';
-import WaitingRoomIcon from '@components/icons/WaitingRoomIcon';
 import { ServiceData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
@@ -17,7 +16,7 @@ function ServiceDetails(props: Props) {
     <div className="bg-gray-200 p-4 my-2 rounded">
       <div className="flex bg-white justify-between px-2">
         <h2>{service.name}</h2>
-        <WaitingRoomIcon waitingRoom={service.waitingRoom} />
+        <p>{service.waitingRoom?.id}</p>
         {!isUpdateService
         && (
         <div>
