@@ -11,6 +11,7 @@ export interface UserInput {
       role?: RoleEnum;
       counter?: CounterId;
       services?: ServiceId[];
+      currentService?: ServiceId;
   }
 
 export interface TicketInput {
