@@ -36,6 +36,7 @@ function AdminServicesPage() {
 
   return (
     <>
+
       <div className="flex justify-between">
         <p>AdminServicesPage</p>
         {!isCreateService
@@ -65,6 +66,7 @@ function AdminServicesPage() {
 
       />
     </>
+
 
   );
 }

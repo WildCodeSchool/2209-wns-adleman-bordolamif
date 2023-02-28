@@ -17,6 +17,7 @@ function ServiceDetails(props: Props) {
       <div className="flex bg-white justify-between px-2">
         <h2>{service.name}</h2>
         <p>{service.waitingRoom?.name}</p>
+
         {!isUpdateService
         && (
         <div>
