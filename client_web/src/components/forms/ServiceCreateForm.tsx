@@ -3,8 +3,9 @@ import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
 import { WaitingRoomId } from '@utils/types/InputIdTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
-import { ChromePicker, ColorResult } from 'react-color';
+import { ColorResult } from 'react-color';
 import { useForm } from 'react-hook-form';
+import ColorPicker from './ColorPicker';
 import WaitingRoomsRadioList from './WaitingRoomsRadioList';
 
 interface Props {
@@ -17,7 +18,6 @@ function ServiceCreateForm(props: Props) {
 
   const [serviceWaitingRoom, setServiceWaitingRoom] = useState<WaitingRoomId | undefined>();
   const [color, setColor] = useState<string>('#50d71e');
-  const [pickerVisible, setPickerVisbile] = useState(false);
 
   const {
     loading: waitingRoomsListLoading,
@@ -29,8 +29,6 @@ function ServiceCreateForm(props: Props) {
   const toggleServiceWaitingRoom = (id:number) => {
     setServiceWaitingRoom({ id });
   };
-
-  const handleColorPicker = () => { setPickerVisbile(!pickerVisible); };
 
   const handleColorChange = (colorResult: ColorResult) => {
     setColor(colorResult.hex);
@@ -59,10 +57,9 @@ function ServiceCreateForm(props: Props) {
         toggleRadioList={toggleServiceWaitingRoom}
       />
       <input placeholder="Acronyme" className={inputClassName} {...register('acronym', { required: true, maxLength: 3 })} />
-      <button type="button" className="p-1 bg-white rounded shadow inline-block cursor-pointer" onClick={handleColorPicker}>
-        <div className="w-14 h-6 rounded" style={{ backgroundColor: `${color}` }} />
-      </button>
-      {pickerVisible && <ChromePicker color={color} onChangeComplete={handleColorChange} />}
+
+      <ColorPicker color={color} handleColorChange={handleColorChange} />
+
       <div className="flex">
         <button
           className="p-2 mx-2 bg-red-600 rounded text-white"

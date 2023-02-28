@@ -4,8 +4,9 @@ import { ServiceData } from '@utils/types/DataTypes';
 import { WaitingRoomId } from '@utils/types/InputIdTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
-import { ChromePicker, ColorResult } from 'react-color';
+import { ColorResult } from 'react-color';
 import { useForm } from 'react-hook-form';
+import ColorPicker from './ColorPicker';
 import WaitingRoomsRadioList from './WaitingRoomsRadioList';
 
 interface Props {
@@ -19,7 +20,6 @@ function ServiceUpdateForm(props: Props) {
   const [serviceWaitingRoom,
     setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom?.id });
   const [color, setColor] = useState<string>(serviceToUpdate.color);
-  const [pickerVisible, setPickerVisbile] = useState(false);
 
   const {
     loading: waitingRoomsListLoading,
@@ -29,8 +29,6 @@ function ServiceUpdateForm(props: Props) {
   const { register, handleSubmit } = useForm<ServiceInput>({
     defaultValues: serviceToUpdate,
   });
-
-  const handleColorPicker = () => { setPickerVisbile(!pickerVisible); };
 
   const handleColorChange = (colorResult: ColorResult) => {
     setColor(colorResult.hex);
@@ -64,10 +62,9 @@ function ServiceUpdateForm(props: Props) {
         toggleRadioList={toggleServiceWaitingRoom}
       />
       <input placeholder="Acronyme" className={inputClassName} {...register('acronym', { required: true, maxLength: 3 })} />
-      <button type="button" className="p-1 bg-white rounded shadow inline-block cursor-pointer" onClick={handleColorPicker}>
-        <div className="w-14 h-6 rounded" style={{ backgroundColor: `${color}` }} />
-      </button>
-      {pickerVisible && <ChromePicker color={color} onChangeComplete={handleColorChange} />}
+
+      <ColorPicker color={color} handleColorChange={handleColorChange} />
+
       <div className="flex flex-col">
         <button
           className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
