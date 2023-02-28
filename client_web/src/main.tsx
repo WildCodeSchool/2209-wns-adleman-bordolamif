@@ -15,7 +15,7 @@ const client = new ApolloClient({
     },
   },
   link: createHttpLink({
-    uri: import.meta.env.VITE_APP_GRAPHQL_API_URL,
+    uri: import.meta.env.VITE_GRAPHQL_API_URL,
     credentials: 'include',
   }),
 });
