@@ -22,7 +22,6 @@ function ServiceUpdateForm(props: Props) {
     setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom?.id });
   const [color, setColor] = useState<string>(serviceToUpdate.color);
 
-
   const {
     loading: waitingRoomsListLoading,
     data: waitingRoomsList,
@@ -31,7 +30,6 @@ function ServiceUpdateForm(props: Props) {
   const { register, handleSubmit } = useForm<ServiceInput>({
     defaultValues: serviceToUpdate,
   });
-
 
   const handleColorChange = (colorResult: ColorResult) => {
     setColor(colorResult.hex);

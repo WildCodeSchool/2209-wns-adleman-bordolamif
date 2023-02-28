@@ -39,6 +39,12 @@ npm run start:mobile
 
 App will refresh automatically when you save a file.
 
+## Run tests
+
+```sh
+npm run test:docker
+```
+
 ## ESlint config
 
 If you use VScode, install the ESlint extension which will allow you to choose it as the default code formatter.
