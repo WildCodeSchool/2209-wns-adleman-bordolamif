@@ -39,4 +39,5 @@ services:
     volumes:
       - ./client_web/src:/app/src
     environment:
+      VITE_GRAPHQL_API_URL: 'http://localhost:4000'
       CHOKIDAR_USEPOLLING: 'true'

@@ -15,7 +15,6 @@ COPY src ./src
 COPY tailwind.config.cjs ./
 COPY postcss.config.cjs ./
 COPY vite.config.ts ./
-COPY ./.env ./
 
 ARG VITE_GRAPHQL_API_URL
 ENV VITE_GRAPHQL_API_URL ${VITE_GRAPHQL_API_URL}
