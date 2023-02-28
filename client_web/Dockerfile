@@ -15,8 +15,9 @@ COPY src ./src
 COPY tailwind.config.cjs ./
 COPY postcss.config.cjs ./
 COPY vite.config.ts ./
+COPY ./.env ./
 
-ARG REACT_APP_GRAPHQL_API_URL
-ENV REACT_APP_GRAPHQL_API_URL ${REACT_APP_GRAPHQL_API_URL}
+ARG VITE_GRAPHQL_API_URL
+ENV VITE_GRAPHQL_API_URL ${VITE_GRAPHQL_API_URL}
 
 CMD npm start
