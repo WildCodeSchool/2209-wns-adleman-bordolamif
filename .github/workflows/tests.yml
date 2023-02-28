@@ -7,8 +7,9 @@ on:
       - develop
 
 jobs:
-  create-envfile:
-    name: Create envfile
+
+  tests:
+    name: Run tests
     runs-on: ubuntu-latest
 
     steps:
@@ -38,11 +39,6 @@ jobs:
           file_name: .env
           fail_on_empty: false
 
-  tests:
-    name: Run tests
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
