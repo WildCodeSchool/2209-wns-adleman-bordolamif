@@ -60,6 +60,13 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
       isReturned
       status
     }
+    currentService{
+      id
+      name
+      open
+      color
+      acronym
+    }
   }
 }
 `;
