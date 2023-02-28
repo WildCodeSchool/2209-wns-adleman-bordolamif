@@ -45,6 +45,10 @@ class Service {
   @Field(() => [User], { nullable: true })
   @ManyToMany(() => User, (user) => user.services, { nullable: true })
     users?: User[];
+
+  @Field(() => [User], { nullable: true })
+  @OneToMany(() => User, (user) => user.currentService)
+    currentUsers?: User[];
 }
 
 export default Service;

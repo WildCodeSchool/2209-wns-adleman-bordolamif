@@ -13,7 +13,6 @@ query GetAllServices {
       firstname
       lastname
       email
-      role
     }
     tickets {
       id
@@ -27,6 +26,13 @@ query GetAllServices {
     waitingRoom {
       id
       name
+    }
+    currentUsers {
+      id
+      firstname
+      lastname
+      email
+      role
     }
   }
 }
@@ -59,6 +65,12 @@ query GetOneService($getOneServiceId: Int!) {
     waitingRoom {
       id
       name
+    }
+    currentUsers {
+      id
+      firstname
+      lastname
+      email
     }
   }
 }
