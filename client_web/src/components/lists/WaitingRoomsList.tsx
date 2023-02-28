@@ -23,7 +23,7 @@ function WaitingRoomsList(props:Props) {
 
   return (
     <div>
-      {waitingRoomsList && waitingRoomsList! && waitingRoomsList.map((waitingRoom) => (
+      {waitingRoomsList && waitingRoomsList! && waitingRoomsList.map((waitingRoom) => ((
         <WaitingRoomDetails
           key={waitingRoom.id}
           waitingRoom={waitingRoom}
@@ -33,7 +33,7 @@ function WaitingRoomsList(props:Props) {
           handleUpdateWaitingRoom={handleUpdateWaitingRoom}
           handleDeleteWaitingRoom={handleDeleteWaitingRoom}
         />
-      ))}
+      )))}
     </div>
   );
 }
