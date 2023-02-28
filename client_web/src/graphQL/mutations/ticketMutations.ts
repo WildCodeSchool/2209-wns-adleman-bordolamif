@@ -10,6 +10,7 @@ mutation CreateTicket($data: TicketInput!) {
     closedAt
     isFirstTime
     isReturned
+    status
     user {
       id
       firstname
@@ -52,6 +53,7 @@ mutation UpdateTicket($data: TicketInput!, $updateTicketId: Int!) {
     closedAt
     calledAt
     createdAt
+    status
   }
 }
 `;

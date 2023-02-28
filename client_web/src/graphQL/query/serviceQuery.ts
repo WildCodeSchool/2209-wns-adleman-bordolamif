@@ -23,6 +23,7 @@ query GetAllServices {
       closedAt
       isFirstTime
       isReturned
+      status
     }
     waitingRoom {
       id
@@ -48,6 +49,7 @@ query GetOneService($getOneServiceId: Int!) {
       closedAt
       isFirstTime
       isReturned
+      status
     }
     users {
       id
