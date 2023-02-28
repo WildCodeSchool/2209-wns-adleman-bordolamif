@@ -17,7 +17,7 @@ interface Props {
 function ServiceUpdateForm(props: Props) {
   const { serviceToUpdate, setIsUpdateService, handleUpdateService } = props;
   const [serviceWaitingRoom,
-    setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom.id });
+    setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom?.id });
   const [color, setColor] = useState<string>(serviceToUpdate.color);
   const [pickerVisible, setPickerVisbile] = useState(false);
 
