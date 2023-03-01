@@ -48,24 +48,26 @@ function ServiceCreateForm(props: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="shadow-xl mx-10 bg-gray-200 p-6 w-fit rounded-xl mb-8 mx-auto mt-4">
-      <h1 className="mb-1">Nom du service</h1>
-      <input
-        placeholder="Radiologie"
-        {...register('name', { required: true })}
-        className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-4"
-      />
-      <div className="mb-2">
-        <h1 className="mb-1">Salle d'attente</h1>
-        {waitingRoomsListLoading && <p>Chargement...</p>}
-        <WaitingRoomsRadioList
-          radioChecked={serviceWaitingRoom}
-          waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-          toggleRadioList={toggleServiceWaitingRoom}
+      <label className="flex flex-col">
+        Nom du service
+        <input
+          placeholder="Radiologie"
+          {...register('name', { required: true })}
+          className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-4"
         />
-      </div>
+      </label>
+      <p className="mb-2">
+        Salle d'attente
+      </p>
+      {waitingRoomsListLoading && <p>Chargement...</p>}
+      <WaitingRoomsRadioList
+        radioChecked={serviceWaitingRoom}
+        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+        toggleRadioList={toggleServiceWaitingRoom}
+      />
       <div className="mb-1 flex flex-raw justify-between">
-        <h1>Acronyme <span className="text-xs">(3 lettres)</span></h1>
-        <h1>Couleur</h1>
+        <p>Acronyme <span className="text-xs">(3 lettres)</span></p>
+        <p>Couleur</p>
       </div>
       <div className="flex flex-raw justify-between items-center mb-4">
         <input
