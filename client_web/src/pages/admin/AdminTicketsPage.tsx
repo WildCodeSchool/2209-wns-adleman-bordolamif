@@ -4,12 +4,11 @@ import TicketModal from '@components/modals/TicketModal';
 import { UPDATE_TICKET } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
 import { GET_ALL_TICKETS } from '@graphQL/query/ticketQuery';
+import { StatusObjectEnum } from '@utils/enum/StatusObjectEnum';
 import useModal from '@utils/hooks/UseModal';
 import { ServiceData, TicketData } from '@utils/types/DataTypes';
 import { TicketInput } from '@utils/types/InputTypes';
 import { useEffect, useState } from 'react';
-
-const status = [{ name: 'En attente', key: 1 }, { name: 'Ajourné', key: 2 }, { name: 'En traitement', key: 3 }, { name: 'Traité', key: 4 }];
 
 function AdminTicketsPage() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -73,7 +72,7 @@ function AdminTicketsPage() {
       </select>
 
       <select name="status" onChange={filterStatus}>
-        {status.map((stat) => (
+        {StatusObjectEnum.map((stat) => (
           <option key={stat.key} value={stat.key}>{stat.name}</option>
         ))}
       </select>

@@ -2,14 +2,13 @@ import { useForm } from 'react-hook-form';
 import { TicketInput } from '@utils/types/InputTypes';
 import { TicketData } from '@utils/types/DataTypes';
 import ServiceIcon from '@components/icons/ServiceIcon';
+import { StatusObjectEnum } from '@utils/enum/StatusObjectEnum';
 
 interface Props {
     ticketToUpdate: TicketData;
     handleUpdateTicket: (data:TicketInput, id:number) => void
     handleCloseModal: () => void
 }
-
-const status = [{ name: 'En attente', key: 1 }, { name: 'Ajourné', key: 2 }, { name: 'En traitement', key: 3 }, { name: 'Traité', key: 4 }];
 
 function TicketUpdateForm(props : Props) {
   const {
@@ -39,8 +38,8 @@ function TicketUpdateForm(props : Props) {
           <p>{ticketToUpdate.service.name}</p>
           <ServiceIcon service={ticketToUpdate.service} />
           <p>{ticketToUpdate.name}</p>
-          <select {...register('status')} defaultValue={status.find((stat) => stat.key === ticketToUpdate.status)?.key}>
-            {status.map((stat) => (
+          <select {...register('status')} defaultValue={StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)?.key}>
+            {StatusObjectEnum.map((stat) => (
               <option key={stat.key} value={stat.key}>{stat.name}</option>
             ))}
           </select>
