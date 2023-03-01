@@ -49,7 +49,7 @@ export class TicketResolver {
     @Mutation(() => Ticket)
     async createTicket(@Arg('data') data: TicketInput): Promise<Ticket> {
       const {
-        calledAt, closedAt, isFirstTime, isReturned,
+        isFirstTime,
       } = data;
       const user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: data.user?.id } }) || null;
@@ -73,10 +73,7 @@ export class TicketResolver {
 
       const ticketToCreate = {
         name,
-        calledAt,
-        closedAt,
         isFirstTime,
-        isReturned,
         user,
         service: ticketService,
         ticket: null,
@@ -101,7 +98,7 @@ export class TicketResolver {
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {
       const {
-        calledAt, closedAt, isReturned, isFirstTime, user, service,
+        status, isFirstTime, user, service,
       } = data;
       const ticketToUpdate = await dataSource
         .getRepository(Ticket)
@@ -116,20 +113,25 @@ export class TicketResolver {
 
       if (ticketToUpdate === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
 
-      if (ticketToUpdate.calledAt !== calledAt!) {
-        ticketToUpdate.calledAt = calledAt;
-        ticketToUpdate.status = 3;
+      switch (status) {
+        case 2: {
+          ticketToUpdate.isReturned = true;
+          ticketToUpdate.status = status;
+          break;
+        }
+        case 3: {
+          ticketToUpdate.calledAt = new Date();
+          ticketToUpdate.status = status;
+          break;
+        }
+        case 4: {
+          ticketToUpdate.closedAt = new Date();
+          ticketToUpdate.status = status;
+          break;
+        }
+        default: ticketToUpdate.status = status;
       }
 
-      if (ticketToUpdate.closedAt !== closedAt!) {
-        ticketToUpdate.closedAt = closedAt;
-        ticketToUpdate.status = 4;
-      }
-
-      if (ticketToUpdate.isReturned !== isReturned!) {
-        ticketToUpdate.isReturned = isReturned;
-        ticketToUpdate.status = 2;
-      }
       ticketToUpdate.isFirstTime = isFirstTime;
       ticketToUpdate.user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: user?.id } }) || null;
