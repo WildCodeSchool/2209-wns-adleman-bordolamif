@@ -16,7 +16,7 @@ function ServicesList(props:Props) {
   } = props;
 
   return (
-    <div>
+    <div className="grid grid-cols-3 gap-8">
       {servicesList && servicesList!
       && servicesList.map((service) => (
         mode === 'details' ? (

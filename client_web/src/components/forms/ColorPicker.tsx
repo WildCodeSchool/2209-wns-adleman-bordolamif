@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { ChromePicker, ColorResult } from 'react-color';
+import { CirclePicker, ColorResult } from 'react-color';
 
 interface Props {
     color: string,
     handleColorChange:(colorResult: ColorResult) => void
-
 }
 
 function ColorPicker(props:Props) {
@@ -17,12 +16,22 @@ function ColorPicker(props:Props) {
   const handleColorPicker = () => { setPickerVisbile(!pickerVisible); };
 
   return (
-    <>
-      <button type="button" className="p-1 bg-white rounded shadow inline-block cursor-pointer" onClick={handleColorPicker}>
-        <div className="w-14 h-6 rounded" style={{ backgroundColor: `${color}` }} />
-      </button>
-      {pickerVisible && <ChromePicker color={color} onChangeComplete={handleColorChange} />}
-    </>
+    <div>
+      <div>
+        <button type="button" className="bg-white rounded-xl cursor-pointer" onClick={handleColorPicker}>
+          <div className="w-12 h-8 m-1 rounded-xl" style={{ backgroundColor: `${color}` }} />
+        </button>
+      </div>
+      {pickerVisible
+      && (
+        <div className="absolute bg-gray-100 rounded-xl p-2 shadow-xl">
+          <CirclePicker
+            color={color}
+            onChangeComplete={handleColorChange}
+          />
+        </div>
+      )}
+    </div>
   );
 }
 

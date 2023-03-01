@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { ServiceData } from '@utils/types/DataTypes';
 import { WaitingRoomId } from '@utils/types/InputIdTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
@@ -35,8 +36,6 @@ function ServiceUpdateForm(props: Props) {
     setColor(colorResult.hex);
   };
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
-
   const toggleServiceWaitingRoom = (id:number) => {
     setServiceWaitingRoom({ id });
   };
@@ -53,31 +52,55 @@ function ServiceUpdateForm(props: Props) {
     await handleUpdateService(updatedService, serviceToUpdate.id);
     setIsUpdateService(false);
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input placeholder="Nom" {...register('name')} required className={inputClassName} />
-      {waitingRoomsListLoading && <p>Loading...</p>}
-      <WaitingRoomsRadioList
-        radioChecked={serviceWaitingRoom}
-        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-        toggleRadioList={toggleServiceWaitingRoom}
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute shadow-xl mx-10 bg-gray-200 p-6 w-fit rounded-xl mb-8 mx-auto mt-4">
+      <h1 className="mb-1">Nom du service</h1>
+      <input
+        placeholder="Radiologie"
+        {...register('name', { required: true })}
+        className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-4"
       />
-      <input placeholder="Acronyme" className={inputClassName} {...register('acronym', { required: true, maxLength: 3 })} />
-
-      <ColorPicker color={color} handleColorChange={handleColorChange} />
-
-      <div className="flex flex-col">
+      <div className="mb-2">
+        <h1 className="mb-1">Salle d'attente</h1>
+        {waitingRoomsListLoading && <p>Chargement...</p>}
+        <WaitingRoomsRadioList
+          radioChecked={serviceWaitingRoom}
+          waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+          toggleRadioList={toggleServiceWaitingRoom}
+        />
+      </div>
+      <div className="mb-1 flex flex-raw justify-between">
+        <h1>Acronyme <span className="text-xs">(3 lettres)</span></h1>
+        <h1>Couleur</h1>
+      </div>
+      <div className="flex flex-raw justify-between items-center mb-4">
+        <input
+          placeholder="RDL"
+          className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+          {...register('acronym', { required: true, maxLength: 3 })}
+        />
+        <ColorPicker
+          color={color}
+          handleColorChange={handleColorChange}
+        />
+      </div>
+      <div className="flex flex-raw justify-start">
         <button
-          className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
+          className="p-2 mx-2 bg-red-600 rounded text-white hover:bg-red-700"
           type="button"
           aria-label="cancel"
           onClick={() => setIsUpdateService(false)}
-        />
+        >
+          Annuler
+        </button>
         <button
-          className="p-2 my-2 bg-green-600 rounded-xl w-2 h-2"
+          className="p-2 mx-2 bg-green-600 rounded text-white hover:bg-green-700"
           type="submit"
           aria-label="submit"
-        />
+        >
+          Appliquer
+        </button>
       </div>
     </form>
   );
