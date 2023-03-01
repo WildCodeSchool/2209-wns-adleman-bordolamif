@@ -1,4 +1,8 @@
-FROM node:lts-alpine
+FROM node:18.13-alpine
+
+RUN apk --no-cache add curl
+RUN apk add make g++ python3 git
+RUN npm i -g node-pre-gyp
 
 RUN mkdir /app
 WORKDIR /app
@@ -8,5 +12,6 @@ RUN npm i
 
 COPY tsconfig.json ./
 COPY src ./src
+COPY ./.env .env
 
-CMD npm start
+CMD ["npm", "run", "start"]
