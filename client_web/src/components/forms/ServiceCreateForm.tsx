@@ -58,13 +58,13 @@ function ServiceCreateForm(props: Props) {
       </label>
       <p className="mb-2">
         Salle d'attente
-        {waitingRoomsListLoading && <p>Chargement...</p>}
-        <WaitingRoomsRadioList
-          radioChecked={serviceWaitingRoom}
-          waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-          toggleRadioList={toggleServiceWaitingRoom}
-        />
       </p>
+      {waitingRoomsListLoading && <p>Chargement...</p>}
+      <WaitingRoomsRadioList
+        radioChecked={serviceWaitingRoom}
+        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+        toggleRadioList={toggleServiceWaitingRoom}
+      />
       <div className="mb-1 flex flex-raw justify-between">
         <p>Acronyme <span className="text-xs">(3 lettres)</span></p>
         <p>Couleur</p>
