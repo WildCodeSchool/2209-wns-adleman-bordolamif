@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { TicketInput } from '@utils/types/InputTypes';
 import { TicketData } from '@utils/types/DataTypes';
 import ServiceIcon from '@components/icons/ServiceIcon';
