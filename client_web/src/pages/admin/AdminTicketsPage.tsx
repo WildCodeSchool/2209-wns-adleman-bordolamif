@@ -1,13 +1,22 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import TicketsList from '@components/lists/TicketsList';
+import TicketModal from '@components/modals/TicketModal';
+import { UPDATE_TICKET } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
 import { GET_ALL_TICKETS } from '@graphQL/query/ticketQuery';
+import useModal from '@utils/hooks/UseModal';
 import { ServiceData, TicketData } from '@utils/types/DataTypes';
+import { TicketInput } from '@utils/types/InputTypes';
 import { useEffect, useState } from 'react';
 
 const status = [{ name: 'En attente', key: 1 }, { name: 'Ajourné', key: 2 }, { name: 'En traitement', key: 3 }, { name: 'Traité', key: 4 }];
 
 function AdminTicketsPage() {
+  const { isModalOpen, openModal, closeModal } = useModal();
+
+  const [UpdateTicket] = useMutation(UPDATE_TICKET);
+
+  const [ticketToUpdate, setTicketToUpdate] = useState<TicketData>();
   const [statusFilter, setStatusFilter] = useState<number>(1);
   const [serviceFilter, setServiceFilter] = useState<string>('');
   const [filteredTicketList, setFilteredTicketList] = useState<TicketData[]>([]);
@@ -15,6 +24,7 @@ function AdminTicketsPage() {
   const {
     loading: ticketsListLoading,
     data: ticketsList,
+    refetch: refetchTicketList,
   } = useQuery(GET_ALL_TICKETS);
 
   const {
@@ -27,6 +37,20 @@ function AdminTicketsPage() {
 
   const filterServices = (e:React.ChangeEvent<HTMLSelectElement>) => {
     setServiceFilter(e.target.value);
+  };
+
+  const handleOpenModal = (ticket: TicketData) => {
+    setTicketToUpdate(ticket);
+    openModal();
+  };
+
+  const handleCloseModal = () => {
+    closeModal();
+  };
+
+  const handleUpdateTicket = async (data:TicketInput, id:number) => {
+    await UpdateTicket({ variables: { data, updateTicketId: id } });
+    await refetchTicketList();
   };
 
   useEffect(() => {
@@ -57,7 +81,19 @@ function AdminTicketsPage() {
       <h1>TicketPage</h1>
       {ticketsListLoading && <p>Loading ...</p>}
 
-      <TicketsList ticketsList={filteredTicketList && filteredTicketList} />
+      <TicketsList
+        handleOpenModal={handleOpenModal}
+        ticketsList={filteredTicketList && filteredTicketList}
+      />
+
+      {ticketToUpdate && (
+      <TicketModal
+        isModalOpen={isModalOpen}
+        ticketToUpdate={ticketToUpdate}
+        handleCloseModal={handleCloseModal}
+        handleUpdateTicket={handleUpdateTicket}
+      />
+      )}
 
     </div>
   );

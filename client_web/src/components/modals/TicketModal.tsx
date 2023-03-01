@@ -28,7 +28,6 @@ function TicketModal(props: Props) {
             X
           </button>
         </div>
-
         <TicketUpdateForm
           ticketToUpdate={ticketToUpdate}
           handleUpdateTicket={handleUpdateTicket}
