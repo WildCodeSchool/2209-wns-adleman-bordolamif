@@ -11,6 +11,7 @@ import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
 import OperatorPage from '@pages/operator/OperatorPage';
+import ClientPage from '@pages/client/ClientPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -34,6 +35,7 @@ function App() {
         <Route path="operator" element={<OperatorPage />}>
           <Route path="board" element={<OperatorBoard />} />
         </Route>
+        <Route path="client" element={<ClientPage />} />
       </Routes>
     </BrowserRouter>
   );
