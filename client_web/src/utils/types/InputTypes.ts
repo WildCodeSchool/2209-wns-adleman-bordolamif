@@ -39,7 +39,7 @@ export interface ServiceInput {
       acronym: string;
       open: boolean;
       color: string;
-      waitingRoom?: WaitingRoomId;
+      waitingRoom?: WaitingRoomId | null;
 }
 
 export interface UserConnexion {
