@@ -57,6 +57,12 @@ function AdminMenu({ userProfile, client }:Props) {
               Guichets
             </div>
           </NavLink>
+          <NavLink to="/admin/tickets">
+            <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+              <TicketIcon className="w-7 mr-4" />
+              Tickets
+            </div>
+          </NavLink>
           <NavLink to="/admin/statistics">
             <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
               <PresentationChartBarIcon className="w-7 mr-4" />
