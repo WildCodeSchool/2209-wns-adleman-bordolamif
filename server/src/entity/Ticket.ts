@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StatusEnum } from '../utils/enums/StatusEnum';
+import Counter from './Counter';
 
 import Service from './Service';
 import User from './User';
@@ -53,6 +55,13 @@ class Ticket {
     @Field(() => User, { nullable: true })
     @ManyToOne(() => User, (user) => user.tickets, { nullable: true })
       user?: User;
+
+    @Field(() => Counter, { nullable: true })
+    @OneToOne(() => Counter, (counter: Counter | null) => counter?.ticket, {
+      nullable: true,
+      eager: true,
+    })
+      counter?: Counter | null;
 }
 
 export default Ticket;

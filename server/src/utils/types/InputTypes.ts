@@ -4,7 +4,7 @@ import {
 import { Field, InputType } from 'type-graphql';
 import { RoleEnum } from '../enums/RoleEnum';
 import {
-  CounterId, ServiceId, UserId, WaitingRoomId,
+  CounterId, ServiceId, TicketId, UserId, WaitingRoomId,
 } from './InputIdTypes';
 
 @InputType()
@@ -117,6 +117,9 @@ export class CounterInput {
 
     @Field(() => UserId, { nullable: true })
       user?: UserId;
+
+    @Field(() => TicketId, { nullable: true })
+      ticket?: TicketId;
 }
 
 @InputType()

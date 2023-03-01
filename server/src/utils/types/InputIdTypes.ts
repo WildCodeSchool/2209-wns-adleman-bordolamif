@@ -23,3 +23,9 @@ export class WaitingRoomId {
   @Field(() => Int)
     id: number;
 }
+
+@InputType()
+export class TicketId {
+  @Field(() => Int)
+    id: number;
+}

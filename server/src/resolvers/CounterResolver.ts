@@ -7,6 +7,7 @@ import { ApolloError } from 'apollo-server-errors';
 import { CounterInput } from '../utils/types/InputTypes';
 import WaitingRoom from '../entity/WaitingRoom';
 import User from '../entity/User';
+import Ticket from '../entity/Ticket';
 
 @Resolver(Counter)
 export class CounterResolver {
@@ -20,6 +21,7 @@ export class CounterResolver {
       relations: {
         waitingRoom: true,
         user: true,
+        ticket: true,
       },
     });
   }
@@ -35,6 +37,7 @@ export class CounterResolver {
           relations: {
             waitingRoom: true,
             user: true,
+            ticket: true,
           },
         });
       if (counter === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
@@ -69,7 +72,7 @@ export class CounterResolver {
       @Arg('data') data: CounterInput,
     ): Promise<Counter> {
       const counterToUpdate = await dataSource.getRepository(Counter).findOne({
-        where: { id }, relations: { waitingRoom: true, user: true },
+        where: { id }, relations: { waitingRoom: true, user: true, ticket: true },
       });
 
       if (counterToUpdate === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
@@ -82,6 +85,14 @@ export class CounterResolver {
         if (counterToUpdate.user === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
       } else {
         counterToUpdate.user = data.user;
+      }
+
+      if (data.ticket) {
+        counterToUpdate.ticket = await dataSource.getRepository(Ticket)
+          .findOneOrFail({ where: { id: data.ticket?.id } });
+        if (counterToUpdate.ticket === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
+      } else {
+        counterToUpdate.ticket = data.ticket;
       }
 
       await dataSource.getRepository(Counter).save(counterToUpdate);

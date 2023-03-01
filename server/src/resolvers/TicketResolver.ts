@@ -21,6 +21,7 @@ export class TicketResolver {
       relations: {
         service: true,
         user: true,
+        counter: true,
       },
     });
   }
@@ -34,6 +35,7 @@ export class TicketResolver {
           relations: {
             service: true,
             user: true,
+            counter: true,
           },
         });
       if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
@@ -77,6 +79,7 @@ export class TicketResolver {
         isReturned,
         user,
         service: ticketService,
+        ticket: null,
       };
       return await dataSource.getRepository(Ticket).save(ticketToCreate);
     }
@@ -107,6 +110,7 @@ export class TicketResolver {
           relations: {
             service: true,
             user: true,
+            counter: true,
           },
         });
 
