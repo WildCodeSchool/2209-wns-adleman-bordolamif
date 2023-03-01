@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { ColorResult } from 'react-color';
 import { useForm } from 'react-hook-form';
 import ColorPicker from './ColorPicker';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import WaitingRoomsRadioList from './WaitingRoomsRadioList';
 
 interface Props {

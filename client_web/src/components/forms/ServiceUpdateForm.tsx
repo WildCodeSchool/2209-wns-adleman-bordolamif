@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { ServiceData } from '@utils/types/DataTypes';
 import { WaitingRoomId } from '@utils/types/InputIdTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
