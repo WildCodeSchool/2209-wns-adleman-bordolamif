@@ -65,3 +65,9 @@ export interface ServiceData extends Service {
     __typename: string;
     waitingRoom: WaitingRoom
   }
+
+export interface TicketData extends Ticket {
+    __typename: string;
+    service: Service
+    user: UserProfile
+  }
