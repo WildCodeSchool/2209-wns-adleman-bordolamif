@@ -19,7 +19,9 @@ interface Props {
 function ServiceUpdateForm(props: Props) {
   const { serviceToUpdate, setIsUpdateService, handleUpdateService } = props;
   const [serviceWaitingRoom,
-    setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom?.id });
+    setServiceWaitingRoom] = useState<WaitingRoomId>({
+      id: serviceToUpdate.waitingRoom?.id,
+    } || null);
   const [color, setColor] = useState<string>(serviceToUpdate.color);
 
   const {
@@ -40,13 +42,14 @@ function ServiceUpdateForm(props: Props) {
   };
 
   const onSubmit = async (data: ServiceInput) => {
-    const updatedService = {
+    const updatedService: ServiceInput = {
       name: data.name,
       open: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
     };
+    if (serviceWaitingRoom.id === undefined) updatedService.waitingRoom = null;
 
     await handleUpdateService(updatedService, serviceToUpdate.id);
     setIsUpdateService(false);
