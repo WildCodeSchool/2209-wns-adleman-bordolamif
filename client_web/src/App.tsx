@@ -11,6 +11,7 @@ import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
 import OperatorPage from '@pages/operator/OperatorPage';
+import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
           <Route index element={<AdminPage />} />
           <Route path="services" element={<AdminServicesPage />} />
+          <Route path="tickets" element={<AdminTicketsPage />} />
           <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
           <Route path="statistics" element={<AdminStatisticsPage />} />
           <Route path="users" element={<AdminUsersPage />} />

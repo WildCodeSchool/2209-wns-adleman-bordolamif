@@ -16,24 +16,24 @@ function ServicesList(props:Props) {
   } = props;
 
   return (
-    <div className="grid grid-cols-3 gap-8">
+    <div>
       {servicesList && servicesList!
-      && servicesList.map((service) => (
-        mode === 'details' ? (
+      && (
+        (mode === 'details' && servicesList.map((service) => (
           <ServiceDetails
             handleUpdateService={handleUpdateService}
             handleDeleteService={handleDeleteService}
             key={service.id}
             service={service}
           />
-        )
-          : (
-            <ServiceIcon
-              key={service.id}
-              service={service}
-            />
-          )
-      ))}
+        )))
+        || (mode === 'icons' && servicesList.map((service) => (
+          <ServiceIcon
+            key={service.id}
+            service={service}
+          />
+        )))
+      )}
     </div>
   );
 }
