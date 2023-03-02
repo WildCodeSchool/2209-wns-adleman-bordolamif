@@ -1,6 +1,5 @@
-import TicketUpdateForm from '@components/forms/TicketUpdateForm';
 import ServiceIcon from '@components/icons/ServiceIcon';
-import { ServiceData, TicketData } from '@utils/types/DataTypes';
+import { ServiceData } from '@utils/types/DataTypes';
 import { TicketInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
