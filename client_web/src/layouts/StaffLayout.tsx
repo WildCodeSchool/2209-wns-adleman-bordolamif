@@ -1,5 +1,5 @@
 import { ApolloClient } from '@apollo/client';
-import Menu from '@components/Menu';
+import Menu from '@components/menu/Menu';
 import { UserProfile } from '@utils/types/DataTypes';
 import { Outlet } from 'react-router';
 
@@ -25,4 +25,5 @@ function StaffLayout(props:Props) {
     </div>
   );
 }
+
 export default StaffLayout;
