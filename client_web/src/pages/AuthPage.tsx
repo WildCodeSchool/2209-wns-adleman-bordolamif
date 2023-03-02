@@ -19,7 +19,7 @@ function AuthPage(props: Props) {
   const [logout] = useMutation(LOGOUT);
   const navigate = useNavigate();
 
-  const onLogin = async (formData:UserConnexion) => {
+  const onLogin = async (formData: UserConnexion) => {
     try {
       await login({ variables: { data: formData } });
       await client.resetStore();
@@ -32,6 +32,9 @@ function AuthPage(props: Props) {
     if (currentUser && currentUser!.role === 1) {
       setTimeout(() => navigate('/admin'), 2000);
     }
+    if (currentUser && currentUser!.role === 2) {
+      setTimeout(() => navigate('/operator'), 2000);
+    }
   }, [currentUser, navigate]);
 
   const onLogout = async () => {
@@ -42,10 +45,17 @@ function AuthPage(props: Props) {
   return (
     <div className="flex h-screen justify-center items-center bg-gray-200">
       {currentUser ? (
-        <div className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm flex flex-col items-center justify-center">
+        <div
+          className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm flex flex-col items-center justify-center"
+        >
           <p className="mb-2 text-gray-700">Connecté en tant que</p>
           <span className="nunito-bold mb-7 text-xl">{currentUser.email}</span>
-          <button type="button" onClick={onLogout} className="shadow-xl bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6">Annuler</button>
+          <button
+            type="button"
+            onClick={onLogout}
+            className="shadow-xl bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6"
+          >Annuler
+          </button>
         </div>
       ) : (
         <AuthForm
