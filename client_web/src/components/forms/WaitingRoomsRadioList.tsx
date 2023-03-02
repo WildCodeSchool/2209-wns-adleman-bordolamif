@@ -12,8 +12,14 @@ function WaitingRoomsRadioList(props: Props) {
   return (
     <div>
       {waitingRoomsList && waitingRoomsList.map((waitingRoom: WaitingRoom) => (
-        <label key={waitingRoom.id}>
-          <input type="radio" value={waitingRoom.id} name={waitingRoom.name} checked={radioChecked?.id === waitingRoom.id} onChange={() => toggleRadioList(waitingRoom.id)} />
+        <label key={waitingRoom.id} className="p-1">
+          <input
+            type="radio"
+            value={waitingRoom.id}
+            name={waitingRoom.name}
+            checked={radioChecked?.id === waitingRoom.id}
+            onChange={() => toggleRadioList(waitingRoom.id)}
+          />
           {waitingRoom.name}
         </label>
       ))}

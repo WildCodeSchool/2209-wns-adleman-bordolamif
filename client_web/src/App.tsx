@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
 import StaffLayout from './layouts/StaffLayout';
+import HomePage from '@pages/HomePage';
 import AuthPage from '@pages/AuthPage';
 import AdminPage from '@pages/admin/AdminPage';
 import OperatorBoard from '@pages/operator/OperatorBoard';
@@ -38,7 +39,7 @@ function App() {
                 />
               )}
             >
-              <Route index element={<AdminPage />} />
+              <Route path="dashboard" element={<AdminPage />} />
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
