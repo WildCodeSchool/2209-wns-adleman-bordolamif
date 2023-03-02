@@ -28,10 +28,7 @@ function ServicesList(props:Props) {
           />
         )
           : (
-            <ServiceIcon
-              key={service.id}
-              service={service}
-            />
+            <p key={service.id} />
           )
       ))}
     </div>

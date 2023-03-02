@@ -1,4 +1,5 @@
 import ServiceUpdateForm from '@components/forms/ServiceUpdateForm';
+import ServiceIcon from '@components/icons/ServiceIcon';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ServiceData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
@@ -24,12 +25,7 @@ function ServiceDetails(props: Props) {
         <h2>{service.name}</h2>
       </div>
       <div className="flex flex-raw items-center bg-white justify-between px-2">
-        <div
-          className="w-14 h-8 rounded-xl pt-1 text-center text-white nunito-bold"
-          style={{ backgroundColor: `${service.color}` }}
-        >
-          {service.acronym}
-        </div>
+        <ServiceIcon service={service} />
         <p>{service.waitingRoom?.name}</p>
         {!isUpdateService
         && (
