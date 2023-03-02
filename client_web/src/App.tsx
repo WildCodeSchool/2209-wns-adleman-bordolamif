@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
 import StaffLayout from './layouts/StaffLayout';
-import HomePage from '@pages/HomePage';
 import AuthPage from '@pages/AuthPage';
 import AdminPage from '@pages/admin/AdminPage';
 import OperatorBoard from '@pages/operator/OperatorBoard';
@@ -47,7 +46,7 @@ function App() {
               <Route path="users" element={<AdminUsersPage />} />
             </Route>
           )}
-        {currentUser && currentUser!.profile.role === 1
+        {currentUser && currentUser!.profile.role === 2
           && (
             <Route
               path="operator"
@@ -58,8 +57,8 @@ function App() {
                 />
               )}
             >
-              <Route index element={<OperatorPage />} />
-              <Route path="board" element={<OperatorBoard />} />
+              <Route path="services" element={<OperatorPage />} />
+              <Route path="dashboard" element={<OperatorBoard />} />
             </Route>
           )}
       </Routes>

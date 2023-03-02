@@ -33,7 +33,7 @@ function AuthPage(props: Props) {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
     if (currentUser && currentUser!.role === 2) {
-      setTimeout(() => navigate('/operator'), 2000);
+      setTimeout(() => navigate('/operator/services'), 2000);
     }
   }, [currentUser, navigate]);
 
