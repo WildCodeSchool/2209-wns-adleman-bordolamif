@@ -1,4 +1,5 @@
 import { RoleEnum } from '@utils/enum/RoleEnum';
+import { StatusEnum } from '@utils/enum/StatusEnum';
 import {
   CounterId, ServiceId, UserId, WaitingRoomId,
 } from './InputIdTypes';
@@ -16,10 +17,8 @@ export interface UserInput {
 
 export interface TicketInput {
       name?: string;
-      calledAt?: Date;
-      closedAt?: Date;
       isFirstTime: boolean;
-      isReturned?: boolean;
+      status: StatusEnum;
       user?: UserId;
       service: ServiceId;
 }
@@ -40,7 +39,7 @@ export interface ServiceInput {
       acronym: string;
       open: boolean;
       color: string;
-      waitingRoom?: WaitingRoomId;
+      waitingRoom?: WaitingRoomId | null;
 }
 
 export interface UserConnexion {

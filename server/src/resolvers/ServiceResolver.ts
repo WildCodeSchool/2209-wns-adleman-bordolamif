@@ -76,7 +76,7 @@ export class ServiceResolver {
       @Arg('data') data: ServiceInput,
   ): Promise<Service> {
     const {
-      name, acronym, open, color,
+      name, acronym, open, color, waitingRoom,
     } = data;
     const ServiceToUpdate = await dataSource.getRepository(Service).findOne({
       where: { id },
@@ -88,8 +88,13 @@ export class ServiceResolver {
     ServiceToUpdate.acronym = acronym;
     ServiceToUpdate.open = open;
     ServiceToUpdate.color = color;
-    ServiceToUpdate.waitingRoom = await dataSource.getRepository(WaitingRoom)
-      .findOneOrFail({ where: { id: data.waitingRoom?.id } });
+
+    if (waitingRoom !== null && typeof (waitingRoom) !== 'undefined') {
+      ServiceToUpdate.waitingRoom = await dataSource.getRepository(WaitingRoom)
+        .findOneOrFail({ where: { id: data.waitingRoom?.id } }) || null;
+    } else {
+      ServiceToUpdate.waitingRoom = undefined;
+    }
 
     await dataSource.getRepository(Service).save(ServiceToUpdate);
 

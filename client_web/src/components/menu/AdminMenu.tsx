@@ -5,6 +5,7 @@ import {
   PresentationChartBarIcon,
   UserGroupIcon,
   ArrowLeftOnRectangleIcon,
+  ClipboardDocumentCheckIcon,
 } from '@heroicons/react/24/outline';
 import DarkLogo from '@assets/DarkLogo';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -68,8 +69,17 @@ function AdminMenu({ userProfile, client }:Props) {
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
-              <TicketIcon className="w-7 mr-4" />
+              <ClipboardDocumentCheckIcon className="w-7 mr-4" />
               Guichets
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin/tickets"
+            style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
+              <TicketIcon className="w-7 mr-4" />
+              Tickets
             </div>
           </NavLink>
           <NavLink

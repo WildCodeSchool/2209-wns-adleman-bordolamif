@@ -3,6 +3,7 @@ import {
 } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { RoleEnum } from '../enums/RoleEnum';
+import { StatusEnum } from '../enums/StatusEnum';
 import {
   CounterId, ServiceId, TicketId, UserId, WaitingRoomId,
 } from './InputIdTypes';
@@ -77,17 +78,11 @@ export class TicketInput {
   @MaxLength(100)
     name?: string;
 
-    @Field({ nullable: true })
-      calledAt?: Date;
-
-    @Field({ nullable: true })
-      closedAt?: Date;
+    @Field({ defaultValue: StatusEnum.EnAttente })
+      status: StatusEnum;
 
     @Field()
       isFirstTime: boolean;
-
-    @Field({ nullable: true })
-      isReturned?: boolean;
 
     @Field(() => UserId, { nullable: true })
       user?: UserId;
