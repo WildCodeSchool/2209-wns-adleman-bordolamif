@@ -18,7 +18,7 @@ function TicketDetails(props: Props) {
   const { ticket, handleOpenModal } = props;
 
   return (
-    <div>
+    <>
       {handleOpenModal && (
       <button
         type="button"
@@ -36,7 +36,7 @@ function TicketDetails(props: Props) {
         ><p>{ticket.name}</p>
         </div>
       )}
-    </div>
+    </>
 
   );
 }
