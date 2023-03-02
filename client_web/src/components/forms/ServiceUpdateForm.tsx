@@ -56,7 +56,7 @@ function ServiceUpdateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="absolute left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-4 rounded-xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-4 rounded-xl">
       <div>
         <label className="flex flex-col">
           Nom du service

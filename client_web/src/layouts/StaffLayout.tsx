@@ -17,7 +17,7 @@ function StaffLayout(props:Props) {
       {currentUser && currentUser! ? (
         <div className="flex w-[80rem]">
           <Menu userProfile={currentUser} client={client} />
-          <div className="w-full bg-white m-5 p-5 rounded-xl shadow-xl">
+          <div className="w-full bg-white m-5 p-5 rounded-xl shadow-xl ml-[16rem]">
             <Outlet context={{ userProfile: currentUser }} />
           </div>
         </div>

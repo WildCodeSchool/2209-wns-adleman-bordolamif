@@ -50,13 +50,14 @@ function ServiceDetails(props: Props) {
         )}
       </div>
       {isUpdateService && (
-        // eslint-disable-next-line
-        <div className="absolute left-0 top-0 h-screen w-screen" onClick={closeModal}>
+        <div>
           <ServiceUpdateForm
             serviceToUpdate={service}
             setIsUpdateService={setIsUpdateService}
             handleUpdateService={handleUpdateService}
           />
+          {/* eslint-disable-next-line */}
+          <div className="cursor-default backdrop-blur-md absolute left-0 top-0 h-screen w-screen" onClick={closeModal} />
         </div>
       )}
     </div>
