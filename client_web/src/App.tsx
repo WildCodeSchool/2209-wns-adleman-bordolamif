@@ -25,7 +25,7 @@ function App() {
         {currentUser && currentUser!.profile.role === 1
         && (
         <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
-          <Route index element={<AdminPage />} />
+          <Route path="dashboard" element={<AdminPage />} />
           <Route path="services" element={<AdminServicesPage />} />
           <Route path="tickets" element={<AdminTicketsPage />} />
           <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
