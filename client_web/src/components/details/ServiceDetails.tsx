@@ -13,6 +13,11 @@ interface Props {
 function ServiceDetails(props: Props) {
   const { service, handleDeleteService, handleUpdateService } = props;
   const [isUpdateService, setIsUpdateService] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setIsUpdateService(false);
+  };
+
   return (
     <div className="flex flex-col border border-2 border-gray-200 py-2 rounded-xl">
       <div className="nunito-bold pl-2 pb-1 text-lg">
@@ -45,11 +50,14 @@ function ServiceDetails(props: Props) {
         )}
       </div>
       {isUpdateService && (
-        <ServiceUpdateForm
-          serviceToUpdate={service}
-          setIsUpdateService={setIsUpdateService}
-          handleUpdateService={handleUpdateService}
-        />
+        // eslint-disable-next-line
+        <div className="absolute left-0 top-0 h-screen w-screen" onClick={closeModal}>
+          <ServiceUpdateForm
+            serviceToUpdate={service}
+            setIsUpdateService={setIsUpdateService}
+            handleUpdateService={handleUpdateService}
+          />
+        </div>
       )}
     </div>
   );

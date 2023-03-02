@@ -30,7 +30,7 @@ function AuthPage(props: Props) {
 
   useEffect(() => {
     if (currentUser && currentUser!.role === 1) {
-      setTimeout(() => navigate('/admin'), 2000);
+      setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
   }, [currentUser, navigate]);
 
