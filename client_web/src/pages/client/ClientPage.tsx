@@ -64,6 +64,7 @@ function ClientPage() {
           <p>Votre ticket est le numéro : </p>
           <TicketDetails ticket={createdTicket} />
           <p>Rendez-vous en salle d'attente : {serviceTicketToCreate?.waitingRoom?.name}</p>
+          <p>Merci de récupérer votre ticket papier</p>
           <button type="button" onClick={() => setCreatedTicket(null)}>Retour à la page d'accueil</button>
         </div>
       )}
