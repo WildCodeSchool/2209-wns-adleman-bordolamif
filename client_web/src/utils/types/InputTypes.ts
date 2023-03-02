@@ -18,7 +18,7 @@ export interface UserInput {
 export interface TicketInput {
       name?: string;
       isFirstTime: boolean;
-      status: StatusEnum;
+      status?: StatusEnum;
       user?: UserId;
       service: ServiceId;
 }
