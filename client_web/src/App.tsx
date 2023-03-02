@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { PROFILE } from '@graphQL/query/userQuery';
 import StaffLayout from './layouts/StaffLayout';
-import HomePage from '@pages/HomePage';
 import AuthPage from '@pages/AuthPage';
 import AdminPage from '@pages/admin/AdminPage';
 import OperatorBoard from '@pages/operator/OperatorBoard';
@@ -20,23 +19,49 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="auth" element={<AuthPage currentUser={currentUser! && currentUser.profile} client={client} />} />
+        <Route
+          path="/"
+          element={(
+            <AuthPage
+              currentUser={currentUser! && currentUser.profile}
+              client={client}
+            />
+          )}
+        />
         {currentUser && currentUser!.profile.role === 1
-        && (
-        <Route path="admin" element={<StaffLayout currentUser={currentUser! && currentUser.profile} client={client} />}>
-          <Route path="dashboard" element={<AdminPage />} />
-          <Route path="services" element={<AdminServicesPage />} />
-          <Route path="tickets" element={<AdminTicketsPage />} />
-          <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
-          <Route path="statistics" element={<AdminStatisticsPage />} />
-          <Route path="users" element={<AdminUsersPage />} />
-        </Route>
-        )}
-
-        <Route path="operator" element={<OperatorPage />}>
-          <Route path="board" element={<OperatorBoard />} />
-        </Route>
+          && (
+            <Route
+              path="admin"
+              element={(
+                <StaffLayout
+                  currentUser={currentUser! && currentUser.profile}
+                  client={client}
+                />
+              )}
+            >
+              <Route path="dashboard" element={<AdminPage />} />
+              <Route path="services" element={<AdminServicesPage />} />
+              <Route path="tickets" element={<AdminTicketsPage />} />
+              <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
+              <Route path="statistics" element={<AdminStatisticsPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
+            </Route>
+          )}
+        {currentUser && currentUser!.profile.role === 2
+          && (
+            <Route
+              path="operator"
+              element={(
+                <StaffLayout
+                  currentUser={currentUser! && currentUser.profile}
+                  client={client}
+                />
+              )}
+            >
+              <Route path="services" element={<OperatorPage />} />
+              <Route path="dashboard" element={<OperatorBoard />} />
+            </Route>
+          )}
         <Route path="client" element={<ClientPage />} />
       </Routes>
     </BrowserRouter>
