@@ -1,41 +1,64 @@
+import ServiceCard from '@components/cards/ServiceCard';
 import { ServiceData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import ServiceDetails from '../details/ServiceDetails';
 import ServiceIcon from '../icons/ServiceIcon';
 
-interface Props {
+interface RequiredProps {
     servicesList: ServiceData[],
-    handleUpdateService: (data: ServiceInput, id: number) => void
-    handleDeleteService: (id: number) => void
     mode: string
   }
 
+  interface OptionalProps{
+    handleUpdateService?: null | ((data: ServiceInput, id: number) => void)
+    handleDeleteService?: null | ((id: number) => void)
+    handleOpenModal?: null| ((service: ServiceData) => void)
+
+  }
+
+  interface Props extends RequiredProps, OptionalProps{}
+
+const defaultProps: OptionalProps = {
+  handleDeleteService: null,
+  handleUpdateService: null,
+  handleOpenModal: null,
+};
+
 function ServicesList(props:Props) {
   const {
-    servicesList, handleUpdateService, handleDeleteService, mode,
+    servicesList, handleUpdateService, handleDeleteService, handleOpenModal, mode,
   } = props;
 
   return (
-    <div className="grid grid-cols-3 gap-8">
+    <div>
       {servicesList && servicesList!
-      && servicesList.map((service) => (
-        mode === 'details' ? (
+      && (
+        (mode === 'details' && handleDeleteService && handleUpdateService && servicesList.map((service) => (
           <ServiceDetails
             handleUpdateService={handleUpdateService}
             handleDeleteService={handleDeleteService}
             key={service.id}
             service={service}
           />
-        )
-          : (
-            <ServiceIcon
-              key={service.id}
-              service={service}
-            />
-          )
-      ))}
+        )))
+        || (mode === 'icons' && servicesList.map((service) => (
+          <ServiceIcon
+            key={service.id}
+            service={service}
+          />
+        )))
+        || (mode === 'cards' && handleOpenModal && servicesList.map((service) => (
+          <ServiceCard
+            handleOpenModal={handleOpenModal}
+            key={service.id}
+            service={service}
+          />
+        )))
+      )}
     </div>
   );
 }
+
+ServicesList.defaultProps = defaultProps;
 
 export default ServicesList;

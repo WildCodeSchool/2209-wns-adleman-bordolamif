@@ -19,7 +19,7 @@ function ServiceDetails(props: Props) {
   };
 
   return (
-    <div className="flex flex-col border border-2 border-gray-200 py-2 rounded-xl">
+    <div className="flex flex-col border-2 border-gray-200 py-2 rounded-xl">
       <div className="nunito-bold pl-2 pb-1 text-lg">
         <h2>{service.name}</h2>
       </div>
