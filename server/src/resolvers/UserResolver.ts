@@ -186,9 +186,26 @@ export class UserResolver {
       }
 
       if (currentService !== null && typeof (currentService) !== 'undefined') {
-        userToUpdate.currentService = await dataSource.getRepository(Service)
+        const serviceToUpdate = await dataSource.getRepository(Service)
           .findOneOrFail({ where: { id: currentService?.id } }) || null;
+        serviceToUpdate.open = true;
+        await dataSource.getRepository(Service).save(serviceToUpdate);
+        userToUpdate.currentService = serviceToUpdate;
       } else {
+        const serviceToUpdate = await dataSource.getRepository(Service)
+          .findOneOrFail({
+            where: { currentUsers: { id } },
+            relations: {
+              waitingRoom: true, tickets: true, users: true, currentUsers: true,
+            },
+          }) || null;
+
+        if (serviceToUpdate!
+          && typeof (serviceToUpdate.currentUsers) !== 'undefined'
+          && serviceToUpdate!.currentUsers!.length === 1) {
+          serviceToUpdate.open = false;
+          await dataSource.getRepository(Service).save(serviceToUpdate);
+        }
         userToUpdate.currentService = null;
       }
 
