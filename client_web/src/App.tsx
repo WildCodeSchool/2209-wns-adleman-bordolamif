@@ -64,7 +64,9 @@ function App() {
               <Route path="dashboard" element={<OperatorBoard />} />
             </Route>
           )}
-        {currentUser && currentUser!.profile.isFirstLogin
+        {currentUser
+          && currentUser!.profile.isFirstLogin
+          && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR
           && (
           <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
