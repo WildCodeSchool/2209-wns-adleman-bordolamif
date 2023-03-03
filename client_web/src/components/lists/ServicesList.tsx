@@ -1,8 +1,8 @@
 import ServiceCard from '@components/cards/ServiceCard';
+import ServiceIcon from '@components/icons/ServiceIcon';
 import { ServiceData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import ServiceDetails from '../details/ServiceDetails';
-import ServiceIcon from '../icons/ServiceIcon';
 
 interface RequiredProps {
     servicesList: ServiceData[],

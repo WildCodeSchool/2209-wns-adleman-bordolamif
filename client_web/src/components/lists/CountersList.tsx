@@ -16,7 +16,7 @@ function CountersList(props:Props) {
   } = props;
 
   return (
-    <div>
+    <div className="flex flex-raw">
       {countersList && countersList! && countersList.map((counter) => (
         <CounterDetails
           key={counter.id}
