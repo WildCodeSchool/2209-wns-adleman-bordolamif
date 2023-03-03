@@ -33,10 +33,10 @@ function AuthPage(props: Props) {
     if (currentUser && currentUser!.role === RoleEnum.ADMINISTRATEUR) {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
-    if (currentUser && currentUser!.role === RoleEnum.OPERATEUR) {
+    if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && !currentUser!.isFirstLogin) {
       setTimeout(() => navigate('/operator/services'), 2000);
     }
-    if (currentUser && currentUser!.role === 2 && currentUser!.isFirstLogin) {
+    if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && currentUser!.isFirstLogin) {
       setTimeout(() => navigate('/firstlogin'), 2000);
     }
   }, [currentUser, navigate]);

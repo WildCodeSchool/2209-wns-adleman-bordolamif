@@ -49,7 +49,9 @@ function App() {
               <Route path="users" element={<AdminUsersPage />} />
             </Route>
           )}
-        {currentUser && currentUser!.profile.role === RoleEnum.OPERATEUR
+        {currentUser
+          && !currentUser!.profile.isFirstLogin
+          && currentUser!.profile.role === RoleEnum.OPERATEUR
           && (
             <Route
               path="operator"
