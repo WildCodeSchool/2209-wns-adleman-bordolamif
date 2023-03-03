@@ -66,7 +66,7 @@ function App() {
           )}
         {currentUser
           && currentUser!.profile.isFirstLogin
-          && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR
+          && currentUser!.profile.role === RoleEnum.OPERATEUR
           && (
           <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
