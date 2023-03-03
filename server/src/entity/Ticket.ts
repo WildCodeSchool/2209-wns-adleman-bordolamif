@@ -41,7 +41,7 @@ class Ticket {
       isFirstTime: boolean;
 
     @Field()
-    @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.EnAttente })
+    @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.EN_ATTENTE })
       status: StatusEnum;
 
     @Field({ nullable: true })

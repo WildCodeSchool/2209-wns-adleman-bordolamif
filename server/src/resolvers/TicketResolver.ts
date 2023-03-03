@@ -22,7 +22,7 @@ export class TicketResolver {
 
      @Query(() => [Ticket])
   async getAllTickets(
-       @Arg('filter', { nullable: true }) filter?: DateFilterEnum,
+       @Arg('filter', { nullable: true }) filter?: string,
   ): Promise<Ticket[]> {
     const searchFilter: SearchFilter = {};
 

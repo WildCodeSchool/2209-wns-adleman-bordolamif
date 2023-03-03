@@ -59,7 +59,7 @@ export class UserInput {
     @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
       password?: string;
 
-    @Field({ defaultValue: RoleEnum.Client })
+    @Field({ defaultValue: RoleEnum.CLIENT })
       role: RoleEnum;
 
     @Field(() => CounterId, { nullable: true })
@@ -78,7 +78,7 @@ export class TicketInput {
   @MaxLength(100)
     name?: string;
 
-    @Field({ defaultValue: StatusEnum.EnAttente })
+    @Field({ defaultValue: StatusEnum.EN_ATTENTE })
       status: StatusEnum;
 
     @Field()

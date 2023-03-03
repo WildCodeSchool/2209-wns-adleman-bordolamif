@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { TicketInput } from '@utils/types/InputTypes';
 import { TicketData } from '@utils/types/DataTypes';
 import ServiceIcon from '@components/icons/ServiceIcon';
-import { StatusObjectEnum } from '@utils/enum/StatusObjectEnum';
+import { StatusObjectEnum } from '@utils/enum/objects/StatusObjectEnum';
 
 interface Props {
     ticketToUpdate: TicketData;
