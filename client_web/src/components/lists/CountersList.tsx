@@ -16,7 +16,7 @@ function CountersList(props:Props) {
   } = props;
 
   return (
-    <div className="flex flex-raw">
+    <div className="grid grid-cols-2">
       {countersList && countersList! && countersList.map((counter) => (
         <CounterDetails
           key={counter.id}
