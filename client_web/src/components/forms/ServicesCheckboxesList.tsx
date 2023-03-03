@@ -10,10 +10,17 @@ toggleCheckList: (id: number) => void;
 function ServicesCheckboxesList(props: Props) {
   const { checkList, servicesList, toggleCheckList } = props;
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-2">
       {servicesList && servicesList.map((service: Service) => (
         <label key={service.id}>
-          <input type="checkbox" value={service.id} name={service.name} checked={!!checkList.find((serv) => serv.id === service.id)} onChange={() => toggleCheckList(service.id)} />
+          <input
+            className="mr-2"
+            type="checkbox"
+            value={service.id}
+            name={service.name}
+            checked={!!checkList.find((serv) => serv.id === service.id)}
+            onChange={() => toggleCheckList(service.id)}
+          />
           {service.name}
         </label>
       ))}
