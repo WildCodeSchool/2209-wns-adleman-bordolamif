@@ -11,6 +11,8 @@ import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
 import OperatorPage from '@pages/operator/OperatorPage';
 import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
+import ClientPage from '@pages/client/ClientPage';
+import { RoleEnum } from '@utils/enum/RoleEnum';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -27,7 +29,7 @@ function App() {
             />
           )}
         />
-        {currentUser && currentUser!.profile.role === 1
+        {currentUser && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR
           && (
             <Route
               path="admin"
@@ -46,7 +48,7 @@ function App() {
               <Route path="users" element={<AdminUsersPage />} />
             </Route>
           )}
-        {currentUser && currentUser!.profile.role === 2
+        {currentUser && currentUser!.profile.role === RoleEnum.OPERATEUR
           && (
             <Route
               path="operator"
@@ -61,6 +63,7 @@ function App() {
               <Route path="dashboard" element={<OperatorBoard />} />
             </Route>
           )}
+        <Route path="client" element={<ClientPage />} />
       </Routes>
     </BrowserRouter>
   );

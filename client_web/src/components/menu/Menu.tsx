@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import AdminMenu from './AdminMenu';
 import OperatorMenu from './OperatorMenu';
 import { LOGOUT } from '@graphQL/mutations/userMutations';
+import { RoleEnum } from '@utils/enum/RoleEnum';
 
 interface Props {
   userProfile: UserProfile
@@ -27,7 +28,7 @@ function Menu({ userProfile, client }: Props) {
   return (
     <div className="fixed flex flex-col justify-between h-screen">
       <div className="pl-2 py-6 w-[15rem]">
-        {userProfile.role === 1 && (
+        {userProfile.role === RoleEnum.ADMINISTRATEUR && (
           <div>
             <div className="ml-6 scale-125">
               <NavLink
@@ -39,7 +40,7 @@ function Menu({ userProfile, client }: Props) {
             <h2 className="pb-8 nunito-bold text-xl mt-6">Admin {firstNameLetter} {userProfile.lastname} </h2>
             <AdminMenu />
           </div>
-        )} {userProfile.role === 2 && (
+        )} {userProfile.role === RoleEnum.OPERATEUR && (
         <div>
           <div className="ml-6 scale-125">
             <NavLink
