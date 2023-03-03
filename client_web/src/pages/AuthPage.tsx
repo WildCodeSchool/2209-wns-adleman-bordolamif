@@ -35,6 +35,9 @@ function AuthPage(props: Props) {
     if (currentUser && currentUser!.role === 2) {
       setTimeout(() => navigate('/operator/services'), 2000);
     }
+    if (currentUser && currentUser!.role === 2 && currentUser!.isFirstLogin) {
+      setTimeout(() => navigate('/firstlogin'), 2000);
+    }
   }, [currentUser, navigate]);
 
   const onLogout = async () => {
