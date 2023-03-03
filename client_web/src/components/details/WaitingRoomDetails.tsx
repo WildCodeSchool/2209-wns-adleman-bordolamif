@@ -73,14 +73,12 @@ function WaitingRoomDetails(props: Props) {
         <div className="cursor-default backdrop-blur-md absolute left-0 top-0 h-screen w-screen" onClick={closeModal} />
         </div>
       )}
-      <div className="">
-        <CountersList
-          countersList={waitingRoom.counters}
-          waitingRoomId={waitingRoom.id}
-          handleUpdateCounter={handleUpdateCounter}
-          handleDeleteCounter={handleDeleteCounter}
-        />
-      </div>
+      <CountersList
+        countersList={waitingRoom.counters}
+        waitingRoomId={waitingRoom.id}
+        handleUpdateCounter={handleUpdateCounter}
+        handleDeleteCounter={handleDeleteCounter}
+      />
       {isCreateCounter
         ? (
           <CounterCreateForm
