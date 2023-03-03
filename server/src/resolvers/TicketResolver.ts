@@ -7,7 +7,12 @@ import { ApolloError } from 'apollo-server-errors';
 import { TicketInput } from '../utils/types/InputTypes';
 import User from '../entity/User';
 import Service from '../entity/Service';
-import { Raw } from 'typeorm';
+import { Between, Raw } from 'typeorm';
+import {
+  endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear,
+} from '../utils/dates';
+import { SearchFilter } from '../utils/interfaces';
+import { DateFilterEnum } from '../utils/enums/DateFilterEnum';
 
 @Resolver(Ticket)
 export class TicketResolver {
@@ -15,32 +20,53 @@ export class TicketResolver {
      QUERY
      ************************************ */
 
-    @Query(() => [Ticket])
-  async getAllTickets(): Promise<Ticket[]> {
-    return await dataSource.getRepository(Ticket).find({
-      relations: {
-        service: true,
-        user: true,
-        counter: true,
-      },
-    });
+     @Query(() => [Ticket])
+  async getAllTickets(
+       @Arg('filter', { nullable: true }) filter?: DateFilterEnum,
+  ): Promise<Ticket[]> {
+    const searchFilter: SearchFilter = {};
+
+    switch (filter) {
+      case DateFilterEnum.TODAY:
+        searchFilter.where = { createdAt: Between(startOfDay, endOfDay) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_WEEK:
+        searchFilter.where = { createdAt: Between(startOfWeek, endOfWeek) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_MONTH:
+        searchFilter.where = { createdAt: Between(startOfMonth, endOfMonth) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_YEAR:
+        searchFilter.where = { createdAt: Between(startOfYear, endOfYear) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      default:
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+    }
+    return await dataSource.getRepository(Ticket).find(
+      searchFilter,
+    );
   }
 
     @Query(() => Ticket)
-    async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
-      const ticket = await dataSource
-        .getRepository(Ticket)
-        .findOne({
-          where: { id },
-          relations: {
-            service: true,
-            user: true,
-            counter: true,
-          },
-        });
-      if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
-      return ticket;
-    }
+     async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
+       const ticket = await dataSource
+         .getRepository(Ticket)
+         .findOne({
+           where: { id },
+           relations: {
+             service: true,
+             user: true,
+             counter: true,
+           },
+         });
+       if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
+       return ticket;
+     }
 
     /** ***********************************
      MUTATION
