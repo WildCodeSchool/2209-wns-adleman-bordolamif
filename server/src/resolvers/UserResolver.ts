@@ -26,7 +26,7 @@ export class UserResolver {
                    QUERY
      ************************************ */
 
-    @Query(() => [User])
+  @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users = await dataSource.getRepository(User)
       .find({
@@ -38,158 +38,158 @@ export class UserResolver {
     return safeUsers;
   }
 
-    @Query(() => User)
-    async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
-      const user = await dataSource
-        .getRepository(User)
-        .findOne({
-          where: { id },
-          relations: {
-            services: true, counter: true, tickets: true, currentService: true,
-          },
-        });
+  @Query(() => User)
+  async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
+    const user = await dataSource
+      .getRepository(User)
+      .findOne({
+        where: { id },
+        relations: {
+          services: true, counter: true, tickets: true, currentService: true,
+        },
+      });
 
-      if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
-      return getSafeAttributes(user);
-    }
+    if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
+    return getSafeAttributes(user);
+  }
 
-    @Authorized()
-    @Query(() => User)
-    async profile(@Ctx() ctx: ContextType): Promise<User> {
-      return getSafeAttributes(ctx.currentUser as User);
-    }
+  @Authorized()
+  @Query(() => User)
+  async profile(@Ctx() ctx: ContextType): Promise<User> {
+    return getSafeAttributes(ctx.currentUser as User);
+  }
 
-    /** ***********************************
+  /** ***********************************
                   MUTATION
      ************************************ */
 
-    // @Authorized<RoleEnum>([1])
-    @Mutation(() => User)
-    async createUser(@Arg('data') data: UserInput): Promise<User> {
-      const {
-        firstname, lastname, email, role,
-      } = data;
+  // @Authorized<RoleEnum>([1])
+  @Mutation(() => User)
+  async createUser(@Arg('data') data: UserInput): Promise<User> {
+    const {
+      firstname, lastname, email, role,
+    } = data;
 
-      const exisitingUser = await dataSource
-        .getRepository(User)
-        .findOne({ where: { email } });
+    const exisitingUser = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email } });
 
-      if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
-      if (!data.password) {
-        if (role !== 2) throw new ApolloError('PASSWORD REQUIRED');
-        else {
-          data.password = `${firstname}${lastname}00!`;
-        }
+    if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
+    if (!data.password) {
+      if (role !== 2) throw new ApolloError('PASSWORD REQUIRED');
+      else {
+        data.password = `${firstname}${lastname}00!`;
       }
-      const hashedPassword = await hashPassword(data.password);
-
-      const userServices = await Promise.all(data.services?.map(
-        (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
-      ) || []);
-      const counter = null;
-      const newUser = await dataSource.getRepository(User).save({
-        firstname,
-        lastname,
-        email,
-        hashedPassword,
-        role,
-        isFirstLogin: role !== 1,
-        services: userServices,
-        counter,
-      });
-      return getSafeAttributes(newUser);
     }
+    const hashedPassword = await hashPassword(data.password);
 
-    @Mutation(() => String)
-    async login(
+    const userServices = await Promise.all(data.services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
+    const counter = null;
+    const newUser = await dataSource.getRepository(User).save({
+      firstname,
+      lastname,
+      email,
+      hashedPassword,
+      role,
+      isFirstLogin: role === 2,
+      services: userServices,
+      counter,
+    });
+    return getSafeAttributes(newUser);
+  }
+
+  @Mutation(() => String)
+  async login(
         @Arg('data') data: UserConnexion,
         @Ctx() ctx: ContextType,
-    ): Promise<string> {
-      const user = await dataSource
-        .getRepository(User)
-        .findOne({ where: { email: data.email } });
+  ): Promise<string> {
+    const user = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email: data.email } });
 
-      if (
-        user === null
+    if (
+      user === null
       || typeof user.hashedPassword !== 'string'
       || !(await verifyPassword(data.password, user.hashedPassword))
-      ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new ApolloError('invalid credentials'); }
 
-      const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
+    const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
 
-      ctx.res.cookie('token', token, {
-        secure: env.NODE_ENV === 'production',
-        httpOnly: true,
-      });
+    ctx.res.cookie('token', token, {
+      secure: env.NODE_ENV === 'production',
+      httpOnly: true,
+    });
 
-      return token;
-    }
+    return token;
+  }
 
-    @Mutation(() => String)
-    async logout(@Ctx() ctx: ContextType): Promise<string> {
-      ctx.res.clearCookie('token');
-      return 'OK';
-    }
+  @Mutation(() => String)
+  async logout(@Ctx() ctx: ContextType): Promise<string> {
+    ctx.res.clearCookie('token');
+    return 'OK';
+  }
 
-    // @Authorized<RoleEnum>([1])
-    @Mutation(() => Boolean)
-    async deleteUser(@Arg('id', () => Int) id: number): Promise<boolean> {
-      const { affected } = await dataSource.getRepository(User).delete(id);
-      if (affected === 0) throw new ApolloError('User not found', 'NOT_FOUND');
-      return true;
-    }
-
-    @Mutation(() => User)
-    async updatePassword(
-        @Arg('id', () => Int) id: number,
-        @Arg('data') data: UserUpdatePassword,
-    ): Promise<User> {
-      const { email, oldPassword, newPassword } = data;
-
-      const userToUpdate = await dataSource
-        .getRepository(User)
-        .findOne({ where: { email } });
-
-      if (
-        userToUpdate === null
-    || typeof userToUpdate.hashedPassword !== 'string'
-    || !(await verifyPassword(oldPassword, userToUpdate.hashedPassword))
-      ) { throw new ApolloError('invalid credentials'); }
-
-      const hashedPassword = await hashPassword(newPassword);
-
-      userToUpdate.hashedPassword = hashedPassword;
-
-      await dataSource.getRepository(User).save(userToUpdate);
-
-      return getSafeAttributes(userToUpdate);
-    }
+  // @Authorized<RoleEnum>([1])
+  @Mutation(() => Boolean)
+  async deleteUser(@Arg('id', () => Int) id: number): Promise<boolean> {
+    const { affected } = await dataSource.getRepository(User).delete(id);
+    if (affected === 0) throw new ApolloError('User not found', 'NOT_FOUND');
+    return true;
+  }
 
   @Mutation(() => User)
-    async firstLoginPassword(
+  async updatePassword(
+        @Arg('id', () => Int) id: number,
+        @Arg('data') data: UserUpdatePassword,
+  ): Promise<User> {
+    const { email, oldPassword, newPassword } = data;
+
+    const userToUpdate = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email } });
+
+    if (
+      userToUpdate === null
+    || typeof userToUpdate.hashedPassword !== 'string'
+    || !(await verifyPassword(oldPassword, userToUpdate.hashedPassword))
+    ) { throw new ApolloError('invalid credentials'); }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    userToUpdate.hashedPassword = hashedPassword;
+
+    await dataSource.getRepository(User).save(userToUpdate);
+
+    return getSafeAttributes(userToUpdate);
+  }
+
+  @Mutation(() => User)
+  async firstLoginPassword(
     @Arg('id', () => Int) id: number,
     @Arg('data') data: FirstUserLoginPassword,
-    ): Promise<User> {
-      const { email, newPassword } = data;
+  ): Promise<User> {
+    const { email, newPassword } = data;
 
-      const userToUpdate = await dataSource
-        .getRepository(User)
-        .findOne({ where: { email } });
+    const userToUpdate = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email } });
 
-      if (
-        userToUpdate === null
+    if (
+      userToUpdate === null
       || typeof userToUpdate.hashedPassword !== 'string'
-      ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new ApolloError('invalid credentials'); }
 
-      const hashedPassword = await hashPassword(newPassword);
+    const hashedPassword = await hashPassword(newPassword);
 
-      userToUpdate.hashedPassword = hashedPassword;
-      userToUpdate.isFirstLogin = false;
+    userToUpdate.hashedPassword = hashedPassword;
+    userToUpdate.isFirstLogin = false;
 
-      await dataSource.getRepository(User).save(userToUpdate);
+    await dataSource.getRepository(User).save(userToUpdate);
 
-      return getSafeAttributes(userToUpdate);
-    }
+    return getSafeAttributes(userToUpdate);
+  }
 
   @Mutation(() => User)
   async updateUser(
