@@ -1,6 +1,13 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
-  Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RoleEnum } from '../utils/enums/RoleEnum';
 import Ticket from './Ticket';
@@ -36,6 +43,10 @@ class User {
   @Field()
   @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.CLIENT })
     role: RoleEnum;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+    isFirstLogin?: boolean;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

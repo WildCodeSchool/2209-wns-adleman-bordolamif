@@ -40,6 +40,19 @@ export class UserUpdatePassword {
 }
 
 @InputType()
+export class FirstUserLoginPassword {
+  @Field()
+  @MaxLength(100)
+  @IsEmail()
+    email: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    newPassword: string;
+}
+
+@InputType()
 export class UserInput {
     @Field()
     @MaxLength(100)
