@@ -4,7 +4,8 @@ import TicketModal from '@components/modals/TicketModal';
 import { UPDATE_TICKET } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
 import { GET_ALL_TICKETS } from '@graphQL/query/ticketQuery';
-import { StatusObjectEnum } from '@utils/enum/StatusObjectEnum';
+import { DateFilterObjectEnum } from '@utils/enum/objects/DateFilterObjectEnum';
+import { StatusObjectEnum } from '@utils/enum/objects/StatusObjectEnum';
 import useModal from '@utils/hooks/UseModal';
 import { ServiceData, TicketData } from '@utils/types/DataTypes';
 import { TicketInput } from '@utils/types/InputTypes';
@@ -24,7 +25,9 @@ function AdminTicketsPage() {
     loading: ticketsListLoading,
     data: ticketsList,
     refetch: refetchTicketList,
-  } = useQuery(GET_ALL_TICKETS);
+  } = useQuery(GET_ALL_TICKETS, {
+    variables: { filter: 'today' },
+  });
 
   const {
     data: servicesList,
@@ -36,6 +39,14 @@ function AdminTicketsPage() {
 
   const filterServices = (e:React.ChangeEvent<HTMLSelectElement>) => {
     setServiceFilter(e.target.value);
+  };
+
+  const filterDate = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value === 'all') {
+      refetchTicketList({ filter: undefined });
+    } else {
+      refetchTicketList({ filter: e.target.value });
+    }
   };
 
   const handleOpenModal = (ticket: TicketData) => {
@@ -74,6 +85,12 @@ function AdminTicketsPage() {
       <select name="status" onChange={filterStatus}>
         {StatusObjectEnum.map((stat) => (
           <option key={stat.key} value={stat.key}>{stat.name}</option>
+        ))}
+      </select>
+
+      <select name="date" onChange={filterDate} defaultValue="today">
+        {DateFilterObjectEnum.map((date) => (
+          <option key={date.key} value={date.key}>{date.name}</option>
         ))}
       </select>
 

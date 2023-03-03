@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-shadow
 export enum StatusEnum {
-    EnAttente = 1,
-    Ajourne = 2,
-    EnTraitement = 3,
-    Traite = 4,
+    EN_ATTENTE = 1,
+    AJOURNE = 2,
+    EN_TRAITEMENT = 3,
+    TRAITE = 4,
   }
