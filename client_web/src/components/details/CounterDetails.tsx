@@ -21,7 +21,7 @@ function CounterDetails(props: Props) {
 
   return (
     <div
-      className="flex justify-between items-center bg-gray-200 rounded w-fit p-2 h-8 mx-2 mb-4"
+      className="flex justify-between items-center bg-gray-200 rounded w-fit px-2 py-1 h-fit mx-2 mb-4"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
