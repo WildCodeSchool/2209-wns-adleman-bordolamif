@@ -7,7 +7,12 @@ import { ApolloError } from 'apollo-server-errors';
 import jwt from 'jsonwebtoken';
 import { env, loadEnv } from '../env';
 import { ContextType } from '../utils/interfaces';
-import { UserConnexion, UserInput, UserUpdatePassword } from '../utils/types/InputTypes';
+import {
+  FirstUserLoginPassword,
+  UserConnexion,
+  UserInput,
+  UserUpdatePassword,
+} from '../utils/types/InputTypes';
 import Service from '../entity/Service';
 import Counter from '../entity/Counter';
 import nodemailer from 'nodemailer';
@@ -18,7 +23,7 @@ loadEnv();
 @Resolver(User)
 export class UserResolver {
   /** ***********************************
-     QUERY
+                   QUERY
      ************************************ */
 
     @Query(() => [User])
@@ -55,7 +60,7 @@ export class UserResolver {
     }
 
     /** ***********************************
-     MUTATION
+                  MUTATION
      ************************************ */
 
     // @Authorized<RoleEnum>([1])
@@ -83,7 +88,14 @@ export class UserResolver {
       ) || []);
       const counter = null;
       const newUser = await dataSource.getRepository(User).save({
-        firstname, lastname, email, hashedPassword, role, services: userServices, counter,
+        firstname,
+        lastname,
+        email,
+        hashedPassword,
+        role,
+        isFirstLogin: role !== 1,
+        services: userServices,
+        counter,
       });
       return getSafeAttributes(newUser);
     }
@@ -153,119 +165,12 @@ export class UserResolver {
       return getSafeAttributes(userToUpdate);
     }
 
-    @Mutation(() => User)
-    async updateUser(
-        @Arg('id', () => Int) id: number,
-        @Arg('data') data: UserInput,
+  @Mutation(() => User)
+    async firstLoginPassword(
+    @Arg('id', () => Int) id: number,
+    @Arg('data') data: FirstUserLoginPassword,
     ): Promise<User> {
-      const {
-        firstname, lastname, email, role, services, counter, currentService,
-      } = data;
-      const userToUpdate = await dataSource.getRepository(User).findOne({
-        where: { id },
-        relations: {
-          services: true, counter: true, tickets: true, currentService: true,
-        },
-      });
-
-      if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
-
-      userToUpdate.firstname = firstname;
-      userToUpdate.lastname = lastname;
-      userToUpdate.email = email;
-      userToUpdate.role = role;
-      userToUpdate.services = await Promise.all(services?.map(
-        (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
-      ) || []);
-
-      if (counter !== null && typeof (counter) !== 'undefined') {
-        userToUpdate.counter = await dataSource.getRepository(Counter)
-          .findOneOrFail({ where: { id: counter?.id } }) || null;
-      } else {
-        userToUpdate.counter = null;
-      }
-
-      if (currentService !== null && typeof (currentService) !== 'undefined') {
-        const serviceToUpdate = await dataSource.getRepository(Service)
-          .findOneOrFail({ where: { id: currentService?.id } }) || null;
-        serviceToUpdate.open = true;
-        await dataSource.getRepository(Service).save(serviceToUpdate);
-        userToUpdate.currentService = serviceToUpdate;
-      } else {
-        const serviceToUpdate = await dataSource.getRepository(Service)
-          .findOneOrFail({
-            where: { currentUsers: { id } },
-            relations: {
-              waitingRoom: true, tickets: true, users: true, currentUsers: true,
-            },
-          }) || null;
-
-        if (serviceToUpdate!
-          && typeof (serviceToUpdate.currentUsers) !== 'undefined'
-          && serviceToUpdate!.currentUsers!.length === 1) {
-          serviceToUpdate.open = false;
-          await dataSource.getRepository(Service).save(serviceToUpdate);
-        }
-        userToUpdate.currentService = null;
-      }
-
-      await dataSource.getRepository(User).save(userToUpdate);
-
-      return getSafeAttributes(userToUpdate);
-    }
-
-    @Mutation(() => String)
-    async forgotPassword(@Arg('email', () => String) email: string): Promise<string> {
-      const user = await dataSource.getRepository(User).findOne({ where: { email } });
-      if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
-
-      const resetToken = randomUUID();
-      const tokenExpiratesIn = Date.now() + 3600000;
-
-      user.resetPasswordToken = resetToken;
-      user.resetPasswordExpires = new Date(tokenExpiratesIn);
-
-      await dataSource.getRepository(User).save(user);
-
-      // eslint-disable-next-line no-constant-condition
-      if (process.env.NODE_ENV === 'development' || 'test') {
-        const testAccount = await nodemailer.createTestAccount();
-
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.ethereal.email',
-          port: 587,
-          secure: false,
-          auth: {
-            user: testAccount.user,
-            pass: testAccount.pass,
-          },
-          tls: {
-            rejectUnauthorized: false,
-          },
-        });
-
-        const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
-        const mailOptions = {
-          from: 'email@example.com',
-          to: email,
-          subject: 'Réinitialisation de votre mot de passe',
-          text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
-        };
-        const info = await transporter.sendMail(mailOptions);
-        // eslint-disable-next-line no-restricted-syntax
-        console.log('mail available at : ', nodemailer.getTestMessageUrl(info));
-      }
-      return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
-    }
-
-    @Mutation(() => User)
-    async resetPassword(
-        @Arg('uuid', () => String) uuid: string,
-        @Arg('data') data: UserConnexion,
-    ): Promise<User> {
-      const { email, password } = data;
-
-      const dateNow = new Date(Date.now());
+      const { email, newPassword } = data;
 
       const userToUpdate = await dataSource
         .getRepository(User)
@@ -273,20 +178,153 @@ export class UserResolver {
 
       if (
         userToUpdate === null
-    || typeof userToUpdate.hashedPassword !== 'string'
-    || uuid !== userToUpdate.resetPasswordToken
+      || typeof userToUpdate.hashedPassword !== 'string'
       ) { throw new ApolloError('invalid credentials'); }
 
-      if (userToUpdate.resetPasswordExpires && dateNow > userToUpdate.resetPasswordExpires) { throw new ApolloError('Link to reset password has exired'); }
-
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashPassword(newPassword);
 
       userToUpdate.hashedPassword = hashedPassword;
-      userToUpdate.resetPasswordExpires = undefined;
-      userToUpdate.resetPasswordToken = undefined;
+      userToUpdate.isFirstLogin = false;
 
       await dataSource.getRepository(User).save(userToUpdate);
 
       return getSafeAttributes(userToUpdate);
     }
+
+  @Mutation(() => User)
+  async updateUser(
+        @Arg('id', () => Int) id: number,
+        @Arg('data') data: UserInput,
+  ): Promise<User> {
+    const {
+      firstname, lastname, email, role, services, counter, currentService,
+    } = data;
+    const userToUpdate = await dataSource.getRepository(User).findOne({
+      where: { id },
+      relations: {
+        services: true, counter: true, tickets: true, currentService: true,
+      },
+    });
+
+    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+
+    userToUpdate.firstname = firstname;
+    userToUpdate.lastname = lastname;
+    userToUpdate.email = email;
+    userToUpdate.role = role;
+    userToUpdate.services = await Promise.all(services?.map(
+      (service) => dataSource.getRepository(Service).findOneOrFail({ where: { id: service.id } }),
+    ) || []);
+
+    if (counter !== null && typeof (counter) !== 'undefined') {
+      userToUpdate.counter = await dataSource.getRepository(Counter)
+        .findOneOrFail({ where: { id: counter?.id } }) || null;
+    } else {
+      userToUpdate.counter = null;
+    }
+
+    if (currentService !== null && typeof (currentService) !== 'undefined') {
+      const serviceToUpdate = await dataSource.getRepository(Service)
+        .findOneOrFail({ where: { id: currentService?.id } }) || null;
+      serviceToUpdate.open = true;
+      await dataSource.getRepository(Service).save(serviceToUpdate);
+      userToUpdate.currentService = serviceToUpdate;
+    } else {
+      const serviceToUpdate = await dataSource.getRepository(Service)
+        .findOneOrFail({
+          where: { currentUsers: { id } },
+          relations: {
+            waitingRoom: true, tickets: true, users: true, currentUsers: true,
+          },
+        }) || null;
+
+      if (serviceToUpdate!
+          && typeof (serviceToUpdate.currentUsers) !== 'undefined'
+          && serviceToUpdate!.currentUsers!.length === 1) {
+        serviceToUpdate.open = false;
+        await dataSource.getRepository(Service).save(serviceToUpdate);
+      }
+      userToUpdate.currentService = null;
+    }
+
+    await dataSource.getRepository(User).save(userToUpdate);
+
+    return getSafeAttributes(userToUpdate);
+  }
+
+  @Mutation(() => String)
+  async forgotPassword(@Arg('email', () => String) email: string): Promise<string> {
+    const user = await dataSource.getRepository(User).findOne({ where: { email } });
+    if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
+
+    const resetToken = randomUUID();
+    const tokenExpiratesIn = Date.now() + 3600000;
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = new Date(tokenExpiratesIn);
+
+    await dataSource.getRepository(User).save(user);
+
+    // eslint-disable-next-line no-constant-condition
+    if (process.env.NODE_ENV === 'development' || 'test') {
+      const testAccount = await nodemailer.createTestAccount();
+
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
+      const mailOptions = {
+        from: 'email@example.com',
+        to: email,
+        subject: 'Réinitialisation de votre mot de passe',
+        text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
+      };
+      const info = await transporter.sendMail(mailOptions);
+      // eslint-disable-next-line no-restricted-syntax
+      console.log('mail available at : ', nodemailer.getTestMessageUrl(info));
+    }
+    return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
+  }
+
+  @Mutation(() => User)
+  async resetPassword(
+        @Arg('uuid', () => String) uuid: string,
+        @Arg('data') data: UserConnexion,
+  ): Promise<User> {
+    const { email, password } = data;
+
+    const dateNow = new Date(Date.now());
+
+    const userToUpdate = await dataSource
+      .getRepository(User)
+      .findOne({ where: { email } });
+
+    if (
+      userToUpdate === null
+    || typeof userToUpdate.hashedPassword !== 'string'
+    || uuid !== userToUpdate.resetPasswordToken
+    ) { throw new ApolloError('invalid credentials'); }
+
+    if (userToUpdate.resetPasswordExpires && dateNow > userToUpdate.resetPasswordExpires) { throw new ApolloError('Link to reset password has exired'); }
+
+    const hashedPassword = await hashPassword(password);
+
+    userToUpdate.hashedPassword = hashedPassword;
+    userToUpdate.resetPasswordExpires = undefined;
+    userToUpdate.resetPasswordToken = undefined;
+
+    await dataSource.getRepository(User).save(userToUpdate);
+
+    return getSafeAttributes(userToUpdate);
+  }
 }
