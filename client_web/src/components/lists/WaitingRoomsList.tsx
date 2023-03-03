@@ -22,7 +22,7 @@ function WaitingRoomsList(props:Props) {
   } = props;
 
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-4">
       {waitingRoomsList && waitingRoomsList! && waitingRoomsList.map((waitingRoom) => ((
         <WaitingRoomDetails
           key={waitingRoom.id}

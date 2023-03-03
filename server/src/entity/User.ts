@@ -41,7 +41,7 @@ class User {
     hashedPassword?: string;
 
   @Field()
-  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.Client })
+  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.CLIENT })
     role: RoleEnum;
 
   @Field({ nullable: true })

@@ -64,7 +64,7 @@ function AdminServicesPage() {
           </div>
         </div>
         <h2 className="nunito-bold text-xl mb-8">Mes services</h2>
-        <div className="px-8 mx-">
+        <div className="px-8">
           <ServicesList
             servicesList={servicesList && servicesList.getAllServices}
             handleUpdateService={handleUpdateService}

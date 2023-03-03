@@ -4,7 +4,8 @@ import { WaitingRoomData } from '@utils/types/DataTypes';
 import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 import CountersList from '../lists/CountersList';
-import ServicesList from '../lists/ServicesList';
+import ServiceIcon from '@components/icons/ServiceIcon';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 interface Props {
     waitingRoom: WaitingRoomData,
@@ -24,37 +25,53 @@ function WaitingRoomDetails(props: Props) {
     handleUpdateWaitingRoom,
     handleDeleteWaitingRoom,
   } = props;
+
   const [isCreateCounter, setIsCreateCounter] = useState<boolean>(false);
   const [isUpdateWaitingRoom, setIsUpdateWaitingRoom] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setIsUpdateWaitingRoom(false);
+  };
+
   return (
-    <div className="bg-gray-200 p-4 my-2 rounded">
-      <div className="flex bg-white justify-between px-2">
-        <h2>{waitingRoom.name}</h2>
-        <ServicesList servicesList={waitingRoom.services} mode="icons" />
-        {!isUpdateWaitingRoom
-        && (
-        <div>
-          <button
-            type="button"
-            onClick={() => setIsUpdateWaitingRoom(true)}
-          >
-            Update
-          </button>
-          <button
-            type="button"
-            onClick={() => handleDeleteWaitingRoom(waitingRoom.id)}
-          >
-            Delete
-          </button>
+    <div className="border border-2 flex flex-col justify-between border-gray-200 p-3 rounded-xl my-2">
+      <div className="flex flex-col mb-4">
+        <div className="flex flex-raw justify-between nunito-bold pl-2 pb-1 text-lg">
+          <h2 className="mr-4">{waitingRoom.name}</h2>
+          {!isUpdateWaitingRoom
+          && (
+          <div className="flex flex-raw">
+            <button
+              type="button"
+              onClick={() => setIsUpdateWaitingRoom(true)}
+            >
+              <PencilSquareIcon className="w-6 mr-2 hover:text-blue-500" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDeleteWaitingRoom(waitingRoom.id)}
+            >
+              <TrashIcon className="w-6 hover:text-red-600" />
+            </button>
+          </div>
+          )}
         </div>
-        )}
+        <div className="flex flex-raw p-2 gap-3">
+          {waitingRoom.services.map((service) => (
+            <ServiceIcon key={service.id} service={service} />
+          ))}
+        </div>
       </div>
       {isUpdateWaitingRoom && (
-      <WaitingRoomUpdateForm
-        waitingRoomToUpdate={waitingRoom}
-        setIsUpdateWaitingRoom={setIsUpdateWaitingRoom}
-        handleUpdateWaitingRoom={handleUpdateWaitingRoom}
-      />
+        <div>
+          <WaitingRoomUpdateForm
+            waitingRoomToUpdate={waitingRoom}
+            setIsUpdateWaitingRoom={setIsUpdateWaitingRoom}
+            handleUpdateWaitingRoom={handleUpdateWaitingRoom}
+          />
+          {/* eslint-disable-next-line */}
+        <div className="cursor-default backdrop-blur-md absolute left-0 top-0 h-screen w-screen" onClick={closeModal} />
+        </div>
       )}
       <CountersList
         countersList={waitingRoom.counters}
@@ -73,13 +90,12 @@ function WaitingRoomDetails(props: Props) {
         : (
           <button
             type="button"
-            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-20"
+            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 ml-2 rounded-xl h-fit w-fit"
             onClick={() => setIsCreateCounter(true)}
           >
-            Add Counter
+            Ajouter un guichet
           </button>
         )}
-
     </div>
   );
 }

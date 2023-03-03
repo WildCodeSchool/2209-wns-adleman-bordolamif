@@ -59,37 +59,45 @@ function AdminWaitingRoomsAndCountersPage() {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <p>AdminWaitingRoomsAndCountersPage</p>
-        {!isCreateWaitingRoom
+      <div className="flex flex-col items-center mb-12">
+        <h1 className="nunito-bold text-orange-500 text-2xl">Gérer les salles d'attente</h1>
+        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+      </div>
+      <h2 className="nunito-bold text-xl mb-8">Créer une salle d'attente</h2>
+      <div className="flex flex-raw items-center justify-start ml-8 mb-12 mx-4">
+        <div className="flex flex-col items-center">
+          {!isCreateWaitingRoom
         && (
           <button
             type="button"
-            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-1/6"
+            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
             onClick={() => setIsCreateWaitingRoom(true)}
           >
-            Create WR
+            Ajouter une salle d'attente
           </button>
         )}
-      </div>
-      {isCreateWaitingRoom
+          {isCreateWaitingRoom
       && (
-      <WaitingRoomCreateForm
-        setIsCreateWaitingRoom={setIsCreateWaitingRoom}
-        handleCreateWaitingRoom={handleCreateWaitingRoom}
-      />
+        <WaitingRoomCreateForm
+          setIsCreateWaitingRoom={setIsCreateWaitingRoom}
+          handleCreateWaitingRoom={handleCreateWaitingRoom}
+        />
       )}
-      {waitingRoomsListLoading && <p>loading...</p>}
-      <WaitingRoomsList
-        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-        handleUpdateCounter={handleUpdateCounter}
-        handleCreateCounter={handleCreateCounter}
-        handleDeleteCounter={handleDeleteCounter}
-        handleUpdateWaitingRoom={handleUpdateWaitingRoom}
-        handleDeleteWaitingRoom={handleDeleteWaitingRoom}
-      />
+        </div>
+      </div>
+      <h2 className="nunito-bold text-xl mb-8">Salles d'attente et leur guichets</h2>
+      <div className="px-8 mx-">
+        <WaitingRoomsList
+          waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+          handleUpdateCounter={handleUpdateCounter}
+          handleCreateCounter={handleCreateCounter}
+          handleDeleteCounter={handleDeleteCounter}
+          handleUpdateWaitingRoom={handleUpdateWaitingRoom}
+          handleDeleteWaitingRoom={handleDeleteWaitingRoom}
+        />
+        {waitingRoomsListLoading && <p>loading...</p>}
+      </div>
     </div>
-
   );
 }
 export default AdminWaitingRoomsAndCountersPage;

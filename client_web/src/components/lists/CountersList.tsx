@@ -16,7 +16,7 @@ function CountersList(props:Props) {
   } = props;
 
   return (
-    <div>
+    <div className="grid grid-cols-2">
       {countersList && countersList! && countersList.map((counter) => (
         <CounterDetails
           key={counter.id}

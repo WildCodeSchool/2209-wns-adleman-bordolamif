@@ -41,7 +41,7 @@ function AdminMenu() {
           >
             <div className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer">
               <ClipboardDocumentCheckIcon className="w-7 mr-4" />
-              Guichets
+              Salles d'attente
             </div>
           </NavLink>
           <NavLink

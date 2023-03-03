@@ -5,6 +5,7 @@ import { UserConnexion } from '@utils/types/InputTypes';
 import { useNavigate } from 'react-router';
 import { UserProfile } from '@utils/types/DataTypes';
 import AuthForm from '@components/forms/AuthForm';
+import { RoleEnum } from '@utils/enum/RoleEnum';
 
 interface Props {
   currentUser: UserProfile | null,
@@ -29,10 +30,10 @@ function AuthPage(props: Props) {
   };
 
   useEffect(() => {
-    if (currentUser && currentUser!.role === 1) {
+    if (currentUser && currentUser!.role === RoleEnum.ADMINISTRATEUR) {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
-    if (currentUser && currentUser!.role === 2) {
+    if (currentUser && currentUser!.role === RoleEnum.OPERATEUR) {
       setTimeout(() => navigate('/operator/services'), 2000);
     }
     if (currentUser && currentUser!.role === 2 && currentUser!.isFirstLogin) {

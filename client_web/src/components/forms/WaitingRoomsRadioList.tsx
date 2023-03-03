@@ -10,10 +10,11 @@ toggleRadioList: (id: number) => void;
 function WaitingRoomsRadioList(props: Props) {
   const { radioChecked, waitingRoomsList, toggleRadioList } = props;
   return (
-    <div>
+    <div className="flex flex-col">
       {waitingRoomsList && waitingRoomsList.map((waitingRoom: WaitingRoom) => (
         <label key={waitingRoom.id} className="p-1">
           <input
+            className="mr-2"
             type="radio"
             value={waitingRoom.id}
             name={waitingRoom.name}
