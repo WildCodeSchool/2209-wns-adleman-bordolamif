@@ -19,7 +19,7 @@ const UserController = {
       firstname, lastname, email, role, services,
     } = data;
 
-    const exisitingUser = UserModel.getOneUserByMail(email);
+    const exisitingUser = await UserModel.getOneUserByMail(email);
 
     if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
     if (!data.password) {
