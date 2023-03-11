@@ -12,6 +12,7 @@ import AdminServicesPage from '@pages/admin/AdminServicesPage';
 import OperatorPage from '@pages/operator/OperatorPage';
 import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
+import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
 
 function App() {
@@ -48,7 +49,9 @@ function App() {
               <Route path="users" element={<AdminUsersPage />} />
             </Route>
           )}
-        {currentUser && currentUser!.profile.role === RoleEnum.OPERATEUR
+        {currentUser
+          && !currentUser!.profile.isFirstLogin
+          && currentUser!.profile.role === RoleEnum.OPERATEUR
           && (
             <Route
               path="operator"
@@ -62,6 +65,12 @@ function App() {
               <Route path="services" element={<OperatorPage />} />
               <Route path="dashboard" element={<OperatorBoard />} />
             </Route>
+          )}
+        {currentUser
+          && currentUser!.profile.isFirstLogin
+          && currentUser!.profile.role === RoleEnum.OPERATEUR
+          && (
+          <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
         <Route path="client" element={<ClientPage />} />
       </Routes>
