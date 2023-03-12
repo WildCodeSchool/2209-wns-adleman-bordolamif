@@ -76,3 +76,12 @@ mutation DeleteUser($deleteUserId: Int!) {
   deleteUser(id: $deleteUserId)
 }
 `;
+
+export const UPDATE_USER_PASSWORD = gql`
+mutation FirstLoginPassword($data: FirstUserLoginPassword!, $firstLoginPasswordId: Int!) {
+  firstLoginPassword(data: $data, id: $firstLoginPasswordId) {
+    email
+    isFirstLogin
+  }
+}
+`;
