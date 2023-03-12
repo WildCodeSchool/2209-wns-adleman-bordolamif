@@ -3,6 +3,7 @@ import ServiceCreateForm from '@components/forms/ServiceCreateForm';
 import ServicesList from '@components/lists/ServicesList';
 import { CREATE_SERVICE, DELETE_SERVICE, UPDATE_SERVICE } from '@graphQL/mutations/serviceMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { ServiceInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
@@ -48,9 +49,10 @@ function AdminServicesPage() {
         && (
           <button
             type="button"
-            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+            className="flex flex-raw bg-transparent hover:bg-green-700 nunito-bold text-green-700 hover:text-white py-2 px-4 border border-green-700 hover:border-transparent rounded-xl"
             onClick={() => setIsCreateService(true)}
           >
+            <PlusCircleIcon className="w-6 mr-2" />
             Ajouter un service
           </button>
         )}
