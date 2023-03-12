@@ -139,11 +139,11 @@ export class UserResolver {
         },
       });
     if (userToUpdate === null) throw new ApolloError('User not found', 'NOT_FOUND');
-    if (userToUpdate.role === 2) {
-      userToUpdate.counter = null;
-      userToUpdate.currentService = null;
-      await dataSource.getRepository(User).save(userToUpdate);
-    }
+
+    userToUpdate.counter = null;
+    userToUpdate.currentService = null;
+    await dataSource.getRepository(User).save(userToUpdate);
+
     ctx.res.clearCookie('token');
     return 'OK';
   }

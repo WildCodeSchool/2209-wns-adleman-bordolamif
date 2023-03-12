@@ -7,8 +7,8 @@ mutation login($data:UserConnexion!) {
 `;
 
 export const LOGOUT = gql`
-mutation logout{
-  logout
+mutation logout($logoutId: Int!){
+  logout(id: $logoutId)
 }
 `;
 
