@@ -67,11 +67,11 @@ function AuthForm(props: Props) {
             </div>
             <button
               type="submit"
-              disabled={!emailValue.includes('@.') || passwordValue.length < 8}
+              disabled={!emailValue.includes('@') || passwordValue.length < 8}
               className="flex justify-around drop-shadow disabled:cursor-default transition-all hover:bg-orange-600 hover:scale-[100.5%] duration-500 disabled:bg-gray-300 bg-orange-500 text-white py-2 px-4 rounded w-3/6 cursor-pointer"
             >
               <div>
-                {!emailValue.includes('@.') || passwordValue.length < 8 ? (
+                {!emailValue.includes('@') || passwordValue.length < 8 ? (
                   <XCircleIcon className="absolute left-2 top-2 w-6" />
                 ) : (
                   <ArrowRightCircleIcon className="absolute left-2 top-2 w-6" />
