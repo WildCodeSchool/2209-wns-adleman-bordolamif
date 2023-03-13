@@ -1,3 +1,4 @@
+import Counter from '../entity/Counter';
 import Service from '../entity/Service';
 import { RoleEnum } from './enums/RoleEnum';
 
@@ -10,4 +11,9 @@ export interface NewUserDto{
     isFirstLogin: boolean,
     services: Service[],
     counter: null,
+}
+
+export interface NewWaitingRoomDto{
+    name: string,
+    services: Service[],
 }
