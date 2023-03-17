@@ -31,7 +31,7 @@ const UserController = {
     const hashedPassword = await hashPassword(data.password);
 
     const userServices = await Promise.all(services?.map(
-      (service) => ServiceModel.getOneArgService(service),
+      (service) => ServiceModel.getOneArgService(service.id),
     ) || []);
     const counter = null;
     return await UserModel.createUser({
@@ -59,7 +59,7 @@ const UserController = {
     userToUpdate.email = email;
     userToUpdate.role = role;
     userToUpdate.services = await Promise.all(services?.map(
-      (service) => ServiceModel.getOneArgService(service),
+      (service) => ServiceModel.getOneArgService(service.id),
     ) || []);
 
     if (counter !== null && typeof (counter) !== 'undefined') {
@@ -69,7 +69,7 @@ const UserController = {
     }
 
     if (currentService !== null && typeof (currentService) !== 'undefined') {
-      const serviceToUpdate = await ServiceModel.getOneArgService(currentService) || null;
+      const serviceToUpdate = await ServiceModel.getOneArgService(currentService.id) || null;
       serviceToUpdate.open = true;
       await ServiceModel.updateService(serviceToUpdate);
       userToUpdate.currentService = serviceToUpdate;

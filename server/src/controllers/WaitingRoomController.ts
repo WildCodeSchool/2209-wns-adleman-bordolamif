@@ -17,7 +17,7 @@ const WaitingRoomController = {
 
   createWaitingRoom: async (data: WaitingRoomInput): Promise<WaitingRoom> => {
     const waitingRoomServices = await Promise.all(data.services?.map(
-      (service) => ServiceModel.getOneArgService(service),
+      (service) => ServiceModel.getOneArgService(service.id),
     ) || []);
 
     return await WaitingRoomModel.createWaitingRoom({
@@ -34,7 +34,7 @@ const WaitingRoomController = {
 
     waitingRoomToUpdate.name = name;
     waitingRoomToUpdate.services = await Promise.all(services?.map(
-      (service) => ServiceModel.getOneArgService(service),
+      (service) => ServiceModel.getOneArgService(service.id),
     ) || []);
 
     return await WaitingRoomModel.updateWaitingRoom(waitingRoomToUpdate);

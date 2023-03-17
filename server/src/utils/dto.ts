@@ -1,4 +1,5 @@
 import Service from '../entity/Service';
+import User from '../entity/User';
 import WaitingRoom from '../entity/WaitingRoom';
 import { RoleEnum } from './enums/RoleEnum';
 
@@ -25,3 +26,10 @@ export interface NewServiceDto{
     color: string,
     waitingRoom: WaitingRoom | undefined
 }
+
+export interface NewTicketDto{
+    name: string,
+    isFirstTime: boolean,
+    user: User | undefined,
+    service: Service,
+  }

@@ -23,6 +23,9 @@ const UserModel = {
     .getRepository(User)
     .findOne({ where: { email } }),
 
+  getOneArgUser: async (id: number) => await
+  dataSource.getRepository(User).findOneOrFail({ where: { id } }),
+
   createUser: async (userToCreate: NewUserDto) => await
   dataSource.getRepository(User).save(userToCreate),
 
