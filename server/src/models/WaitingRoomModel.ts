@@ -16,6 +16,9 @@ const WaitingRoomModel = {
       },
     }),
 
+  getOneArgWaitingRoom: async (id: number) => await dataSource.getRepository(WaitingRoom)
+    .findOneOrFail({ where: { id } }),
+
   createWaitingRoom: async (waitingRoomToCreate: NewWaitingRoomDto) => await
   dataSource.getRepository(WaitingRoom).save(waitingRoomToCreate),
 

@@ -1,5 +1,5 @@
-import Counter from '../entity/Counter';
 import Service from '../entity/Service';
+import WaitingRoom from '../entity/WaitingRoom';
 import { RoleEnum } from './enums/RoleEnum';
 
 export interface NewUserDto{
@@ -16,4 +16,12 @@ export interface NewUserDto{
 export interface NewWaitingRoomDto{
     name: string,
     services: Service[],
+}
+
+export interface NewServiceDto{
+    name:string,
+    acronym: string,
+    open: boolean,
+    color: string,
+    waitingRoom: WaitingRoom | undefined
 }
