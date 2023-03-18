@@ -7,6 +7,7 @@ export interface UserProfile {
     role: RoleEnum
     firstname: string;
     lastname: string;
+    isFirstLogin: boolean;
   }
 
 export interface CurrentUser {
@@ -64,4 +65,12 @@ export interface WaitingRoomData extends WaitingRoom {
 export interface ServiceData extends Service {
     __typename: string;
     waitingRoom: WaitingRoom
+    tickets: Ticket[];
+
+  }
+
+export interface TicketData extends Ticket {
+    __typename: string;
+    service: Service
+    user: UserProfile
   }

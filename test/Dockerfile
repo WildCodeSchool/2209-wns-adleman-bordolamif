@@ -7,14 +7,14 @@ RUN npm i -g node-pre-gyp
 RUN mkdir /server
 WORKDIR /server
 
-COPY ../server/package.json ./package.json
-COPY ../server/package-lock.json ./package-lock.json
+COPY ./server/package.json ./package.json
+COPY ./server/package-lock.json ./package-lock.json
 
 RUN npm i
 
-COPY ../server/tsconfig.json ./tsconfig.json
-COPY ../server/src ./src
-COPY ../server/.env ./.env
+COPY ./server/tsconfig.json ./tsconfig.json
+COPY ./server/src ./src
+COPY ./server/.env ./.env
 
 RUN mkdir /app
 WORKDIR /app
@@ -27,6 +27,6 @@ COPY test/jest.config.js ./
 COPY test/dbSetup.ts ./
 COPY test/tsconfig.json ./
 COPY test/src ./src
-COPY ../server/.env ./.env
+COPY ./server/.env ./.env
 
 CMD ["npm", "run", "test"]

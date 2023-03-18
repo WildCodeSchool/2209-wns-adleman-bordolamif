@@ -7,7 +7,12 @@ import { ApolloError } from 'apollo-server-errors';
 import { TicketInput } from '../utils/types/InputTypes';
 import User from '../entity/User';
 import Service from '../entity/Service';
-import { Raw } from 'typeorm';
+import { Between, Raw } from 'typeorm';
+import {
+  endOfDay, endOfMonth, endOfWeek, endOfYear, startOfDay, startOfMonth, startOfWeek, startOfYear,
+} from '../utils/dates';
+import { SearchFilter } from '../utils/interfaces';
+import { DateFilterEnum } from '../utils/enums/DateFilterEnum';
 
 @Resolver(Ticket)
 export class TicketResolver {
@@ -15,30 +20,53 @@ export class TicketResolver {
      QUERY
      ************************************ */
 
-    @Query(() => [Ticket])
-  async getAllTickets(): Promise<Ticket[]> {
-    return await dataSource.getRepository(Ticket).find({
-      relations: {
-        service: true,
-        user: true,
-      },
-    });
+     @Query(() => [Ticket])
+  async getAllTickets(
+       @Arg('filter', { nullable: true }) filter?: string,
+  ): Promise<Ticket[]> {
+    const searchFilter: SearchFilter = {};
+
+    switch (filter) {
+      case DateFilterEnum.TODAY:
+        searchFilter.where = { createdAt: Between(startOfDay, endOfDay) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_WEEK:
+        searchFilter.where = { createdAt: Between(startOfWeek, endOfWeek) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_MONTH:
+        searchFilter.where = { createdAt: Between(startOfMonth, endOfMonth) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      case DateFilterEnum.THIS_YEAR:
+        searchFilter.where = { createdAt: Between(startOfYear, endOfYear) };
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+      default:
+        searchFilter.relations = ['service', 'user', 'counter'];
+        break;
+    }
+    return await dataSource.getRepository(Ticket).find(
+      searchFilter,
+    );
   }
 
     @Query(() => Ticket)
-    async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
-      const ticket = await dataSource
-        .getRepository(Ticket)
-        .findOne({
-          where: { id },
-          relations: {
-            service: true,
-            user: true,
-          },
-        });
-      if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
-      return ticket;
-    }
+     async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
+       const ticket = await dataSource
+         .getRepository(Ticket)
+         .findOne({
+           where: { id },
+           relations: {
+             service: true,
+             user: true,
+             counter: true,
+           },
+         });
+       if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
+       return ticket;
+     }
 
     /** ***********************************
      MUTATION
@@ -47,7 +75,7 @@ export class TicketResolver {
     @Mutation(() => Ticket)
     async createTicket(@Arg('data') data: TicketInput): Promise<Ticket> {
       const {
-        calledAt, closedAt, isFirstTime, isReturned,
+        isFirstTime,
       } = data;
       const user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: data.user?.id } }) || null;
@@ -71,12 +99,10 @@ export class TicketResolver {
 
       const ticketToCreate = {
         name,
-        calledAt,
-        closedAt,
         isFirstTime,
-        isReturned,
         user,
         service: ticketService,
+        ticket: null,
       };
       return await dataSource.getRepository(Ticket).save(ticketToCreate);
     }
@@ -98,7 +124,7 @@ export class TicketResolver {
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {
       const {
-        calledAt, closedAt, isReturned, isFirstTime, user, service,
+        status, isFirstTime, user, service,
       } = data;
       const ticketToUpdate = await dataSource
         .getRepository(Ticket)
@@ -107,25 +133,31 @@ export class TicketResolver {
           relations: {
             service: true,
             user: true,
+            counter: true,
           },
         });
 
       if (ticketToUpdate === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
 
-      if (ticketToUpdate.calledAt !== calledAt!) {
-        ticketToUpdate.calledAt = calledAt;
-        ticketToUpdate.status = 3;
+      switch (status) {
+        case 2: {
+          ticketToUpdate.isReturned = true;
+          ticketToUpdate.status = status;
+          break;
+        }
+        case 3: {
+          ticketToUpdate.calledAt = new Date();
+          ticketToUpdate.status = status;
+          break;
+        }
+        case 4: {
+          ticketToUpdate.closedAt = new Date();
+          ticketToUpdate.status = status;
+          break;
+        }
+        default: ticketToUpdate.status = status;
       }
 
-      if (ticketToUpdate.closedAt !== closedAt!) {
-        ticketToUpdate.closedAt = closedAt;
-        ticketToUpdate.status = 4;
-      }
-
-      if (ticketToUpdate.isReturned !== isReturned!) {
-        ticketToUpdate.isReturned = isReturned;
-        ticketToUpdate.status = 2;
-      }
       ticketToUpdate.isFirstTime = isFirstTime;
       ticketToUpdate.user = await dataSource.getRepository(User)
         .findOneOrFail({ where: { id: user?.id } }) || null;

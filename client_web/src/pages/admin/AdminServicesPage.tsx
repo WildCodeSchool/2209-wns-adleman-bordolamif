@@ -36,37 +36,45 @@ function AdminServicesPage() {
 
   return (
     <>
-
-      <div className="flex justify-between">
-        <p>AdminServicesPage</p>
-        {!isCreateService
+      <div className="flex flex-col items-center mb-12">
+        <h1 className="nunito-bold text-orange-500 text-2xl">Gérer mes services</h1>
+        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+      </div>
+      <div>
+        <h2 className="nunito-bold text-xl mb-8">Créer un service</h2>
+        <div className="flex flex-raw items-center justify-start ml-8 mb-12 mx-4">
+          <div className="flex flex-col items-center">
+            {!isCreateService
         && (
           <button
             type="button"
-            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-1/6"
+            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
             onClick={() => setIsCreateService(true)}
           >
-            Create Service
+            Ajouter un service
           </button>
         )}
-      </div>
-      {isCreateService
+            {isCreateService
       && (
       <ServiceCreateForm
         setIsCreateService={setIsCreateService}
         handleCreateService={handleCreateService}
       />
       )}
-      {servicesListLoading && <p>loading...</p>}
-      <ServicesList
-        servicesList={servicesList && servicesList.getAllServices}
-        handleUpdateService={handleUpdateService}
-        handleDeleteService={handleDeleteService}
-        mode="details"
-
-      />
+          </div>
+        </div>
+        <h2 className="nunito-bold text-xl mb-8">Mes services</h2>
+        <div className="px-8">
+          <ServicesList
+            servicesList={servicesList && servicesList.getAllServices}
+            handleUpdateService={handleUpdateService}
+            handleDeleteService={handleDeleteService}
+            mode="details"
+          />
+          {servicesListLoading && <p>Chargement...</p>}
+        </div>
+      </div>
     </>
-
   );
 }
 export default AdminServicesPage;

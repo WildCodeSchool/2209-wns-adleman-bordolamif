@@ -7,8 +7,8 @@ mutation login($data:UserConnexion!) {
 `;
 
 export const LOGOUT = gql`
-mutation logout{
-  logout
+mutation logout($logoutId: Int!){
+  logout(id: $logoutId)
 }
 `;
 
@@ -74,5 +74,14 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
 export const DELETE_USER = gql`
 mutation DeleteUser($deleteUserId: Int!) {
   deleteUser(id: $deleteUserId)
+}
+`;
+
+export const UPDATE_USER_PASSWORD = gql`
+mutation FirstLoginPassword($data: FirstUserLoginPassword!, $firstLoginPasswordId: Int!) {
+  firstLoginPassword(data: $data, id: $firstLoginPasswordId) {
+    email
+    isFirstLogin
+  }
 }
 `;

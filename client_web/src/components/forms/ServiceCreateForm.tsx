@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { ColorResult } from 'react-color';
 import { useForm } from 'react-hook-form';
 import ColorPicker from './ColorPicker';
-
 import WaitingRoomsRadioList from './WaitingRoomsRadioList';
 
 interface Props {
@@ -47,33 +46,64 @@ function ServiceCreateForm(props: Props) {
     setIsCreateService(false);
   };
 
-  const inputClassName = 'border rounded w-2/6 py-2 px-3 text-gray-700 focus:outline-none mb-7';
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mx-10">
-      <input placeholder="Nom" {...register('name', { required: true })} className={inputClassName} />
-      {waitingRoomsListLoading && <p>Loading...</p>}
-      <WaitingRoomsRadioList
-        radioChecked={serviceWaitingRoom}
-        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-        toggleRadioList={toggleServiceWaitingRoom}
-      />
-      <input placeholder="Acronyme" className={inputClassName} {...register('acronym', { required: true, maxLength: 3 })} />
-
-      <ColorPicker color={color} handleColorChange={handleColorChange} />
-
-      <div className="flex">
-        <button
-          className="p-2 mx-2 bg-red-600 rounded text-white"
-          type="button"
-          onClick={() => setIsCreateService(false)}
-        >Annuler
-        </button>
-        <button
-          className="p-2 mx-2 bg-green-600 rounded text-white"
-          type="submit"
-        >
-          Créer
-        </button>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
+      <div>
+        <label className="flex flex-col">
+          Nom du service
+          <input
+            placeholder="Ex: Radiologie"
+            {...register('name', { required: true })}
+            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+          />
+        </label>
+        <div className="flex flex-raw justify-between">
+          <label className="flex flex-col">
+            Acronyme
+            <input
+              placeholder="Ex: RDL"
+              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              {...register('acronym', { required: true, maxLength: 3 })}
+            />
+          </label>
+          <div>
+            <p>
+              Couleur
+            </p>
+            <ColorPicker
+              color={color}
+              handleColorChange={handleColorChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="ml-6">
+        <div className="mb-10">
+          <p className="mb-2">
+            Salle d'attente
+          </p>
+          {waitingRoomsListLoading && <p>Chargement...</p>}
+          <WaitingRoomsRadioList
+            radioChecked={serviceWaitingRoom}
+            waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+            toggleRadioList={toggleServiceWaitingRoom}
+          />
+        </div>
+        <div className="flex flex-raw justify-end">
+          <button
+            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            type="button"
+            onClick={() => setIsCreateService(false)}
+          >
+            Annuler
+          </button>
+          <button
+            className="p-2 mx-2 w-[5rem] bg-green-600 rounded text-white hover:bg-green-700"
+            type="submit"
+          >
+            Créer
+          </button>
+        </div>
       </div>
     </form>
   );

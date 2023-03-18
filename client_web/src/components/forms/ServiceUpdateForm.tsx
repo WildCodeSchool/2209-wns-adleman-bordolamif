@@ -19,7 +19,9 @@ interface Props {
 function ServiceUpdateForm(props: Props) {
   const { serviceToUpdate, setIsUpdateService, handleUpdateService } = props;
   const [serviceWaitingRoom,
-    setServiceWaitingRoom] = useState<WaitingRoomId>({ id: serviceToUpdate.waitingRoom?.id });
+    setServiceWaitingRoom] = useState<WaitingRoomId>({
+      id: serviceToUpdate.waitingRoom?.id,
+    } || null);
   const [color, setColor] = useState<string>(serviceToUpdate.color);
 
   const {
@@ -35,49 +37,82 @@ function ServiceUpdateForm(props: Props) {
     setColor(colorResult.hex);
   };
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
-
   const toggleServiceWaitingRoom = (id:number) => {
     setServiceWaitingRoom({ id });
   };
 
   const onSubmit = async (data: ServiceInput) => {
-    const updatedService = {
+    const updatedService: ServiceInput = {
       name: data.name,
       open: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
     };
+    if (serviceWaitingRoom.id === undefined) updatedService.waitingRoom = null;
 
     await handleUpdateService(updatedService, serviceToUpdate.id);
     setIsUpdateService(false);
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input placeholder="Nom" {...register('name')} required className={inputClassName} />
-      {waitingRoomsListLoading && <p>Loading...</p>}
-      <WaitingRoomsRadioList
-        radioChecked={serviceWaitingRoom}
-        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-        toggleRadioList={toggleServiceWaitingRoom}
-      />
-      <input placeholder="Acronyme" className={inputClassName} {...register('acronym', { required: true, maxLength: 3 })} />
-
-      <ColorPicker color={color} handleColorChange={handleColorChange} />
-
-      <div className="flex flex-col">
-        <button
-          className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
-          type="button"
-          aria-label="cancel"
-          onClick={() => setIsUpdateService(false)}
-        />
-        <button
-          className="p-2 my-2 bg-green-600 rounded-xl w-2 h-2"
-          type="submit"
-          aria-label="submit"
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-4 rounded-xl">
+      <div>
+        <label className="flex flex-col">
+          Nom du service
+          <input
+            placeholder="Ex: Radiologie"
+            {...register('name', { required: true })}
+            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+          />
+        </label>
+        <div className="flex flex-raw justify-between">
+          <label className="flex flex-col">
+            Acronyme
+            <input
+              placeholder="Ex: RDL"
+              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              {...register('acronym', { required: true, maxLength: 3 })}
+            />
+          </label>
+          <div>
+            <p>
+              Couleur
+            </p>
+            <ColorPicker
+              color={color}
+              handleColorChange={handleColorChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="ml-6">
+        <div className="mb-10">
+          <p className="mb-2">
+            Salle d'attente
+          </p>
+          {waitingRoomsListLoading && <p>Chargement...</p>}
+          <WaitingRoomsRadioList
+            radioChecked={serviceWaitingRoom}
+            waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+            toggleRadioList={toggleServiceWaitingRoom}
+          />
+        </div>
+        <div className="flex flex-raw justify-end">
+          <button
+            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            type="button"
+            onClick={() => setIsUpdateService(false)}
+          >
+            Annuler
+          </button>
+          <button
+            className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
+            type="submit"
+          >
+            Appliquer
+          </button>
+        </div>
       </div>
     </form>
   );

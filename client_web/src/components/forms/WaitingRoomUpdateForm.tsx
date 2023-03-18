@@ -25,8 +25,6 @@ function WaitingRoomUpdateForm(props: Props) {
     defaultValues: waitingRoomToUpdate,
   });
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
-
   const toggleWaitingRoomServices = (idToSearch:number) => {
     if (waitingRoomServices.find((service) => service.id === idToSearch)) {
       setWaitingRoomServices(
@@ -45,26 +43,42 @@ function WaitingRoomUpdateForm(props: Props) {
     setIsUpdateWaitingRoom(false);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input placeholder="Name" {...register('name')} required className={inputClassName} />
-      {servicesListLoading && <p>Loading...</p>}
-      <ServicesCheckboxesList
-        checkList={waitingRoomServices}
-        servicesList={servicesList && servicesList.getAllServices}
-        toggleCheckList={toggleWaitingRoomServices}
-      />
-      <div className="flex flex-col">
-        <button
-          className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
-          type="button"
-          aria-label="cancel"
-          onClick={() => setIsUpdateWaitingRoom(false)}
-        />
-        <button
-          className="p-2 my-2 bg-green-600 rounded-xl w-2 h-2"
-          type="submit"
-          aria-label="submit"
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-8 rounded-xl">
+      <div className="flex flex-col items-center">
+        <label className="flex flex-col">
+          Nom de la salle d'attente
+          <input
+            placeholder="Name"
+            {...register('name')}
+            required
+            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7"
+          />
+        </label>
+        <div className="flex flex-col justify-center">
+          <div className="mb-4">
+            {servicesListLoading && <p>Chargement...</p>}
+            <ServicesCheckboxesList
+              checkList={waitingRoomServices}
+              servicesList={servicesList && servicesList.getAllServices}
+              toggleCheckList={toggleWaitingRoomServices}
+            />
+          </div>
+        </div>
+        <div className="p-2 space-x-4">
+          <button
+            className="p-2 w-fit bg-red-600 rounded text-white h-fit hover:bg-red-700"
+            type="button"
+            onClick={() => setIsUpdateWaitingRoom(false)}
+          >
+            Annuler
+          </button>
+          <button
+            className="p-2 w-fit bg-green-600 rounded text-white h-fit hover:bg-green-700"
+            type="submit"
+          >
+            Appliquer
+          </button>
+        </div>
       </div>
     </form>
   );
