@@ -17,6 +17,10 @@ const TicketModel = {
       counter: true,
     },
   }),
+
+  getOneArgTicket: async (id: number) => await dataSource.getRepository(Ticket)
+    .findOneOrFail({ where: { id } }),
+
   getTodayTicketsByService: async (serviceId: number) => await dataSource.getRepository(Ticket)
     .find({ where: { createdAt: Raw((alias) => `${alias} > DATE(NOW())`), service: { id: serviceId } }, order: { createdAt: 'DESC' } }),
 

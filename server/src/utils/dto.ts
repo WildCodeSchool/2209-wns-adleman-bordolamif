@@ -33,3 +33,8 @@ export interface NewTicketDto{
     user: User | undefined,
     service: Service,
   }
+
+export interface NewCounterDto{
+    name: string,
+    waitingRoom: WaitingRoom
+  }
