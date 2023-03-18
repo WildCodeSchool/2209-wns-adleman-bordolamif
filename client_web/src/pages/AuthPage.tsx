@@ -42,7 +42,7 @@ function AuthPage(props: Props) {
   }, [currentUser, navigate]);
 
   const onLogout = async () => {
-    await logout();
+    await logout({ variables: { logoutId: currentUser!.id } });
     await client.resetStore();
   };
 

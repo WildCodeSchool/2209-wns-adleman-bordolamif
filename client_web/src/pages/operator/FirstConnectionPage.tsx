@@ -8,6 +8,7 @@ import ChangePasswordForm from '@components/forms/ChangePasswordForm';
 
 interface Props {
   currentUser: UserProfile,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: ApolloClient<any>
 }
 
@@ -31,7 +32,7 @@ function FirstConnectionPage(props:Props) {
           },
 
         });
-        await logout();
+        await logout({ variables: { logoutId: currentUser.id } });
         await client.resetStore();
         navigate('/');
       } else {
