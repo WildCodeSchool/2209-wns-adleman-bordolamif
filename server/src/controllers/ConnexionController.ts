@@ -24,5 +24,17 @@ const ConnexionController = {
     });
     return token;
   },
+
+  logout: async (id:number, ctx: ContextType) => {
+    const userToUpdate = await UserModel.getOneUserById(id);
+    if (userToUpdate === null) throw new ApolloError('User not found', 'NOT_FOUND');
+
+    userToUpdate.counter = null;
+    userToUpdate.currentService = null;
+    await UserModel.updateUser(userToUpdate);
+
+    ctx.res.clearCookie('token');
+    return 'OK';
+  },
 };
 export default ConnexionController;

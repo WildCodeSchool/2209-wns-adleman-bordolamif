@@ -65,22 +65,7 @@ export class UserResolver {
     @Arg('id', () => Int) id: number,
     @Ctx() ctx: ContextType,
   ): Promise<string> {
-    const userToUpdate = await dataSource
-      .getRepository(User)
-      .findOne({
-        where: { id },
-        relations: {
-          services: true, counter: true, tickets: true, currentService: true,
-        },
-      });
-    if (userToUpdate === null) throw new ApolloError('User not found', 'NOT_FOUND');
-
-    userToUpdate.counter = null;
-    userToUpdate.currentService = null;
-    await dataSource.getRepository(User).save(userToUpdate);
-
-    ctx.res.clearCookie('token');
-    return 'OK';
+    return await ConnexionController.logout(id, ctx);
   }
 
   // @Authorized<RoleEnum>([1])
