@@ -8,6 +8,7 @@ query getProfile {
     role
     firstname
     lastname
+    isFirstLogin
   }
 }
 `;
@@ -20,6 +21,7 @@ query GetAllUsers {
     lastname
     email
     role
+    isFirstLogin
     services {
       acronym
       color
@@ -60,6 +62,7 @@ query GetOneUser($getOneUserId: Int!) {
     lastname
     role
     email
+    isFirstLogin  
     counter {
       id
       name

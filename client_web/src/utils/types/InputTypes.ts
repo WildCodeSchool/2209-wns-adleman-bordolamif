@@ -46,3 +46,8 @@ export interface UserConnexion {
     email: string;
     password: string;
   }
+
+export interface ChangePassword {
+      newPassword: string;
+      checkPassword: string;
+  }

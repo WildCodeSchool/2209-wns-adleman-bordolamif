@@ -7,6 +7,7 @@ export interface UserProfile {
     role: RoleEnum
     firstname: string;
     lastname: string;
+    isFirstLogin: boolean;
   }
 
 export interface CurrentUser {

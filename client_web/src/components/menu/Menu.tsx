@@ -18,7 +18,7 @@ function Menu({ userProfile, client }: Props) {
   const [logout] = useMutation(LOGOUT);
   const navigate = useNavigate();
   const onLogout = async () => {
-    await logout();
+    await logout({ variables: { logoutId: userProfile.id } });
     await client.resetStore();
     navigate('/');
   };
