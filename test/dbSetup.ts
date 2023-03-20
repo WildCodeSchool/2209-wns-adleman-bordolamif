@@ -5,8 +5,8 @@ import db from '../server/src/db';
 // https://github.com/typeorm/typeorm/issues/2978#issuecomment-730596460
 async function clearDB() {
   const entities = db.entityMetadatas;
-  return Promise.all(
-    entities.map((entity) => db.getRepository(entity.name).delete({})),
+  return await Promise.all(
+    entities.map(async (entity) => await db.getRepository(entity.name).delete({})),
   );
 }
 
