@@ -28,12 +28,12 @@ function ServiceDetails(props: Props) {
       <div className="nunito-bold pl-2 pb-1 text-lg">
         <h2>{service.name}</h2>
       </div>
-      <div className="flex flex-raw items-center justify-between px-2">
+      <div className="flex items-center justify-between px-2">
         <ServiceIcon service={service} />
         <p className="ml-2">{service.waitingRoom?.name}</p>
         {!isUpdateService
         && (
-        <div className="flex flex-raw">
+        <div className="flex">
           <button
             type="button"
             onClick={() => setIsUpdateService(true)}

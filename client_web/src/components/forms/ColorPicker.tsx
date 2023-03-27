@@ -1,3 +1,4 @@
+import { defaultColors } from '@utils/defaultColors';
 import { useState } from 'react';
 import { CirclePicker, ColorResult } from 'react-color';
 
@@ -26,7 +27,7 @@ function ColorPicker(props:Props) {
       && (
         <div className="absolute bg-gray-100 rounded-xl p-2 shadow-xl">
           <CirclePicker
-            colors={['#FF66FC', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548', '#607d8b', '#1E1D1E']}
+            colors={defaultColors}
             onChangeComplete={handleColorChange}
           />
         </div>
