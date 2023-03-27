@@ -1,13 +1,15 @@
 import { ApolloClient } from '@apollo/client';
 import Menu from '@components/menu/Menu';
 import { UserProfile } from '@utils/types/DataTypes';
-import { Outlet } from 'react-router';
+import { Outlet, useOutletContext } from 'react-router';
 
 interface Props {
   currentUser: UserProfile | null,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: ApolloClient<any>
 }
+
+type ContextType = {userProfile: UserProfile | null}
 
 function StaffLayout(props:Props) {
   const { currentUser, client } = props;
@@ -27,3 +29,7 @@ function StaffLayout(props:Props) {
 }
 
 export default StaffLayout;
+
+export function useUserProfile() {
+  return useOutletContext<ContextType>();
+}

@@ -16,6 +16,7 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@graphQL': path.resolve(__dirname, 'src/graphQL'),
       '@utils': path.resolve(__dirname, 'src/utils'),
+      '@layouts': path.resolve(__dirname, 'src/layouts'),
     },
   },
 });

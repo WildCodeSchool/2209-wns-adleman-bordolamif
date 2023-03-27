@@ -1,53 +1,63 @@
 import { RoleEnum } from '@utils/enum/RoleEnum';
 import { StatusEnum } from '@utils/enum/StatusEnum';
-import {
-  CounterId, ServiceId, UserId, WaitingRoomId,
-} from './InputIdTypes';
+import { CounterId, ServiceId, UserId, WaitingRoomId } from './InputIdTypes';
 
 export interface UserInput {
-      firstname: string;
-      lastname: string;
-      email: string;
-      password?: string;
-      role?: RoleEnum;
-      counter?: CounterId;
-      services?: ServiceId[];
-      currentService?: ServiceId;
-  }
+  firstname: string;
+  lastname: string;
+  email: string;
+  password?: string;
+  role?: RoleEnum;
+  counter?: CounterId;
+  services?: ServiceId[];
+  currentService?: ServiceId;
+}
 
 export interface TicketInput {
-      name?: string;
-      isFirstTime: boolean;
-      status?: StatusEnum;
-      user?: UserId;
-      service: ServiceId;
+  name?: string;
+  isFirstTime: boolean;
+  status?: StatusEnum;
+  user?: UserId;
+  service: ServiceId;
 }
 
 export interface WaitingRoomInput {
-      name: string;
-      services: ServiceId[]
+  name: string;
+  services: ServiceId[];
 }
 
 export interface CounterInput {
-      name: string;
-      waitingRoom: WaitingRoomId;
-      user?: UserId;
+  name: string;
+  waitingRoom: WaitingRoomId;
+  user?: UserId;
 }
 
 export interface ServiceInput {
-      name: string;
-      acronym: string;
-      open: boolean;
-      color: string;
-      waitingRoom?: WaitingRoomId | null;
+  name: string;
+  acronym: string;
+  open: boolean;
+  color: string;
+  waitingRoom?: WaitingRoomId | null;
 }
 
 export interface UserConnexion {
-    email: string;
-    password: string;
-  }
+  email: string;
+  password: string;
+}
 
 export interface ChangePassword {
-      newPassword: string;
-      checkPassword: string;
-  }
+  newPassword: string;
+  checkPassword: string;
+}
+
+export interface UpdatePassword {
+  oldPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+}
+
+export interface UserUpdatePassword {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+}

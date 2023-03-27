@@ -31,6 +31,17 @@ function OperatorMenu() {
               Tableau de bord
             </div>
           </NavLink>
+          <NavLink
+            to="/operator/myaccount"
+            style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            <div
+              className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer"
+            >
+              <ComputerDesktopIcon className="w-7 mr-4" />
+              Mon compte
+            </div>
+          </NavLink>
         </ul>
       </div>
     </div>
