@@ -32,7 +32,7 @@ function FirstConnectionPage(props:Props) {
           },
 
         });
-        await logout();
+        await logout({ variables: { logoutId: currentUser.id } });
         await client.resetStore();
         navigate('/');
       } else {

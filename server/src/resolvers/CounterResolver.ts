@@ -2,12 +2,9 @@ import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import Counter from '../entity/Counter';
-import dataSource from '../db';
-import { ApolloError } from 'apollo-server-errors';
 import { CounterInput } from '../utils/types/InputTypes';
-import WaitingRoom from '../entity/WaitingRoom';
-import User from '../entity/User';
-import Ticket from '../entity/Ticket';
+import CounterModel from '../models/CounterModel';
+import CounterController from '../controllers/CounterController';
 
 @Resolver(Counter)
 export class CounterResolver {
@@ -17,31 +14,14 @@ export class CounterResolver {
 
     @Query(() => [Counter])
   async getAllCounters(): Promise<Counter[]> {
-    return await dataSource.getRepository(Counter).find({
-      relations: {
-        waitingRoom: true,
-        user: true,
-        ticket: true,
-      },
-    });
+    return await CounterModel.getAllCounters();
   }
 
   @Query(() => Counter)
     async getOneCounter(
         @Arg('id', () => Int) id: number,
     ): Promise<Counter> {
-      const counter = await dataSource
-        .getRepository(Counter)
-        .findOne({
-          where: { id },
-          relations: {
-            waitingRoom: true,
-            user: true,
-            ticket: true,
-          },
-        });
-      if (counter === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
-      return counter;
+      return await CounterController.getOneCounterById(id);
     }
     /** ***********************************
      MUTATION
@@ -49,21 +29,14 @@ export class CounterResolver {
 
     @Mutation(() => Counter)
   async createCounter(@Arg('data') data: CounterInput): Promise<Counter> {
-    const waitingRoom = await dataSource.getRepository(WaitingRoom)
-      .findOneOrFail({ where: { id: data.waitingRoom.id } });
-    if (waitingRoom === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
-    return await dataSource.getRepository(Counter).save({ name: data.name, waitingRoom });
+    return await CounterController.createCounter(data);
   }
 
     @Mutation(() => Boolean)
     async deleteCounter(
         @Arg('id', () => Int) id: number,
     ): Promise<boolean> {
-      const { affected } = await dataSource
-        .getRepository(Counter)
-        .delete(id);
-      if (affected === 0) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
-      return true;
+      return await CounterController.deleteCounter(id);
     }
 
   @Mutation(() => Counter)
@@ -71,31 +44,6 @@ export class CounterResolver {
       @Arg('id', () => Int) id: number,
       @Arg('data') data: CounterInput,
     ): Promise<Counter> {
-      const counterToUpdate = await dataSource.getRepository(Counter).findOne({
-        where: { id }, relations: { waitingRoom: true, user: true, ticket: true },
-      });
-
-      if (counterToUpdate === null) { throw new ApolloError('Counter not found', 'NOT_FOUND'); }
-
-      counterToUpdate.name = data.name;
-
-      if (data.user) {
-        counterToUpdate.user = await dataSource.getRepository(User)
-          .findOneOrFail({ where: { id: data.user?.id } });
-        if (counterToUpdate.user === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
-      } else {
-        counterToUpdate.user = data.user;
-      }
-
-      if (data.ticket) {
-        counterToUpdate.ticket = await dataSource.getRepository(Ticket)
-          .findOneOrFail({ where: { id: data.ticket?.id } });
-        if (counterToUpdate.ticket === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
-      } else {
-        counterToUpdate.ticket = data.ticket;
-      }
-
-      await dataSource.getRepository(Counter).save(counterToUpdate);
-      return counterToUpdate;
+      return await CounterController.updateCounter(data, id);
     }
 }
