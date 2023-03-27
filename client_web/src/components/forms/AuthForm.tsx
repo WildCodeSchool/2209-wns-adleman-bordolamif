@@ -83,7 +83,7 @@ function AuthForm(props: Props) {
             </button>
             <div className="mt-4">
               {loading && (
-              <div className="flex flex-raw justify-center items-center">
+              <div className="flex flex-row justify-center items-center">
                 <div className="mr-4">Connexion...</div>
                 <Loader />
               </div>
