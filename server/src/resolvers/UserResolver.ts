@@ -60,7 +60,7 @@ export class UserResolver {
   @Mutation(() => String)
   async login(
     @Arg('data') data: UserConnexion,
-    @Ctx() ctx: ContextType
+    @Ctx() ctx: ContextType,
   ): Promise<string> {
     const token = await ConnexionController.login(data, ctx);
     return token;
@@ -69,7 +69,7 @@ export class UserResolver {
   @Mutation(() => String)
   async logout(
     @Arg('id', () => Int) id: number,
-    @Ctx() ctx: ContextType
+    @Ctx() ctx: ContextType,
   ): Promise<string> {
     return await ConnexionController.logout(id, ctx);
   }
@@ -88,7 +88,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   async firstLoginPassword(
-    @Arg('data') data: FirstUserLoginPassword
+    @Arg('data') data: FirstUserLoginPassword,
   ): Promise<User> {
     const userToUpdate = await PasswordController.firstLoginPassword(data);
     return getSafeAttributes(userToUpdate);
@@ -97,7 +97,7 @@ export class UserResolver {
   @Mutation(() => User)
   async updateUser(
     @Arg('id', () => Int) id: number,
-    @Arg('data') data: UserInput
+    @Arg('data') data: UserInput,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUser(data, id);
     return getSafeAttributes(userToUpdate);
@@ -105,7 +105,7 @@ export class UserResolver {
 
   @Mutation(() => String)
   async forgotPassword(
-    @Arg('email', () => String) email: string
+    @Arg('email', () => String) email: string,
   ): Promise<string> {
     await PasswordController.forgotPassword(email);
     return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
@@ -114,7 +114,7 @@ export class UserResolver {
   @Mutation(() => User)
   async resetPassword(
     @Arg('uuid', () => String) uuid: string,
-    @Arg('data') data: UserConnexion
+    @Arg('data') data: UserConnexion,
   ): Promise<User> {
     const userToUpdate = await PasswordController.resetPassword(uuid, data);
 
