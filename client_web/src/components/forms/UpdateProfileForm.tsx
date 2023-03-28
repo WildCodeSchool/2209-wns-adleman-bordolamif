@@ -1,3 +1,5 @@
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER } from '@graphQL/mutations/userMutations';
 import { UserData } from '@utils/types/DataTypes';
 import { UserInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
@@ -5,14 +7,16 @@ import { useForm } from 'react-hook-form';
 
 interface Props{
   profile: UserData
-  handleUpdateProfile: (data: UserInput, id: number) => void
-  setIsUpdateProfile: (isEdit: boolean) => void
+  setModeToUpdate: (mode: string) => void
 }
 
-function UpdateAccountForm(props: Props) {
+function UpdateProfileForm(props: Props) {
   const {
-    profile, handleUpdateProfile, setIsUpdateProfile,
+    profile,
+    setModeToUpdate,
   } = props;
+
+  const [UpdateUser] = useMutation(UPDATE_USER);
 
   const [error, setError] = useState('');
 
@@ -44,24 +48,24 @@ function UpdateAccountForm(props: Props) {
         services: servicesId,
         currentService: profile.currentService ? { id: profile.currentService.id } : null,
       };
-      await handleUpdateProfile(profileToUpdate, profile.id);
-      setIsUpdateProfile(false);
+      await UpdateUser({ variables: { data: profileToUpdate, updateUserId: profile.id } });
+      setModeToUpdate('');
     } catch (submitError) {
-      setError('Error while trying to edit Profile');
+      setError("Une erreur est survenue lors de l'édition de votre profile");
     }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <input placeholder="lastname" {...register('lastname')} required className={inputClassName} />
-        <input placeholder="firstname" {...register('firstname')} required className={inputClassName} />
-        <input placeholder="email" {...register('email')} required className={inputClassName} />
+        <input placeholder="Nom" {...register('lastname')} required className={inputClassName} />
+        <input placeholder="Prénom" {...register('firstname')} required className={inputClassName} />
+        <input placeholder="Email" {...register('email')} required className={inputClassName} />
       </div>
       <div className="flex">
         <button
           className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
           type="button"
-          onClick={() => setIsUpdateProfile(false)}
+          onClick={() => setModeToUpdate('')}
         >
           Annuler
         </button>
@@ -79,4 +83,4 @@ function UpdateAccountForm(props: Props) {
   );
 }
 
-export default UpdateAccountForm;
+export default UpdateProfileForm;

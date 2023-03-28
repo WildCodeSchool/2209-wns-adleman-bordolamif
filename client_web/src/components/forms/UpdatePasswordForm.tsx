@@ -1,23 +1,24 @@
+import { useMutation } from '@apollo/client';
+import { UPDATE_PASSWORD } from '@graphQL/mutations/userMutations';
 import { UserData } from '@utils/types/DataTypes';
 import {
-  UpdatePassword, UserUpdatePassword,
+  UpdatePassword,
 } from '@utils/types/InputTypes';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface Props {
     profile: UserData
-    handleUpdatePassword: (data: UserUpdatePassword, id: number) =>void
-    setIsUpdatePassword: (isEdit: boolean) => void
-}
+    setModeToUpdate: (mode: string) => void
+  }
 
 function UpdatePasswordForm(props: Props) {
   const {
-    profile,
-    handleUpdatePassword, setIsUpdatePassword,
+    profile, setModeToUpdate,
   } = props;
 
   const [error, setError] = useState('');
+  const [UpdateUserPassword] = useMutation(UPDATE_PASSWORD);
 
   const {
     register, watch, getValues, handleSubmit,
@@ -28,33 +29,33 @@ function UpdatePasswordForm(props: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data:UpdatePassword) => {
     try {
-      if (data.newPassword !== data.confirmPassword) setError('new passwords does not match');
+      if (data.newPassword !== data.confirmPassword) setError('Les nouveaux mots de passe ne sont pas identique');
       const passwordToUpdate = {
         oldPassword: data.oldPassword,
         email: profile.email,
         newPassword: data.newPassword,
       };
-      await handleUpdatePassword(passwordToUpdate, profile.id);
-      setIsUpdatePassword(false);
+      await UpdateUserPassword({ variables: { data: passwordToUpdate } });
+      setModeToUpdate('');
     } catch (submitError) {
-      setError('Error while trying to edit Profile');
+      setError('Une erreur est survenue lors du changement de votre mot de passe');
     }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
 
       <div>
-        <input placeholder="oldPassword" {...register('oldPassword')} required className={inputClassName} />
-        <input placeholder="New password" {...register('newPassword')} required className={inputClassName} />
-        <input placeholder="Confirm password" {...register('confirmPassword')} required className={inputClassName} />
-        {watch('confirmPassword') !== watch('newPassword') && getValues('confirmPassword') ? (<p>password not match</p>) : null}
+        <input placeholder="Ancien mot de passe" {...register('oldPassword')} required className={inputClassName} />
+        <input placeholder="Nouveau mot de passe" {...register('newPassword')} required className={inputClassName} />
+        <input placeholder="Confirmation du nouveau mot de passe" {...register('confirmPassword')} required className={inputClassName} />
+        {watch('confirmPassword') !== watch('newPassword') && getValues('confirmPassword') ? (<p>Les nouveaux mots de passe ne sont pas identiques</p>) : null}
       </div>
 
       <div className="flex">
         <button
           className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
           type="button"
-          onClick={() => setIsUpdatePassword(false)}
+          onClick={() => setModeToUpdate('')}
         >
           Annuler
         </button>
