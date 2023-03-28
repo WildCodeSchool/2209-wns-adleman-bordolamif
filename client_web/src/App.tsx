@@ -14,6 +14,7 @@ import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
+import TvScreenPage from '@pages/tv/TvScreenPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -73,6 +74,7 @@ function App() {
           <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
         <Route path="client" element={<ClientPage />} />
+        <Route path="tvscreen" element={<TvScreenPage />} />
       </Routes>
     </BrowserRouter>
   );
