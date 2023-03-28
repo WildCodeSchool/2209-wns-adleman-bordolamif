@@ -1,0 +1,75 @@
+services:
+  db_prod:
+    image: postgres:15.0-alpine
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - prodDB:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - prodNetwork
+
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    restart: always
+#    ports:
+#      - 5050:80
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+#    networks:
+#      - prodNetwork
+
+  server:
+    depends_on:
+      db_prod:
+        condition: service_healthy
+    environment:
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      SERVER_HOST: ${SERVER_HOST}
+      SERVER_PORT: ${SERVER_PORT}
+      NODE_ENV: ${NODE_ENV}
+      DB_HOST: ${DB_HOST}
+    image: joffreychevalier/waitit-server
+    healthcheck:
+      test: 'curl --fail --request GET -H ''content-type:application/json'' --url ''http://localhost:4000/graphql?query=%7B__typename%7D'''
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - prodNetwork
+
+  client:
+    image: joffreychevalier/waitit-client
+    networks:
+      - prodNetwork
+
+  nginx:
+    image: nginx:1.21.3
+    depends_on:
+      client:
+        condition: service_started
+      server:
+        condition: service_healthy
+    restart: always
+    ports:
+      - ${GATEWAY_PORT:-8000}:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./logs:/var/log/nginx
+    networks:
+      - prodNetwork
+
+volumes:
+  db_prod:
+
+networks:
+  prodNetwork:

@@ -1,0 +1,19 @@
+FROM keymetrics/pm2:18-alpine as build-stage
+
+RUN apk --no-cache add curl
+RUN apk add make g++ python3 git
+RUN npm i -g node-pre-gyp
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm i
+
+COPY tsconfig.json ./
+COPY src ./src
+COPY ./.env .env
+
+CMD ["npm", "run", "build"]
+
+CMD ["pm2-runtine", "--json", "build/index.js"]
