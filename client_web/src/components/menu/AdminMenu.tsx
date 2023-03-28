@@ -66,9 +66,18 @@ function AdminMenu() {
             to="/admin/users"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row text-outline items-center hover:underline decoration-2 cursor-pointer">
+            <div className="flex flex-row text-outline pb-6 items-center hover:underline decoration-2 cursor-pointer">
               <UserGroupIcon className="w-7 mr-4" />
               Gestion des opérateurs
+            </div>
+          </NavLink>
+          <NavLink
+            to="/admin/myaccount"
+            style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            <div className="flex flex-row text-outline pb-6 items-center hover:underline decoration-2 cursor-pointer">
+              <UserGroupIcon className="w-7 mr-4" />
+              Mon compte
             </div>
           </NavLink>
         </ul>
