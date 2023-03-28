@@ -35,11 +35,11 @@ export interface CounterInput {
 }
 
 export interface ServiceInput {
-  name: string;
-  acronym: string;
-  open: boolean;
-  color: string;
-  waitingRoom?: WaitingRoomId | null;
+      name: string;
+      acronym: string;
+      isOpen: boolean;
+      color: string;
+      waitingRoom?: WaitingRoomId | null;
 }
 
 export interface UserConnexion {

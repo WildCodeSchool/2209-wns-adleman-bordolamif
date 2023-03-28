@@ -21,7 +21,7 @@ mutation CreateTicket($data: TicketInput!) {
     service {
       id
       name
-      open
+      isOpen
       color
       acronym
     }
@@ -44,7 +44,7 @@ mutation UpdateTicket($data: TicketInput!, $updateTicketId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     name
     isReturned

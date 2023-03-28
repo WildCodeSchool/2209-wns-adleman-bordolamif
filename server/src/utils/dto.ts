@@ -22,7 +22,7 @@ export interface NewWaitingRoomDto{
 export interface NewServiceDto{
     name:string,
     acronym: string,
-    open: boolean,
+    isOpen: boolean,
     color: string,
     waitingRoom: WaitingRoom | undefined
 }

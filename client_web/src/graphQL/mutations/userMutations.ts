@@ -25,7 +25,7 @@ export const CREATE_USER = gql`
         color
         acronym
         name
-        open
+        isOpen
       }
     }
   }
@@ -46,7 +46,7 @@ export const UPDATE_USER = gql`
       services {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
@@ -63,7 +63,7 @@ export const UPDATE_USER = gql`
       currentService {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
@@ -104,7 +104,7 @@ export const UPDATE_PASSWORD = gql`
       services {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
@@ -121,7 +121,7 @@ export const UPDATE_PASSWORD = gql`
       currentService {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
