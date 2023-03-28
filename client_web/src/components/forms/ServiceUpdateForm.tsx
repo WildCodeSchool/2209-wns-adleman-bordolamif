@@ -66,7 +66,7 @@ function ServiceUpdateForm(props: Props) {
             className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
           />
         </label>
-        <div className="flex flex-raw justify-between">
+        <div className="flex flex-row justify-between">
           <label className="flex flex-col">
             Acronyme
             <input
@@ -98,7 +98,7 @@ function ServiceUpdateForm(props: Props) {
             toggleRadioList={toggleServiceWaitingRoom}
           />
         </div>
-        <div className="flex flex-raw justify-end">
+        <div className="flex flex-row justify-end">
           <button
             className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
             type="button"
