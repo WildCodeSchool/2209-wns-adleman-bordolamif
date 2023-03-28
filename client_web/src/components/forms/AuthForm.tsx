@@ -5,7 +5,6 @@ import {
   EyeIcon, EyeSlashIcon, AtSymbolIcon, LockClosedIcon,
 } from '@heroicons/react/24/solid';
 import { XCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import DarkLogo from '@assets/DarkLogo';
 import Loader from '@assets/Loader';
 
 interface Props {
@@ -37,12 +36,19 @@ function AuthForm(props: Props) {
   };
 
   return (
-    <div>
-      <div className="flex flex-col items-center scale-125">
+    <div className="flex flex-row items-center gap-20 scale-125">
+      <div className="absolute -top-20">
+        <h2 className="text-3xl nunito-bold">Bienvenue sur Wait<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-regular">it</span></h2>
+        <p className="text-xl">Le gestionnaire de flux d’attente spécialisé</p>
+        <p className="text-xl">dans les établissements de santé</p>
+      </div>
+      <div>
+        <img className="w-[500px]" src="./src/assets/illustrations/WomanWithComputer.png" alt="WomanWithComputer" />
+      </div>
+      <div>
         <form onSubmit={handleSubmit(onLogin)} className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
           <div className="flex flex-col items-center">
-            <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl">Bienvenue</h1>
-            <h2 className="mb-6 text-gray-700 nunito-bold text-xl">Merci de vous connecter</h2>
+            <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl mb-8">Connexion</h2>
             <div className="relative">
               <AtSymbolIcon className="absolute left-2 top-2 w-6 text-orange-500" />
               <input
@@ -57,7 +63,7 @@ function AuthForm(props: Props) {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Mot de passe"
                 {...register('password', { onChange: handleChangePassword, value: passwordValue })}
-                className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-7"
+                className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8"
               />
               {showPassword ? (
                 <EyeIcon {...iconProps} />
@@ -68,7 +74,7 @@ function AuthForm(props: Props) {
             <button
               type="submit"
               disabled={!emailValue.includes('@') || passwordValue.length < 8}
-              className="flex justify-around drop-shadow disabled:cursor-default transition-all hover:bg-orange-600 hover:scale-[100.5%] duration-500 disabled:bg-gray-300 bg-orange-500 text-white py-2 px-4 rounded w-3/6 cursor-pointer"
+              className="flex justify-around drop-shadow disabled:cursor-default transition-all hover:bg-orange-600 duration-500 disabled:bg-gray-300 bg-orange-500 text-white py-2 px-4 rounded w-3/6 cursor-pointer"
             >
               <div>
                 {!emailValue.includes('@') || passwordValue.length < 8 ? (
@@ -92,7 +98,6 @@ function AuthForm(props: Props) {
             </div>
           </div>
         </form>
-        <DarkLogo />
       </div>
     </div>
   );
