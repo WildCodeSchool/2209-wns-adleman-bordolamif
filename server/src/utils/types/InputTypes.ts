@@ -141,7 +141,7 @@ export class ServiceInput {
       acronym: string;
 
     @Field()
-      open: boolean;
+      isOpen: boolean;
 
     @Field()
     @MaxLength(7)

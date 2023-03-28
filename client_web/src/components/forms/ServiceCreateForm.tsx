@@ -37,7 +37,7 @@ function ServiceCreateForm(props: Props) {
   const onSubmit = async (data: ServiceInput) => {
     const serviceToCreate = {
       name: data.name,
-      open: false,
+      isOpen: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,

@@ -21,10 +21,10 @@ const ServiceController = {
       if (waitingRoom === null) throw new ApolloError('WaitingRoom not found', 'NOT_FOUND');
     } else waitingRoom = undefined;
     const {
-      name, acronym, open, color,
+      name, acronym, isOpen, color,
     } = data;
     const serviceToCreate = {
-      name, acronym, open, color, waitingRoom,
+      name, acronym, isOpen, color, waitingRoom,
     };
     return await ServiceModel.createService(serviceToCreate);
   },
@@ -37,7 +37,7 @@ const ServiceController = {
 
   updateService: async (data: ServiceInput, id: number): Promise<Service> => {
     const {
-      name, acronym, open, color, waitingRoom,
+      name, acronym, isOpen, color, waitingRoom,
     } = data;
     const ServiceToUpdate = await ServiceModel.getOneServiceById(id);
 
@@ -45,7 +45,7 @@ const ServiceController = {
 
     ServiceToUpdate.name = name;
     ServiceToUpdate.acronym = acronym;
-    ServiceToUpdate.open = open;
+    ServiceToUpdate.isOpen = isOpen;
     ServiceToUpdate.color = color;
 
     if (waitingRoom !== null && typeof (waitingRoom) !== 'undefined') {

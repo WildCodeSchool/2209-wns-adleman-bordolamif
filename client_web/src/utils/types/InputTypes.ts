@@ -37,7 +37,7 @@ export interface CounterInput {
 export interface ServiceInput {
       name: string;
       acronym: string;
-      open: boolean;
+      isOpen: boolean;
       color: string;
       waitingRoom?: WaitingRoomId | null;
 }

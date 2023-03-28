@@ -73,7 +73,7 @@ const UserController = {
 
     if (currentService !== null && typeof (currentService) !== 'undefined') {
       const serviceToUpdate = await ServiceModel.getOneArgService(currentService.id) || null;
-      serviceToUpdate.open = true;
+      serviceToUpdate.isOpen = true;
       await ServiceModel.updateService(serviceToUpdate);
       userToUpdate.currentService = serviceToUpdate;
     } else {
@@ -83,7 +83,7 @@ const UserController = {
         if (serviceToUpdate!
               && typeof (serviceToUpdate.currentUsers) !== 'undefined'
               && serviceToUpdate!.currentUsers!.length === 1) {
-          serviceToUpdate.open = false;
+          serviceToUpdate.isOpen = false;
           await ServiceModel.updateService(serviceToUpdate);
         }
       }

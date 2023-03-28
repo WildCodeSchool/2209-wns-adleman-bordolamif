@@ -44,7 +44,7 @@ function ServiceUpdateForm(props: Props) {
   const onSubmit = async (data: ServiceInput) => {
     const updatedService: ServiceInput = {
       name: data.name,
-      open: false,
+      isOpen: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
