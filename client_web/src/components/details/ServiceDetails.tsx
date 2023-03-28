@@ -20,16 +20,20 @@ function ServiceDetails(props: Props) {
   };
 
   return (
-    <div className="flex flex-col border-2 border-gray-200 py-2 rounded-xl">
+    <div className="flex flex-col bg-gray-100 pb-2 rounded-xl">
+      <div
+        className="w-1/2 mx-auto h-1 mb-2 rounded-xl"
+        style={{ backgroundColor: `${service.color}` }}
+      />
       <div className="nunito-bold pl-2 pb-1 text-lg">
         <h2>{service.name}</h2>
       </div>
-      <div className="flex flex-raw items-center bg-white justify-between px-2">
+      <div className="flex items-center justify-between px-2">
         <ServiceIcon service={service} />
         <p className="ml-2">{service.waitingRoom?.name}</p>
         {!isUpdateService
         && (
-        <div>
+        <div className="flex">
           <button
             type="button"
             onClick={() => setIsUpdateService(true)}

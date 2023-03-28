@@ -14,7 +14,7 @@ function OperatorMenu() {
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             <div
-              className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer"
+              className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer"
             >
               <HomeIcon className="w-7 mr-4" />
               Services disponibles
@@ -25,7 +25,7 @@ function OperatorMenu() {
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             <div
-              className="flex flex-raw items-center pb-6 hover:underline decoration-2 cursor-pointer"
+              className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer"
             >
               <ComputerDesktopIcon className="w-7 mr-4" />
               Tableau de bord

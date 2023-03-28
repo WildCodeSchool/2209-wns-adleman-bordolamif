@@ -54,7 +54,7 @@ function Menu({ userProfile, client }: Props) {
         </div>
         )}
       </div>
-      <div className="pl-4 flex flex-raw items-center text-red-600 pb-6 hover:underline decoration-2 cursor-pointer mb-6 pt-6">
+      <div className="pl-4 flex flex-row items-center text-red-600 pb-6 hover:underline decoration-2 cursor-pointer mb-6 pt-6">
         <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
         <button
           type="button"
