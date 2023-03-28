@@ -21,7 +21,8 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@graphQL/*": ["src/graphQL/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@layouts/*": ["src/layouts/*"]
     }
   },
   "references": [

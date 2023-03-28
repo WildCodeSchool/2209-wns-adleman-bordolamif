@@ -27,7 +27,7 @@ query GetAllUsers {
       color
       id
       name
-      open
+      isOpen
     }
     counter {
       id
@@ -48,7 +48,7 @@ query GetAllUsers {
       color
       id
       name
-      open
+      isOpen
     }
   }
 }
@@ -72,7 +72,7 @@ query GetOneUser($getOneUserId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     tickets {
       id
@@ -89,7 +89,7 @@ query GetOneUser($getOneUserId: Int!) {
       color
       id
       name
-      open
+      isOpen
     }
   }
 }

@@ -58,10 +58,13 @@ const UserController = {
     userToUpdate.lastname = lastname;
     userToUpdate.email = email;
     userToUpdate.role = role;
-    userToUpdate.services = await Promise.all(services?.map(
-      (service) => ServiceModel.getOneArgService(service.id),
-    ) || []);
-
+    if (services !== null && typeof (services) !== 'undefined' && services!.length > 0) {
+      userToUpdate.services = await Promise.all(services?.map(
+        (service) => ServiceModel.getOneArgService(service.id),
+      ) || []);
+    } else {
+      userToUpdate.services = [];
+    }
     if (counter !== null && typeof (counter) !== 'undefined') {
       userToUpdate.counter = await CounterModel.getOneArgCounter(counter.id) || null;
     } else {
@@ -70,18 +73,21 @@ const UserController = {
 
     if (currentService !== null && typeof (currentService) !== 'undefined') {
       const serviceToUpdate = await ServiceModel.getOneArgService(currentService.id) || null;
-      serviceToUpdate.open = true;
+      serviceToUpdate.isOpen = true;
       await ServiceModel.updateService(serviceToUpdate);
       userToUpdate.currentService = serviceToUpdate;
     } else {
-      const serviceToUpdate = await ServiceModel.getOneServiceByCurrentUserId(id) || null;
+      if (userToUpdate.currentService !== null) {
+        const serviceToUpdate = await ServiceModel.getOneServiceByCurrentUserId(id) || null;
 
-      if (serviceToUpdate!
-            && typeof (serviceToUpdate.currentUsers) !== 'undefined'
-            && serviceToUpdate!.currentUsers!.length === 1) {
-        serviceToUpdate.open = false;
-        await ServiceModel.updateService(serviceToUpdate);
+        if (serviceToUpdate!
+              && typeof (serviceToUpdate.currentUsers) !== 'undefined'
+              && serviceToUpdate!.currentUsers!.length === 1) {
+          serviceToUpdate.isOpen = false;
+          await ServiceModel.updateService(serviceToUpdate);
+        }
       }
+
       userToUpdate.currentService = null;
     }
 

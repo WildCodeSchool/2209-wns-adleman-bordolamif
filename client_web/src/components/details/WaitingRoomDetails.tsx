@@ -36,11 +36,11 @@ function WaitingRoomDetails(props: Props) {
   return (
     <div className="border border-2 flex flex-col justify-between border-gray-200 p-3 rounded-xl my-2">
       <div className="flex flex-col mb-4">
-        <div className="flex flex-raw justify-between nunito-bold pl-2 pb-1 text-lg">
+        <div className="flex flex-row justify-between nunito-bold pl-2 pb-1 text-lg">
           <h2 className="mr-4">{waitingRoom.name}</h2>
           {!isUpdateWaitingRoom
           && (
-          <div className="flex flex-raw">
+          <div className="flex flex-row">
             <button
               type="button"
               onClick={() => setIsUpdateWaitingRoom(true)}
@@ -56,7 +56,7 @@ function WaitingRoomDetails(props: Props) {
           </div>
           )}
         </div>
-        <div className="flex flex-raw p-2 gap-3">
+        <div className="flex flex-row p-2 gap-3">
           {waitingRoom.services.map((service) => (
             <ServiceIcon key={service.id} service={service} />
           ))}

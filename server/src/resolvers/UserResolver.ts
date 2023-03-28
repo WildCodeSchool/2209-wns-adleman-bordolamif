@@ -1,5 +1,11 @@
 import {
-  Arg, Authorized, Ctx, Int, Mutation, Query, Resolver,
+  Arg,
+  Authorized,
+  Ctx,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
 } from 'type-graphql';
 import User, { getSafeAttributes } from '../entity/User';
 import { loadEnv } from '../env';
@@ -53,8 +59,8 @@ export class UserResolver {
 
   @Mutation(() => String)
   async login(
-        @Arg('data') data: UserConnexion,
-        @Ctx() ctx: ContextType,
+    @Arg('data') data: UserConnexion,
+    @Ctx() ctx: ContextType,
   ): Promise<string> {
     const token = await ConnexionController.login(data, ctx);
     return token;
@@ -75,10 +81,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async updatePassword(
-        @Arg('id', () => Int) id: number,
-        @Arg('data') data: UserUpdatePassword,
-  ): Promise<User> {
+  async updatePassword(@Arg('data') data: UserUpdatePassword): Promise<User> {
     const userToUpdate = await PasswordController.updatePassword(data);
     return getSafeAttributes(userToUpdate);
   }
@@ -93,23 +96,25 @@ export class UserResolver {
 
   @Mutation(() => User)
   async updateUser(
-        @Arg('id', () => Int) id: number,
-        @Arg('data') data: UserInput,
+    @Arg('id', () => Int) id: number,
+    @Arg('data') data: UserInput,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUser(data, id);
     return getSafeAttributes(userToUpdate);
   }
 
   @Mutation(() => String)
-  async forgotPassword(@Arg('email', () => String) email: string): Promise<string> {
+  async forgotPassword(
+    @Arg('email', () => String) email: string,
+  ): Promise<string> {
     await PasswordController.forgotPassword(email);
     return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
   }
 
   @Mutation(() => User)
   async resetPassword(
-        @Arg('uuid', () => String) uuid: string,
-        @Arg('data') data: UserConnexion,
+    @Arg('uuid', () => String) uuid: string,
+    @Arg('data') data: UserConnexion,
   ): Promise<User> {
     const userToUpdate = await PasswordController.resetPassword(uuid, data);
 

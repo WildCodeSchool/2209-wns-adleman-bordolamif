@@ -7,7 +7,7 @@ query GetAllServices {
     name
     color
     acronym
-    open
+    isOpen
     users {
       id
       firstname
@@ -46,7 +46,7 @@ query GetOneService($getOneServiceId: Int!) {
     name
     color
     acronym
-    open
+    isOpen
     tickets {
       id
       name

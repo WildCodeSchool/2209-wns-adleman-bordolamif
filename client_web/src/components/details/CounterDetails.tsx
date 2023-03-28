@@ -40,7 +40,7 @@ function CounterDetails(props: Props) {
               <p>{counter.name}</p>
               {isHover
       && (
-      <div className="flex flex-raw ml-4">
+      <div className="flex flex-row ml-4">
         <button
           type="button"
           aria-label="edit"

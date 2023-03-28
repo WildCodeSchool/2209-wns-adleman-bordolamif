@@ -15,7 +15,7 @@ const createUserMutation = gql`
                 color
                 acronym
                 name
-                open
+                isOpen
             }
         }
     }

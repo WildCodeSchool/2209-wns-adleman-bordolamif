@@ -14,7 +14,7 @@ mutation CreateWaitingRoom($data: WaitingRoomInput!) {
       name
       color
       acronym
-      open
+      isOpen
     }
   }
 }
@@ -34,7 +34,7 @@ mutation UpdateWaitingRoom($data: WaitingRoomInput!, $updateWaitingRoomId: Int!)
       name
       color
       acronym
-      open
+      isOpen
     }
   }
 }
