@@ -5,6 +5,7 @@ import {
   PresentationChartBarIcon,
   UserGroupIcon,
   ClipboardDocumentCheckIcon,
+  IdentificationIcon,
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
 
@@ -76,7 +77,7 @@ function AdminMenu() {
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
             <div className="flex flex-row text-outline pb-6 items-center hover:underline decoration-2 cursor-pointer">
-              <UserGroupIcon className="w-7 mr-4" />
+              <IdentificationIcon className="w-7 mr-4" />
               Mon compte
             </div>
           </NavLink>
