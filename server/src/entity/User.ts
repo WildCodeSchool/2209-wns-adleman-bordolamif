@@ -41,6 +41,10 @@ class User {
     hashedPassword?: string;
 
   @Field()
+  @Column({ default: false })
+    isSuspended: boolean;
+
+  @Field()
   @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.CLIENT })
     role: RoleEnum;
 

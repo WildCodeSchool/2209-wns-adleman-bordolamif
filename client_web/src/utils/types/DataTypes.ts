@@ -8,6 +8,7 @@ export interface UserProfile {
     firstname: string;
     lastname: string;
     isFirstLogin: boolean;
+    isSuspended: boolean;
   }
 
 export interface CurrentUser {

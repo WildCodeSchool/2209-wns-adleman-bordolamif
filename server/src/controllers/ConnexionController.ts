@@ -16,6 +16,8 @@ const ConnexionController = {
     || !(await verifyPassword(data.password, user.hashedPassword))
     ) { throw new ApolloError('invalid credentials'); }
 
+    if (user.isSuspended) { throw new ApolloError('user suspended'); }
+
     const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
 
     ctx.res.cookie('token', token, {
