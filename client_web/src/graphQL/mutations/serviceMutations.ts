@@ -7,7 +7,7 @@ mutation CreateService($data: ServiceInput!) {
     name
     color
     acronym
-    open
+    isOpen
     waitingRoom {
       id
       name
@@ -23,7 +23,7 @@ mutation UpdateService($data: ServiceInput!, $updateServiceId: Int!) {
     name
     color
     acronym
-    open
+    isOpen
     tickets {
       id
       name

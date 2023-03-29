@@ -1,4 +1,5 @@
 import CounterEditForm from '@components/forms/CounterEditForm';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Counter } from '@utils/types/DataTypes';
 import { CounterInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
@@ -20,7 +21,7 @@ function CounterDetails(props: Props) {
 
   return (
     <div
-      className="flex justify-between items-center bg-white rounded w-1/6 m-4 h-16 px-2"
+      className="flex justify-between items-center bg-gray-200 rounded w-fit px-2 py-1 h-fit mx-2 mb-4"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -39,19 +40,21 @@ function CounterDetails(props: Props) {
               <p>{counter.name}</p>
               {isHover
       && (
-      <div className="flex flex-col">
+      <div className="flex flex-row ml-4">
         <button
-          className="p-2 my-2 bg-sky-600 rounded-xl w-2 h-2"
           type="button"
           aria-label="edit"
           onClick={() => setIsEdit(true)}
-        />
+        >
+          <PencilSquareIcon className="w-4 mr-2 hover:text-blue-500" />
+        </button>
         <button
-          className="p-2 my-2 bg-red-600 rounded-xl w-2 h-2"
           type="button"
           aria-label="delete"
           onClick={() => handleDeleteCounter(counter.id)}
-        />
+        >
+          <TrashIcon className="w-4 hover:text-red-600" />
+        </button>
       </div>
       )}
             </>

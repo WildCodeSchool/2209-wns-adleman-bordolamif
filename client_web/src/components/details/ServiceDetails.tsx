@@ -1,4 +1,5 @@
 import ServiceUpdateForm from '@components/forms/ServiceUpdateForm';
+import ServiceIcon from '@components/icons/ServiceIcon';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ServiceData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
@@ -13,22 +14,26 @@ interface Props {
 function ServiceDetails(props: Props) {
   const { service, handleDeleteService, handleUpdateService } = props;
   const [isUpdateService, setIsUpdateService] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setIsUpdateService(false);
+  };
+
   return (
-    <div className="flex flex-col border border-2 border-gray-200 py-2 rounded-xl">
+    <div className="flex flex-col bg-gray-100 pb-2 rounded-xl">
+      <div
+        className="w-1/2 mx-auto h-1 mb-2 rounded-xl"
+        style={{ backgroundColor: `${service.color}` }}
+      />
       <div className="nunito-bold pl-2 pb-1 text-lg">
         <h2>{service.name}</h2>
       </div>
-      <div className="flex flex-raw items-center bg-white justify-between px-2">
-        <div
-          className="w-14 h-8 rounded-xl pt-1 text-center text-white nunito-bold"
-          style={{ backgroundColor: `${service.color}` }}
-        >
-          {service.acronym}
-        </div>
-        <p>{service.waitingRoom?.name}</p>
+      <div className="flex items-center justify-between px-2">
+        <ServiceIcon service={service} />
+        <p className="ml-2">{service.waitingRoom?.name}</p>
         {!isUpdateService
         && (
-        <div>
+        <div className="flex">
           <button
             type="button"
             onClick={() => setIsUpdateService(true)}
@@ -45,11 +50,15 @@ function ServiceDetails(props: Props) {
         )}
       </div>
       {isUpdateService && (
-        <ServiceUpdateForm
-          serviceToUpdate={service}
-          setIsUpdateService={setIsUpdateService}
-          handleUpdateService={handleUpdateService}
-        />
+        <div>
+          <ServiceUpdateForm
+            serviceToUpdate={service}
+            setIsUpdateService={setIsUpdateService}
+            handleUpdateService={handleUpdateService}
+          />
+          {/* eslint-disable-next-line */}
+          <div className="cursor-default backdrop-blur-md absolute left-0 top-0 h-screen w-screen" onClick={closeModal} />
+        </div>
       )}
     </div>
   );

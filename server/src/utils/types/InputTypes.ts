@@ -3,6 +3,7 @@ import {
 } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 import { RoleEnum } from '../enums/RoleEnum';
+import { StatusEnum } from '../enums/StatusEnum';
 import {
   CounterId, ServiceId, TicketId, UserId, WaitingRoomId,
 } from './InputIdTypes';
@@ -39,6 +40,19 @@ export class UserUpdatePassword {
 }
 
 @InputType()
+export class FirstUserLoginPassword {
+  @Field()
+  @MaxLength(100)
+  @IsEmail()
+    email: string;
+
+  @Field()
+  @MinLength(8)
+  @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    newPassword: string;
+}
+
+@InputType()
 export class UserInput {
     @Field()
     @MaxLength(100)
@@ -58,7 +72,7 @@ export class UserInput {
     @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
       password?: string;
 
-    @Field({ defaultValue: RoleEnum.Client })
+    @Field({ defaultValue: RoleEnum.CLIENT })
       role: RoleEnum;
 
     @Field(() => CounterId, { nullable: true })
@@ -77,17 +91,11 @@ export class TicketInput {
   @MaxLength(100)
     name?: string;
 
-    @Field({ nullable: true })
-      calledAt?: Date;
-
-    @Field({ nullable: true })
-      closedAt?: Date;
+    @Field({ defaultValue: StatusEnum.EN_ATTENTE })
+      status: StatusEnum;
 
     @Field()
       isFirstTime: boolean;
-
-    @Field({ nullable: true })
-      isReturned?: boolean;
 
     @Field(() => UserId, { nullable: true })
       user?: UserId;
@@ -133,7 +141,7 @@ export class ServiceInput {
       acronym: string;
 
     @Field()
-      open: boolean;
+      isOpen: boolean;
 
     @Field()
     @MaxLength(7)

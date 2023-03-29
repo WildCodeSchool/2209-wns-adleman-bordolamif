@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_TICKETS = gql`
-query GetAllTickets {
-  getAllTickets {
+query GetAllTickets($filter: String) {
+  getAllTickets (filter: $filter){
     id
     name
     createdAt
@@ -14,7 +14,7 @@ query GetAllTickets {
     service {
       id
       name
-      open
+      isOpen
       color
       acronym
     }
@@ -45,7 +45,7 @@ query GetOneTicket($getOneTicketId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     user {
       id

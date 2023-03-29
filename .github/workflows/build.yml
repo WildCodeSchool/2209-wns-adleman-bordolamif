@@ -67,6 +67,6 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:client_web"
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/2209-wns-adleman-bordolamif:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/2209-wns-adleman-bordolamif:client_web-latest
           build-args: |
             "REACT_APP_GRAPHQL_API_URL=${{ vars.REACT_APP_GRAPHQL_API_URL }}"

@@ -37,7 +37,7 @@ function ServiceCreateForm(props: Props) {
   const onSubmit = async (data: ServiceInput) => {
     const serviceToCreate = {
       name: data.name,
-      open: false,
+      isOpen: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
@@ -47,53 +47,63 @@ function ServiceCreateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="shadow-xl mx-10 bg-gray-200 p-6 w-fit rounded-xl mb-8 mx-auto mt-4">
-      <label className="flex flex-col">
-        Nom du service
-        <input
-          placeholder="Radiologie"
-          {...register('name', { required: true })}
-          className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-4"
-        />
-      </label>
-      <p className="mb-2">
-        Salle d'attente
-      </p>
-      {waitingRoomsListLoading && <p>Chargement...</p>}
-      <WaitingRoomsRadioList
-        radioChecked={serviceWaitingRoom}
-        waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
-        toggleRadioList={toggleServiceWaitingRoom}
-      />
-      <div className="mb-1 flex flex-raw justify-between">
-        <p>Acronyme <span className="text-xs">(3 lettres)</span></p>
-        <p>Couleur</p>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
+      <div>
+        <label className="flex flex-col">
+          Nom du service
+          <input
+            placeholder="Ex: Radiologie"
+            {...register('name', { required: true })}
+            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+          />
+        </label>
+        <div className="flex flex-row justify-between">
+          <label className="flex flex-col">
+            Acronyme
+            <input
+              placeholder="Ex: RDL"
+              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              {...register('acronym', { required: true, maxLength: 3 })}
+            />
+          </label>
+          <div>
+            <p>
+              Couleur
+            </p>
+            <ColorPicker
+              color={color}
+              handleColorChange={handleColorChange}
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex flex-raw justify-between items-center mb-4">
-        <input
-          placeholder="RDL"
-          className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
-          {...register('acronym', { required: true, maxLength: 3 })}
-        />
-        <ColorPicker
-          color={color}
-          handleColorChange={handleColorChange}
-        />
-      </div>
-      <div className="flex flex-raw justify-start">
-        <button
-          className="p-2 mx-2 bg-red-600 rounded text-white hover:bg-red-700"
-          type="button"
-          onClick={() => setIsCreateService(false)}
-        >
-          Annuler
-        </button>
-        <button
-          className="p-2 mx-2 bg-green-600 rounded text-white hover:bg-green-700"
-          type="submit"
-        >
-          Créer
-        </button>
+      <div className="ml-6">
+        <div className="mb-10">
+          <p className="mb-2">
+            Salle d'attente
+          </p>
+          {waitingRoomsListLoading && <p>Chargement...</p>}
+          <WaitingRoomsRadioList
+            radioChecked={serviceWaitingRoom}
+            waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
+            toggleRadioList={toggleServiceWaitingRoom}
+          />
+        </div>
+        <div className="flex flex-row justify-end">
+          <button
+            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            type="button"
+            onClick={() => setIsCreateService(false)}
+          >
+            Annuler
+          </button>
+          <button
+            className="p-2 mx-2 w-[5rem] bg-green-600 rounded text-white hover:bg-green-700"
+            type="submit"
+          >
+            Créer
+          </button>
+        </div>
       </div>
     </form>
   );

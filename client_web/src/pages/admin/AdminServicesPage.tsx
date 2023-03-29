@@ -3,6 +3,7 @@ import ServiceCreateForm from '@components/forms/ServiceCreateForm';
 import ServicesList from '@components/lists/ServicesList';
 import { CREATE_SERVICE, DELETE_SERVICE, UPDATE_SERVICE } from '@graphQL/mutations/serviceMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ServiceInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
@@ -37,19 +38,21 @@ function AdminServicesPage() {
   return (
     <>
       <div className="flex flex-col items-center mb-12">
-        <h1 className="nunito-bold text-xl">Gérer mes services</h1>
+        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl">Gérer mes services</h1>
         <div className="h-[2px] w-full bg-gray-300 mt-5" />
       </div>
       <div>
-        <div className="flex flex-raw items-center justify-between mb-12 mx-4">
+        <h2 className="nunito-bold text-xl mb-8">Créer un service</h2>
+        <div className="flex items-center justify-start ml-8 mb-12 mx-4">
           <div className="flex flex-col items-center">
             {!isCreateService
         && (
           <button
             type="button"
-            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+            className="flex bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl"
             onClick={() => setIsCreateService(true)}
           >
+            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
             Ajouter un service
           </button>
         )}
@@ -60,9 +63,9 @@ function AdminServicesPage() {
         handleCreateService={handleCreateService}
       />
       )}
-            {servicesListLoading && <p>Chargement...</p>}
           </div>
         </div>
+        <h2 className="nunito-bold text-xl mb-8">Mes services</h2>
         <div className="px-8">
           <ServicesList
             servicesList={servicesList && servicesList.getAllServices}
@@ -70,6 +73,7 @@ function AdminServicesPage() {
             handleDeleteService={handleDeleteService}
             mode="details"
           />
+          {servicesListLoading && <p>Chargement...</p>}
         </div>
       </div>
     </>

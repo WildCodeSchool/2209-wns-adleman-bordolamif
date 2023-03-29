@@ -36,25 +36,33 @@ function WaitingRoomCreateForm(props: Props) {
     setIsCreateWaitingRoom(false);
   };
 
-  const inputClassName = 'border rounded w-2/6 py-2 px-3 text-gray-700 focus:outline-none mb-7';
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mx-10">
-      <input placeholder="Name" {...register('name')} required className={inputClassName} />
+    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
+      <label className="flex flex-col mr-4">
+        Nom de la salle d'attente
+        <input
+          placeholder="Ex: Salle d'attente 1"
+          {...register('name')}
+          required
+          className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+        />
+      </label>
       {servicesListLoading && <p>Loading...</p>}
       <ServicesCheckboxesList
         checkList={waitingRoomServices}
         servicesList={servicesList && servicesList.getAllServices}
         toggleCheckList={toggleWaitingRoomServices}
       />
-      <div className="flex">
+      <div className="flex flex-row items-end justify-end">
         <button
-          className="p-2 mx-2 bg-red-600 rounded text-white"
+          className="p-2 mx-2 w-[5rem] h-12 bg-red-600 rounded text-white hover:bg-red-700"
           type="button"
           onClick={() => setIsCreateWaitingRoom(false)}
-        >Annuler
+        >
+          Annuler
         </button>
         <button
-          className="p-2 mx-2 bg-green-600 rounded text-white"
+          className="p-2 mx-2 w-[5rem] h-12 bg-green-600 rounded text-white hover:bg-green-700"
           type="submit"
         >
           Créer
