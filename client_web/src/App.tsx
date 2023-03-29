@@ -15,6 +15,7 @@ import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
 import MyAccountPage from '@pages/MyAccountPage';
+import MyWaitingRoomPage from '@pages/admin/MyWaitingRoomPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -42,7 +43,9 @@ function App() {
                 />
               )}
             >
-              <Route path="dashboard" element={<AdminPage />} />
+              <Route path="dashboard" element={<AdminPage />}>
+                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
+              </Route>
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
