@@ -38,7 +38,12 @@ function AuthForm(props: Props) {
   return (
     <div className="flex flex-row items-center gap-20 scale-125">
       <div className="absolute -top-20">
-        <h2 className="text-3xl nunito-bold">Bienvenue sur Wait<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-regular">it</span></h2>
+        <h2 className="text-3xl nunito-bold">
+          Bienvenue sur Wait
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-regular">
+            it
+          </span>
+        </h2>
         <p className="text-xl">Le gestionnaire de flux d’attente spécialisé</p>
         <p className="text-xl">dans les établissements de santé</p>
       </div>
@@ -50,7 +55,7 @@ function AuthForm(props: Props) {
           <div className="flex flex-col items-center">
             <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl mb-8">Connexion</h2>
             <div className="relative">
-              <AtSymbolIcon className="absolute left-2 top-2 w-6 text-orange-500" />
+              <AtSymbolIcon className="f-auth-icon" />
               <input
                 placeholder="Email"
                 {...register('email', { onChange: handleChangeEmail, value: emailValue })}
@@ -58,7 +63,7 @@ function AuthForm(props: Props) {
               />
             </div>
             <div className="relative">
-              <LockClosedIcon className="absolute left-2 top-2 w-6 text-orange-500" />
+              <LockClosedIcon className="f-auth-icon" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Mot de passe"

@@ -74,6 +74,10 @@ function AdminTicketsPage() {
 
   return (
     <div>
+      <div className="f-title-format">
+        <h1 className="f-main-title">Tickets</h1>
+        <div className="f-decoration-line" />
+      </div>
       <select name="services" onChange={filterServices}>
         <option value="">Filtrer par service</option>
         {servicesList && servicesList!
@@ -94,7 +98,6 @@ function AdminTicketsPage() {
         ))}
       </select>
 
-      <h1>TicketPage</h1>
       {ticketsListLoading && <p>Loading ...</p>}
 
       <TicketsList
