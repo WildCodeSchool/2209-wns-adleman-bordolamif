@@ -10,7 +10,8 @@ loadEnv();
 
 export default new DataSource({
   type: 'postgres',
-  host: process.env.NODE_ENV === 'test' ? 'db_test' : 'db',
+  // eslint-disable-next-line no-nested-ternary
+  host: process.env.NODE_ENV === 'test' ? 'db_test' : process.env.NODE_ENV === 'development' ? 'db' : 'db_prod',
   port: 5432,
   username: env.POSTGRES_USER,
   password: env.POSTGRES_PASSWORD,
