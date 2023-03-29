@@ -23,7 +23,7 @@ const start = async (): Promise<void> => {
   const httpServer = http.createServer(app);
 
   const schema = await buildSchema({
-    resolvers: [join(__dirname, '/resolvers/*.ts')],
+    resolvers: [join(__dirname, '/resolvers/*.{ts,js}')],
     authChecker: async ({ context }: { context: ContextType }, roles = []) => {
       const { req } = context;
       const tokenInHeaders = req.headers.authorization?.split(' ')[1];
