@@ -45,13 +45,13 @@ function WaitingRoomDetails(props: Props) {
               type="button"
               onClick={() => setIsUpdateWaitingRoom(true)}
             >
-              <PencilSquareIcon className="f-icon hover:text-blue-500" />
+              <PencilSquareIcon className="f-update-icon" />
             </button>
             <button
               type="button"
               onClick={() => handleDeleteWaitingRoom(waitingRoom.id)}
             >
-              <TrashIcon className="f-icon hover:text-red-600" />
+              <TrashIcon className="f-delete-icon" />
             </button>
           </div>
           )}
