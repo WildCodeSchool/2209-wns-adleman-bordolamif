@@ -88,10 +88,22 @@
         @apply flex flex-row items-center justify-start ml-8 mb-12 mx-4
     }
 
+    .f-choice-button-format {
+        @apply flex flex-row justify-end space-x-4
+    }
+
     /* ------- icon components ------- */
 
     .f-icon {
         @apply w-6 mr-2;
+    }
+
+    .f-update-icon {
+        @apply w-6 mr-2 hover:text-blue-500;
+    }
+
+    .f-delete-icon {
+        @apply w-6 mr-2 hover:text-red-500;
     }
 
     .f-auth-icon {

@@ -38,13 +38,13 @@ function ServiceDetails(props: Props) {
             type="button"
             onClick={() => setIsUpdateService(true)}
           >
-            <PencilSquareIcon className="f-icon hover:text-blue-500" />
+            <PencilSquareIcon className="f-update-icon" />
           </button>
           <button
             type="button"
             onClick={() => handleDeleteService(service.id)}
           >
-            <TrashIcon className="f-icon hover:text-red-600" />
+            <TrashIcon className="f-delete-icon" />
           </button>
         </div>
         )}

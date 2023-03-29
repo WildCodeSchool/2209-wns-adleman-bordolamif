@@ -53,7 +53,7 @@ function WaitingRoomCreateForm(props: Props) {
         servicesList={servicesList && servicesList.getAllServices}
         toggleCheckList={toggleWaitingRoomServices}
       />
-      <div className="flex flex-row items-end justify-end space-x-4">
+      <div className="f-choice-button-format items-end">
         <button
           className="f-button-red"
           type="button"

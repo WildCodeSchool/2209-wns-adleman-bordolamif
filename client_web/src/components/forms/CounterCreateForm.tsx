@@ -30,7 +30,7 @@ function CounterCreateForm(props: Props) {
         required
         className="f-input"
       />
-      <div className="flex flex-row justify-end space-x-4">
+      <div className="f-choice-button-format">
         <button
           className="f-button-red"
           type="button"
