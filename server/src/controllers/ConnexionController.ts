@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import { verifyPassword } from '../entity/User';
 import UserModel from '../models/UserModel';
 import { ContextType } from '../utils/interfaces';
@@ -14,9 +13,9 @@ const ConnexionController = {
       user === null
     || typeof user.hashedPassword !== 'string'
     || !(await verifyPassword(data.password, user.hashedPassword))
-    ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new Error('invalid credentials'); }
 
-    if (user.isSuspended) { throw new ApolloError('user suspended'); }
+    if (user.isSuspended) { throw new Error('user suspended'); }
 
     const token = jwt.sign({ userId: user.id }, env.JWT_PRIVATE_KEY);
 
@@ -29,7 +28,7 @@ const ConnexionController = {
 
   logout: async (id:number, ctx: ContextType) => {
     const userToUpdate = await UserModel.getOneUserById(id);
-    if (userToUpdate === null) throw new ApolloError('User not found', 'NOT_FOUND');
+    if (userToUpdate === null) throw new Error('User not found');
 
     userToUpdate.counter = null;
     userToUpdate.currentService = null;
