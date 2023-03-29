@@ -1,6 +1,6 @@
 import { ApolloClient, useMutation } from '@apollo/client';
 import DarkLogo from '@assets/DarkLogo';
-import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftOnRectangleIcon, IdentificationIcon } from '@heroicons/react/24/outline';
 import { UserProfile } from '@utils/types/DataTypes';
 import { NavLink, useNavigate } from 'react-router-dom';
 import AdminMenu from './AdminMenu';
@@ -21,6 +21,10 @@ function Menu({ userProfile, client }: Props) {
     await logout({ variables: { logoutId: userProfile.id } });
     await client.resetStore();
     navigate('/');
+  };
+
+  const activeStyle = {
+    color: '#f97316',
   };
 
   const firstNameLetter = `${userProfile.firstname.charAt(0).toUpperCase()}.`;
@@ -54,18 +58,28 @@ function Menu({ userProfile, client }: Props) {
         </div>
         )}
       </div>
-      <div className="pl-4 flex flex-row items-center text-red-600 pb-6 hover:underline decoration-2 cursor-pointer mb-6 pt-6">
-        <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
-        <button
-          type="button"
-          onClick={onLogout}
-          className=""
+      <div className="pl-8">
+        <NavLink
+          to="/admin/myaccount"
+          style={({ isActive }) => (isActive ? activeStyle : undefined)}
         >
-          Déconnexion
-        </button>
+          <div className="f-format-menu">
+            <IdentificationIcon className="w-7 mr-4" />
+            Mon compte
+          </div>
+        </NavLink>
+        <div className="flex flex-row items-center text-red-600 pb-6 hover:underline decoration-2 cursor-pointer mb-6">
+          <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
+          <button
+            type="button"
+            onClick={onLogout}
+            className=""
+          >
+            Déconnexion
+          </button>
+        </div>
       </div>
     </div>
-
   );
 }
 
