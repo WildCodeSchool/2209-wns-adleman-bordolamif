@@ -51,7 +51,7 @@ function WaitingRoomUpdateForm(props: Props) {
             placeholder="Name"
             {...register('name')}
             required
-            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7"
+            className="f-input"
           />
         </label>
         <div className="flex flex-col justify-center">
@@ -64,16 +64,16 @@ function WaitingRoomUpdateForm(props: Props) {
             />
           </div>
         </div>
-        <div className="p-2 space-x-4">
+        <div className="p-2 flex flex-col justify-center items-center space-y-4">
           <button
-            className="p-2 w-fit bg-red-600 rounded text-white h-fit hover:bg-red-700"
+            className="f-button-red"
             type="button"
             onClick={() => setIsUpdateWaitingRoom(false)}
           >
             Annuler
           </button>
           <button
-            className="p-2 w-fit bg-green-600 rounded text-white h-fit hover:bg-green-700"
+            className="f-button-green"
             type="submit"
           >
             Appliquer

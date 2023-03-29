@@ -39,13 +39,13 @@ function CounterEditForm(props: Props) {
           aria-label="cancel"
           onClick={() => setIsEdit(false)}
         >
-          <XMarkIcon className="w-4 text-red-600" />
+          <XMarkIcon className="f-delete-icon" />
         </button>
         <button
           type="submit"
           aria-label="submit"
         >
-          <CheckIcon className="w-4 text-green-600" />
+          <CheckIcon className="f-update-icon" />
         </button>
       </div>
     </form>

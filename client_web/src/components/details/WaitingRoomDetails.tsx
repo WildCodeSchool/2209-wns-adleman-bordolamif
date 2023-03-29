@@ -5,7 +5,7 @@ import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 import CountersList from '../lists/CountersList';
 import ServiceIcon from '@components/icons/ServiceIcon';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 interface Props {
     waitingRoom: WaitingRoomData,
@@ -45,13 +45,13 @@ function WaitingRoomDetails(props: Props) {
               type="button"
               onClick={() => setIsUpdateWaitingRoom(true)}
             >
-              <PencilSquareIcon className="w-6 mr-2 hover:text-blue-500" />
+              <PencilSquareIcon className="f-update-icon" />
             </button>
             <button
               type="button"
               onClick={() => handleDeleteWaitingRoom(waitingRoom.id)}
             >
-              <TrashIcon className="w-6 hover:text-red-600" />
+              <TrashIcon className="f-delete-icon" />
             </button>
           </div>
           )}
@@ -90,10 +90,11 @@ function WaitingRoomDetails(props: Props) {
         : (
           <button
             type="button"
-            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 ml-2 rounded-xl h-fit w-fit"
+            className="f-button-green"
             onClick={() => setIsCreateCounter(true)}
           >
-            Ajouter un guichet
+            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
+            Guichet
           </button>
         )}
     </div>

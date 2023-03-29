@@ -43,7 +43,12 @@ function TicketUpdateForm(props : Props) {
               <option key={stat.key} value={stat.key}>{stat.name}</option>
             ))}
           </select>
-          <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Enregistrer</button>
+          <button
+            type="submit"
+            className="f-button-green"
+          >
+            Enregistrer
+          </button>
         </div>
       </form>
     </div>
