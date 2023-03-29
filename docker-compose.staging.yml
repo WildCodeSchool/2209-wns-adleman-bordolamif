@@ -1,36 +1,24 @@
+name: staging
 services:
-  db_prod:
-    image: postgres:15.0-alpine
-    container_name: WaitIt-db-prod
+  db_staging:
+    image: postgres:15-alpine
+    container_name: WaitIt-db-staging
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d postgres']
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
-      - db_prod:/var/lib/postgresql/data
+      - db_staging:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - prodNetwork
-
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    restart: always
-#    ports:
-#      - 5050:80
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-#    networks:
-#      - prodNetwork
 
   server:
-    container_name: WaitIt-server-prod
+    container_name: WaitIt-server-staging
     depends_on:
-      db_prod:
+      db_staging:
         condition: service_healthy
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -41,22 +29,19 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
-      DB_HOST: 'db_prod'
+      DB_HOST: 'db_staging'
       NODE_ENV: 'production'
-    image: joffreychevalier/waitit-server
+      image: joffreychevalier/waitit-server:staging
     healthcheck:
       test: 'curl --fail --request GET -H ''content-type:application/json'' --url ''http://localhost:4000/graphql?query=%7B__typename%7D'''
       interval: 5s
       timeout: 5s
       retries: 10
-    networks:
-      - prodNetwork
 
   client:
-    container_name: WaitIt-client-prod
-    image: joffreychevalier/waitit-client
-    networks:
-      - prodNetwork
+    container_name: WaitIt-client-staging
+    image: joffreychevalier/waitit-client:staging
+
 
   nginx:
     image: nginx:1.21.3
@@ -67,15 +52,13 @@ services:
         condition: service_healthy
     restart: always
     ports:
-      - ${GATEWAY_PORT:-8000}:80
+      - ${GATEWAY_PORT:-8001}:80
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx
-    networks:
-      - prodNetwork
+
 
 volumes:
-  db_prod:
+  db_staging:
 
-networks:
-  prodNetwork:
+
