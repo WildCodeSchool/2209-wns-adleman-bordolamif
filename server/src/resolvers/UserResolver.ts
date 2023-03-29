@@ -104,11 +104,11 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async updateUserIsSuspended(
+  async updateUserSuspension(
     @Arg('id', () => Int) id: number,
     @Arg('data') isSuspended: boolean,
   ): Promise<User> {
-    const userToUpdate = await UserController.updateUserIsSuspended(isSuspended, id);
+    const userToUpdate = await UserController.updateUserSuspension(isSuspended, id);
     return getSafeAttributes(userToUpdate);
   }
 
