@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import Service from '../entity/Service';
 import ServiceModel from '../models/ServiceModel';
 import WaitingRoomModel from '../models/WaitingRoomModel';
@@ -10,7 +9,7 @@ const ServiceController = {
 
   getOneServiceById: async (id: number): Promise<Service> => {
     const service = await ServiceModel.getOneServiceById(id);
-    if (service === null) throw new ApolloError('Service not found', 'NOT_FOUND');
+    if (service === null) throw new Error('Service not found');
     return service;
   },
 
@@ -18,7 +17,7 @@ const ServiceController = {
     let waitingRoom;
     if (data.waitingRoom) {
       waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(data.waitingRoom?.id);
-      if (waitingRoom === null) throw new ApolloError('WaitingRoom not found', 'NOT_FOUND');
+      if (waitingRoom === null) throw new Error('WaitingRoom not found');
     } else waitingRoom = undefined;
     const {
       name, acronym, isOpen, color,
@@ -31,7 +30,7 @@ const ServiceController = {
 
   deleteService: async (id: number): Promise<boolean> => {
     const { affected } = await ServiceModel.deleteService(id);
-    if (affected === 0) throw new ApolloError('Service not found', 'NOT_FOUND');
+    if (affected === 0) throw new Error('Service not found');
     return true;
   },
 
@@ -41,7 +40,7 @@ const ServiceController = {
     } = data;
     const ServiceToUpdate = await ServiceModel.getOneServiceById(id);
 
-    if (ServiceToUpdate === null) { throw new ApolloError('Service not found', 'NOT_FOUND'); }
+    if (ServiceToUpdate === null) { throw new Error('Service not found'); }
 
     ServiceToUpdate.name = name;
     ServiceToUpdate.acronym = acronym;

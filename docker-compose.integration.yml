@@ -1,6 +1,7 @@
 services:
   db_test:
     image: postgres:15.0-alpine
+    container_name: WaitIt-db-test
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -14,6 +15,7 @@ services:
     tmpfs: /var/lib/postgresql
 
   backend:
+    container_name: WaitIt-backend
     depends_on:
       db_test:
         condition: service_healthy
@@ -23,8 +25,15 @@ services:
     volumes:
       - ./server/src:/app/src
     environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB_TEST: ${POSTGRES_DB_TEST}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      SERVER_HOST: ${SERVER_HOST}
+      SERVER_PORT: ${SERVER_PORT}
       NODE_ENV: 'test'
-      DB_HOST: db_test
     healthcheck:
       test: 'curl --fail --request GET -H ''content-type:application/json'' --url ''http://localhost:4000/graphql?query=%7B__typename%7D'''
       interval: 5s
@@ -32,6 +41,7 @@ services:
       retries: 10
 
   testrunner:
+    container_name: WaitIt-testrunner
     build:
       context: .
       dockerfile: ./test/Dockerfile
@@ -39,7 +49,14 @@ services:
       backend:
         condition: service_healthy
     environment:
-      DB_HOST: db_test
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB_TEST: ${POSTGRES_DB_TEST}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      SERVER_HOST: ${SERVER_HOST}
+      SERVER_PORT: ${SERVER_PORT}
     volumes:
       - ./server/src/entity:/server/src/entity
       - ./test/src:/app/src
