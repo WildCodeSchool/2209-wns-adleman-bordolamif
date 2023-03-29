@@ -103,6 +103,15 @@ export class UserResolver {
     return getSafeAttributes(userToUpdate);
   }
 
+  @Mutation(() => User)
+  async updateUserIsSuspended(
+    @Arg('id', () => Int) id: number,
+    @Arg('data') isSuspended: boolean,
+  ): Promise<User> {
+    const userToUpdate = await UserController.updateUserIsSuspended(isSuspended, id);
+    return getSafeAttributes(userToUpdate);
+  }
+
   @Mutation(() => String)
   async forgotPassword(
     @Arg('email', () => String) email: string,

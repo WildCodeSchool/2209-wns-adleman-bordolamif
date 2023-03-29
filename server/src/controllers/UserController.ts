@@ -94,6 +94,13 @@ const UserController = {
     return await UserModel.updateUser(userToUpdate);
   },
 
+  updateUserIsSuspended: async (isSuspended: boolean, id: number) => {
+    const userToUpdate = await UserModel.getOneUserById(id);
+    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    userToUpdate.isSuspended = isSuspended;
+    return await UserModel.updateUser(userToUpdate);
+  },
+
   deleteUser: async (id: number) => {
     const { affected } = await UserModel.deleteUser(id);
     if (affected === 0) throw new ApolloError('User not found', 'NOT_FOUND');
