@@ -24,8 +24,9 @@ function AuthPage(props: Props) {
     try {
       await login({ variables: { data: formData } });
       await client.resetStore();
-    } catch (e) {
-      setError('Email ou mot de passe incorrect');
+    } catch (e: unknown) {
+      if (e instanceof Error && e.message === 'user suspended') setError('Utilisateur suspendu, connexion refusée.');
+      else setError('Email ou mot de passe incorrect');
     }
   };
 

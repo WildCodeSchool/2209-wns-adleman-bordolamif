@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client';
 import UserModal from '@components/modals/UserModal';
 import UsersList from '@components/lists/UsersList';
-import { CREATE_USER, DELETE_USER, UPDATE_USER } from '@graphQL/mutations/userMutations';
+import {
+  CREATE_USER, DELETE_USER, UPDATE_USER, UPDATE_USER_SUSPENSION,
+} from '@graphQL/mutations/userMutations';
 import { GET_ALL_USERS } from '@graphQL/query/userQuery';
 import useModal from '@utils/hooks/UseModal';
 import { UserData } from '@utils/types/DataTypes';
@@ -15,6 +17,8 @@ function AdminUsersPage() {
   const [userToUpdate, setUserToUpdate] = useState<UserData | null>(null);
   const [CreateUser] = useMutation(CREATE_USER);
   const [UpdateUser] = useMutation(UPDATE_USER);
+  const [UpdateUserSuspension] = useMutation(UPDATE_USER_SUSPENSION);
+
   const [DeleteUser] = useMutation(DELETE_USER);
   const {
     loading: usersListLoading,
@@ -37,6 +41,11 @@ function AdminUsersPage() {
     await refetchUserList();
   };
 
+  const handleUpdateUserSuspension = async (data:boolean, id:number) => {
+    await UpdateUserSuspension({ variables: { data, updateUserSuspensionId: id } });
+    await refetchUserList();
+  };
+
   const handleOpenModal = (user: UserData | null) => {
     setUserToUpdate(user);
     openModal();
@@ -56,6 +65,7 @@ function AdminUsersPage() {
       <UsersList
         usersList={usersList && usersList.getAllUsers}
         handleOpenModal={handleOpenModal}
+        handleUpdateUserSuspension={handleUpdateUserSuspension}
         handleDeleteUser={handleDeleteUser}
       />
       <button
