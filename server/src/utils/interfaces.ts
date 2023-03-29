@@ -15,5 +15,4 @@ export interface ContextType {
    }
 export interface SearchFilter {
      where?: CreatedAtFilter;
-     relations?: string[];
    }

@@ -6,7 +6,14 @@ import { SearchFilter } from '../utils/interfaces';
 
 const TicketModel = {
   getAllTickets: async (searchFilter?: SearchFilter) => await
-  dataSource.getRepository(Ticket).find(searchFilter),
+  dataSource.getRepository(Ticket).find({
+    where: { createdAt: searchFilter?.where?.createdAt },
+    relations: {
+      service: true,
+      user: true,
+      counter: true,
+    },
+  }),
 
   getOneTicketById: async (id: number) => await
   dataSource.getRepository(Ticket).findOne({

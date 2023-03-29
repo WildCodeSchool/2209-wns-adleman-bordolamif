@@ -34,28 +34,24 @@ export const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0,
 export const startOfYear = new Date(today.getFullYear(), 0, 1);
 export const endOfYear = new Date(today.getFullYear(), 12, 0, 23, 59, 59);
 
-export const dateFilterBuilder = (filter?: string): SearchFilter => {
+export const dateFilterBuilder = (filter?: string): SearchFilter | undefined => {
   const searchFilter: SearchFilter = {};
 
   switch (filter) {
     case DateFilterEnum.TODAY:
       searchFilter.where = { createdAt: Between(startOfDay, endOfDay) };
-      searchFilter.relations = ['service', 'user', 'counter'];
       break;
     case DateFilterEnum.THIS_WEEK:
       searchFilter.where = { createdAt: Between(startOfWeek, endOfWeek) };
-      searchFilter.relations = ['service', 'user', 'counter'];
       break;
     case DateFilterEnum.THIS_MONTH:
       searchFilter.where = { createdAt: Between(startOfMonth, endOfMonth) };
-      searchFilter.relations = ['service', 'user', 'counter'];
       break;
     case DateFilterEnum.THIS_YEAR:
       searchFilter.where = { createdAt: Between(startOfYear, endOfYear) };
-      searchFilter.relations = ['service', 'user', 'counter'];
       break;
     default:
-      searchFilter.relations = ['service', 'user', 'counter'];
+      searchFilter.where = undefined;
       break;
   }
   return searchFilter;
