@@ -66,14 +66,14 @@ function WaitingRoomUpdateForm(props: Props) {
         </div>
         <div className="p-2 space-x-4">
           <button
-            className="p-2 w-fit bg-red-600 rounded text-white h-fit hover:bg-red-700"
+            className="f-button-red"
             type="button"
             onClick={() => setIsUpdateWaitingRoom(false)}
           >
             Annuler
           </button>
           <button
-            className="p-2 w-fit bg-green-600 rounded text-white h-fit hover:bg-green-700"
+            className="f-button-green"
             type="submit"
           >
             Appliquer

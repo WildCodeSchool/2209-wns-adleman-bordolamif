@@ -98,16 +98,16 @@ function ServiceUpdateForm(props: Props) {
             toggleRadioList={toggleServiceWaitingRoom}
           />
         </div>
-        <div className="flex flex-row justify-end">
+        <div className="flex flex-row justify-end space-x-4">
           <button
-            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            className="f-button-red"
             type="button"
             onClick={() => setIsUpdateService(false)}
           >
             Annuler
           </button>
           <button
-            className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
+            className="f-button-green"
             type="submit"
           >
             Appliquer

@@ -5,7 +5,7 @@ import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 import CountersList from '../lists/CountersList';
 import ServiceIcon from '@components/icons/ServiceIcon';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 interface Props {
     waitingRoom: WaitingRoomData,
@@ -36,11 +36,11 @@ function WaitingRoomDetails(props: Props) {
   return (
     <div className="border border-2 flex flex-col justify-between border-gray-200 p-3 rounded-xl my-2">
       <div className="flex flex-col mb-4">
-        <div className="flex flex-row justify-between nunito-bold pl-2 pb-1 text-lg">
+        <div className="flex flex-raw justify-between nunito-bold pl-2 pb-1 text-lg">
           <h2 className="mr-4">{waitingRoom.name}</h2>
           {!isUpdateWaitingRoom
           && (
-          <div className="flex flex-row">
+          <div className="flex flex-raw">
             <button
               type="button"
               onClick={() => setIsUpdateWaitingRoom(true)}
@@ -56,7 +56,7 @@ function WaitingRoomDetails(props: Props) {
           </div>
           )}
         </div>
-        <div className="flex flex-row p-2 gap-3">
+        <div className="flex flex-raw p-2 gap-3">
           {waitingRoom.services.map((service) => (
             <ServiceIcon key={service.id} service={service} />
           ))}
@@ -90,10 +90,11 @@ function WaitingRoomDetails(props: Props) {
         : (
           <button
             type="button"
-            className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 ml-2 rounded-xl h-fit w-fit"
+            className="f-button-green"
             onClick={() => setIsCreateCounter(true)}
           >
-            Ajouter un guichet
+            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
+            Guichet
           </button>
         )}
     </div>

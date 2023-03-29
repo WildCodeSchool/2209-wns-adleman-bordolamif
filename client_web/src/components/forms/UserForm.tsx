@@ -90,7 +90,12 @@ function UserForm(props : Props) {
             servicesList={servicesList && servicesList.getAllServices}
             toggleCheckList={toggleUserServices}
           />
-          <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Activer le compte</button>
+          <button
+            type="submit"
+            className="f-button-green"
+          >
+            Activer le compte
+          </button>
           <div>
             {error && <div>{error}</div>}
           </div>

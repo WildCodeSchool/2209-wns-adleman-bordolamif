@@ -43,13 +43,13 @@ function AdminServicesPage() {
       </div>
       <div>
         <h2 className="nunito-bold text-xl mb-8">Créer un service</h2>
-        <div className="flex items-center justify-start ml-8 mb-12 mx-4">
+        <div className="flex flex-row items-center justify-start ml-8 mb-12 mx-4">
           <div className="flex flex-col items-center">
             {!isCreateService
         && (
           <button
             type="button"
-            className="flex bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl"
+            className="f-button-green"
             onClick={() => setIsCreateService(true)}
           >
             <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />

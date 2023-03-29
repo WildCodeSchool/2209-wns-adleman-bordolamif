@@ -4,6 +4,7 @@ import WaitingRoomsList from '@components/lists/WaitingRoomsList';
 import { CREATE_COUNTER, DELETE_COUNTER, UPDATE_COUNTER } from '@graphQL/mutations/counterMutations';
 import { CREATE_WAITINGROOM, DELETE_WAITINGROOM, UPDATE_WAITINGROOM } from '@graphQL/mutations/waitingRoomMutations';
 import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
@@ -70,9 +71,10 @@ function AdminWaitingRoomsAndCountersPage() {
         && (
           <button
             type="button"
-            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+            className="f-button-green"
             onClick={() => setIsCreateWaitingRoom(true)}
           >
+            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
             Ajouter une salle d'attente
           </button>
         )}

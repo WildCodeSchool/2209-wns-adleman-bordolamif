@@ -52,7 +52,7 @@ function ChangePasswordForm(props:Props) {
       {error && <div className="text-red-600">{error}</div>}
       <button
         type="submit"
-        className="drop-shadow bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded w-3/6"
+        className="f-button-green"
       >
         Valider
       </button>
