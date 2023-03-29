@@ -33,6 +33,7 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      DB_HOST: 'db_test'
       NODE_ENV: 'test'
     healthcheck:
       test: 'curl --fail --request GET -H ''content-type:application/json'' --url ''http://localhost:4000/graphql?query=%7B__typename%7D'''
@@ -57,6 +58,7 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      DB_HOST: 'db_test'
     volumes:
       - ./server/src/entity:/server/src/entity
       - ./test/src:/app/src
