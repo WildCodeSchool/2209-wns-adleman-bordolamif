@@ -1,4 +1,10 @@
+import { useQuery } from '@apollo/client';
+import { GET_ALL_TICKETS } from '@graphQL/query/ticketQuery';
+import { useParams } from 'react-router';
+
 function TvScreenPage() {
+  const { id } = useParams();
+  const { data: ticketsList } = useQuery(GET_ALL_TICKETS, { variables: { filter: 'today' } });
   return (
     <div className="flex flex-row">
       <div className="bg-gray-800 text-white">
