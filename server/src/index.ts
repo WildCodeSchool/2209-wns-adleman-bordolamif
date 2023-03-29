@@ -30,26 +30,17 @@ const start = async (): Promise<void> => {
       const tokenInCookie = cookie.parse(req.headers.cookie ?? '').token;
       const token = tokenInHeaders ?? tokenInCookie;
 
-      try {
-        let decoded;
-        // https:// www.npmjs.com/package/jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-        if (token) decoded = jwt.verify(token, env.JWT_PRIVATE_KEY);
-        if (typeof decoded === 'object') context.jwtPayload = decoded;
-      } catch (err) {
-        throw new Error('Error while authenticating user');
-      }
+      if (typeof token !== 'string') return false;
 
-      let user;
-      if (context.jwtPayload) {
-        user = await datasource
-          .getRepository(User)
-          .findOne({ where: { id: context.jwtPayload.userId } });
-      }
+      const decoded = jwt.verify(token, env.JWT_PRIVATE_KEY);
+      if (typeof decoded !== 'object') return false;
 
-      if (user !== null) context.currentUser = user;
+      const id = decoded.userId;
+      const currentUser = await datasource.getRepository(User).findOneBy({ id });
+      if (currentUser === null) return false;
 
-      if (!context.currentUser) return false;
-      return roles.length === 0 || roles.includes(context.currentUser.role);
+      context.currentUser = currentUser;
+      return roles.length === 0 || roles.includes(currentUser.role);
     },
   });
 
