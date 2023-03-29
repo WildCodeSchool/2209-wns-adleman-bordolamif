@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-core';
 import Ticket from '../entity/Ticket';
 import ServiceModel from '../models/ServiceModel';
 import TicketModel from '../models/TicketModel';
@@ -15,7 +14,7 @@ const TicketController = {
 
   getOneTicketById: async (id: number): Promise<Ticket> => {
     const ticket = await TicketController.getOneTicketById(id);
-    if (ticket === null) throw new ApolloError('Ticket not found', 'NOT_FOUND');
+    if (ticket === null) throw new Error('Ticket not found');
     return ticket;
   },
 
@@ -26,7 +25,7 @@ const TicketController = {
 
     const ticketService = await ServiceModel.getOneArgService(service.id) || null;
 
-    if (ticketService === null) throw new ApolloError('Service not found', 'NOT_FOUND');
+    if (ticketService === null) throw new Error('Service not found');
 
     const todaysTicketsServices = await TicketModel.getTodayTicketsByService(ticketService.id);
 
@@ -43,7 +42,7 @@ const TicketController = {
 
   deleteTicket: async (id: number): Promise<boolean> => {
     const { affected } = await TicketModel.deleteTicket(id);
-    if (affected === 0) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
+    if (affected === 0) { throw new Error('Ticket not found'); }
     return true;
   },
 
@@ -53,7 +52,7 @@ const TicketController = {
     } = data;
     const ticketToUpdate = await TicketModel.getOneTicketById(id);
 
-    if (ticketToUpdate === null) { throw new ApolloError('Ticket not found', 'NOT_FOUND'); }
+    if (ticketToUpdate === null) { throw new Error('Ticket not found'); }
 
     ticketStatusUpdater(ticketToUpdate, status);
 
