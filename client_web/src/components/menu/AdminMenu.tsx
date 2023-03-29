@@ -21,7 +21,7 @@ function AdminMenu() {
             to="/admin/dashboard"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <HomeIcon className="w-7 mr-4" />
               Tableau de bord
             </div>
@@ -30,7 +30,7 @@ function AdminMenu() {
             to="/admin/services"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <ComputerDesktopIcon className="w-7 mr-4" />
               Services
             </div>
@@ -39,7 +39,7 @@ function AdminMenu() {
             to="/admin/waitingroomsandcounters"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <ClipboardDocumentCheckIcon className="w-7 mr-4" />
               Salles d'attente
             </div>
@@ -48,7 +48,7 @@ function AdminMenu() {
             to="/admin/tickets"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <TicketIcon className="w-7 mr-4" />
               Tickets
             </div>
@@ -57,7 +57,7 @@ function AdminMenu() {
             to="/admin/statistics"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <PresentationChartBarIcon className="w-7 mr-4" />
               Statistiques
             </div>
@@ -66,7 +66,7 @@ function AdminMenu() {
             to="/admin/users"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="f-admin-menu">
+            <div className="f-format-menu">
               <UserGroupIcon className="w-7 mr-4" />
               Gestion des opérateurs
             </div>

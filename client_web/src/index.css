@@ -62,7 +62,7 @@
         @apply w-14 h-8 rounded-xl pt-1 text-center text-white nunito-bold
     }
 
-    .f-admin-menu {
+    .f-format-menu {
         @apply flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer;
     }
 

@@ -63,7 +63,7 @@ function Menu({ userProfile, client }: Props) {
           to="/admin/myaccount"
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
         >
-          <div className="f-admin-menu">
+          <div className="f-format-menu">
             <IdentificationIcon className="w-7 mr-4" />
             Mon compte
           </div>
