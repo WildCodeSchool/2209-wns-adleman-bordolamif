@@ -7,6 +7,7 @@ import useModal from '@utils/hooks/UseModal';
 import { UserData } from '@utils/types/DataTypes';
 import { useState } from 'react';
 import { UserInput } from '@utils/types/InputTypes';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
 function AdminUsersPage() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -47,7 +48,10 @@ function AdminUsersPage() {
   };
   return (
     <div>
-      <h1>UsersPage</h1>
+      <div className="f-title-format">
+        <h1 className="f-main-title">Opérateurs</h1>
+        <div className="f-decoration-line" />
+      </div>
       {usersListLoading && <p>loading...</p>}
       <UsersList
         usersList={usersList && usersList.getAllUsers}
@@ -57,9 +61,10 @@ function AdminUsersPage() {
       <button
         type="button"
         onClick={() => handleOpenModal(null)}
-        className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6"
+        className="f-button-green"
       >
-        Create User
+        <PlusCircleIcon className="f-icon" />
+        Ajouter un opérateur
       </button>
       <UserModal
         userToUpdate={userToUpdate}

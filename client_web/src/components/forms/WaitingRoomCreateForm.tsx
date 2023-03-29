@@ -53,16 +53,16 @@ function WaitingRoomCreateForm(props: Props) {
         servicesList={servicesList && servicesList.getAllServices}
         toggleCheckList={toggleWaitingRoomServices}
       />
-      <div className="flex flex-row items-end justify-end">
+      <div className="f-choice-button-format items-end">
         <button
-          className="p-2 mx-2 w-[5rem] h-12 bg-red-600 rounded text-white hover:bg-red-700"
+          className="f-button-red"
           type="button"
           onClick={() => setIsCreateWaitingRoom(false)}
         >
           Annuler
         </button>
         <button
-          className="p-2 mx-2 w-[5rem] h-12 bg-green-600 rounded text-white hover:bg-green-700"
+          className="f-button-green"
           type="submit"
         >
           Créer

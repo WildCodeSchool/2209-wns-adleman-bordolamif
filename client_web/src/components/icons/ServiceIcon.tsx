@@ -8,7 +8,7 @@ function ServiceIcon(props: Props) {
   const { service } = props;
   return (
     <div
-      className="w-14 h-8 rounded-xl pt-1 text-center text-white nunito-bold"
+      className="f-acronyme"
       style={{ backgroundColor: `${service.color}` }}
     >
       {service.acronym}
