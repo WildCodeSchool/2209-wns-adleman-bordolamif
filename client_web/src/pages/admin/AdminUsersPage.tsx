@@ -48,9 +48,9 @@ function AdminUsersPage() {
   };
   return (
     <div>
-      <div className="flex flex-col items-center mb-12">
+      <div className="f-title-format">
         <h1 className="f-main-title">Opérateurs</h1>
-        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+        <div className="f-decoration-line" />
       </div>
       {usersListLoading && <p>loading...</p>}
       <UsersList
@@ -63,7 +63,7 @@ function AdminUsersPage() {
         onClick={() => handleOpenModal(null)}
         className="f-button-green"
       >
-        <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
+        <PlusCircleIcon className="f-icon" />
         Ajouter un opérateur
       </button>
       <UserModal

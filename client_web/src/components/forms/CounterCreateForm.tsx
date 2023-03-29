@@ -24,7 +24,12 @@ function CounterCreateForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Nom du guichet</h2>
-      <input placeholder="Ex: Guichet 1" {...register('name')} required className="f-input" />
+      <input
+        placeholder="Ex: Guichet 1"
+        {...register('name')}
+        required
+        className="f-input"
+      />
       <div className="flex flex-row justify-end space-x-4">
         <button
           className="f-button-red"

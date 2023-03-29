@@ -32,7 +32,7 @@ function ChangePasswordForm(props:Props) {
         <EyeSlashIcon {...iconProps} />
       )}
       <div className="relative">
-        <LockClosedIcon className="absolute left-2 top-2 w-6 text-orange-500" />
+        <LockClosedIcon className="f-auth-icon" />
         <input
           type={showPassword ? 'text' : 'password'}
           placeholder="Nouveau mot de passe"
@@ -41,7 +41,7 @@ function ChangePasswordForm(props:Props) {
         />
       </div>
       <div className="relative">
-        <LockClosedIcon className="absolute left-2 top-2 w-6 text-orange-500" />
+        <LockClosedIcon className="f-auth-icon" />
         <input
           type={showPassword ? 'text' : 'password'}
           placeholder="Verifier le mot de passe"

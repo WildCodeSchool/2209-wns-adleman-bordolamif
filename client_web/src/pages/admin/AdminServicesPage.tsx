@@ -37,13 +37,13 @@ function AdminServicesPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center mb-12">
+      <div className="f-title-format">
         <h1 className="f-main-title">Gérer mes services</h1>
-        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+        <div className="f-decoration-line" />
       </div>
       <div>
         <h2 className="f-under-title">Créer un service</h2>
-        <div className="flex flex-row items-center justify-start ml-8 mb-12 mx-4">
+        <div className="f-page-format">
           <div className="flex flex-col items-center">
             {!isCreateService
         && (
@@ -52,7 +52,7 @@ function AdminServicesPage() {
             className="f-button-green"
             onClick={() => setIsCreateService(true)}
           >
-            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
+            <PlusCircleIcon className="f-icon" />
             Ajouter un service
           </button>
         )}

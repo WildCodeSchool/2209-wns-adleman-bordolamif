@@ -22,7 +22,7 @@ function ServiceDetails(props: Props) {
   return (
     <div className="flex flex-col bg-gray-100 pb-2 rounded-xl">
       <div
-        className="w-1/2 mx-auto h-1 mb-2 rounded-xl"
+        className="f-services-card-decoration"
         style={{ backgroundColor: `${service.color}` }}
       />
       <div className="nunito-bold pl-2 pb-1 text-lg">
@@ -38,13 +38,13 @@ function ServiceDetails(props: Props) {
             type="button"
             onClick={() => setIsUpdateService(true)}
           >
-            <PencilSquareIcon className="w-6 mr-2 hover:text-blue-500" />
+            <PencilSquareIcon className="f-icon hover:text-blue-500" />
           </button>
           <button
             type="button"
             onClick={() => handleDeleteService(service.id)}
           >
-            <TrashIcon className="w-6 hover:text-red-600" />
+            <TrashIcon className="f-icon hover:text-red-600" />
           </button>
         </div>
         )}
