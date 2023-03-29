@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import User, { hashPassword } from '../entity/User';
 import CounterModel from '../models/CounterModel';
 import ServiceModel from '../models/ServiceModel';
@@ -10,7 +9,7 @@ const UserController = {
 
   getOneUser: async (id: number): Promise<User> => {
     const user = await UserModel.getOneUserById(id);
-    if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
+    if (user === null) throw new Error('User not found');
     return user;
   },
 
@@ -21,11 +20,11 @@ const UserController = {
 
     const exisitingUser = await UserModel.getOneUserByMail(email);
 
-    if (exisitingUser !== null) throw new ApolloError('EMAIL_ALREADY_EXISTS');
+    if (exisitingUser !== null) throw new Error('EMAIL_ALREADY_EXISTS');
     if (!data.password) {
       if (role === 2) data.password = `${firstname}${lastname}00!`;
       else {
-        throw new ApolloError('PASSWORD REQUIRED');
+        throw new Error('PASSWORD REQUIRED');
       }
     }
     const hashedPassword = await hashPassword(data.password);
@@ -52,7 +51,7 @@ const UserController = {
     } = data;
     const userToUpdate = await UserModel.getOneUserById(id);
 
-    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    if (userToUpdate === null) { throw new Error('User not found'); }
 
     userToUpdate.firstname = firstname;
     userToUpdate.lastname = lastname;
@@ -96,14 +95,14 @@ const UserController = {
 
   updateUserSuspension: async (isSuspended: boolean, id: number) => {
     const userToUpdate = await UserModel.getOneUserById(id);
-    if (userToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    if (userToUpdate === null) { throw new Error('User not found'); }
     userToUpdate.isSuspended = isSuspended;
     return await UserModel.updateUser(userToUpdate);
   },
 
   deleteUser: async (id: number) => {
     const { affected } = await UserModel.deleteUser(id);
-    if (affected === 0) throw new ApolloError('User not found', 'NOT_FOUND');
+    if (affected === 0) throw new Error('User not found');
     return true;
   },
 };
