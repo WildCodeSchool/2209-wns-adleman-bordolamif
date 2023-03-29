@@ -5,7 +5,6 @@ import {
   PresentationChartBarIcon,
   UserGroupIcon,
   ClipboardDocumentCheckIcon,
-  IdentificationIcon,
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ function AdminMenu() {
             to="/admin/dashboard"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <HomeIcon className="w-7 mr-4" />
               Tableau de bord
             </div>
@@ -31,7 +30,7 @@ function AdminMenu() {
             to="/admin/services"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <ComputerDesktopIcon className="w-7 mr-4" />
               Services
             </div>
@@ -40,7 +39,7 @@ function AdminMenu() {
             to="/admin/waitingroomsandcounters"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <ClipboardDocumentCheckIcon className="w-7 mr-4" />
               Salles d'attente
             </div>
@@ -49,7 +48,7 @@ function AdminMenu() {
             to="/admin/tickets"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <TicketIcon className="w-7 mr-4" />
               Tickets
             </div>
@@ -58,7 +57,7 @@ function AdminMenu() {
             to="/admin/statistics"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <PresentationChartBarIcon className="w-7 mr-4" />
               Statistiques
             </div>
@@ -67,18 +66,9 @@ function AdminMenu() {
             to="/admin/users"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            <div className="flex flex-row text-outline pb-6 items-center hover:underline decoration-2 cursor-pointer">
+            <div className="f-admin-menu">
               <UserGroupIcon className="w-7 mr-4" />
               Gestion des opérateurs
-            </div>
-          </NavLink>
-          <NavLink
-            to="/admin/myaccount"
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            <div className="flex flex-row text-outline pb-6 items-center hover:underline decoration-2 cursor-pointer">
-              <IdentificationIcon className="w-7 mr-4" />
-              Mon compte
             </div>
           </NavLink>
         </ul>
