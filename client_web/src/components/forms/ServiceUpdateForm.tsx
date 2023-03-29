@@ -63,7 +63,7 @@ function ServiceUpdateForm(props: Props) {
           <input
             placeholder="Ex: Radiologie"
             {...register('name', { required: true })}
-            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+            className="f-input"
           />
         </label>
         <div className="flex flex-row justify-between">
@@ -71,7 +71,7 @@ function ServiceUpdateForm(props: Props) {
             Acronyme
             <input
               placeholder="Ex: RDL"
-              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              className="f-input w-[10rem]"
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>

@@ -61,10 +61,10 @@ function AdminWaitingRoomsAndCountersPage() {
   return (
     <div>
       <div className="flex flex-col items-center mb-12">
-        <h1 className="nunito-bold text-orange-500 text-2xl">Gérer les salles d'attente</h1>
+        <h1 className="f-main-title">Gérer les salles d'attente</h1>
         <div className="h-[2px] w-full bg-gray-300 mt-5" />
       </div>
-      <h2 className="nunito-bold text-xl mb-8">Créer une salle d'attente</h2>
+      <h2 className="f-under-title">Créer une salle d'attente</h2>
       <div className="flex flex-row items-center justify-start ml-8 mb-12 mx-4">
         <div className="flex flex-col items-center">
           {!isCreateWaitingRoom
@@ -87,7 +87,7 @@ function AdminWaitingRoomsAndCountersPage() {
       )}
         </div>
       </div>
-      <h2 className="nunito-bold text-xl mb-8">Salles d'attente et leur guichets</h2>
+      <h2 className="f-under-title">Salles d'attente et leur guichets</h2>
       <div className="px-8 mx-">
         <WaitingRoomsList
           waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}

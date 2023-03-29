@@ -31,7 +31,7 @@ function CounterEditForm(props: Props) {
         placeholder="Ex: Guichet 1"
         {...register('name')}
         required
-        className="w-[8rem] py-1 px-2 text-gray-700 bg-gray-100 focus:outline-none mr-1"
+        className="f-input"
       />
       <div className="flex flex-row">
         <button

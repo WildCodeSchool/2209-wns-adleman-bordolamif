@@ -51,7 +51,7 @@ function WaitingRoomUpdateForm(props: Props) {
             placeholder="Name"
             {...register('name')}
             required
-            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7"
+            className="f-input"
           />
         </label>
         <div className="flex flex-col justify-center">
@@ -64,7 +64,7 @@ function WaitingRoomUpdateForm(props: Props) {
             />
           </div>
         </div>
-        <div className="p-2 space-x-4">
+        <div className="p-2 flex flex-col justify-center items-center space-y-4">
           <button
             className="f-button-red"
             type="button"
