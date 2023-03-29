@@ -25,7 +25,7 @@ export const CREATE_USER = gql`
         color
         acronym
         name
-        open
+        isOpen
       }
     }
   }
@@ -46,7 +46,7 @@ export const UPDATE_USER = gql`
       services {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
@@ -63,12 +63,25 @@ export const UPDATE_USER = gql`
       currentService {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
     }
   }
+`;
+
+export const UPDATE_USER_SUSPENSION = gql`
+  mutation Mutation($data: Boolean!, $updateUserSuspensionId: Int!) {
+    updateUserSuspension(data: $data, id: $updateUserSuspensionId) {
+      id
+      firstname
+      lastname
+      email
+      role
+      isSuspended
+  }
+}
 `;
 
 export const DELETE_USER = gql`
@@ -104,7 +117,7 @@ export const UPDATE_PASSWORD = gql`
       services {
         id
         name
-        open
+        isOpen
         color
         acronym
       }
@@ -121,7 +134,7 @@ export const UPDATE_PASSWORD = gql`
       currentService {
         id
         name
-        open
+        isOpen
         color
         acronym
       }

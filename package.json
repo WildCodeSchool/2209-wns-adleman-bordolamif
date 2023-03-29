@@ -8,7 +8,11 @@
     "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "prepare": "husky install",
-    "test:docker": "docker-compose -f docker-compose.integration.yml up --build --exit-code-from testrunner"
+    "test:docker": "docker-compose -f docker-compose.integration.yml up --build --exit-code-from testrunner",
+    "start:prod": "docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml up --build",
+    "publish:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server && docker push joffreychevalier/waitit-server && cd ..",
+    "publish:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client && docker push joffreychevalier/waitit-client && cd ..",
+    "publish:all": "npm run publish:server && npm run publish:client"
   },
   "author": "Joffrey Chevalier",
   "license": "ISC",

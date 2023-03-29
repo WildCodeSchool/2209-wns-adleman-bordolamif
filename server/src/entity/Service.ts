@@ -28,7 +28,7 @@ class Service {
 
   @Field()
   @Column()
-    open: boolean;
+    isOpen: boolean;
 
   @Field()
   @Column({ length: 7, unique: true })

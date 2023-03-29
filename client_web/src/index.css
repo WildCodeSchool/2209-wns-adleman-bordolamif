@@ -35,4 +35,78 @@
     .nunito-regular {
         font-family: 'Nunito-regular', sans-serif;
     }
+
+    /* --------------- STYLES CLASSES --------------- */
+
+    /* ------- buttons components ------- */
+
+    .f-button-green {
+        @apply flex flex-row bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl w-fit;
+    }
+
+    .f-button-red {
+        @apply flex flex-row bg-red-600 nunito-bold text-white hover:bg-red-700 py-2 px-4 rounded-xl w-fit;
+    }
+
+    /* ------- text components ------- */
+
+    .f-main-title {
+        @apply text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl;
+    }
+
+    .f-under-title {
+        @apply nunito-bold text-xl mb-8;
+    }
+
+    .f-acronyme {
+        @apply w-14 h-8 rounded-xl pt-1 text-center text-white nunito-bold
+    }
+
+    /* ------- input components ------- */
+
+    .f-input {
+        @apply border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2;
+    }
+
+    /* ------- decoration components ------- */
+
+    .f-decoration-line {
+        @apply h-[2px] w-full bg-gray-300 mt-5;
+    }
+
+    .f-services-card-decoration {
+        @apply w-1/2 mx-auto h-1 mb-2 rounded-xl;
+    }
+
+    /* ------- format components ------- */
+
+    .f-title-format {
+        @apply flex flex-col items-center mb-12
+    }
+
+    .f-page-format {
+        @apply flex flex-row items-center justify-start ml-8 mb-12 mx-4
+    }
+
+    .f-choice-button-format {
+        @apply flex flex-row justify-end space-x-4
+    }
+
+    /* ------- icon components ------- */
+
+    .f-icon {
+        @apply w-6 mr-2;
+    }
+
+    .f-update-icon {
+        @apply w-6 mr-2 hover:text-blue-500;
+    }
+
+    .f-delete-icon {
+        @apply w-6 mr-2 hover:text-red-500;
+    }
+
+    .f-auth-icon {
+        @apply absolute left-2 top-2 w-6 text-orange-500;
+    }
 }

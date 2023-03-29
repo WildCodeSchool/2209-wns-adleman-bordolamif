@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import WaitingRoom from '../entity/WaitingRoom';
 import CounterModel from '../models/CounterModel';
 import ServiceModel from '../models/ServiceModel';
@@ -11,7 +10,7 @@ const WaitingRoomController = {
 
   getOneWaitingRoom: async (id: number): Promise<WaitingRoom> => {
     const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(id);
-    if (waitingRoom === null) throw new ApolloError('WaitingRoom not found', 'NOT_FOUND');
+    if (waitingRoom === null) throw new Error('WaitingRoom not found');
     return waitingRoom;
   },
 
@@ -30,7 +29,7 @@ const WaitingRoomController = {
 
     const waitingRoomToUpdate = await WaitingRoomModel.getOneWaitingRoomById(id);
 
-    if (waitingRoomToUpdate === null) { throw new ApolloError('User not found', 'NOT_FOUND'); }
+    if (waitingRoomToUpdate === null) { throw new Error('User not found'); }
 
     waitingRoomToUpdate.name = name;
     waitingRoomToUpdate.services = await Promise.all(services?.map(
@@ -43,7 +42,7 @@ const WaitingRoomController = {
   deleteWaitingRoom: async (id: number) => {
     const waitingRoomToDelete = await WaitingRoomModel?.getOneWaitingRoomById(id);
 
-    if (waitingRoomToDelete === null) { throw new ApolloError('Waiting room not found', 'NOT_FOUND'); }
+    if (waitingRoomToDelete === null) { throw new Error('Waiting room not found'); }
 
     if (waitingRoomToDelete!.counters && waitingRoomToDelete?.counters.length !== 0) {
         waitingRoomToDelete!.counters.map(async (counter) => await CounterModel

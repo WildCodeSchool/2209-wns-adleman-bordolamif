@@ -8,6 +8,7 @@ export interface UserProfile {
     firstname: string;
     lastname: string;
     isFirstLogin: boolean;
+    isSuspended: boolean;
   }
 
 export interface CurrentUser {
@@ -28,7 +29,7 @@ export interface Service {
   name : string;
   color : string;
   acronym : string;
-  open : boolean;
+  isOpen : boolean;
 }
 
 export interface Ticket {

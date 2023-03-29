@@ -46,14 +46,14 @@ function CounterDetails(props: Props) {
           aria-label="edit"
           onClick={() => setIsEdit(true)}
         >
-          <PencilSquareIcon className="w-4 mr-2 hover:text-blue-500" />
+          <PencilSquareIcon className="f-update-icon" />
         </button>
         <button
           type="button"
           aria-label="delete"
           onClick={() => handleDeleteCounter(counter.id)}
         >
-          <TrashIcon className="w-4 hover:text-red-600" />
+          <TrashIcon className="f-delete-icon" />
         </button>
       </div>
       )}

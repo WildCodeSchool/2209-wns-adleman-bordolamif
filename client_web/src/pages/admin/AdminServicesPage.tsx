@@ -37,22 +37,22 @@ function AdminServicesPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center mb-12">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl">Gérer mes services</h1>
-        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+      <div className="f-title-format">
+        <h1 className="f-main-title">Gérer mes services</h1>
+        <div className="f-decoration-line" />
       </div>
       <div>
-        <h2 className="nunito-bold text-xl mb-8">Créer un service</h2>
-        <div className="flex items-center justify-start ml-8 mb-12 mx-4">
+        <h2 className="f-under-title">Créer un service</h2>
+        <div className="f-page-format">
           <div className="flex flex-col items-center">
             {!isCreateService
         && (
           <button
             type="button"
-            className="flex bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl"
+            className="f-button-green"
             onClick={() => setIsCreateService(true)}
           >
-            <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />
+            <PlusCircleIcon className="f-icon" />
             Ajouter un service
           </button>
         )}
@@ -65,7 +65,7 @@ function AdminServicesPage() {
       )}
           </div>
         </div>
-        <h2 className="nunito-bold text-xl mb-8">Mes services</h2>
+        <h2 className="f-under-title">Mes services</h2>
         <div className="px-8">
           <ServicesList
             servicesList={servicesList && servicesList.getAllServices}

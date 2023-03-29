@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-errors';
 import { hashPassword, verifyPassword } from '../entity/User';
 import UserModel from '../models/UserModel';
 import { FirstUserLoginPassword, UserConnexion, UserUpdatePassword } from '../utils/types/InputTypes';
@@ -16,7 +15,7 @@ const PasswordController = {
       userToUpdate === null
         || typeof userToUpdate.hashedPassword !== 'string'
         || !(await verifyPassword(oldPassword, userToUpdate.hashedPassword))
-    ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new Error('invalid credentials'); }
 
     const hashedPassword = await hashPassword(newPassword);
 
@@ -33,7 +32,7 @@ const PasswordController = {
     if (
       userToUpdate === null
       || typeof userToUpdate.hashedPassword !== 'string'
-    ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new Error('invalid credentials'); }
 
     const hashedPassword = await hashPassword(newPassword);
 
@@ -45,7 +44,7 @@ const PasswordController = {
 
   forgotPassword: async (email:string) => {
     const user = await UserModel.getOneUserByMail(email);
-    if (user === null) throw new ApolloError('User not found', 'NOT_FOUND');
+    if (user === null) throw new Error('User not found');
 
     const resetToken = randomUUID();
     const tokenExpiratesIn = Date.now() + 3600000;
@@ -96,9 +95,9 @@ const PasswordController = {
       userToUpdate === null
     || typeof userToUpdate.hashedPassword !== 'string'
     || uuid !== userToUpdate.resetPasswordToken
-    ) { throw new ApolloError('invalid credentials'); }
+    ) { throw new Error('invalid credentials'); }
 
-    if (userToUpdate.resetPasswordExpires && dateNow > userToUpdate.resetPasswordExpires) { throw new ApolloError('Link to reset password has exired'); }
+    if (userToUpdate.resetPasswordExpires && dateNow > userToUpdate.resetPasswordExpires) { throw new Error('Link to reset password has exired'); }
 
     const hashedPassword = await hashPassword(password);
 
