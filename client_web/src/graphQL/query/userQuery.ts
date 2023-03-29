@@ -9,6 +9,7 @@ query getProfile {
     firstname
     lastname
     isFirstLogin
+    isSuspended
   }
 }
 `;
@@ -22,6 +23,7 @@ query GetAllUsers {
     email
     role
     isFirstLogin
+    isSuspended
     services {
       acronym
       color
@@ -63,6 +65,7 @@ query GetOneUser($getOneUserId: Int!) {
     role
     email
     isFirstLogin  
+    isSuspended
     counter {
       id
       name
