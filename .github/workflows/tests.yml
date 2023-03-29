@@ -15,6 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Make server envfile
       - name: Make root envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -22,13 +23,33 @@ jobs:
           envkey_POSTGRES_USER: "CECI_EST_UN_UTILISATEUR"
           envkey_POSTGRES_DB: "CECI_EST_UNE_BASE_DE_DONNEES"
           envkey_POSTGRES_DB_TEST: "CECI_EST_UNE_BASE_DE_DONNEES_TEST"
-          envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
           envkey_CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4000"
+          envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
           envkey_SERVER_HOST: "localhost"
           envkey_SERVER_PORT: "4000"
+          envkey_DB_HOST: "db_test"
+          envkey_NODE_ENV: 'test'
+          directory: ./server
+          file_name: .env
+          fail_on_empty: false
+
+      - name: Make root envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_POSTGRES_PASSWORD: "CECI_EST_UN_MOT_DE_PASSE"
+          envkey_POSTGRES_USER: "CECI_EST_UN_UTILISATEUR"
+          envkey_POSTGRES_DB: "CECI_EST_UNE_BASE_DE_DONNEES"
+          envkey_POSTGRES_DB_TEST: "CECI_EST_UNE_BASE_DE_DONNEES_TEST"
+          envkey_CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4000"
+          envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
+          envkey_SERVER_HOST: "localhost"
+          envkey_SERVER_PORT: "4000"
+          envkey_DB_HOST: "db_test"
           directory: ./
           file_name: .env
           fail_on_empty: false
 
+
       - name: Build and run docker tests
         run: npm run test:docker
+
