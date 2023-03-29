@@ -46,7 +46,7 @@ function CounterDetails(props: Props) {
           aria-label="edit"
           onClick={() => setIsEdit(true)}
         >
-          < className="f-update-icon" />
+          <PencilSquareIcon className="f-update-icon" />
         </button>
         <button
           type="button"
