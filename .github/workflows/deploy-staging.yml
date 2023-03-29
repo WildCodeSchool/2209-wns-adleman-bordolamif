@@ -2,8 +2,8 @@ name: Build and push staging
 
 on:
   push:
-    branches:
-      - main
+    branches: ["develop"]
+  workflow_dispatch:
 
 jobs:
   tests:
