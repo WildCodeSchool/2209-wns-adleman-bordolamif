@@ -98,4 +98,4 @@ jobs:
       - name: Call VPS webhook to update production
         uses: wei/curl@master
         with:
-          args: https://adleman5.wns.wilders.dev/hooks/update-production
+          args: https://ops.adleman5.wns.wilders.dev/hooks/update-production

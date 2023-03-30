@@ -2,6 +2,8 @@ import User from '../entity/User';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { FindOperator } from 'typeorm';
+import { ServiceId } from './types/InputIdTypes';
+import { StatusEnum } from './enums/StatusEnum';
 
 export interface ContextType {
     req: express.Request;
@@ -15,5 +17,10 @@ export interface ContextType {
    }
 export interface SearchFilter {
      where?: CreatedAtFilter;
-     relations?: string[];
+   }
+
+export interface SearchCriterias{
+    service: ServiceId[],
+    status: FindOperator<StatusEnum>,
+    createdAt: FindOperator<Date> | undefined
    }

@@ -74,4 +74,5 @@ export interface TicketData extends Ticket {
     __typename: string;
     service: Service
     user: UserProfile
+    counter: Counter
   }

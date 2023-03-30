@@ -18,10 +18,17 @@ export class TicketResolver {
     return await TicketController.getAllTcikets(filter);
   }
 
-    @Query(() => Ticket)
-     async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
-       return await TicketController.getOneTicketById(id);
+      @Query(() => [Ticket])
+     async getAllTicketsForWaitingRoom(
+           @Arg('waitingRoomId', () => Int) waitingRoomId: number,
+     ): Promise<Ticket[]> {
+       return await TicketController.getAllTicketsForWaitingRoom(waitingRoomId);
      }
+
+    @Query(() => Ticket)
+      async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
+        return await TicketController.getOneTicketById(id);
+      }
 
     /** ***********************************
      MUTATION
