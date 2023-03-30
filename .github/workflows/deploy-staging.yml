@@ -91,7 +91,7 @@ jobs:
     needs:
       - build-and-push-server-staging
       - build-and-push-client-staging
-      -
+
     runs-on: ubuntu-latest
 
     steps:
