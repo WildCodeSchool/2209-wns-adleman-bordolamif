@@ -59,6 +59,7 @@ services:
       - prodNetwork
 
   nginx:
+    container_name: WaitIt-nginx-prod
     image: nginx:1.21.3
     depends_on:
       client:
