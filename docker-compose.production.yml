@@ -1,6 +1,7 @@
+name: WaitIt-production
 services:
   db_prod:
-    image: postgres:15.0-alpine
+    image: postgres:15-alpine
     container_name: WaitIt-db-prod
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d postgres']
@@ -13,8 +14,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - prodNetwork
 
 #  pgadmin:
 #    image: dpage/pgadmin4
@@ -27,7 +26,7 @@ services:
 #    networks:
 #      - prodNetwork
 
-  server_prod:
+  server:
     container_name: WaitIt-server-prod
     depends_on:
       db_prod:
@@ -49,22 +48,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    networks:
-      - prodNetwork
 
-  client_prod:
+  client:
     container_name: WaitIt-client-prod
     image: joffreychevalier/waitit-client
-    networks:
-      - prodNetwork
 
-  nginx_prod:
+  nginx:
     container_name: WaitIt-nginx-prod
     image: nginx:1.21.3
     depends_on:
-      client_prod:
+      client:
         condition: service_started
-      server_prod:
+      server:
         condition: service_healthy
     restart: always
     ports:
@@ -72,8 +67,6 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx
-    networks:
-      - prodNetwork
 
 volumes:
   db_prod:

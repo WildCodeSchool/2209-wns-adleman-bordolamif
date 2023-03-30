@@ -1,3 +1,4 @@
+name: WaitIt-test
 services:
   db_test:
     image: postgres:15.0-alpine
