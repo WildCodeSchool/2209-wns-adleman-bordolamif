@@ -16,7 +16,7 @@ services:
     networks:
       - stagingNetwork
 
-  server:
+  server_staging:
     container_name: WaitIt-server-staging
     depends_on:
       db_staging:
@@ -41,13 +41,13 @@ services:
     networks:
       - stagingNetwork
 
-  client:
+  client_staging:
     container_name: WaitIt-client-staging
     image: joffreychevalier/waitit-client:staging
     networks:
       - stagingNetwork
 
-  nginx:
+  nginx_staging:
     container_name: WaitIt-nginx-staging
     image: nginx:1.21.3
     depends_on:
