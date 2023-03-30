@@ -1,15 +1,33 @@
+import { Not } from 'typeorm';
 import Ticket from '../entity/Ticket';
 import ServiceModel from '../models/ServiceModel';
 import TicketModel from '../models/TicketModel';
 import UserModel from '../models/UserModel';
+import WaitingRoomModel from '../models/WaitingRoomModel';
 import { dateFilterBuilder } from '../utils/builders/date';
 import { ticketNameBuilder, ticketStatusUpdater } from '../utils/builders/ticket';
+import { DateFilterEnum } from '../utils/enums/DateFilterEnum';
+import { StatusEnum } from '../utils/enums/StatusEnum';
+import { SearchCriterias } from '../utils/interfaces';
 import { TicketInput } from '../utils/types/InputTypes';
 
 const TicketController = {
   getAllTcikets: async (filter?: string): Promise<Ticket[]> => {
     const searchFilter = dateFilterBuilder(filter);
     return await TicketModel.getAllTickets(searchFilter);
+  },
+
+  getAllTicketsForWaitingRoom: async (waitingRoomId: number): Promise<Ticket[]> => {
+    const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(waitingRoomId);
+    const services = waitingRoom!.services!.map((service) => ({ id: service.id }));
+    const dateFilter = dateFilterBuilder(DateFilterEnum.TODAY);
+    const searchCriterias : SearchCriterias = {
+      service: services,
+      status: Not(StatusEnum.TRAITE),
+      createdAt: dateFilter?.where?.createdAt,
+    };
+
+    return await TicketModel.getAllTicketsForWaitingRoom(searchCriterias);
   },
 
   getOneTicketById: async (id: number): Promise<Ticket> => {

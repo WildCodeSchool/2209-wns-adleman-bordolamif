@@ -12,7 +12,7 @@ function TvScreenPage() {
   return (
     <div className="flex flex-row">
       <div className="bg-gray-800 text-white">
-        <h2>Tickets Appelés {id}</h2>
+        <h2>Tickets Appelés</h2>
         <p>Merci de vous rendre au guichet indiqué</p>
       </div>
 
