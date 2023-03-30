@@ -43,9 +43,7 @@ function App() {
                 />
               )}
             >
-              <Route path="dashboard" element={<AdminPage />}>
-                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
-              </Route>
+              <Route path="dashboard" element={<AdminPage />} />
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
@@ -69,7 +67,9 @@ function App() {
               )}
             >
               <Route path="services" element={<OperatorPage />} />
-              <Route path="dashboard" element={<OperatorBoard />} />
+              <Route path="dashboard" element={<OperatorBoard />}>
+                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
+              </Route>
               <Route path="myaccount" element={<MyAccountPage />} />
 
             </Route>

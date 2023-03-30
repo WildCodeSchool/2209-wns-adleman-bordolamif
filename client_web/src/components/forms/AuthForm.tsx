@@ -98,7 +98,7 @@ function AuthForm(props: Props) {
                 <Loader />
               </div>
               )}
-              {error && <div className="text-red-600">{error}</div>}
+              {error && <div className="f-error-message">{error}</div>}
             </div>
           </div>
         </form>
