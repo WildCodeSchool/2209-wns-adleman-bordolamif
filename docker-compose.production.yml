@@ -27,7 +27,7 @@ services:
 #    networks:
 #      - prodNetwork
 
-  server:
+  server_prod:
     container_name: WaitIt-server-prod
     depends_on:
       db_prod:
@@ -52,13 +52,13 @@ services:
     networks:
       - prodNetwork
 
-  client:
+  client_prod:
     container_name: WaitIt-client-prod
     image: joffreychevalier/waitit-client
     networks:
       - prodNetwork
 
-  nginx:
+  nginx_prod:
     container_name: WaitIt-nginx-prod
     image: nginx:1.21.3
     depends_on:
