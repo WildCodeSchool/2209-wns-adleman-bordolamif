@@ -2,7 +2,7 @@ import User, { hashPassword } from '../entity/User';
 import CounterModel from '../models/CounterModel';
 import ServiceModel from '../models/ServiceModel';
 import UserModel from '../models/UserModel';
-import { UserInput } from '../utils/types/InputTypes';
+import { PartialUserInput, UserInput } from '../utils/types/InputTypes';
 
 const UserController = {
   getAllUsers: async (): Promise<User[]> => await UserModel.getAllUsers(),
@@ -98,6 +98,35 @@ const UserController = {
     if (userToUpdate === null) { throw new Error('User not found'); }
     userToUpdate.isSuspended = isSuspended;
     return await UserModel.updateUser(userToUpdate);
+  },
+
+  partialUserUpdate: async (data: PartialUserInput, id: number) => {
+    const user = await UserModel.getOneUserById(id);
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    user.firstname = data.firstname ?? user.firstname;
+    user.lastname = data.lastname ?? user.lastname;
+    user.email = data.email ?? user.email;
+    user.isSuspended = data.isSuspended ?? user.isSuspended;
+    user.role = data.role ?? user.role;
+
+    if (data.counter) {
+      const counter = await CounterModel.getOneCounterById(data.counter.id);
+      user.counter = counter;
+    }
+    if (data.services) {
+      const services = await ServiceModel.getMultipleServicesByIds(data.services);
+      user.services = services;
+    }
+    if (data.currentService) {
+      const currentService = await ServiceModel.getOneServiceById(data.currentService.id);
+      user.currentService = currentService;
+    }
+
+    return UserModel.updateUser(user);
   },
 
   deleteUser: async (id: number) => {

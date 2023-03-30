@@ -8,12 +8,12 @@ import { join } from 'path';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { env, loadEnv } from './env';
-import User from './entity/User';
 import cors from 'cors';
 import http from 'http';
 import cookie from 'cookie';
 import { buildSchema } from 'type-graphql';
 import { ContextType } from './utils/interfaces';
+import UserModel from './models/UserModel';
 
 loadEnv();
 
@@ -36,7 +36,7 @@ const start = async (): Promise<void> => {
       if (typeof decoded !== 'object') return false;
 
       const id = decoded.userId;
-      const currentUser = await datasource.getRepository(User).findOneBy({ id });
+      const currentUser = await UserModel.getOneUserById(id);
       if (currentUser === null) return false;
 
       context.currentUser = currentUser;

@@ -29,7 +29,9 @@ const UserModel = {
   createUser: async (userToCreate: NewUserDto) => await
   dataSource.getRepository(User).save(userToCreate),
 
-  updateUser: async (userToUpdate: User) => await dataSource.getRepository(User).save(userToUpdate),
+  updateUser: async (
+    userToUpdate: User,
+  ) => await dataSource.getRepository(User).save(userToUpdate),
 
   deleteUser: async (id: number) => await dataSource.getRepository(User).delete(id),
 };

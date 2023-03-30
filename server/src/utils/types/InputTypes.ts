@@ -86,6 +86,42 @@ export class UserInput {
 }
 
 @InputType()
+export class PartialUserInput {
+    @Field({ nullable: true })
+    @MaxLength(100)
+      firstname?: string;
+
+    @Field({ nullable: true })
+    @MaxLength(100)
+      lastname?: string;
+
+    @Field({ nullable: true })
+    @MaxLength(100)
+    @IsEmail()
+      email?: string;
+
+    @Field({ nullable: true })
+      isSuspended?: boolean;
+
+    @Field({ nullable: true })
+    @MinLength(8)
+    @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+      password?: string;
+
+    @Field({ nullable: true })
+      role?: RoleEnum;
+
+    @Field(() => CounterId, { nullable: true })
+      counter?: CounterId | null;
+
+    @Field(() => [ServiceId], { nullable: true })
+      services?: ServiceId[];
+
+    @Field(() => ServiceId, { nullable: true })
+      currentService?: ServiceId | null;
+}
+
+@InputType()
 export class TicketInput {
   @Field({ nullable: true })
   @MaxLength(100)
