@@ -4,12 +4,40 @@ export const PROFILE = gql`
 query getProfile {
   profile{
     id
-    email
-    role
     firstname
     lastname
-    isFirstLogin
+    role
+    email
+    isFirstLogin  
     isSuspended
+    counter {
+      id
+      name
+    }
+    services {
+      id
+      name
+      color
+      acronym
+      isOpen
+    }
+    tickets {
+      id
+      name
+      createdAt
+      calledAt
+      closedAt
+      isFirstTime
+      isReturned
+      status
+    }
+    currentService {
+      acronym
+      color
+      id
+      name
+      isOpen
+    }
   }
 }
 `;

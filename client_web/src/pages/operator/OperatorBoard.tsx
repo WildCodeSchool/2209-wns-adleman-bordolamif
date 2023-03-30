@@ -1,9 +1,11 @@
 import OperatorDashboard from '@components/operatorComponents/OperatorDashboard';
+import { useUserProfile } from '@layouts/StaffLayout';
 import { NavLink, useLocation } from 'react-router-dom';
 import OperatorMyWaitingRoomPage from './OperatorMyWaitingRoomPage';
 
 function OperatorBoard() {
   const location = useLocation();
+  const { userProfile } = useUserProfile();
 
   const activeStyle = {
     color: '#f97316',
@@ -32,10 +34,10 @@ function OperatorBoard() {
         <div className="f-decoration-line-for-tab" />
       </div>
       {location.pathname === '/operator/dashboard' && (
-      <OperatorDashboard />
+      <OperatorDashboard profile={userProfile} />
       )}
       {location.pathname === '/operator/dashboard/mywaitingroom' && (
-      <OperatorMyWaitingRoomPage />
+      <OperatorMyWaitingRoomPage profile={userProfile} />
       )}
     </>
   );
