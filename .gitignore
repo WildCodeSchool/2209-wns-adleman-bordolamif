@@ -15,6 +15,9 @@ dist-ssr
 .env.production
 .env.staging
 
+deploy-production.sh
+deploy-staging.sh
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
