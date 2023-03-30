@@ -51,9 +51,9 @@ services:
     container_name: WaitIt-nginx-staging
     image: nginx:1.21.3
     depends_on:
-      client:
+      client_staging:
         condition: service_started
-      server:
+      server_staging:
         condition: service_healthy
     restart: always
     ports:
