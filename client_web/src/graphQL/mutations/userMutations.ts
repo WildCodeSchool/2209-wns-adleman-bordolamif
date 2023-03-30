@@ -93,9 +93,8 @@ export const DELETE_USER = gql`
 export const UPDATE_USER_PASSWORD = gql`
   mutation FirstLoginPassword(
     $data: FirstUserLoginPassword!
-    $firstLoginPasswordId: Int!
   ) {
-    firstLoginPassword(data: $data, id: $firstLoginPasswordId) {
+    firstLoginPassword(data: $data) {
       email
       isFirstLogin
     }
