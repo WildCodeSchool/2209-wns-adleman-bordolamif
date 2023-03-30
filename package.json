@@ -12,7 +12,11 @@
     "start:prod": "docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml up --build",
     "publish:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server && docker push joffreychevalier/waitit-server && cd ..",
     "publish:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client && docker push joffreychevalier/waitit-client && cd ..",
-    "publish:all": "npm run publish:server && npm run publish:client"
+    "publish:all": "npm run publish:server && npm run publish:client",
+    "start:staging": "docker compose -f docker-compose.staging.yml pull && docker compose -f docker-compose.staging.yml up --build",
+    "publish-staging:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server:staging && docker push joffreychevalier/waitit-server:staging && cd ..",
+    "publish-staging:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client:staging && docker push joffreychevalier/waitit-client:staging && cd ..",
+    "publish-staging:all": "npm run publish-staging:server && npm run publish-staging:client"
   },
   "author": "Joffrey Chevalier",
   "license": "ISC",

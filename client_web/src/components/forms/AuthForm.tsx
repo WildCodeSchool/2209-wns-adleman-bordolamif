@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { XCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import Loader from '@assets/Loader';
+import WomanWithCommputer from '../../assets/illustrations/WomanWithComputer.png';
 
 interface Props {
     onLogin: (formData:UserConnexion) => void,
@@ -21,13 +22,11 @@ function AuthForm(props: Props) {
   const [passwordValue, setPasswordValue] = useState('');
 
   const handleChangeEmail = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setemailValue(newValue);
+    setemailValue(e.currentTarget.value);
   };
 
   const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setPasswordValue(newValue);
+    setPasswordValue(e.currentTarget.value);
   };
 
   const iconProps = {
@@ -48,7 +47,7 @@ function AuthForm(props: Props) {
         <p className="text-xl">dans les établissements de santé</p>
       </div>
       <div>
-        <img className="w-[500px]" src="./src/assets/illustrations/WomanWithComputer.png" alt="WomanWithComputer" />
+        <img className="w-[500px]" src={WomanWithCommputer} alt="WomanWithComputer" />
       </div>
       <div>
         <form onSubmit={handleSubmit(onLogin)} className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
@@ -99,7 +98,7 @@ function AuthForm(props: Props) {
                 <Loader />
               </div>
               )}
-              {error && <div className="text-red-600">{error}</div>}
+              {error && <div className="f-error-message">{error}</div>}
             </div>
           </div>
         </form>

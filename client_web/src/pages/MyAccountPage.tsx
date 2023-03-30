@@ -9,7 +9,10 @@ function MyAccountPage() {
 
   return (
     <div>
-      <p>Mon compte</p>
+      <div className="f-title-format">
+        <h1 className="f-main-title">Mon compte</h1>
+        <div className="f-decoration-line" />
+      </div>
       {userProfile
       && (
       <div><p>{userProfile.email}</p>

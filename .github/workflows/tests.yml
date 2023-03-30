@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Make root envfile
@@ -22,13 +22,14 @@ jobs:
           envkey_POSTGRES_USER: "CECI_EST_UN_UTILISATEUR"
           envkey_POSTGRES_DB: "CECI_EST_UNE_BASE_DE_DONNEES"
           envkey_POSTGRES_DB_TEST: "CECI_EST_UNE_BASE_DE_DONNEES_TEST"
-          envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
           envkey_CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4000"
+          envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
           envkey_SERVER_HOST: "localhost"
           envkey_SERVER_PORT: "4000"
           directory: ./
           file_name: .env
           fail_on_empty: false
+
 
       - name: Build and run docker tests
         run: npm run test:docker

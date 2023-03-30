@@ -13,10 +13,22 @@ function ChangePasswordForm(props:Props) {
 
   const [showPassword, setShowPassword] = useState(false);
   const { reset, register, handleSubmit } = useForm<ChangePassword>();
+  const [newPasswordValue, setNewPasswordValue] = useState('');
+  const [checkPasswordValue, setCheckPasswordValue] = useState('');
 
   const onSubmit = (formData: ChangePassword) => {
     onChangePassword(formData);
     reset();
+  };
+
+  const handleChangeNewPassword = (e: React.FormEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget.value;
+    setNewPasswordValue(newValue);
+  };
+
+  const handleChangeCheckPassword = (e: React.FormEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget.value;
+    setCheckPasswordValue(newValue);
   };
 
   const iconProps = {
@@ -26,36 +38,39 @@ function ChangePasswordForm(props:Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {showPassword ? (
-        <EyeIcon {...iconProps} />
-      ) : (
-        <EyeSlashIcon {...iconProps} />
-      )}
-      <div className="relative">
-        <LockClosedIcon className="f-auth-icon" />
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Nouveau mot de passe"
-          {...register('newPassword')}
-          className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-7"
-        />
+      <div className="flex flex-col items-center">
+        <div className="relative">
+          <LockClosedIcon className="f-auth-icon" />
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Nouveau mot de passe"
+            {...register('newPassword', { onChange: handleChangeNewPassword, value: newPasswordValue })}
+            className=".f-input-first-login"
+          />
+          {showPassword ? (
+            <EyeIcon {...iconProps} />
+          ) : (
+            <EyeSlashIcon {...iconProps} />
+          )}
+        </div>
+        <div className="relative">
+          <LockClosedIcon className="f-auth-icon" />
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Verifier le mot de passe"
+            {...register('checkPassword', { onChange: handleChangeCheckPassword, value: checkPasswordValue })}
+            className=".f-input-first-login"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={newPasswordValue !== checkPasswordValue || newPasswordValue.length < 8}
+          className="drop-shadow disabled:cursor-default transition-all hover:bg-orange-600 duration-500 disabled:bg-gray-300 bg-orange-500 text-white py-2 px-4 rounded w-1/3 cursor-pointer"
+        >
+          Valider
+        </button>
+        {error && <div className="f-error-message w-80 mt-4 text-sm">{error}</div>}
       </div>
-      <div className="relative">
-        <LockClosedIcon className="f-auth-icon" />
-        <input
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Verifier le mot de passe"
-          {...register('checkPassword')}
-          className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-7"
-        />
-      </div>
-      {error && <div className="text-red-600">{error}</div>}
-      <button
-        type="submit"
-        className="f-button-green"
-      >
-        Valider
-      </button>
     </form>
   );
 }

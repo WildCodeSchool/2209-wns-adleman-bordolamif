@@ -17,6 +17,7 @@ import { RoleEnum } from '@utils/enum/RoleEnum';
 import TvScreenPage from '@pages/tv/TvScreenPage';
 import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
+import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -68,7 +69,9 @@ function App() {
               )}
             >
               <Route path="services" element={<OperatorPage />} />
-              <Route path="dashboard" element={<OperatorBoard />} />
+              <Route path="dashboard" element={<OperatorBoard />}>
+                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
+              </Route>
               <Route path="myaccount" element={<MyAccountPage />} />
 
             </Route>
