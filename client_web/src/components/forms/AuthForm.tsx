@@ -43,7 +43,6 @@ function AuthForm(props: Props) {
             it
           </span>
         </h2>
-        <p>TEST CD !!</p>
         <p className="text-xl">Le gestionnaire de flux d’attente spécialisé</p>
         <p className="text-xl">dans les établissements de santé</p>
       </div>
