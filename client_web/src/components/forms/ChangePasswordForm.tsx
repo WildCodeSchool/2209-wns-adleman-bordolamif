@@ -45,7 +45,7 @@ function ChangePasswordForm(props:Props) {
             type={showPassword ? 'text' : 'password'}
             placeholder="Nouveau mot de passe"
             {...register('newPassword', { onChange: handleChangeNewPassword, value: newPasswordValue })}
-            className=".f-input-first-login"
+            className="f-input-first-login"
           />
           {showPassword ? (
             <EyeIcon {...iconProps} />
@@ -59,7 +59,7 @@ function ChangePasswordForm(props:Props) {
             type={showPassword ? 'text' : 'password'}
             placeholder="Verifier le mot de passe"
             {...register('checkPassword', { onChange: handleChangeCheckPassword, value: checkPasswordValue })}
-            className=".f-input-first-login"
+            className="f-input-first-login"
           />
         </div>
         <button
