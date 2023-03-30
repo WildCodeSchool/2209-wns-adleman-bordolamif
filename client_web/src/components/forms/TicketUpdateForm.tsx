@@ -38,7 +38,14 @@ function TicketUpdateForm(props : Props) {
           <p>{ticketToUpdate.service.name}</p>
           <ServiceIcon service={ticketToUpdate.service} />
           <p>{ticketToUpdate.name}</p>
-          <select {...register('status')} defaultValue={StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)?.key}>
+          <select
+            {...register('status')}
+            defaultValue={
+              StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)
+                ? ticketToUpdate.status
+                : ''
+            }
+          >
             {StatusObjectEnum.map((stat) => (
               <option key={stat.key} value={stat.key}>{stat.name}</option>
             ))}
