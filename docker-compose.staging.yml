@@ -3,7 +3,7 @@ services:
     image: postgres:15-alpine
     container_name: WaitIt-db-staging
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d postgres']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -44,10 +44,11 @@ services:
   client:
     container_name: WaitIt-client-staging
     image: joffreychevalier/waitit-client:staging
-  networks:
-    - stagingNetwork
+    networks:
+      - stagingNetwork
 
   nginx:
+    container_name: WaitIt-nginx-staging
     image: nginx:1.21.3
     depends_on:
       client:
