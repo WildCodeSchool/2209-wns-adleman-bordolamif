@@ -22,13 +22,11 @@ function AuthForm(props: Props) {
   const [passwordValue, setPasswordValue] = useState('');
 
   const handleChangeEmail = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setemailValue(newValue);
+    setemailValue(e.currentTarget.value);
   };
 
   const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setPasswordValue(newValue);
+    setPasswordValue(e.currentTarget.value);
   };
 
   const iconProps = {
