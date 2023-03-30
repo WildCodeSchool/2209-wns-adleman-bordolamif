@@ -14,7 +14,9 @@ import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
+import TvScreenPage from '@pages/tv/TvScreenPage';
 import MyAccountPage from '@pages/MyAccountPage';
+import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 
 function App() {
@@ -81,6 +83,10 @@ function App() {
           <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
         <Route path="client" element={<ClientPage />} />
+        <Route path="tvscreen">
+          <Route path="" element={<TvScreenHomePage />} />
+          <Route path=":id" element={<TvScreenPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
