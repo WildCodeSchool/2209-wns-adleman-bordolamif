@@ -21,6 +21,7 @@
     }
 
     html {
+        background-color: #e5e7eb;
         font-family: 'Nunito-regular', sans-serif;
     }
 
@@ -66,16 +67,28 @@
         @apply flex flex-row items-center pb-6 hover:underline decoration-2 cursor-pointer;
     }
 
+    .f-dashboard-titles {
+        @apply ml-10 mt-4 text-2xl;
+    }
+
     /* ------- input components ------- */
 
     .f-input {
         @apply border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2;
     }
 
+    .f-input-first-login {
+        @apply border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8;
+    }
+
     /* ------- decoration components ------- */
 
     .f-decoration-line {
         @apply h-[2px] w-full bg-gray-300 mt-5;
+    }
+
+    .f-decoration-line-for-tab {
+        @apply h-[2px] w-full bg-gray-300 mt-1;
     }
 
     .f-services-card-decoration {
@@ -113,4 +126,11 @@
     .f-auth-icon {
         @apply absolute left-2 top-2 w-6 text-orange-500;
     }
+
+        /* ------- errors message ------- */
+
+    .f-error-message {
+        @apply text-red-600 text-center;
+    }
+
 }
