@@ -28,7 +28,6 @@ function FirstConnectionPage(props:Props) {
         await firstLoginPassword({
           variables: {
             data: { email: currentUser.email, newPassword },
-            firstLoginPasswordId: currentUser.id,
           },
 
         });
@@ -43,9 +42,11 @@ function FirstConnectionPage(props:Props) {
     }
   };
   return (
-    <div>
-      <h1>veuillez renseigner votre nouveau mot de passe</h1>
-      <ChangePasswordForm onChangePassword={onChangePassword} error={error} />
+    <div className="flex justify-center items-center bg-gray-200 min-h-screen">
+      <div className="flex flex-col justify-center bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 h-fit">
+        <h2 className="mb-6">Veuillez renseigner votre nouveau mot de passe</h2>
+        <ChangePasswordForm onChangePassword={onChangePassword} error={error} />
+      </div>
     </div>
   );
 }
