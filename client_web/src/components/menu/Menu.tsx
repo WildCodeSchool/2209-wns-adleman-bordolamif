@@ -68,7 +68,7 @@ function Menu({ userProfile, client }: Props) {
             Mon compte
           </div>
         </NavLink>
-        <div className="flex flex-row items-center text-red-600 pb-6 hover:underline decoration-2 cursor-pointer mb-6">
+        <div className="f-error-message flex flex-row pb-6 hover:underline decoration-2 cursor-pointer mb-6">
           <ArrowLeftOnRectangleIcon className="w-7 mr-4" />
           <button
             type="button"

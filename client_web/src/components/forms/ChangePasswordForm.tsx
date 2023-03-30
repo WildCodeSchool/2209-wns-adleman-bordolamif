@@ -45,7 +45,7 @@ function ChangePasswordForm(props:Props) {
             type={showPassword ? 'text' : 'password'}
             placeholder="Nouveau mot de passe"
             {...register('newPassword', { onChange: handleChangeNewPassword, value: newPasswordValue })}
-            className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8"
+            className=".f-input-first-login"
           />
           {showPassword ? (
             <EyeIcon {...iconProps} />
@@ -59,7 +59,7 @@ function ChangePasswordForm(props:Props) {
             type={showPassword ? 'text' : 'password'}
             placeholder="Verifier le mot de passe"
             {...register('checkPassword', { onChange: handleChangeCheckPassword, value: checkPasswordValue })}
-            className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8"
+            className=".f-input-first-login"
           />
         </div>
         <button
@@ -69,7 +69,7 @@ function ChangePasswordForm(props:Props) {
         >
           Valider
         </button>
-        {error && <div className="text-red-600 w-80 mt-4 text-center text-sm">{error}</div>}
+        {error && <div className="f-error-message w-80 mt-4 text-sm">{error}</div>}
       </div>
     </form>
   );
