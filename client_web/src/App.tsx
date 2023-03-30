@@ -15,7 +15,7 @@ import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
 import MyAccountPage from '@pages/MyAccountPage';
-import MyWaitingRoomPage from '@pages/admin/MyWaitingRoomPage';
+import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
