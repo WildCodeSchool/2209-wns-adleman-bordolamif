@@ -62,9 +62,9 @@ services:
     container_name: WaitIt-nginx-prod
     image: nginx:1.21.3
     depends_on:
-      client:
+      client_prod:
         condition: service_started
-      server:
+      server_prod:
         condition: service_healthy
     restart: always
     ports:
