@@ -25,15 +25,13 @@ function ServiceDetails(props: Props) {
         className="f-services-card-decoration"
         style={{ backgroundColor: `${service.color}` }}
       />
-      <div className="nunito-bold pl-2 pb-1 text-lg">
-        <h2>{service.name}</h2>
-      </div>
-      <div className="flex items-center justify-between px-2">
-        <ServiceIcon service={service} />
-        <p className="ml-2">{service.waitingRoom?.name}</p>
+      <div className="flex flex-row justify-between mb-2">
+        <div className="nunito-bold pl-3 pb-1 text-lg">
+          <h2>{service.name}</h2>
+        </div>
         {!isUpdateService
         && (
-        <div className="flex">
+        <div>
           <button
             type="button"
             onClick={() => setIsUpdateService(true)}
@@ -48,6 +46,10 @@ function ServiceDetails(props: Props) {
           </button>
         </div>
         )}
+      </div>
+      <div className="flex items-center justify-between px-2">
+        <ServiceIcon service={service} />
+        <p className="ml-2">{service.waitingRoom?.name}</p>
       </div>
       {isUpdateService && (
         <div>
