@@ -33,19 +33,18 @@ function TvScreenPage() {
 
       <div>
         <h2>Prochains tickets en attente</h2>
-        {waitingRoom && waitingRoom!
-      && waitingRoom.getOneWaitingRoom.services.map(
-        (service: Service) => (
-          <WaitingTicketsByService
-            key={service.id}
-            ticketsList={ticketsList && ticketsList && ticketsList
-              .getAllTicketsForWaitingRoom
-              .filter((ticket:TicketData) => ticket.service.id === service.id
+        {waitingRoom! && waitingRoom.getOneWaitingRoom.services.map(
+          (service: Service) => (
+            <WaitingTicketsByService
+              key={service.id}
+              ticketsList={ticketsList! && ticketsList
+                .getAllTicketsForWaitingRoom
+                .filter((ticket:TicketData) => ticket.service.id === service.id
               && ticket.status !== StatusEnum.EN_TRAITEMENT)}
-            service={service}
-          />
-        ),
-      )}
+              service={service}
+            />
+          ),
+        )}
       </div>
 
     </div>

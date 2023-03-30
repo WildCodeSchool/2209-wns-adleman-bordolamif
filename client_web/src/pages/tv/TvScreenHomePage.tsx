@@ -10,11 +10,11 @@ function TvScreenHomePage() {
   return (
     <div>
       <h2>Veuillez selectionner la salle d'attente que vous souhaitez afficher</h2>
-      {waitingRoomsList && waitingRoomsList!
+      {waitingRoomsList!
       && waitingRoomsList.getAllWaitingRooms.map((waitingRoom: WaitingRoomData) => (
         <button onClick={() => navigate(`${waitingRoom.id}`)} type="button" className="border-2 rounded-xl p-3 m-2" key={waitingRoom.id}>
           <p>{waitingRoom.name}</p>
-          <div className="flex">{waitingRoom.services && waitingRoom.services!
+          <div className="flex">{waitingRoom.services!
            && waitingRoom.services.map((service) => (
              <ServiceIcon key={service.id} service={service} />))}
           </div>
