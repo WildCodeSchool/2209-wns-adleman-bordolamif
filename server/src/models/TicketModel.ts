@@ -1,4 +1,4 @@
-import { Between, Raw } from 'typeorm';
+import { Between } from 'typeorm';
 import dataSource from '../db';
 import Ticket from '../entity/Ticket';
 import { endOfDay, startOfDay } from '../utils/builders/date';
@@ -19,6 +19,12 @@ const TicketModel = {
   getAllTicketsForWaitingRoom: async (searchCriterias: SearchCriterias) => await
   dataSource.getRepository(Ticket).find({
     where: searchCriterias,
+    relations: {
+      service: true,
+      user: true,
+      counter: true,
+    },
+    order: { createdAt: 'DESC' },
   }),
 
   getOneTicketById: async (id: number) => await
@@ -36,10 +42,6 @@ const TicketModel = {
 
   getTodayTicketsByService: async (serviceId: number) => await dataSource.getRepository(Ticket)
     .find({ where: { createdAt: Between(startOfDay, endOfDay), service: { id: serviceId } }, order: { createdAt: 'DESC' } }),
-
-  getTodayUntreatedTicketsByServices: async (searchFilter: any) => await
-  dataSource.getRepository(Ticket)
-    .find(searchFilter),
 
   createTicket: async (ticketToCreate: NewTicketDto) => await
   dataSource.getRepository(Ticket).save(ticketToCreate),
