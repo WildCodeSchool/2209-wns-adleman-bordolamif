@@ -29,6 +29,39 @@ query GetAllTickets($filter: String) {
 }
 `;
 
+export const GET_ALL_TICKETS_FOR_WAITING_ROOM = gql`
+query GetAllTicketsForWaitingRoom($waitingRoomId: Int!) {
+  getAllTicketsForWaitingRoom(waitingRoomId: $waitingRoomId) {
+    id
+    name
+    createdAt
+    calledAt
+    closedAt
+    isFirstTime
+    status
+    isReturned
+    service {
+      id
+      name
+      acronym
+      isOpen
+      color
+    }
+    user {
+      id
+      firstname
+      lastname
+      email
+      role
+    }
+    counter {
+      id
+      name
+    }
+  }
+}
+`;
+
 export const GET_ONE_TICKET = gql`
 query GetOneTicket($getOneTicketId: Int!) {
   getOneTicket(id: $getOneTicketId) {
