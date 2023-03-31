@@ -3,9 +3,11 @@ import UserModel from '../models/UserModel';
 import { ContextType } from '../utils/interfaces';
 import { UserConnexion } from '../utils/types/InputTypes';
 import jwt from 'jsonwebtoken';
-import { env } from '../env';
+import { env, loadEnv } from '../env';
 import CounterModel from '../models/CounterModel';
 import ServiceModel from '../models/ServiceModel';
+
+loadEnv();
 
 const ConnexionController = {
   login: async (data:UserConnexion, ctx: ContextType) => {
