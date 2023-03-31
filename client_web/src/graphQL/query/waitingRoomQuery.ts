@@ -28,6 +28,9 @@ query GetOneWaitingRoom($getOneWaitingRoomId: Int!) {
     counters {
       id
       name
+      user {
+        id
+      }
     }
     services {
       id
