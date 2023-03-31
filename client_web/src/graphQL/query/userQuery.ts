@@ -20,6 +20,9 @@ query getProfile {
       color
       acronym
       isOpen
+      waitingRoom {
+        id
+      }
     }
     tickets {
       id

@@ -3,7 +3,11 @@ import UserModel from '../models/UserModel';
 import { ContextType } from '../utils/interfaces';
 import { UserConnexion } from '../utils/types/InputTypes';
 import jwt from 'jsonwebtoken';
-import { env } from '../env';
+import { env, loadEnv } from '../env';
+import CounterModel from '../models/CounterModel';
+import ServiceModel from '../models/ServiceModel';
+
+loadEnv();
 
 const ConnexionController = {
   login: async (data:UserConnexion, ctx: ContextType) => {
@@ -30,6 +34,19 @@ const ConnexionController = {
     const userToUpdate = await UserModel.getOneUserById(id);
     if (userToUpdate === null) throw new Error('User not found');
 
+    const counterToUpade = userToUpdate.counter;
+    if (counterToUpade !== null && typeof (counterToUpade) !== 'undefined') {
+      counterToUpade!.user = undefined;
+      await CounterModel.updateCounter(counterToUpade);
+    }
+
+    const serviceToUpdate = userToUpdate.currentService;
+    if (serviceToUpdate !== null && typeof (serviceToUpdate) !== 'undefined') {
+      serviceToUpdate!.currentUsers = serviceToUpdate!.currentUsers?.filter(
+        (user) => user.id === userToUpdate.id,
+      );
+      await ServiceModel.updateService(serviceToUpdate);
+    }
     userToUpdate.counter = null;
     userToUpdate.currentService = null;
     await UserModel.updateUser(userToUpdate);

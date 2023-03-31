@@ -25,6 +25,16 @@ const CounterModel = {
   getOneArgCounter: async (id: number) => await dataSource.getRepository(Counter)
     .findOneOrFail({ where: { id } }),
 
+  getOneCounterByUserId: async (id: number) => await dataSource.getRepository(Counter)
+    .findOneOrFail({
+      where: { user: { id } },
+      relations: {
+        waitingRoom: true,
+        user: true,
+        ticket: true,
+      },
+    }),
+
   createCounter: async (data: NewCounterDto) => await
   dataSource.getRepository(Counter).save(data),
 

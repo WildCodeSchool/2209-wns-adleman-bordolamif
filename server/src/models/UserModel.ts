@@ -15,7 +15,12 @@ const UserModel = {
     .findOne({
       where: { id },
       relations: {
-        services: true, counter: true, tickets: true, currentService: true,
+        services: {
+          waitingRoom: true,
+        },
+        counter: true,
+        tickets: true,
+        currentService: true,
       },
     }),
 

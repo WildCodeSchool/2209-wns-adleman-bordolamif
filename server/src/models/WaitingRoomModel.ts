@@ -12,7 +12,7 @@ const WaitingRoomModel = {
       where: { id },
       relations: {
         services: true,
-        counters: true,
+        counters: { user: true },
       },
     }),
 
