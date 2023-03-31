@@ -133,4 +133,9 @@
         @apply text-red-600 text-center;
     }
 
+        /* ------- cards message ------- */
+
+    .f-card-waitingroom {
+    @apply p-4 mt-3 rounded-2xl text-center text-white nunito-bold
+    }
 }
