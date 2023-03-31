@@ -18,7 +18,10 @@ const UserModel = {
         services: {
           waitingRoom: true,
         },
-        counter: true,
+        counter: {
+          ticket: true,
+          waitingRoom: true,
+        },
         tickets: true,
         currentService: true,
       },

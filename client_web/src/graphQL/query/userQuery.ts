@@ -13,6 +13,20 @@ query getProfile {
     counter {
       id
       name
+      ticket {
+        name
+        id
+        createdAt
+        calledAt
+        closedAt
+        isFirstTime
+        status
+        isReturned
+      }
+      waitingRoom {
+        name
+        id
+      }
     }
     services {
       id
