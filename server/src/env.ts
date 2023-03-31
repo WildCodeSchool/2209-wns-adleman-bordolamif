@@ -9,6 +9,7 @@ export const schema = {
   POSTGRES_USER: String,
   POSTGRES_DB: String,
   POSTGRES_DB_TEST: String,
+  DB_PORT: Number,
   JWT_PRIVATE_KEY: String,
   CORS_ALLOWED_ORIGINS: String,
   SERVER_HOST: String,

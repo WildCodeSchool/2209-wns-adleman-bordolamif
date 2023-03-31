@@ -3,6 +3,9 @@ import UserModel from '../models/UserModel';
 import { FirstUserLoginPassword, UserConnexion, UserUpdatePassword } from '../utils/types/InputTypes';
 import { randomUUID } from 'crypto';
 import nodemailer from 'nodemailer';
+import { env, loadEnv } from '../env';
+
+loadEnv();
 
 const PasswordController = {
 
@@ -55,7 +58,7 @@ const PasswordController = {
     await UserModel.updateUser(user);
 
     // eslint-disable-next-line no-constant-condition
-    if (process.env.NODE_ENV === 'development' || 'test') {
+    if (env.NODE_ENV === 'development' || 'test') {
       const testAccount = await nodemailer.createTestAccount();
 
       const transporter = nodemailer.createTransport({
