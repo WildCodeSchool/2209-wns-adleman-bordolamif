@@ -23,7 +23,7 @@ function TicketDetails(props: Props) {
       <button
         type="button"
         onClick={() => handleOpenModal(ticket)}
-        className="p-4 rounded-3xl text-center text-white nunito-bold"
+        className="f-card-waitingroom"
         style={{ backgroundColor: `${ticket.service.color}` }}
       >
         <p>{ticket.name}</p>
@@ -31,7 +31,7 @@ function TicketDetails(props: Props) {
       )}
       {!handleOpenModal && (
         <div
-          className="p-4 mt-3 rounded-2xl text-center text-white nunito-bold"
+          className="f-card-waitingroom"
           style={{ backgroundColor: `${ticket.service.color}` }}
         ><p className="text-5xl">{ticket.name}</p>
         </div>
