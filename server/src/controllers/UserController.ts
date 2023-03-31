@@ -67,6 +67,15 @@ const UserController = {
     if (counter !== null && typeof (counter) !== 'undefined') {
       userToUpdate.counter = await CounterModel.getOneArgCounter(counter.id) || null;
     } else {
+      if (userToUpdate.counter !== null) {
+        const counterToUpdate = await CounterModel.getOneCounterByUserId(id) || null;
+
+        if (counterToUpdate!
+              && typeof (counterToUpdate.user) !== 'undefined') {
+          await CounterModel.updateCounter(counterToUpdate);
+        }
+      }
+
       userToUpdate.counter = null;
     }
 

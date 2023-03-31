@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserConnexion } from '@utils/types/InputTypes';
 import {
-  EyeIcon, EyeSlashIcon, AtSymbolIcon, LockClosedIcon,
+  AtSymbolIcon, EyeIcon, EyeSlashIcon, LockClosedIcon,
 } from '@heroicons/react/24/solid';
-import { XCircleIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowRightCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Loader from '@assets/Loader';
 import WomanWithCommputer from '../../assets/illustrations/WomanWithComputer.png';
 

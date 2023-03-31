@@ -29,6 +29,13 @@ function Menu({ userProfile, client }: Props) {
 
   const firstNameLetter = `${userProfile.firstname.charAt(0).toUpperCase()}.`;
 
+  let myAccountPath = '';
+  if (userProfile.role === RoleEnum.ADMINISTRATEUR) {
+    myAccountPath = '/admin/myaccount';
+  } else if (userProfile.role === RoleEnum.OPERATEUR) {
+    myAccountPath = '/operator/myaccount';
+  }
+
   return (
     <div className="fixed flex flex-col justify-between h-screen">
       <div className="pl-2 py-6 w-[15rem]">
@@ -60,7 +67,7 @@ function Menu({ userProfile, client }: Props) {
       </div>
       <div className="pl-8">
         <NavLink
-          to="/admin/myaccount"
+          to={myAccountPath}
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
         >
           <div className="f-format-menu">
