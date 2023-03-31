@@ -41,40 +41,51 @@ function AdminServicesPage() {
         <h1 className="f-main-title">Gérer mes services</h1>
         <div className="f-decoration-line" />
       </div>
-      <div>
-        <h2 className="f-under-title">Créer un service</h2>
-        <div className="f-page-format">
-          <div className="flex flex-col items-center">
-            {!isCreateService
+      <div className="flex flex-row items-center justify-center mb-8">
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-3 w-1/2">
+          <h2 className="text-white text-3xl ml-6 mb-4 mt-1">Créer un service</h2>
+          <div className="flex flex-row ml-8 mb-4 mx-4">
+            <div className="flex flex-col items-center">
+              {!isCreateService
         && (
           <button
             type="button"
-            className="f-button-green"
+            className="flex flex-row ml-4 p-3 rounded-2xl bg-white text-xl text-orange-500 hover:text-orange-600 hover:bg-gray-100 drop-shadow"
             onClick={() => setIsCreateService(true)}
           >
-            <PlusCircleIcon className="f-icon" />
+            <PlusCircleIcon className="mr-2 w-7" />
             Ajouter un service
           </button>
         )}
-            {isCreateService
+            </div>
+          </div>
+          {isCreateService
       && (
       <ServiceCreateForm
         setIsCreateService={setIsCreateService}
         handleCreateService={handleCreateService}
       />
       )}
-          </div>
         </div>
-        <h2 className="f-under-title">Mes services</h2>
-        <div className="px-8">
-          <ServicesList
-            servicesList={servicesList && servicesList.getAllServices}
-            handleUpdateService={handleUpdateService}
-            handleDeleteService={handleDeleteService}
-            mode="details"
-          />
-          {servicesListLoading && <p>Chargement...</p>}
+        <div>
+          <h3 className="pl-8 text-2xl mb-4 nunito-bold">
+            Bienvenue sur votre espace de gestion des services.
+          </h3>
+          <p className="pl-8 text-xl">
+            Vous pouvez ici ajouter, modifier ou supprimer
+            les différents services liés à votre compte.
+          </p>
         </div>
+      </div>
+      <h2 className="text-3xl ml-6 mb-8">Mes services</h2>
+      <div className="px-8">
+        <ServicesList
+          servicesList={servicesList && servicesList.getAllServices}
+          handleUpdateService={handleUpdateService}
+          handleDeleteService={handleDeleteService}
+          mode="details"
+        />
+        {servicesListLoading && <p>Chargement...</p>}
       </div>
     </>
   );

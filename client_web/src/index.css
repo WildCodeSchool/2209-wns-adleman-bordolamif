@@ -49,6 +49,14 @@
         @apply flex flex-row bg-red-600 nunito-bold text-white hover:bg-red-700 py-2 px-4 rounded-xl w-fit;
     }
 
+    .f-button-white-red {
+        @apply flex flex-row bg-white nunito-bold text-red-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit;
+    }
+
+    .f-button-white-green {
+        @apply flex flex-row bg-white nunito-bold text-green-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit;
+    }
+
     /* ------- text components ------- */
 
     .f-main-title {
@@ -98,7 +106,7 @@
     /* ------- format components ------- */
 
     .f-title-format {
-        @apply flex flex-col items-center mb-12
+        @apply flex flex-col items-center mb-8
     }
 
     .f-page-format {
