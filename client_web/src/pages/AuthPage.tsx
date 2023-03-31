@@ -35,7 +35,7 @@ function AuthPage(props: Props) {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
     if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && !currentUser!.isFirstLogin) {
-      setTimeout(() => navigate('/operator/services'), 2000);
+      setTimeout(() => navigate('/operator/startup'), 2000);
     }
     if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && currentUser!.isFirstLogin) {
       setTimeout(() => navigate('/firstlogin'), 2000);

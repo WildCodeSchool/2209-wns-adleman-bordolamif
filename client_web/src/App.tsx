@@ -9,7 +9,6 @@ import AdminWaitingRoomsAndCountersPage from '@pages/admin/AdminWaitingRoomsAndC
 import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
-import OperatorPage from '@pages/operator/OperatorPage';
 import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
@@ -18,6 +17,7 @@ import TvScreenPage from '@pages/tv/TvScreenPage';
 import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
+import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -68,7 +68,7 @@ function App() {
                 />
               )}
             >
-              <Route path="services" element={<OperatorPage />} />
+              <Route path="startup" element={<OperatorStartUpPage />} />
               <Route path="dashboard" element={<OperatorBoard />}>
                 <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
               </Route>
