@@ -30,8 +30,8 @@ export class UserResolver {
      ************************************ */
 
   @Query(() => [User])
-  async getAllUsers(): Promise<User[]> {
-    const users = await UserController.getAllUsers();
+  async getAllUsers(@Arg('connected', { nullable: true })connected: boolean): Promise<User[]> {
+    const users = await UserController.getAllUsers(connected);
     return users.map((user) => getSafeAttributes(user));
   }
 

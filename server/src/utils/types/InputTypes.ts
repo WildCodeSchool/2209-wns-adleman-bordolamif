@@ -141,6 +141,25 @@ export class TicketInput {
 }
 
 @InputType()
+export class PartialTicketInput {
+  @Field({ nullable: true })
+  @MaxLength(100)
+    name?: string;
+
+  @Field({ nullable: true })
+    status?: StatusEnum;
+
+  @Field({ nullable: true })
+    isFirstTime?: boolean;
+
+  @Field(() => UserId, { nullable: true })
+    user?: UserId;
+
+  @Field(() => ServiceId, { nullable: true })
+    service?: ServiceId;
+}
+
+@InputType()
 export class WaitingRoomInput {
     @Field()
     @MaxLength(100)
@@ -164,6 +183,22 @@ export class CounterInput {
 
     @Field(() => TicketId, { nullable: true })
       ticket?: TicketId;
+}
+
+@InputType()
+export class PartialCounterInput {
+    @Field({ nullable: true })
+    @MaxLength(100)
+      name?: string;
+
+    @Field(() => WaitingRoomId, { nullable: true })
+      waitingRoom?: WaitingRoomId;
+
+    @Field(() => UserId, { nullable: true })
+      user?: UserId;
+
+    @Field(() => TicketId, { nullable: true })
+      ticket?: TicketId | null;
 }
 
 @InputType()

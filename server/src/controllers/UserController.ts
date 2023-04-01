@@ -5,7 +5,8 @@ import UserModel from '../models/UserModel';
 import { PartialUserInput, UserInput } from '../utils/types/InputTypes';
 
 const UserController = {
-  getAllUsers: async (): Promise<User[]> => await UserModel.getAllUsers(),
+  getAllUsers: async (connected?:boolean): Promise<User[]> => await
+  UserModel.getAllUsers(connected),
 
   getOneUser: async (id: number): Promise<User> => {
     const user = await UserModel.getOneUserById(id);

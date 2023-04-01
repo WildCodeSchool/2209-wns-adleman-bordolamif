@@ -60,8 +60,8 @@ query getProfile {
 `;
 
 export const GET_ALL_USERS = gql`
-query GetAllUsers {
-  getAllUsers {
+query GetAllUsers($connected: Boolean) {
+  getAllUsers(connected: $connected) {
     id
     firstname
     lastname

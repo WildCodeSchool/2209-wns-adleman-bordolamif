@@ -1,13 +1,15 @@
 import ServiceIcon from '@components/icons/ServiceIcon';
+import { StatusEnum } from '@utils/enum/StatusEnum';
 import { UserData } from '@utils/types/DataTypes';
 
 interface Props{
   profile: UserData | null
   callNextTicket: ()=> void
+  changeCurrentTicketStatus: (stauts: StatusEnum)=>void
 }
 
 function OngoingUserTicket(props: Props) {
-  const { profile, callNextTicket } = props;
+  const { profile, callNextTicket, changeCurrentTicketStatus } = props;
 
   return (
     <div className="bg-gray-200 rounded-2xl">
@@ -34,8 +36,8 @@ function OngoingUserTicket(props: Props) {
             : <p>Ce patient est déjà venu</p>}
           {profile.counter.ticket.isReturned && <p>Ce ticket a déjà été suspendu</p>}
         </div>
-        <button type="button" className="bg-green-500 text-white rounded p-1 m-2">Traitement terminé</button>
-        <button type="button" className="bg-gray-500 text-white rounded p-1 m-2">Suspendre le ticket</button>
+        <button onClick={() => changeCurrentTicketStatus(StatusEnum.TRAITE)} type="button" className="bg-green-500 text-white rounded p-1 m-2">Traitement terminé</button>
+        <button onClick={() => changeCurrentTicketStatus(StatusEnum.AJOURNE)} type="button" className="bg-gray-500 text-white rounded p-1 m-2">Suspendre le ticket</button>
 
       </div>
 )}
