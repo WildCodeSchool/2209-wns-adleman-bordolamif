@@ -50,11 +50,15 @@
     }
 
     .f-button-white-red {
-        @apply flex flex-row bg-white nunito-bold text-red-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit;
+        @apply flex flex-row bg-white nunito-bold text-red-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit drop-shadow;
     }
 
     .f-button-white-green {
-        @apply flex flex-row bg-white nunito-bold text-green-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit;
+        @apply flex flex-row bg-white nunito-bold text-green-500 hover:bg-gray-200 py-2 px-4 rounded-xl w-fit drop-shadow;
+    }
+
+    .f-button-orange {
+        @apply flex flex-row ml-4 p-3 rounded-2xl bg-white text-lg text-orange-500 hover:text-orange-600 hover:bg-gray-100 drop-shadow;
     }
 
     /* ------- text components ------- */
@@ -77,6 +81,18 @@
 
     .f-dashboard-titles {
         @apply ml-10 mt-4 text-2xl;
+    }
+
+    .f-button-text-white {
+        @apply text-white text-2xl ml-6 mb-4 mt-1;
+    }
+
+    .f-title-page {
+        @apply pl-8 text-2xl mb-4 nunito-bold;
+    }
+
+    .f-label-name-white {
+        @apply flex flex-col text-xl text-white;
     }
 
     /* ------- input components ------- */
@@ -115,6 +131,18 @@
 
     .f-choice-button-format {
         @apply flex flex-row justify-end space-x-4
+    }
+
+    .f-format-adding {
+        @apply bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-3 w-1/2;
+    }
+
+    .f-format-create-box {
+        @apply flex pb-4 px-4 rounded-xl;
+    }
+
+    .f-format-creation {
+        @apply flex flex-row items-center ml-8 mb-8 mt-8;
     }
 
     /* ------- icon components ------- */

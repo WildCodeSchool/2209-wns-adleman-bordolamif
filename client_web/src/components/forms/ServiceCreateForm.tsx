@@ -47,9 +47,9 @@ function ServiceCreateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex pb-4 px-4 rounded-xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="f-format-create-box">
       <div>
-        <label className="flex flex-col text-xl text-white">
+        <label className="f-label-name-white">
           Nom du service
           <input
             placeholder="Ex: Radiologie"
@@ -58,7 +58,7 @@ function ServiceCreateForm(props: Props) {
           />
         </label>
         <div className="flex flex-row justify-between">
-          <label className="flex flex-col text-xl text-white">
+          <label className="f-label-name-white">
             Acronyme
             <input
               placeholder="Ex: RDL"
