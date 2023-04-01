@@ -24,7 +24,7 @@ function DashboardOverview(props:Props) {
             && ticketsList.filter((ticket) => ticket.service.id
             === service.id && ticket.status !== StatusEnum.TRAITE).length}
             </p>
-            <p>Guichets ouverts : {connectedUsersList.filter(
+            <p>Guichets ouverts : {connectedUsersList! && connectedUsersList.filter(
               (user) => user.currentService!.id === service.id,
             ).length}
             </p>

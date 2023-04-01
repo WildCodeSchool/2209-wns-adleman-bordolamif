@@ -12,7 +12,6 @@ import useModal from '@utils/hooks/UseModal';
 import { TicketData } from '@utils/types/DataTypes';
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import OperatorMyWaitingRoomPage from './OperatorMyWaitingRoomPage';
 
 function OperatorBoard() {
   const location = useLocation();
@@ -129,7 +128,7 @@ function OperatorBoard() {
       {location.pathname === '/operator/dashboard' && (
       <OperatorDashboard
         changeCurrentTicketStatus={changeCurrentTicketStatus}
-        profile={userProfile}
+        profile={userProfile!}
         ticketsList={ticketsList! && ticketsList.getAllTicketsForWaitingRoom}
         callNextTicket={callNextTicket}
         waitingRoom={waitingRoom! && waitingRoom.getOneWaitingRoom}
