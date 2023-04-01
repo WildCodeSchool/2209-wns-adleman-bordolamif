@@ -39,12 +39,14 @@ function OperatorDashboard(props:Props) {
           callNextTicket={callNextTicket}
         />
         <div className="flex flex-row space-x-4">
-          <DashboardWaitingTickets
-            ticketsList={ticketsList! && ticketsList.filter(
-              (ticket) => ticket.service.id === profile!.currentService!.id
+          <div className="bg-gradient-to-b from-orange-500 to-red-500 w-1/3 rounded-2xl text-white">
+            <DashboardWaitingTickets
+              ticketsList={ticketsList! && ticketsList.filter(
+                (ticket) => ticket.service.id === profile!.currentService!.id
               && (ticket.status !== StatusEnum.AJOURNE),
-            )}
-          />
+              )}
+            />
+          </div>
           <DashboardSuspendedTickets
             profile={profile!}
             callSuspendedTicket={callSuspendedTicket}

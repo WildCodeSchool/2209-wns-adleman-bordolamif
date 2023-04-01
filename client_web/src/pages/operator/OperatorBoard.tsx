@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import OperatorDashboard from '@components/operatorComponents/OperatorDashboard';
+import OperatorWaitingRoom from '@components/operatorComponents/OperatorWaitingRoom';
 import { PARTIAL_COUNTER_UPDATE } from '@graphQL/mutations/counterMutations';
 import { PARTIAL_TICKET_UPDATE } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_TICKETS_FOR_WAITING_ROOM } from '@graphQL/query/ticketQuery';
@@ -99,8 +100,6 @@ function OperatorBoard() {
     closeModal();
   };
 
-  // console.log(userProfile, ticketsList, connectedUsersList);
-
   const activeStyle = {
     color: '#f97316',
   };
@@ -143,7 +142,15 @@ function OperatorBoard() {
       />
       )}
       {location.pathname === '/operator/dashboard/mywaitingroom' && (
-      <OperatorMyWaitingRoomPage profile={userProfile} />
+      <OperatorWaitingRoom
+        profile={userProfile!}
+        ticketsList={ticketsList! && ticketsList.getAllTicketsForWaitingRoom}
+        waitingRoom={waitingRoom! && waitingRoom.getOneWaitingRoom}
+        callSuspendedTicket={callSuspendedTicket}
+        callNextTicket={callNextTicket}
+        connectedUsersList={connectedUsersList!
+          && connectedUsersList.getAllUsers}
+      />
       )}
     </>
   );
