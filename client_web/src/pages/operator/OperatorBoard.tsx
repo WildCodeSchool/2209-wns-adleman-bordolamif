@@ -7,13 +7,18 @@ import { GET_ALL_USERS } from '@graphQL/query/userQuery';
 import { GET_ONE_WAITINGROOM } from '@graphQL/query/waitingRoomQuery';
 import { useUserProfile } from '@layouts/StaffLayout';
 import { StatusEnum } from '@utils/enum/StatusEnum';
+import useModal from '@utils/hooks/UseModal';
 import { TicketData } from '@utils/types/DataTypes';
+import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import OperatorMyWaitingRoomPage from './OperatorMyWaitingRoomPage';
 
 function OperatorBoard() {
   const location = useLocation();
   const { userProfile } = useUserProfile();
+  const [treatedTicket, setTreatedTicket] = useState<string>('');
+
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const { data: ticketsList, refetch } = useQuery(
     GET_ALL_TICKETS_FOR_WAITING_ROOM,
@@ -41,18 +46,27 @@ function OperatorBoard() {
   const [PartialCounterUpdate] = useMutation(PARTIAL_COUNTER_UPDATE);
 
   const callNextTicket = async () => {
-    const nextTicket = ticketsList.getAllTicketsForWaitingRoom.filter(
-      (ticket: TicketData) => ticket.service.id === userProfile!.currentService!.id,
-    )[0];
+    const nextTicket = ticketsList.getAllTicketsForWaitingRoom
+      .find((ticket: TicketData) => ticket.service.id
+      === userProfile!.currentService!.id && ticket.status === StatusEnum.EN_ATTENTE);
+
+    updateTicketAndCounter(nextTicket.id);
+  };
+
+  const callSuspendedTicket = (id: number) => {
+    updateTicketAndCounter(id);
+  };
+
+  const updateTicketAndCounter = async (ticketId: number) => {
     await PartialTicketUpdate({
       variables: {
         data: { status: StatusEnum.EN_TRAITEMENT },
-        partialTicketUpdateId: nextTicket.id,
+        partialTicketUpdateId: ticketId,
       },
     });
     await PartialCounterUpdate({
       variables: {
-        data: { ticket: { id: nextTicket.id } }, partialCounterUpdateId: userProfile?.counter.id,
+        data: { ticket: { id: ticketId } }, partialCounterUpdateId: userProfile?.counter.id,
       },
     });
   };
@@ -70,10 +84,19 @@ function OperatorBoard() {
           data: { ticket: { id: 0 } }, partialCounterUpdateId: userProfile?.counter.id,
         },
       });
+      if (status === StatusEnum.TRAITE) {
+        setTreatedTicket(userProfile!.counter.ticket.name);
+        openModal();
+        setTimeout(() => closeModal(), 4000);
+      }
       await refetch();
     } catch (e) {
       throw new Error('Error while updating ticket');
     }
+  };
+
+  const handleCloseModal = () => {
+    closeModal();
   };
 
   // console.log(userProfile, ticketsList, connectedUsersList);
@@ -113,6 +136,10 @@ function OperatorBoard() {
         waitingRoom={waitingRoom! && waitingRoom.getOneWaitingRoom}
         connectedUsersList={connectedUsersList!
           && connectedUsersList.getAllUsers}
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+        treatedTicket={treatedTicket}
+        callSuspendedTicket={callSuspendedTicket}
       />
       )}
       {location.pathname === '/operator/dashboard/mywaitingroom' && (

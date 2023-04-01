@@ -15,7 +15,11 @@ interface Props{
   waitingRoom: WaitingRoomData
   connectedUsersList: UserData[]
   callNextTicket: ()=> void
+  callSuspendedTicket: (id: number) => void
   changeCurrentTicketStatus: (stauts: StatusEnum)=>void
+  isModalOpen: boolean
+  handleCloseModal: ()=>void
+  treatedTicket:string
 
 }
 
@@ -23,6 +27,7 @@ function OperatorDashboard(props:Props) {
   const {
     profile, ticketsList, connectedUsersList,
     waitingRoom, callNextTicket, changeCurrentTicketStatus,
+    isModalOpen, handleCloseModal, treatedTicket, callSuspendedTicket,
   } = props;
 
   return (
@@ -40,10 +45,13 @@ function OperatorDashboard(props:Props) {
               && (ticket.status !== StatusEnum.AJOURNE),
             )}
           />
-          <DashboardSuspendedTickets ticketsList={ticketsList! && ticketsList.filter(
-            (ticket) => (ticket.service.id === profile!.currentService!.id)
+          <DashboardSuspendedTickets
+            profile={profile!}
+            callSuspendedTicket={callSuspendedTicket}
+            ticketsList={ticketsList! && ticketsList.filter(
+              (ticket) => (ticket.service.id === profile!.currentService!.id)
             && (ticket.status === StatusEnum.AJOURNE),
-          )}
+            )}
           />
           <div className="flex flex-col justify-between">
             <OperatorsInService connectedUsersList={profile! && connectedUsersList!
@@ -59,6 +67,20 @@ function OperatorDashboard(props:Props) {
           waitingRoom={waitingRoom}
           ticketsList={ticketsList}
         />
+      </div>
+      <div
+        className={
+        isModalOpen
+          ? 'fixed bottom-0 right-0 flex'
+          : 'hidden'
+      }
+      >
+        <div className="bg-white shadow-md rounded m-4 w-full max-w-sm flex p-4">
+          <p className="text-green-500 mr-2">Ticket {treatedTicket} traité !</p>
+          <button type="button" onClick={() => handleCloseModal()}>
+            X
+          </button>
+        </div>
       </div>
     </div>
   );
