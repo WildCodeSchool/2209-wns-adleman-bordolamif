@@ -4,10 +4,12 @@
   "description": "Main package.json app",
   "scripts": {
     "start:mobile": "npm --prefix ./client_mobile start",
-    "setup": "npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i && npm --prefix ./test i",
+    "setup": "node echo \"[Initializing project]\" -s 1 -b 100 -f 44 && npm i && husky install && npm --prefix ./client_web i && npm --prefix ./client_mobile i && npm --prefix ./server i && npm --prefix ./test i && node echo \"All the dependencies have been installed\" -f 92",
     "lint": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "prepare": "husky install",
+    "save:docker-db": "node echo \"[Initializing database save]\" -s 1 -b 100 -f 44 && dotenv -- cross-var docker run --rm -v waitit-development_db:/var/lib/postgresql/data -v %DB_SAVE_LOCATION%:/backup postgres:15-alpine tar czvf /backup/waitit-development_db.tar.gz /var/lib/postgresql/data && node echo \"Your local database has been save on your Desktop\" -f 92",
+    "import:docker-db": "node echo \"[Initializing database import]\" -s 1 -b 100 -f 44 && docker-compose -f docker-compose.yml down && dotenv -- cross-var docker run --rm -v waitit-development_db:/var/lib/postgresql/data -v %DB_SAVE_LOCATION%:/backup postgres:15-alpine tar xzvf /backup/waitit-development_db.tar.gz && docker-compose -f docker-compose.yml up --build && node echo \"Your local database has been imported\" -f 92",
     "test:docker": "docker-compose -f docker-compose.integration.yml up --build --exit-code-from testrunner",
     "start:prod": "docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml up --build",
     "publish:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server && docker push joffreychevalier/waitit-server && cd ..",
@@ -34,6 +36,8 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
+    "cross-var": "^1.1.0",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^8.30.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-custom-alias": "^1.3.0",
