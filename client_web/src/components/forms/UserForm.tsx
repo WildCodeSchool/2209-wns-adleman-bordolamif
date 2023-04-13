@@ -76,21 +76,25 @@ function UserForm(props : Props) {
     }
   };
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
   return (
     <div className="flex h-full justify-center items-center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center">
-          <input placeholder="First Name" {...register('firstname')} required className={inputClassName} />
-          <input placeholder="Last Name" {...register('lastname')} required className={inputClassName} />
-          <input placeholder="email" {...register('email')} required className={inputClassName} />
+        <div className="flex flex-col items-center space-y-4">
+          <input placeholder="First Name" {...register('firstname')} required className="f-input" />
+          <input placeholder="Last Name" {...register('lastname')} required className="f-input" />
+          <input placeholder="email" {...register('email')} required className="f-input" />
           {servicesListLoading && <p>loading...</p>}
           <ServicesCheckboxesList
             checkList={userServices}
             servicesList={servicesList && servicesList.getAllServices}
             toggleCheckList={toggleUserServices}
           />
-          <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Activer le compte</button>
+          <button
+            type="submit"
+            className="f-button-green my-4"
+          >
+            Activer le compte
+          </button>
           <div>
             {error && <div>{error}</div>}
           </div>

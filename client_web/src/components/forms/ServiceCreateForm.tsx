@@ -37,7 +37,7 @@ function ServiceCreateForm(props: Props) {
   const onSubmit = async (data: ServiceInput) => {
     const serviceToCreate = {
       name: data.name,
-      open: false,
+      isOpen: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
@@ -47,27 +47,27 @@ function ServiceCreateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex pb-4 px-4 rounded-xl">
       <div>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-xl text-white">
           Nom du service
           <input
             placeholder="Ex: Radiologie"
             {...register('name', { required: true })}
-            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+            className="f-input"
           />
         </label>
-        <div className="flex flex-raw justify-between">
-          <label className="flex flex-col">
+        <div className="flex flex-row justify-between">
+          <label className="flex flex-col text-xl text-white">
             Acronyme
             <input
               placeholder="Ex: RDL"
-              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              className="f-input w-40"
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>
-          <div>
-            <p>
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-xl text-white">
               Couleur
             </p>
             <ColorPicker
@@ -79,7 +79,7 @@ function ServiceCreateForm(props: Props) {
       </div>
       <div className="ml-6">
         <div className="mb-10">
-          <p className="mb-2">
+          <p className="mb-2 text-xl text-white">
             Salle d'attente
           </p>
           {waitingRoomsListLoading && <p>Chargement...</p>}
@@ -89,16 +89,16 @@ function ServiceCreateForm(props: Props) {
             toggleRadioList={toggleServiceWaitingRoom}
           />
         </div>
-        <div className="flex flex-raw justify-end">
+        <div className="f-choice-button-format">
           <button
-            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            className="f-button-white-red"
             type="button"
             onClick={() => setIsCreateService(false)}
           >
             Annuler
           </button>
           <button
-            className="p-2 mx-2 w-[5rem] bg-green-600 rounded text-white hover:bg-green-700"
+            className="f-button-white-green"
             type="submit"
           >
             Créer

@@ -8,6 +8,7 @@ export interface UserProfile {
     firstname: string;
     lastname: string;
     isFirstLogin: boolean;
+    isSuspended: boolean;
   }
 
 export interface CurrentUser {
@@ -28,7 +29,7 @@ export interface Service {
   name : string;
   color : string;
   acronym : string;
-  open : boolean;
+  isOpen : boolean;
 }
 
 export interface Ticket {
@@ -41,11 +42,17 @@ export interface Ticket {
   isReturned : boolean;
   status : StatusEnum
 }
+export interface ServiceData extends Service {
+    __typename: string;
+    waitingRoom: WaitingRoom
+    tickets: Ticket[];
+
+  }
 
 export interface UserData extends UserProfile{
   __typename: string;
   counter: UserCounter;
-  services: Service[];
+  services: ServiceData[];
   tickets: Ticket[];
   currentService?: Service | null
 
@@ -62,15 +69,15 @@ export interface WaitingRoomData extends WaitingRoom {
     counters: Counter[]
   }
 
-export interface ServiceData extends Service {
-    __typename: string;
-    waitingRoom: WaitingRoom
-    tickets: Ticket[];
-
-  }
-
 export interface TicketData extends Ticket {
     __typename: string;
     service: Service
     user: UserProfile
+    counter: Counter
+  }
+
+export interface CounterData extends Counter {
+    __typename: string;
+    user: UserProfile;
+
   }

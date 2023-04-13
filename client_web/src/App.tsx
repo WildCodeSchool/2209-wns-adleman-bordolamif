@@ -9,11 +9,15 @@ import AdminWaitingRoomsAndCountersPage from '@pages/admin/AdminWaitingRoomsAndC
 import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
-import OperatorPage from '@pages/operator/OperatorPage';
 import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
 import ClientPage from '@pages/client/ClientPage';
 import FirstConnectionPage from '@pages/operator/FirstConnectionPage';
 import { RoleEnum } from '@utils/enum/RoleEnum';
+import TvScreenPage from '@pages/tv/TvScreenPage';
+import MyAccountPage from '@pages/MyAccountPage';
+import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
+import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
+import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -47,6 +51,8 @@ function App() {
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
               <Route path="statistics" element={<AdminStatisticsPage />} />
               <Route path="users" element={<AdminUsersPage />} />
+              <Route path="myaccount" element={<MyAccountPage />} />
+
             </Route>
           )}
         {currentUser
@@ -62,8 +68,12 @@ function App() {
                 />
               )}
             >
-              <Route path="services" element={<OperatorPage />} />
-              <Route path="dashboard" element={<OperatorBoard />} />
+              <Route path="startup" element={<OperatorStartUpPage />} />
+              <Route path="dashboard" element={<OperatorBoard />}>
+                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
+              </Route>
+              <Route path="myaccount" element={<MyAccountPage />} />
+
             </Route>
           )}
         {currentUser
@@ -73,6 +83,10 @@ function App() {
           <Route path="/firstlogin" element={<FirstConnectionPage currentUser={currentUser.profile} client={client} />} />
           )}
         <Route path="client" element={<ClientPage />} />
+        <Route path="tvscreen">
+          <Route path="" element={<TvScreenHomePage />} />
+          <Route path=":id" element={<TvScreenPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -44,7 +44,7 @@ function ServiceUpdateForm(props: Props) {
   const onSubmit = async (data: ServiceInput) => {
     const updatedService: ServiceInput = {
       name: data.name,
-      open: false,
+      isOpen: false,
       acronym: (data.acronym).toUpperCase(),
       color,
       waitingRoom: serviceWaitingRoom,
@@ -56,27 +56,27 @@ function ServiceUpdateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-4 rounded-xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-100 rounded-2xl p-6">
       <div>
-        <label className="flex flex-col">
+        <label className="flex flex-col text-xl">
           Nom du service
           <input
             placeholder="Ex: Radiologie"
             {...register('name', { required: true })}
-            className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
+            className="f-input"
           />
         </label>
-        <div className="flex flex-raw justify-between">
-          <label className="flex flex-col">
+        <div className="flex flex-row justify-between">
+          <label className="flex flex-col text-xl">
             Acronyme
             <input
               placeholder="Ex: RDL"
-              className="border rounded w-[10rem] mb-1 px-4 py-2 text-gray-700 focus:outline-none"
+              className="f-input w-[10rem]"
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>
-          <div>
-            <p>
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-xl">
               Couleur
             </p>
             <ColorPicker
@@ -88,7 +88,7 @@ function ServiceUpdateForm(props: Props) {
       </div>
       <div className="ml-6">
         <div className="mb-10">
-          <p className="mb-2">
+          <p className="mb-2 text-xl">
             Salle d'attente
           </p>
           {waitingRoomsListLoading && <p>Chargement...</p>}
@@ -98,16 +98,16 @@ function ServiceUpdateForm(props: Props) {
             toggleRadioList={toggleServiceWaitingRoom}
           />
         </div>
-        <div className="flex flex-raw justify-end">
+        <div className="f-choice-button-format">
           <button
-            className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+            className="f-button-red"
             type="button"
             onClick={() => setIsUpdateService(false)}
           >
             Annuler
           </button>
           <button
-            className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
+            className="f-button-green"
             type="submit"
           >
             Appliquer

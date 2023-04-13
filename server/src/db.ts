@@ -10,11 +10,11 @@ loadEnv();
 
 export default new DataSource({
   type: 'postgres',
-  host: process.env.NODE_ENV === 'test' ? 'db_test' : 'db',
-  port: 5432,
+  host: env.DB_HOST,
+  port: env.DB_PORT,
   username: env.POSTGRES_USER,
   password: env.POSTGRES_PASSWORD,
-  database: process.env.NODE_ENV === 'test' ? env.POSTGRES_DB_TEST : env.POSTGRES_DB,
+  database: env.NODE_ENV === 'test' ? env.POSTGRES_DB_TEST : env.POSTGRES_DB,
   synchronize: true,
   entities: [Counter, WaitingRoom, Service, Ticket, User],
   logging: ['error'],

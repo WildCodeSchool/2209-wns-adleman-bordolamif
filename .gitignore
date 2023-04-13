@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 .env
+.env.production
+.env.staging
+
+deploy-production.sh
+deploy-staging.sh
 
 # Editor directories and files
 .vscode/*

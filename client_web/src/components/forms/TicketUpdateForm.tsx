@@ -38,12 +38,24 @@ function TicketUpdateForm(props : Props) {
           <p>{ticketToUpdate.service.name}</p>
           <ServiceIcon service={ticketToUpdate.service} />
           <p>{ticketToUpdate.name}</p>
-          <select {...register('status')} defaultValue={StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)?.key}>
+          <select
+            {...register('status')}
+            defaultValue={
+              StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)
+                ? ticketToUpdate.status
+                : ''
+            }
+          >
             {StatusObjectEnum.map((stat) => (
               <option key={stat.key} value={stat.key}>{stat.name}</option>
             ))}
           </select>
-          <button type="submit" className="shadow bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-3/6">Enregistrer</button>
+          <button
+            type="submit"
+            className="f-button-green"
+          >
+            Enregistrer
+          </button>
         </div>
       </form>
     </div>

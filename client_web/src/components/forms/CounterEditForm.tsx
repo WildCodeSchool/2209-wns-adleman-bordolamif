@@ -26,26 +26,26 @@ function CounterEditForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-raw">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-row">
       <input
         placeholder="Ex: Guichet 1"
         {...register('name')}
         required
         className="w-[8rem] py-1 px-2 text-gray-700 bg-gray-100 focus:outline-none mr-1"
       />
-      <div className="flex flex-raw">
+      <div className="flex flex-row">
         <button
           type="button"
           aria-label="cancel"
           onClick={() => setIsEdit(false)}
         >
-          <XMarkIcon className="w-4 text-red-600" />
+          <XMarkIcon className="f-delete-icon" />
         </button>
         <button
           type="submit"
           aria-label="submit"
         >
-          <CheckIcon className="w-4 text-green-600" />
+          <CheckIcon className="f-update-icon" />
         </button>
       </div>
     </form>

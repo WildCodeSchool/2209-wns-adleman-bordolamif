@@ -17,8 +17,6 @@ function CounterCreateForm(props: Props) {
     defaultValues: formDefaultValues,
   });
 
-  const inputClassName = 'border rounded w-full py-2 px-3 text-gray-700 focus:outline-none mb-7';
-
   const onSubmit = async (data: CounterInput) => {
     await handleCreateCounter(data);
     setIsCreateCounter(false);
@@ -26,17 +24,22 @@ function CounterCreateForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Nom du guichet</h2>
-      <input placeholder="Ex: Guichet 1" {...register('name')} required className={inputClassName} />
-      <div className="flex flex-raw justify-end">
+      <input
+        placeholder="Ex: Guichet 1"
+        {...register('name')}
+        required
+        className="f-input"
+      />
+      <div className="f-choice-button-format">
         <button
-          className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+          className="f-button-red"
           type="button"
           onClick={() => setIsCreateCounter(false)}
         >
           Annuler
         </button>
         <button
-          className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
+          className="f-button-green"
           type="submit"
         >
           Appliquer

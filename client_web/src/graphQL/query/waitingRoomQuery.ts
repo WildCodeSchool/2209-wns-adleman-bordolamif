@@ -14,7 +14,7 @@ query GetAllWaitingRooms {
       name
       color
       acronym
-      open
+      isOpen
     }
   }
 }
@@ -28,13 +28,16 @@ query GetOneWaitingRoom($getOneWaitingRoomId: Int!) {
     counters {
       id
       name
+      user {
+        id
+      }
     }
     services {
       id
       name
       color
       acronym
-      open
+      isOpen
     }
   }
 }

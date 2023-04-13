@@ -21,7 +21,7 @@ function CounterDetails(props: Props) {
 
   return (
     <div
-      className="flex justify-between items-center bg-gray-200 rounded w-fit px-2 py-1 h-fit mx-2 mb-4"
+      className="flex justify-between items-center bg-white border-2 border-gray-400 rounded-xl w-fit px-2 py-1 h-fit mx-2 mb-4"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -40,20 +40,20 @@ function CounterDetails(props: Props) {
               <p>{counter.name}</p>
               {isHover
       && (
-      <div className="flex flex-raw ml-4">
+      <div className="flex flex-row ml-4">
         <button
           type="button"
           aria-label="edit"
           onClick={() => setIsEdit(true)}
         >
-          <PencilSquareIcon className="w-4 mr-2 hover:text-blue-500" />
+          <PencilSquareIcon className="f-update-icon" />
         </button>
         <button
           type="button"
           aria-label="delete"
           onClick={() => handleDeleteCounter(counter.id)}
         >
-          <TrashIcon className="w-4 hover:text-red-600" />
+          <TrashIcon className="f-delete-icon mr-1" />
         </button>
       </div>
       )}

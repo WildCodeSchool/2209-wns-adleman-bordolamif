@@ -4,11 +4,43 @@ export const PROFILE = gql`
 query getProfile {
   profile{
     id
-    email
-    role
     firstname
     lastname
-    isFirstLogin
+    role
+    email
+    isFirstLogin  
+    isSuspended
+    counter {
+      id
+      name
+    }
+    services {
+      id
+      name
+      color
+      acronym
+      isOpen
+      waitingRoom {
+        id
+      }
+    }
+    tickets {
+      id
+      name
+      createdAt
+      calledAt
+      closedAt
+      isFirstTime
+      isReturned
+      status
+    }
+    currentService {
+      acronym
+      color
+      id
+      name
+      isOpen
+    }
   }
 }
 `;
@@ -22,12 +54,13 @@ query GetAllUsers {
     email
     role
     isFirstLogin
+    isSuspended
     services {
       acronym
       color
       id
       name
-      open
+      isOpen
     }
     counter {
       id
@@ -48,7 +81,7 @@ query GetAllUsers {
       color
       id
       name
-      open
+      isOpen
     }
   }
 }
@@ -63,6 +96,7 @@ query GetOneUser($getOneUserId: Int!) {
     role
     email
     isFirstLogin  
+    isSuspended
     counter {
       id
       name
@@ -72,7 +106,7 @@ query GetOneUser($getOneUserId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     tickets {
       id
@@ -89,7 +123,7 @@ query GetOneUser($getOneUserId: Int!) {
       color
       id
       name
-      open
+      isOpen
     }
   }
 }

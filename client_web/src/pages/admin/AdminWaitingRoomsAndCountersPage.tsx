@@ -4,6 +4,7 @@ import WaitingRoomsList from '@components/lists/WaitingRoomsList';
 import { CREATE_COUNTER, DELETE_COUNTER, UPDATE_COUNTER } from '@graphQL/mutations/counterMutations';
 import { CREATE_WAITINGROOM, DELETE_WAITINGROOM, UPDATE_WAITINGROOM } from '@graphQL/mutations/waitingRoomMutations';
 import { GET_ALL_WAITINGROOMS } from '@graphQL/query/waitingRoomQuery';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { CounterInput, WaitingRoomInput } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
@@ -59,20 +60,21 @@ function AdminWaitingRoomsAndCountersPage() {
 
   return (
     <div>
-      <div className="flex flex-col items-center mb-12">
-        <h1 className="nunito-bold text-orange-500 text-2xl">Gérer les salles d'attente</h1>
-        <div className="h-[2px] w-full bg-gray-300 mt-5" />
+      <div className="f-title-format">
+        <h1 className="f-main-title">Gérer les salles d'attente</h1>
+        <div className="f-decoration-line" />
       </div>
-      <h2 className="nunito-bold text-xl mb-8">Créer une salle d'attente</h2>
-      <div className="flex flex-raw items-center justify-start ml-8 mb-12 mx-4">
+      <h2 className="f-under-title">Créer une salle d'attente</h2>
+      <div className="f-page-format">
         <div className="flex flex-col items-center">
           {!isCreateWaitingRoom
         && (
           <button
             type="button"
-            className="shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+            className="f-button-green"
             onClick={() => setIsCreateWaitingRoom(true)}
           >
+            <PlusCircleIcon className="f-icon" />
             Ajouter une salle d'attente
           </button>
         )}
@@ -85,7 +87,7 @@ function AdminWaitingRoomsAndCountersPage() {
       )}
         </div>
       </div>
-      <h2 className="nunito-bold text-xl mb-8">Salles d'attente et leur guichets</h2>
+      <h2 className="f-under-title">Salles d'attente et leur guichets</h2>
       <div className="px-8 mx-">
         <WaitingRoomsList
           waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}

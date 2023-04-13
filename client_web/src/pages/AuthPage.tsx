@@ -24,8 +24,9 @@ function AuthPage(props: Props) {
     try {
       await login({ variables: { data: formData } });
       await client.resetStore();
-    } catch (e) {
-      setError('Email ou mot de passe incorrect');
+    } catch (e: unknown) {
+      if (e instanceof Error && e.message === 'user suspended') setError('Utilisateur suspendu, connexion refusée.');
+      else setError('Email ou mot de passe incorrect');
     }
   };
 
@@ -34,7 +35,7 @@ function AuthPage(props: Props) {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     }
     if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && !currentUser!.isFirstLogin) {
-      setTimeout(() => navigate('/operator/services'), 2000);
+      setTimeout(() => navigate('/operator/startup'), 2000);
     }
     if (currentUser && currentUser!.role === RoleEnum.OPERATEUR && currentUser!.isFirstLogin) {
       setTimeout(() => navigate('/firstlogin'), 2000);

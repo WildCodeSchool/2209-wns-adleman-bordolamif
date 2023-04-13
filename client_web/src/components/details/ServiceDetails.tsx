@@ -20,13 +20,15 @@ function ServiceDetails(props: Props) {
   };
 
   return (
-    <div className="flex flex-col border-2 border-gray-200 py-2 rounded-xl">
-      <div className="nunito-bold pl-2 pb-1 text-lg">
-        <h2>{service.name}</h2>
-      </div>
-      <div className="flex flex-raw items-center bg-white justify-between px-2">
-        <ServiceIcon service={service} />
-        <p className="ml-2">{service.waitingRoom?.name}</p>
+    <div className="flex flex-col bg-gray-100 pb-2 rounded-xl">
+      <div
+        className="f-services-card-decoration"
+        style={{ backgroundColor: `${service.color}` }}
+      />
+      <div className="flex flex-row justify-between mb-2">
+        <div className="nunito-bold pl-3 pb-1 text-xl">
+          <h2>{service.name}</h2>
+        </div>
         {!isUpdateService
         && (
         <div>
@@ -34,16 +36,20 @@ function ServiceDetails(props: Props) {
             type="button"
             onClick={() => setIsUpdateService(true)}
           >
-            <PencilSquareIcon className="w-6 mr-2 hover:text-blue-500" />
+            <PencilSquareIcon className="f-update-icon" />
           </button>
           <button
             type="button"
             onClick={() => handleDeleteService(service.id)}
           >
-            <TrashIcon className="w-6 hover:text-red-600" />
+            <TrashIcon className="f-delete-icon" />
           </button>
         </div>
         )}
+      </div>
+      <div className="flex items-center justify-between px-2">
+        <ServiceIcon service={service} />
+        <p className="ml-2">{service.waitingRoom?.name}</p>
       </div>
       {isUpdateService && (
         <div>

@@ -14,7 +14,7 @@ query GetAllTickets($filter: String) {
     service {
       id
       name
-      open
+      isOpen
       color
       acronym
     }
@@ -24,6 +24,39 @@ query GetAllTickets($filter: String) {
       lastname
       role
       email
+    }
+  }
+}
+`;
+
+export const GET_ALL_TICKETS_FOR_WAITING_ROOM = gql`
+query GetAllTicketsForWaitingRoom($waitingRoomId: Int!) {
+  getAllTicketsForWaitingRoom(waitingRoomId: $waitingRoomId) {
+    id
+    name
+    createdAt
+    calledAt
+    closedAt
+    isFirstTime
+    status
+    isReturned
+    service {
+      id
+      name
+      acronym
+      isOpen
+      color
+    }
+    user {
+      id
+      firstname
+      lastname
+      email
+      role
+    }
+    counter {
+      id
+      name
     }
   }
 }
@@ -45,7 +78,7 @@ query GetOneTicket($getOneTicketId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     user {
       id
