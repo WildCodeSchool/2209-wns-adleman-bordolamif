@@ -3,7 +3,7 @@ import { it } from '@jest/globals';
 import client from '../apolloClient';
 import Service from '../../../server/src/entity/Service';
 import dataSource from '../../../server/src/db';
-import { CREATE_USER, UPDATE_USER } from '../graphQL/mutations/userMutations';
+import { CREATE_USER, DELETE_USER, UPDATE_USER } from '../graphQL/mutations/userMutations';
 // import User from '../../../server/src/entity/User';
 import { GET_ALL_USERS, GET_ONE_USER } from '../graphQL/query/userQuery';
 import User from '../../../server/src/entity/User';
@@ -704,6 +704,104 @@ describe('User Resolver', () => {
           expect(e).toBeDefined();
           expect(e.graphQLErrors).toBeDefined();
           expect(e.graphQLErrors[0].message).toMatch(/Could not find any entity of type "Counter" matching/);
+        }
+      });
+    });
+  });
+  describe('Delete User', () => {
+    describe('Success cases', () => {
+      it('1. should delete an user', async () => {
+        const userToDelete: User = await dataSource.getRepository(User).save({
+          role: 3,
+          lastname: 'Doe',
+          firstname: 'John',
+          email: 'johndoe@fake.fr',
+          password: 'P4$$W0rd',
+        });
+
+        const res = await client.mutate({
+          mutation: DELETE_USER,
+          variables: {
+            deleteUserId: userToDelete.id,
+          },
+        });
+        expect(res.data).toHaveProperty('deleteUser', true);
+      });
+      it('2. should delete an user with service', async () => {
+        const dataService = {
+          name: 'Service1',
+          acronym: 'SV1',
+          isOpen: false,
+          color: '#ffffff',
+        };
+
+        const service = await dataSource.getRepository(Service).save(dataService);
+
+        const userToDelete:User = await dataSource.getRepository(User).save({
+          role: 2,
+          lastname: 'Operator',
+          firstname: 'User',
+          email: 'operator@test.fr',
+          password: 'P4$$W0rd',
+          services: [{ id: service.id }],
+        });
+
+        const res = await client.mutate({
+          mutation: DELETE_USER,
+          variables: {
+            deleteUserId: userToDelete.id,
+          },
+        });
+        expect(res.data).toHaveProperty('deleteUser', true);
+      });
+    });
+    describe('Error cases', () => {
+      it('1. should fail whitout id', async () => {
+        try {
+          await dataSource.getRepository(User).save({
+            role: 3,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          await client.mutate({
+            mutation: DELETE_USER,
+            variables: {
+              deleteUserId: null,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(
+            'Variable "$deleteUserId" of non-null type "Int!" must not be null.',
+          );
+        }
+      });
+      it('2. should throw a not found error', async () => {
+        try {
+          const userToDelete: User = await dataSource.getRepository(User).save({
+            role: 3,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          await client.mutate({
+            mutation: DELETE_USER,
+            variables: {
+              deleteUserId: userToDelete.id + 1,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch('User not found');
         }
       });
     });
