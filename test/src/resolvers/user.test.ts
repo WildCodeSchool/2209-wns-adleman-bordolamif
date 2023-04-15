@@ -7,6 +7,9 @@ import { CREATE_USER } from '../graphQL/mutations/userMutations';
 // import User from '../../../server/src/entity/User';
 import { GET_ALL_USERS, GET_ONE_USER } from '../graphQL/query/userQuery';
 import User from '../../../server/src/entity/User';
+import WaitingRoom from '../../../server/src/entity/WaitingRoom';
+import Counter from '../../../server/src/entity/Counter';
+import Ticket from '../../../server/src/entity/Ticket';
 
 describe('User Resolver', () => {
   describe('Create User', () => {
@@ -297,6 +300,147 @@ describe('User Resolver', () => {
         expect(secondUserResponse.data?.getOneUser).toHaveProperty('firstname', 'User');
         expect(secondUserResponse.data?.getOneUser).toHaveProperty('email', 'seconduser@fake.fr');
         expect(secondUserResponse.data?.getOneUser).toHaveProperty('services', []);
+      });
+      it('2. should return an client with ticket values', async () => {
+        const dataService = {
+          name: 'Service1',
+          acronym: 'SV1',
+          isOpen: false,
+          color: '#ffffff',
+        };
+
+        const service = await dataSource.getRepository(Service).save(dataService);
+
+        const clientUser:User = await dataSource.getRepository(User).save({
+          role: 3,
+          lastname: 'Client',
+          firstname: 'User',
+          email: 'client@test.fr',
+          password: 'P4$$W0rd',
+        });
+
+        const dataTicket = {
+          name: '',
+          isFirstTime: false,
+          user: { id: clientUser.id },
+          service: { id: service.id },
+        };
+
+        await dataSource.getRepository(Ticket).save(dataTicket);
+
+        const clientResponse = await client.query({
+          query: GET_ONE_USER,
+          fetchPolicy: 'no-cache',
+          variables: {
+            getOneUserId: clientUser.id,
+          },
+        });
+
+        expect(clientResponse.data?.getOneUser).toHaveProperty('id');
+        expect(clientResponse.data?.getOneUser).toHaveProperty('role', 3);
+        expect(clientResponse.data?.getOneUser).toHaveProperty('lastname', 'Client');
+        expect(clientResponse.data?.getOneUser).toHaveProperty('firstname', 'User');
+        expect(clientResponse.data?.getOneUser).toHaveProperty('email', 'client@test.fr');
+        expect(clientResponse.data?.getOneUser.tickets.length).toBeGreaterThan(0);
+      });
+      it('3. should return an operator with service and counter values', async () => {
+        const waitingRoom = await dataSource.getRepository(WaitingRoom).save({ name: 'Wait1' });
+
+        const dataCounter = {
+          name: 'Counter1',
+          waitingRoom: { id: waitingRoom.id },
+        };
+        const counter = await dataSource.getRepository(Counter).save(dataCounter);
+
+        const dataService = {
+          name: 'Service1',
+          acronym: 'SV1',
+          isOpen: false,
+          color: '#ffffff',
+        };
+
+        const service = await dataSource.getRepository(Service).save(dataService);
+
+        const operatorUser:User = await dataSource.getRepository(User).save({
+          role: 2,
+          lastname: 'Operator',
+          firstname: 'User',
+          email: 'operator@test.fr',
+          password: 'P4$$W0rd',
+          counter: { id: counter.id },
+          services: [{ id: service.id }],
+        });
+
+        const operatorResponse = await client.query({
+          query: GET_ONE_USER,
+          fetchPolicy: 'no-cache',
+          variables: {
+            getOneUserId: operatorUser.id,
+          },
+        });
+
+        expect(operatorResponse.data?.getOneUser).toHaveProperty('id');
+        expect(operatorResponse.data?.getOneUser).toHaveProperty('role', 2);
+        expect(operatorResponse.data?.getOneUser).toHaveProperty('lastname', 'Operator');
+        expect(operatorResponse.data?.getOneUser).toHaveProperty('firstname', 'User');
+        expect(operatorResponse.data?.getOneUser).toHaveProperty('email', 'operator@test.fr');
+        expect(operatorResponse.data?.getOneUser.services[0]).toHaveProperty('name', 'Service1');
+        expect(operatorResponse.data?.getOneUser.services[0]).toHaveProperty('acronym', 'SV1');
+        expect(operatorResponse.data?.getOneUser.services[0]).toHaveProperty('isOpen', false);
+        expect(operatorResponse.data?.getOneUser.services[0]).toHaveProperty('color', '#ffffff');
+        expect(operatorResponse.data?.getOneUser.counter).toHaveProperty('name', 'Counter1');
+      });
+    });
+    describe('Error cases', () => {
+      it('1. should not work without id', async () => {
+        await dataSource.getRepository(User).save({
+          role: 3,
+          lastname: 'Doe',
+          firstname: 'John',
+          email: 'johndoe@fake.fr',
+          password: 'P4$$W0rd',
+        });
+
+        try {
+          await client.query({
+            query: GET_ONE_USER,
+            fetchPolicy: 'no-cache',
+            variables: {
+              getOneUserId: null,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(
+            'Variable "$getOneUserId" of non-null type "Int!" must not be null.',
+          );
+        }
+      });
+      it('2. should not found user with wrong id', async () => {
+        const user:User = await dataSource.getRepository(User).save({
+          role: 3,
+          lastname: 'Doe',
+          firstname: 'John',
+          email: 'johndoe@fake.fr',
+          password: 'P4$$W0rd',
+        });
+
+        try {
+          await client.query({
+            query: GET_ONE_USER,
+            fetchPolicy: 'no-cache',
+            variables: {
+              getOneUserId: user.id + 1,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch('User not found');
+        }
       });
     });
   });
