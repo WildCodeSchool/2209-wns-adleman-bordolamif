@@ -5,6 +5,7 @@ import { NewUserDto } from '../utils/dto';
 const UserModel = {
   getAllUsers: async () => await dataSource.getRepository(User)
     .find({
+      order: { id: 'ASC' },
       relations: {
         services: true, counter: true, tickets: true, currentService: true,
       },

@@ -14,7 +14,7 @@ query GetAllTickets($filter: String) {
     service {
       id
       name
-      open
+      isOpen
       color
       acronym
     }
@@ -45,7 +45,7 @@ query GetOneTicket($getOneTicketId: Int!) {
       name
       color
       acronym
-      open
+      isOpen
     }
     user {
       id

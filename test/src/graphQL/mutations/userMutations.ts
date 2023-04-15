@@ -25,7 +25,7 @@ mutation CreateUser($data: UserInput!) {
       color
       acronym
       name
-      open
+      isOpen
     }
   }
 }
@@ -46,7 +46,7 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
     services {
       id
       name
-      open
+      isOpen
       color
       acronym
     }
@@ -63,7 +63,7 @@ mutation UpdateUser($data: UserInput!, $updateUserId: Int!) {
     currentService{
       id
       name
-      open
+      isOpen
       color
       acronym
     }

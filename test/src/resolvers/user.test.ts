@@ -4,8 +4,9 @@ import client from '../apolloClient';
 import Service from '../../../server/src/entity/Service';
 import dataSource from '../../../server/src/db';
 import { CREATE_USER } from '../graphQL/mutations/userMutations';
-import User from '../../../server/src/entity/User';
+// import User from '../../../server/src/entity/User';
 import { GET_ALL_USERS, GET_ONE_USER } from '../graphQL/query/userQuery';
+import User from '../../../server/src/entity/User';
 
 describe('User Resolver', () => {
   describe('Create User', () => {
@@ -84,7 +85,7 @@ describe('User Resolver', () => {
         const dataService = {
           name: 'Service1',
           acronym: 'SV1',
-          open: false,
+          isOpen: false,
           color: '#ffffff',
         };
         const service = await dataSource.getRepository(Service).save(dataService);
@@ -174,14 +175,14 @@ describe('User Resolver', () => {
         } catch (e) {
           expect(e).toBeDefined();
           expect(e.graphQLErrors).toBeDefined();
-          expect(e.networkError.statusCode).toBe(400);
+          expect(e.graphQLErrors[0].message).toMatch('Variable "$data" got invalid value null at "data.lastname"');
         }
       });
       it('4. should fail to create an operator user with unexisting service', async () => {
         const dataService = {
           name: 'Service1',
           acronym: 'SV1',
-          open: false,
+          isOpen: false,
           color: '#ffffff',
         };
         const service = await dataSource.getRepository(Service).save(dataService);
@@ -223,6 +224,7 @@ describe('User Resolver', () => {
 
         const res = await client.query({
           query: GET_ALL_USERS,
+          fetchPolicy: 'no-cache',
         });
 
         expect(res.data?.getAllUsers.length).toBe(2);
@@ -243,6 +245,7 @@ describe('User Resolver', () => {
       it('2. should get no user', async () => {
         const res = await client.query({
           query: GET_ALL_USERS,
+          fetchPolicy: 'no-cache',
         });
         expect(res.data?.getAllUsers).toBeDefined();
         expect(res.data?.getAllUsers.length).toBe(0);
@@ -252,7 +255,7 @@ describe('User Resolver', () => {
 
   describe('Get One Users By Id', () => {
     describe('Success cases', () => {
-      it('1. should get a users', async () => {
+      it('1. should get a user', async () => {
         const firstUser:User = await dataSource.getRepository(User).save({
           role: 3,
           lastname: 'First',
@@ -267,15 +270,17 @@ describe('User Resolver', () => {
 
         const firstUserResponse = await client.query({
           query: GET_ONE_USER,
+          fetchPolicy: 'no-cache',
           variables: {
-            data: { id: firstUser.id },
+            getOneUserId: firstUser.id,
           },
         });
 
         const secondUserResponse = await client.query({
           query: GET_ONE_USER,
+          fetchPolicy: 'no-cache',
           variables: {
-            data: { id: secondUser.id },
+            getOneUserId: secondUser.id,
           },
         });
 
@@ -283,7 +288,7 @@ describe('User Resolver', () => {
         expect(firstUserResponse.data?.getOneUser).toHaveProperty('role', 3);
         expect(firstUserResponse.data?.getOneUser).toHaveProperty('lastname', 'First');
         expect(firstUserResponse.data?.getOneUser).toHaveProperty('firstname', 'User');
-        expect(firstUserResponse.data?.getOneUser).toHaveProperty('email', 'firstuser');
+        expect(firstUserResponse.data?.getOneUser).toHaveProperty('email', 'firstuser@test.fr');
         expect(firstUserResponse.data?.getOneUser).toHaveProperty('services', []);
 
         expect(secondUserResponse.data?.getOneUser).toHaveProperty('id');
