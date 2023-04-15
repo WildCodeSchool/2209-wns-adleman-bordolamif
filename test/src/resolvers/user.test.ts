@@ -3,7 +3,7 @@ import { it } from '@jest/globals';
 import client from '../apolloClient';
 import Service from '../../../server/src/entity/Service';
 import dataSource from '../../../server/src/db';
-import { CREATE_USER } from '../graphQL/mutations/userMutations';
+import { CREATE_USER, UPDATE_USER } from '../graphQL/mutations/userMutations';
 // import User from '../../../server/src/entity/User';
 import { GET_ALL_USERS, GET_ONE_USER } from '../graphQL/query/userQuery';
 import User from '../../../server/src/entity/User';
@@ -112,7 +112,7 @@ describe('User Resolver', () => {
     });
 
     describe('Error cases', () => {
-      it('1.should throw a password required error', async () => {
+      it('1. should throw a password required error', async () => {
         try {
           await client.mutate({
             mutation: CREATE_USER,
@@ -133,7 +133,7 @@ describe('User Resolver', () => {
           expect(e.graphQLErrors[0].message).toBe('PASSWORD REQUIRED');
         }
       });
-      it('2.should throw an already exist error', async () => {
+      it('2. should throw an already exist error', async () => {
         const userToCreate = {
           role: 2,
           lastname: 'Doe',
@@ -161,7 +161,7 @@ describe('User Resolver', () => {
           expect(e.graphQLErrors[0].message).toBe('EMAIL_ALREADY_EXISTS');
         }
       });
-      it('3.should throw an error because of missing field', async () => {
+      it('3. should throw an error because of missing field', async () => {
         try {
           await client.mutate({
             mutation: CREATE_USER,
@@ -440,6 +440,270 @@ describe('User Resolver', () => {
           expect(e).toBeDefined();
           expect(e.graphQLErrors).toBeDefined();
           expect(e.graphQLErrors[0].message).toMatch('User not found');
+        }
+      });
+    });
+  });
+  describe('Update User', () => {
+    describe('Success cases', () => {
+      it('1. should update an user', async () => {
+        const userToUpdate: User = await dataSource.getRepository(User).save({
+          role: 3,
+          lastname: 'Doe',
+          firstname: 'John',
+          email: 'johndoe@fake.fr',
+          password: 'P4$$W0rd',
+        });
+
+        const res = await client.mutate({
+          mutation: UPDATE_USER,
+          variables: {
+            data: {
+              role: 2, lastname: 'Deau', firstname: 'Jane', email: 'janedeau@fake.fr',
+            },
+            updateUserId: userToUpdate.id,
+          },
+        });
+
+        expect(res.data?.updateUser).toHaveProperty('id');
+        expect(res.data?.updateUser).toHaveProperty('role', 2);
+        expect(res.data?.updateUser).toHaveProperty('lastname', 'Deau');
+        expect(res.data?.updateUser).toHaveProperty('firstname', 'Jane');
+        expect(res.data?.updateUser).toHaveProperty('email', 'janedeau@fake.fr');
+      });
+      it('2. should add a service and a counter to an operator', async () => {
+        const userToUpdate: User = await dataSource.getRepository(User).save({
+          role: 2,
+          lastname: 'Doe',
+          firstname: 'John',
+          email: 'johndoe@fake.fr',
+          password: 'P4$$W0rd',
+        });
+
+        const waitingRoom = await dataSource.getRepository(WaitingRoom).save({ name: 'Wait1' });
+
+        const dataCounter = {
+          name: 'Counter1',
+          waitingRoom: { id: waitingRoom.id },
+        };
+        const counter = await dataSource.getRepository(Counter).save(dataCounter);
+
+        const dataService = {
+          name: 'Service1',
+          acronym: 'SV1',
+          isOpen: false,
+          color: '#ffffff',
+        };
+
+        const service = await dataSource.getRepository(Service).save(dataService);
+
+        const res = await client.mutate({
+          mutation: UPDATE_USER,
+          variables: {
+            data: {
+              role: 2,
+              lastname: 'Deau',
+              firstname: 'Jane',
+              email: 'janedeau@fake.fr',
+              services: [{ id: service.id }],
+              counter: { id: counter.id },
+            },
+            updateUserId: userToUpdate.id,
+          },
+        });
+
+        expect(res.data?.updateUser).toHaveProperty('id');
+        expect(res.data?.updateUser).toHaveProperty('role', 2);
+        expect(res.data?.updateUser).toHaveProperty('lastname', 'Deau');
+        expect(res.data?.updateUser).toHaveProperty('firstname', 'Jane');
+        expect(res.data?.updateUser).toHaveProperty('email', 'janedeau@fake.fr');
+        expect(res.data?.updateUser.services[0]).toHaveProperty('name', 'Service1');
+        expect(res.data?.updateUser.services[0]).toHaveProperty('acronym', 'SV1');
+        expect(res.data?.updateUser.services[0]).toHaveProperty('isOpen', false);
+        expect(res.data?.updateUser.services[0]).toHaveProperty('color', '#ffffff');
+        expect(res.data?.updateUser.counter).toHaveProperty('name', 'Counter1');
+      });
+      it('3. should remove service and counter from operator', async () => {
+        const waitingRoom = await dataSource.getRepository(WaitingRoom).save({ name: 'Wait1' });
+
+        const dataCounter = {
+          name: 'Counter1',
+          waitingRoom: { id: waitingRoom.id },
+        };
+        const counter = await dataSource.getRepository(Counter).save(dataCounter);
+
+        const dataService = {
+          name: 'Service1',
+          acronym: 'SV1',
+          isOpen: false,
+          color: '#ffffff',
+        };
+
+        const service = await dataSource.getRepository(Service).save(dataService);
+
+        const userToUpdate:User = await dataSource.getRepository(User).save({
+          role: 2,
+          lastname: 'Operator',
+          firstname: 'User',
+          email: 'operator@test.fr',
+          password: 'P4$$W0rd',
+          counter: { id: counter.id },
+          services: [{ id: service.id }],
+        });
+
+        const res = await client.mutate({
+          mutation: UPDATE_USER,
+          variables: {
+            data: {
+              role: 2,
+              lastname: 'Deau',
+              firstname: 'Jane',
+              email: 'janedeau@fake.fr',
+              services: [],
+              counter: null,
+            },
+            updateUserId: userToUpdate.id,
+          },
+        });
+        expect(res.data?.updateUser).toHaveProperty('id');
+        expect(res.data?.updateUser).toHaveProperty('role', 2);
+        expect(res.data?.updateUser).toHaveProperty('lastname', 'Deau');
+        expect(res.data?.updateUser).toHaveProperty('firstname', 'Jane');
+        expect(res.data?.updateUser).toHaveProperty('email', 'janedeau@fake.fr');
+        expect(res.data?.updateUser).toHaveProperty('services', []);
+        expect(res.data?.updateUser).toHaveProperty('counter', null);
+      });
+    });
+    describe('Error cases', () => {
+      it('1. should fail without id', async () => {
+        try {
+          await dataSource.getRepository(User).save({
+            role: 3,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          await client.mutate({
+            mutation: UPDATE_USER,
+            variables: {
+              data: {
+                role: 2, lastname: 'Deau', firstname: 'Jane', email: 'janedeau@fake.fr',
+              },
+              updateUserId: null,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(
+            'Variable "$updateUserId" of non-null type "Int!" must not be null.',
+          );
+        }
+      });
+      it('2. should throw a not found user error', async () => {
+        try {
+          const userToUpdate: User = await dataSource.getRepository(User).save({
+            role: 3,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          await client.mutate({
+            mutation: UPDATE_USER,
+            variables: {
+              data: {
+                role: 2, lastname: 'Deau', firstname: 'Jane', email: 'janedeau@fake.fr',
+              },
+              updateUserId: userToUpdate.id + 1,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch('User not found');
+        }
+      });
+      it('3. should throw a not found service error', async () => {
+        try {
+          const userToUpdate: User = await dataSource.getRepository(User).save({
+            role: 2,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          const dataService = {
+            name: 'Service1',
+            acronym: 'SV1',
+            isOpen: false,
+            color: '#ffffff',
+          };
+
+          const service = await dataSource.getRepository(Service).save(dataService);
+
+          await client.mutate({
+            mutation: UPDATE_USER,
+            variables: {
+              data: {
+                role: 2, lastname: 'Deau', firstname: 'Jane', email: 'janedeau@fake.fr', services: [{ id: service.id + 1 }],
+              },
+              updateUserId: userToUpdate.id,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(/Could not find any entity of type "Service" matching/);
+        }
+      });
+      it('4. should throw a not found counter error', async () => {
+        try {
+          const userToUpdate: User = await dataSource.getRepository(User).save({
+            role: 3,
+            lastname: 'Doe',
+            firstname: 'John',
+            email: 'johndoe@fake.fr',
+            password: 'P4$$W0rd',
+          });
+
+          const dataService = {
+            name: 'Service1',
+            acronym: 'SV1',
+            isOpen: false,
+            color: '#ffffff',
+          };
+          await dataSource.getRepository(Service).save(dataService);
+
+          const waitingRoom = await dataSource.getRepository(WaitingRoom).save({ name: 'Wait1' });
+
+          const dataCounter = {
+            name: 'Counter1',
+            waitingRoom: { id: waitingRoom.id },
+          };
+          const counter = await dataSource.getRepository(Counter).save(dataCounter);
+
+          await client.mutate({
+            mutation: UPDATE_USER,
+            variables: {
+              data: {
+                role: 2, lastname: 'Deau', firstname: 'Jane', email: 'janedeau@fake.fr', counter: { id: counter.id + 1 },
+              },
+              updateUserId: userToUpdate.id,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(/Could not find any entity of type "Counter" matching/);
         }
       });
     });
