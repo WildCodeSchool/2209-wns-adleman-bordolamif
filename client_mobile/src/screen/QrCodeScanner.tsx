@@ -5,8 +5,9 @@ import {
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function QrCodeScanner() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+
+  const [scanned, setScanned] = useState<boolean>(false);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -17,9 +18,8 @@ export default function QrCodeScanner() {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }:{type:string, data:string}) => {
     setScanned(true);
-    // eslint-disable-next-line no-alert
     Alert.alert(
       `Le QRCode "${type}" qui redirige vers ${data} a bien été scanné`,
       'Merci de patienter',
