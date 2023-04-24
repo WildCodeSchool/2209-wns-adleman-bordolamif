@@ -73,7 +73,7 @@ function AdminServicesPage() {
         </div>
 
       </div>
-      <h2 className="text-2xl ml-6 mb-8">Mes services</h2>
+      <h2 className="f-title-for-list">Mes services</h2>
       <div className="px-8">
         <ServicesList
           servicesList={servicesList && servicesList.getAllServices}

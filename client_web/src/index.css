@@ -95,6 +95,10 @@
         @apply flex flex-col text-xl text-white;
     }
 
+    .f-title-for-list {
+        @apply text-2xl ml-6 mb-8;
+    }
+
     /* ------- input components ------- */
 
     .f-input {

@@ -95,8 +95,8 @@ function AdminWaitingRoomsAndCountersPage() {
       )}
         </div>
       </div>
-      <h2 className="text-2xl ml-6 mb-8">Salles d'attente et leur guichets</h2>
-      <div className="px-8 mx-">
+      <h2 className="f-title-for-list">Salles d'attente et leur guichets</h2>
+      <div className="px-8">
         <WaitingRoomsList
           waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
           handleUpdateCounter={handleUpdateCounter}
