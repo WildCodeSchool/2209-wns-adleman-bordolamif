@@ -43,7 +43,7 @@ function OperatorDashboard(props:Props) {
             <DashboardWaitingTickets
               ticketsList={ticketsList! && ticketsList.filter(
                 (ticket) => ticket.service.id === profile!.currentService!.id
-              && (ticket.status === StatusEnum.EN_ATTENTE),
+              && (ticket.status === StatusEnum.EN_ATTENTEw),
               )}
             />
           </div>
