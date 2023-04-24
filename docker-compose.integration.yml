@@ -1,6 +1,6 @@
 services:
   db_test:
-    image: postgres:15.0-alpine
+    image: postgres:15-alpine
     container_name: WaitIt-db-test
     restart: unless-stopped
     environment:
