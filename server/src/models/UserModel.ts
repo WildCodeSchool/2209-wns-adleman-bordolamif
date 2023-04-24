@@ -1,14 +1,26 @@
 import User from '../entity/User';
 import dataSource from '../db';
 import { NewUserDto } from '../utils/dto';
+import { IsNull, Not } from 'typeorm';
 
 const UserModel = {
-  getAllUsers: async () => await dataSource.getRepository(User)
-    .find({
-      relations: {
-        services: true, counter: true, tickets: true, currentService: true,
-      },
-    }),
+  getAllUsers: async (connected?:boolean) => {
+    if (connected) {
+      return await dataSource.getRepository(User)
+        .find({
+          where: { currentService: Not(IsNull()) },
+          relations: {
+            services: true, counter: true, tickets: true, currentService: true,
+          },
+        });
+    }
+    return await dataSource.getRepository(User)
+      .find({
+        relations: {
+          services: true, counter: true, tickets: true, currentService: true,
+        },
+      });
+  },
 
   getOneUserById: async (id:number) => await dataSource
     .getRepository(User)
@@ -18,7 +30,10 @@ const UserModel = {
         services: {
           waitingRoom: true,
         },
-        counter: true,
+        counter: {
+          ticket: true,
+          waitingRoom: true,
+        },
         tickets: true,
         currentService: true,
       },
@@ -34,7 +49,9 @@ const UserModel = {
   createUser: async (userToCreate: NewUserDto) => await
   dataSource.getRepository(User).save(userToCreate),
 
-  updateUser: async (userToUpdate: User) => await dataSource.getRepository(User).save(userToUpdate),
+  updateUser: async (
+    userToUpdate: User,
+  ) => await dataSource.getRepository(User).save(userToUpdate),
 
   deleteUser: async (id: number) => await dataSource.getRepository(User).delete(id),
 };

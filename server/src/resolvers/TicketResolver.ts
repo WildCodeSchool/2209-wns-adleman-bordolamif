@@ -2,7 +2,7 @@ import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import Ticket from '../entity/Ticket';
-import { TicketInput } from '../utils/types/InputTypes';
+import { PartialTicketInput, TicketInput } from '../utils/types/InputTypes';
 import TicketController from '../controllers/TicketController';
 
 @Resolver(Ticket)
@@ -52,5 +52,13 @@ export class TicketResolver {
         @Arg('data') data : TicketInput,
     ): Promise<Ticket> {
       return await TicketController.updateTicket(data, id);
+    }
+
+    @Mutation(() => Ticket)
+    async partialTicketUpdate(
+        @Arg('id', () => Int) id: number,
+        @Arg('data') data : PartialTicketInput,
+    ): Promise<Ticket> {
+      return await TicketController.partialTicketUpdate(data, id);
     }
 }

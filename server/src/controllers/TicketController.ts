@@ -9,7 +9,7 @@ import { ticketNameBuilder, ticketStatusUpdater } from '../utils/builders/ticket
 import { DateFilterEnum } from '../utils/enums/DateFilterEnum';
 import { StatusEnum } from '../utils/enums/StatusEnum';
 import { SearchCriterias } from '../utils/interfaces';
-import { TicketInput } from '../utils/types/InputTypes';
+import { PartialTicketInput, TicketInput } from '../utils/types/InputTypes';
 
 const TicketController = {
   getAllTcikets: async (filter?: string): Promise<Ticket[]> => {
@@ -79,6 +79,30 @@ const TicketController = {
       ticketToUpdate.user = await UserModel.getOneArgUser(user.id) || null;
     }
     ticketToUpdate.service = await ServiceModel.getOneArgService(service.id) || null;
+
+    await TicketModel.updateTicket(ticketToUpdate);
+
+    return ticketToUpdate;
+  },
+  partialTicketUpdate: async (data: PartialTicketInput, id: number) => {
+    const ticketToUpdate = await TicketModel.getOneTicketById(id);
+
+    if (ticketToUpdate === null) {
+      throw new Error('Ticket not found');
+    }
+
+    ticketToUpdate.isFirstTime = data.isFirstTime ?? ticketToUpdate.isFirstTime;
+    ticketToUpdate.status = data.status ?? ticketToUpdate.status;
+
+    ticketStatusUpdater(ticketToUpdate, ticketToUpdate.status);
+
+    if (data.user) {
+      ticketToUpdate.user = await UserModel.getOneArgUser(data.user.id) || null;
+    }
+
+    if (data.service) {
+      ticketToUpdate.service = await ServiceModel.getOneArgService(data.service.id) || null;
+    }
 
     await TicketModel.updateTicket(ticketToUpdate);
 

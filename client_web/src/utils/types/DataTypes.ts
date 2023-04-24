@@ -49,18 +49,24 @@ export interface ServiceData extends Service {
 
   }
 
+export interface Counter {
+    id: number;
+    name: string;
+  }
+export interface CounterData extends Counter {
+    __typename: string;
+    user: UserProfile;
+    waitingRoom: WaitingRoom;
+    ticket: Ticket
+  }
+
 export interface UserData extends UserProfile{
   __typename: string;
-  counter: UserCounter;
+  counter: CounterData;
   services: ServiceData[];
   tickets: Ticket[];
   currentService?: Service | null
 
-  }
-
-export interface Counter {
-    id: number;
-    name: string;
   }
 
 export interface WaitingRoomData extends WaitingRoom {
@@ -74,10 +80,4 @@ export interface TicketData extends Ticket {
     service: Service
     user: UserProfile
     counter: Counter
-  }
-
-export interface CounterData extends Counter {
-    __typename: string;
-    user: UserProfile;
-
   }

@@ -1,6 +1,8 @@
+import { In } from 'typeorm';
 import dataSource from '../db';
 import Service from '../entity/Service';
 import { NewServiceDto } from '../utils/dto';
+import { ServiceId } from '../utils/types/InputIdTypes';
 
 const ServiceModel = {
   getAllServices: async () => await dataSource.getRepository(Service)
@@ -9,6 +11,9 @@ const ServiceModel = {
         waitingRoom: true, tickets: true, users: true, currentUsers: true,
       },
     }),
+
+  getMultipleServicesByIds: async (services:ServiceId[]) => await dataSource.getRepository(Service)
+    .findBy({ id: In(services.map((service) => service.id)) }),
 
   getOneServiceById: async (id: number) => await dataSource
     .getRepository(Service)

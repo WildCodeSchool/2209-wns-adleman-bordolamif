@@ -12,6 +12,7 @@ import { loadEnv } from '../env';
 import { ContextType } from '../utils/interfaces';
 import {
   FirstUserLoginPassword,
+  PartialUserInput,
   UserConnexion,
   UserInput,
   UserUpdatePassword,
@@ -29,8 +30,8 @@ export class UserResolver {
      ************************************ */
 
   @Query(() => [User])
-  async getAllUsers(): Promise<User[]> {
-    const users = await UserController.getAllUsers();
+  async getAllUsers(@Arg('connected', { nullable: true })connected: boolean): Promise<User[]> {
+    const users = await UserController.getAllUsers(connected);
     return users.map((user) => getSafeAttributes(user));
   }
 
@@ -109,6 +110,15 @@ export class UserResolver {
     @Arg('data') isSuspended: boolean,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUserSuspension(isSuspended, id);
+    return getSafeAttributes(userToUpdate);
+  }
+
+  @Mutation(() => User)
+  async partialUserUpdate(
+    @Arg('id', () => Int) id: number,
+    @Arg('data') data: PartialUserInput,
+  ): Promise<User> {
+    const userToUpdate = await UserController.partialUserUpdate(data, id);
     return getSafeAttributes(userToUpdate);
   }
 
