@@ -17,7 +17,9 @@ const UserController = {
   },
 
   createUser: async (data: UserInput): Promise<User> => {
-    const { firstname, lastname, email, role, services } = data;
+    const {
+      firstname, lastname, email, role, services,
+    } = data;
 
     const exisitingUser = await UserModel.getOneUserByMail(email);
 
@@ -31,8 +33,8 @@ const UserController = {
     const hashedPassword = await hashPassword(data.password);
 
     const userServices = await Promise.all(
-      services?.map((service) => ServiceModel.getOneArgService(service.id)) ||
-        []
+      services?.map((service) => ServiceModel.getOneArgService(service.id))
+        || [],
     );
     const counter = null;
     return await UserModel.createUser({
@@ -69,24 +71,22 @@ const UserController = {
     userToUpdate.email = email;
     userToUpdate.role = role;
     if (
-      services !== null &&
-      typeof services !== 'undefined' &&
-      services!.length > 0
+      services !== null
+      && typeof services !== 'undefined'
+      && services!.length > 0
     ) {
       userToUpdate.services = await Promise.all(
-        services?.map((service) => ServiceModel.getOneArgService(service.id)) ||
-          []
+        services?.map((service) => ServiceModel.getOneArgService(service.id))
+          || [],
       );
     } else {
       userToUpdate.services = [];
     }
     if (counter !== null && typeof counter !== 'undefined') {
-      userToUpdate.counter =
-        (await CounterModel.getOneArgCounter(counter.id)) || null;
+      userToUpdate.counter = (await CounterModel.getOneArgCounter(counter.id)) || null;
     } else {
       if (userToUpdate.counter !== null) {
-        const counterToUpdate =
-          (await CounterModel.getOneCounterByUserId(id)) || null;
+        const counterToUpdate = (await CounterModel.getOneCounterByUserId(id)) || null;
 
         if (counterToUpdate! && typeof counterToUpdate.user !== 'undefined') {
           await CounterModel.updateCounter(counterToUpdate);
@@ -97,20 +97,18 @@ const UserController = {
     }
 
     if (currentService !== null && typeof currentService !== 'undefined') {
-      const serviceToUpdate =
-        (await ServiceModel.getOneArgService(currentService.id)) || null;
+      const serviceToUpdate = (await ServiceModel.getOneArgService(currentService.id)) || null;
       serviceToUpdate.isOpen = true;
       await ServiceModel.updateService(serviceToUpdate);
       userToUpdate.currentService = serviceToUpdate;
     } else {
       if (userToUpdate.currentService !== null) {
-        const serviceToUpdate =
-          (await ServiceModel.getOneServiceByCurrentUserId(id)) || null;
+        const serviceToUpdate = (await ServiceModel.getOneServiceByCurrentUserId(id)) || null;
 
         if (
-          serviceToUpdate! &&
-          typeof serviceToUpdate.currentUsers !== 'undefined' &&
-          serviceToUpdate!.currentUsers!.length === 1
+          serviceToUpdate!
+          && typeof serviceToUpdate.currentUsers !== 'undefined'
+          && serviceToUpdate!.currentUsers!.length === 1
         ) {
           serviceToUpdate.isOpen = false;
           await ServiceModel.updateService(serviceToUpdate);
@@ -152,13 +150,13 @@ const UserController = {
     }
     if (data.services) {
       const services = await ServiceModel.getMultipleServicesByIds(
-        data.services
+        data.services,
       );
       user.services = services;
     }
     if (data.currentService && data.currentService !== null) {
       const currentService = await ServiceModel.getOneServiceById(
-        data.currentService.id
+        data.currentService.id,
       );
       currentService!.isOpen = true;
       await ServiceModel.updateService(currentService!);
@@ -166,7 +164,7 @@ const UserController = {
       user.currentService = currentService;
     } else if (data.currentService === null) {
       const serviceToUpdate = await ServiceModel.getOneServiceByCurrentUserId(
-        id
+        id,
       );
       serviceToUpdate.isOpen = false;
       await ServiceModel.updateService(serviceToUpdate);
@@ -188,7 +186,7 @@ const UserController = {
     const serviceToUpdate = userToUpdate.currentService;
     if (serviceToUpdate !== null && typeof serviceToUpdate !== 'undefined') {
       serviceToUpdate!.currentUsers = serviceToUpdate!.currentUsers?.filter(
-        (user) => user.id === userToUpdate.id
+        (user) => user.id === userToUpdate.id,
       );
       await ServiceModel.updateService(serviceToUpdate);
     }
