@@ -1,7 +1,7 @@
 name: WaitIt-development
 services:
   db:
-    image: postgres:15.0-alpine
+    image: postgres:15-alpine
     container_name: WaitIt-db
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -18,6 +18,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - db:/var/lib/postgresql/data
 
   server:
     container_name: WaitIt-server
@@ -54,3 +56,6 @@ services:
     environment:
       VITE_GRAPHQL_API_URL: 'http://localhost:4000'
       CHOKIDAR_USEPOLLING: 'true'
+
+volumes:
+    db:

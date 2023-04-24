@@ -24,13 +24,17 @@ const UserController = {
     const exisitingUser = await UserModel.getOneUserByMail(email);
 
     if (exisitingUser !== null) throw new Error('EMAIL_ALREADY_EXISTS');
-    if (!data.password) {
-      if (role === 2) data.password = `${firstname}${lastname}00!`;
-      else {
+
+    let password;
+    if (role === 2) password = `${firstname}${lastname}00!`;
+    else {
+      if (!data.password) {
         throw new Error('PASSWORD REQUIRED');
       }
+      password = data.password;
     }
-    const hashedPassword = await hashPassword(data.password);
+
+    const hashedPassword = await hashPassword(password);
 
     const userServices = await Promise.all(
       services?.map((service) => ServiceModel.getOneArgService(service.id))
