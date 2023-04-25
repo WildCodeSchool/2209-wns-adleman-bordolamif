@@ -7,7 +7,7 @@ import WaitingTicketsByService from '@components/cards/WaitingTicketsByService';
 import { GET_ONE_WAITINGROOM } from '@graphQL/query/waitingRoomQuery';
 import { StatusEnum } from '@utils/enum/StatusEnum';
 import DarkLogo from '@assets/DarkLogo';
-import { CREATED_TICKET, UPDATED_TICKET } from '@graphQL/subscriptions/ticketSubscriptions';
+import { CREATED_TICKET } from '@graphQL/subscriptions/ticketSubscriptions';
 import { useEffect } from 'react';
 
 function TvScreenPage() {
@@ -22,8 +22,8 @@ function TvScreenPage() {
     { variables: { getOneWaitingRoomId: parseInt(id!, 10) } },
   );
 
-  const { data: createdTicket, loading: createdTicketLoading } = useSubscription(CREATED_TICKET);
-  const { data: updatedTicket, loading: updatedTicketLoading } = useSubscription(UPDATED_TICKET);
+  const { data: createdTicket } = useSubscription(CREATED_TICKET);
+  // const { data: updatedTicket, loading: updatedTicketLoading } = useSubscription(UPDATED_TICKET);
 
   useEffect(() => {
     subscribeToMore({
