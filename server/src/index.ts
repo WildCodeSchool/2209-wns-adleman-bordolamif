@@ -48,7 +48,7 @@ const start = async (): Promise<void> => {
 
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: '/toto',
+    path: '/subscriptions',
   });
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

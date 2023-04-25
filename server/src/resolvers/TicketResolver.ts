@@ -21,14 +21,14 @@ export class TicketResolver {
 
   @Query(() => [Ticket])
   async getAllTickets(
-    @Arg('filter', { nullable: true }) filter?: string
+    @Arg('filter', { nullable: true }) filter?: string,
   ): Promise<Ticket[]> {
     return await TicketController.getAllTcikets(filter);
   }
 
   @Query(() => [Ticket])
   async getAllTicketsForWaitingRoom(
-    @Arg('waitingRoomId', () => Int) waitingRoomId: number
+    @Arg('waitingRoomId', () => Int) waitingRoomId: number,
   ): Promise<Ticket[]> {
     return await TicketController.getAllTicketsForWaitingRoom(waitingRoomId);
   }
@@ -45,7 +45,7 @@ export class TicketResolver {
   @Mutation(() => Ticket)
   async createTicket(
     @Arg('data') data: TicketInput,
-    @PubSub() pubsub: PubSubEngine
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<Ticket> {
     const ticket = await TicketController.createTicket(data);
     await pubsub.publish('NewTicket', ticket);
@@ -60,21 +60,33 @@ export class TicketResolver {
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('id', () => Int) id: number,
-    @Arg('data') data: TicketInput
+    @Arg('data') data: TicketInput,
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<Ticket> {
-    return await TicketController.updateTicket(data, id);
+    const updatedTicket = await TicketController.updateTicket(data, id);
+    await pubsub.publish('UpdatedTicket', updatedTicket);
+    return updatedTicket;
   }
 
   @Mutation(() => Ticket)
   async partialTicketUpdate(
     @Arg('id', () => Int) id: number,
-    @Arg('data') data: PartialTicketInput
+    @Arg('data') data: PartialTicketInput,
   ): Promise<Ticket> {
     return await TicketController.partialTicketUpdate(data, id);
   }
 
+  /** ***********************************
+     SUBSCRIPTION
+     ************************************ */
+
   @Subscription({ topics: 'NewTicket' })
   newTicket(@Root() newTicketPayload: Ticket): Ticket {
     return newTicketPayload;
+  }
+
+  @Subscription({ topics: 'UpdatedTicket' })
+  updatedTicket(@Root() updatedTicketPayload: Ticket): Ticket {
+    return updatedTicketPayload;
   }
 }

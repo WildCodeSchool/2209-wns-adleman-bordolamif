@@ -10,7 +10,7 @@ import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/toto',
+  url: 'ws://localhost:4000/subscriptions',
 }));
 
 const httpLink = new HttpLink({
