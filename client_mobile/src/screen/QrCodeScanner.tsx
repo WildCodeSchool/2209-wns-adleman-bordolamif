@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Text, View, StyleSheet, Button, Alert, Linking,
+  Alert, Button, Dimensions, Linking, StyleSheet, Text,
 } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
@@ -39,44 +39,38 @@ export default function QrCodeScanner() {
   }
 
   return (
-    <View style={styles.container}>
+
+    <BarCodeScanner
+      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+      style={styles.camera}
+    >
       <Text style={styles.text}>
-        Merci de prendre en photo le QR code affiché sur la borne de sélection
+        scannez le QR code pour générer votre ticket
       </Text>
-      <View style={styles.camera}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-        {scanned
+      {scanned
         && (
         <Button
           title="Tap to Scan Again"
           onPress={() => setScanned(false)}
         />
         )}
-      </View>
-    </View>
+    </BarCodeScanner>
   );
 }
 
+const { width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   camera: {
     flex: 1,
-    width: '90%',
-    marginTop: 30,
-    marginBottom: 30,
+    width,
+    height,
   },
   text: {
-    color: '#000',
+    color: '#FFFFFF',
     fontSize: 30,
-    marginTop: 30,
     width: '80%',
     textAlign: 'center',
     textAlignVertical: 'center',
