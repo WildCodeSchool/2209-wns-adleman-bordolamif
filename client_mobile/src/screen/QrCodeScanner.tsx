@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 type NavigationProps = NativeStackScreenProps<RootStackParamList, 'QrCodeScanner'>;
 
 export default function QrCodeScanner({ navigation }: NavigationProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [hasPermission, setHasPermission] = useState<any>(null);
   const [scanned, setScanned] = useState<boolean>(false);
 

@@ -6,6 +6,7 @@ const QrDataContext = createContext<any>([]);
 function QrDataContextProvider({ children }:any) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [qrData, setQrData] = useState<any>({ type: '', data: '' });
+  console.error('setQrData', setQrData);
 
   return (
     <QrDataContext.Provider value={qrData}>

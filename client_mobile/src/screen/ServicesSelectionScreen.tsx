@@ -13,6 +13,7 @@ interface Props {
 
 export default function ServicesSelectionScreen(props:Props) {
   const { waitingRoom, navigation } = props;
+  console.error(waitingRoom, navigation);
 
   return (
     <View>
