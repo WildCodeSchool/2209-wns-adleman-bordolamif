@@ -72,8 +72,11 @@ export class TicketResolver {
   async partialTicketUpdate(
     @Arg('id', () => Int) id: number,
     @Arg('data') data: PartialTicketInput,
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<Ticket> {
-    return await TicketController.partialTicketUpdate(data, id);
+    const updatedTicket = await TicketController.partialTicketUpdate(data, id);
+    await pubsub.publish('UpdatedTicket', updatedTicket);
+    return updatedTicket;
   }
 
   /** ***********************************
