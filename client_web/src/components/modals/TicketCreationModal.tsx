@@ -38,32 +38,59 @@ function TicketCreationModal(props: Props) {
     <div
       className={
         isModalOpen
-          ? 'absolute inset-0 filter backdrop-blur-sm m-auto z-10 flex flex-col items-center justify-center'
+          ? 'absolute inset-0 filter backdrop-blur-xl m-auto z-10 flex flex-col items-center justify-center'
           : 'hidden'
       }
     >
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-        <div className="mb-7 text-gray-700 flex justify-between">
+      <div className="bg-white drop-shadow-xl rounded-3xl w-[30rem] h-[20rem] border-2 flex flex-col justify-center items-center">
+        <div className="text-gray-700 flex justify-between">
           {!ticketToCreate
           && (
           <div className="flex flex-col">
-            <h2>Merci de confirmer votre choix</h2>
-            <ServiceIcon service={serviceTicketToCreate} />
-            <p>{serviceTicketToCreate.name}</p>
-            <button type="button" onClick={handleConfirmService}>OUI</button>
-            <button type="button" onClick={handleCloseModal}>NON</button>
+            <h2 className="f-client-subtitle">Confirmez-vous votre choix ?</h2>
+            <div className="flex flex-row items-center justify-center gap-4">
+              <ServiceIcon service={serviceTicketToCreate} />
+              <p className="text-4xl nunito-bold">{serviceTicketToCreate.name}</p>
+            </div>
+            <div className="f-client-button-format">
+              <button
+                className="f-button-red-client"
+                type="button"
+                onClick={handleCloseModal}
+              >
+                NON
+              </button>
+              <button
+                className="f-button-green-client"
+                type="button"
+                onClick={handleConfirmService}
+              >
+                OUI
+              </button>
+            </div>
           </div>
           )}
           {ticketToCreate && (
           <div>
-            <h2>Est-ce votre premier rendez-vous ?</h2>
-            <button type="button" onClick={() => handleIsFirstTime(true)}>OUI</button>
-            <button type="button" onClick={() => handleIsFirstTime(false)}>NON</button>
+            <h2 className="f-client-subtitle">Est-ce votre premier rendez-vous ?</h2>
+            <div className="f-client-button-format">
+              <button
+                className="f-button-red-client"
+                type="button"
+                onClick={() => handleIsFirstTime(false)}
+              >
+                NON
+              </button>
+              <button
+                className="f-button-green-client"
+                type="button"
+                onClick={() => handleIsFirstTime(true)}
+              >
+                OUI
+              </button>
+            </div>
           </div>
           )}
-          <button type="button" className="font-bold" onClick={() => handleCloseModal()}>
-            X
-          </button>
         </div>
       </div>
     </div>
