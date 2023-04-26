@@ -1,6 +1,3 @@
-import { useSubscription } from '@apollo/client';
-import { CREATED_TICKET, UPDATED_TICKET } from '@graphQL/subscriptions/ticketSubscriptions';
-
 function AdminPage() {
   return (
     <div>
