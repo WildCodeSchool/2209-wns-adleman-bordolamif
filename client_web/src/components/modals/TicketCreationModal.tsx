@@ -38,12 +38,12 @@ function TicketCreationModal(props: Props) {
     <div
       className={
         isModalOpen
-          ? 'absolute inset-0 filter backdrop-blur-xl m-auto z-10 flex flex-col items-center justify-center'
+          ? 'f-modal-background'
           : 'hidden'
       }
     >
-      <div className="bg-white drop-shadow-xl rounded-3xl w-[30rem] h-[20rem] border-2 flex flex-col justify-center items-center">
-        <div className="text-gray-700 flex justify-between">
+      <div className="f-modal-window">
+        <div className="f-modal-format">
           {!ticketToCreate
           && (
           <div className="flex flex-col">

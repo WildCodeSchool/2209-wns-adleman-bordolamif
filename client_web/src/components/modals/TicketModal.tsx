@@ -17,16 +17,13 @@ function TicketModal(props: Props) {
     <div
       className={
         isModalOpen
-          ? 'absolute inset-0 filter backdrop-blur-sm m-auto z-10 flex flex-col items-center justify-center'
+          ? 'f-modal-background'
           : 'hidden'
       }
     >
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-        <div className="mb-7 text-gray-700 flex justify-between">
-          <h2>Edition de ticket</h2>
-          <button type="button" className="font-bold" onClick={() => handleCloseModal()}>
-            X
-          </button>
+      <div className="f-modal-window">
+        <div className="f-modal-format">
+          <h2 className="f-client-subtitle">Edition de ticket</h2>
         </div>
         <TicketUpdateForm
           ticketToUpdate={ticketToUpdate}
