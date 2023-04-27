@@ -10,7 +10,7 @@ import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/subscriptions',
+  url: import.meta.env.VITE_WEBSOCKET_URL,
 }));
 
 const httpLink = new HttpLink({
