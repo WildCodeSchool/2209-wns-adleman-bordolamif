@@ -58,15 +58,15 @@ function OperatorBoard() {
   };
 
   const updateTicketAndCounter = async (ticketId: number) => {
+    await PartialCounterUpdate({
+      variables: {
+        data: { ticket: { id: ticketId } }, partialCounterUpdateId: userProfile?.counter.id,
+      },
+    });
     await PartialTicketUpdate({
       variables: {
         data: { status: StatusEnum.EN_TRAITEMENT },
         partialTicketUpdateId: ticketId,
-      },
-    });
-    await PartialCounterUpdate({
-      variables: {
-        data: { ticket: { id: ticketId } }, partialCounterUpdateId: userProfile?.counter.id,
       },
     });
   };

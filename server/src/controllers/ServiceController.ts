@@ -7,6 +7,12 @@ const ServiceController = {
 
   getAllServices: async (): Promise<Service[]> => await ServiceModel.getAllServices(),
 
+  getServicesByWaitingRoomId: async (id: number): Promise<Service[]> => {
+    const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(id);
+    if (waitingRoom === null) throw new Error('WaitingRoom not found');
+    return await ServiceModel.getServicesByWaitingRoomId(id);
+  },
+
   getOneServiceById: async (id: number): Promise<Service> => {
     const service = await ServiceModel.getOneServiceById(id);
     if (service === null) throw new Error('Service not found');
