@@ -50,11 +50,11 @@
     }
 
     .f-button-green {
-        @apply flex flex-row bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl w-fit;
+        @apply flex flex-row bg-green-600 nunito-bold text-white hover:bg-green-700 py-2 px-4 rounded-xl w-fit drop-shadow;
     }
 
     .f-button-red {
-        @apply flex flex-row bg-red-600 nunito-bold text-white hover:bg-red-700 py-2 px-4 rounded-xl w-fit;
+        @apply flex flex-row bg-red-600 nunito-bold text-white hover:bg-red-700 py-2 px-4 rounded-xl w-fit drop-shadow;
     }
 
     .f-button-white-red {
@@ -67,6 +67,10 @@
 
     .f-button-orange {
         @apply flex flex-row ml-4 p-3 rounded-2xl bg-white text-lg text-orange-500 hover:text-orange-600 hover:bg-gray-100 drop-shadow;
+    }
+
+    .f-button-white-orange {
+        @apply flex flex-row bg-white border border-orange-500 nunito-bold text-orange-500 hover:bg-gray-100 py-2 px-4 drop-shadow rounded-xl w-fit mt-8 mx-auto;
     }
 
     /* ------- text components ------- */
@@ -121,6 +125,10 @@
         @apply border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8;
     }
 
+    .f-select {
+        @apply text-lg py-2 px-4 border-2 rounded-xl
+    }  
+
     /* ------- decoration components ------- */
 
     .f-decoration-line {
@@ -135,7 +143,19 @@
         @apply w-1/2 mx-auto h-1 mb-2 rounded-xl;
     }
 
+    .f-modal-background {
+        @apply absolute inset-0 filter backdrop-blur-xl m-auto z-10 flex flex-col items-center justify-center;
+    }
+
+    .f-modal-window {
+        @apply bg-white drop-shadow-xl rounded-3xl w-[30rem] h-[20rem] border-2 flex flex-col justify-center items-center;
+    }
+
     /* ------- format components ------- */
+
+    .f-modal-format {
+        @apply text-gray-700 flex justify-between;
+    }
 
     .f-client-format-logo {
         @apply flex justify-center mt-8;

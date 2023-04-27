@@ -74,29 +74,31 @@ function AdminTicketsPage() {
 
   return (
     <div>
+
       <div className="f-title-format">
         <h1 className="f-main-title">Tickets</h1>
         <div className="f-decoration-line" />
       </div>
-      <select name="services" onChange={filterServices}>
-        <option value="">Filtrer par service</option>
-        {servicesList && servicesList!
+
+      <div className="flex flex-row gap-12 justify-center mb-8">
+        <select className="f-select" name="services" onChange={filterServices}>
+          <option value="">Filtrer par service</option>
+          {servicesList && servicesList!
         && servicesList.getAllServices.map((service: ServiceData) => (
           <option key={service.id} value={service.name}>{service.name}</option>
         ))}
-      </select>
-
-      <select name="status" onChange={filterStatus}>
-        {StatusObjectEnum.map((stat) => (
-          <option key={stat.key} value={stat.key}>{stat.name}</option>
-        ))}
-      </select>
-
-      <select name="date" onChange={filterDate} defaultValue="today">
-        {DateFilterObjectEnum.map((date) => (
-          <option key={date.key} value={date.key}>{date.name}</option>
-        ))}
-      </select>
+        </select>
+        <select className="f-select" name="status" onChange={filterStatus}>
+          {StatusObjectEnum.map((stat) => (
+            <option key={stat.key} value={stat.key}>{stat.name}</option>
+          ))}
+        </select>
+        <select className="f-select" name="date" onChange={filterDate} defaultValue="today">
+          {DateFilterObjectEnum.map((date) => (
+            <option key={date.key} value={date.key}>{date.name}</option>
+          ))}
+        </select>
+      </div>
 
       {ticketsListLoading && <p>Loading ...</p>}
 

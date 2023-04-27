@@ -38,13 +38,13 @@ export default function QrCodeScanner({ navigation }: NavigationProps) {
       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
       style={[StyleSheet.absoluteFillObject, styles.container]}
     >
+      <BarCodeScannerLens />
       <Pressable
         className="ml-6 mt-14"
         onPress={() => navigation.goBack()}
       >
         <AntDesign name="left" size={28} color="white" />
       </Pressable>
-      <BarCodeScannerLens />
       {scanned
         && (
         <Pressable
