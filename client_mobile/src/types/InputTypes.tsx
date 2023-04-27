@@ -1,0 +1,6 @@
+import { ServiceId } from './InputIdTypes';
+
+export interface TicketInput {
+    isFirstTime: boolean;
+    service: ServiceId;
+}

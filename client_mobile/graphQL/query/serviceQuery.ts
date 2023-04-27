@@ -7,6 +7,7 @@ export const GET_SERVICES_BY_WAITING_ROOM = gql`
             id
             color
             acronym
+            isOpen
             tickets {
                 id
                 status

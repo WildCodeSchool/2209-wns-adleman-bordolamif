@@ -46,7 +46,6 @@ export interface ServiceData extends Service {
     __typename: string;
     waitingRoom: WaitingRoom
     tickets: Ticket[];
-
   }
 
 export interface Counter {

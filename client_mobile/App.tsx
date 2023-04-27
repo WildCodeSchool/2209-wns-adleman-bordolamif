@@ -7,6 +7,7 @@ import { RootStackParamList } from './src/types/RootStackParamList';
 import { ApolloProvider } from '@apollo/client';
 import client from './graphQL/client';
 import { StatusBar } from 'react-native';
+import TicketScreen from './src/screen/TicketScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +22,7 @@ export default function App() {
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
           <Stack.Screen name="ServicesSelectionScreen" component={ServicesSelectionScreen} />
+          <Stack.Screen name="TicketScreen" component={TicketScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>
