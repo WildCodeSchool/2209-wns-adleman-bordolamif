@@ -9,7 +9,7 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
   const ticket = route.params.createdTicket;
   return (
     <View>
-      <Text className="text-4xl text-center">Vous êtes le numéro</Text>
+      <Text className="text-4xl text-center">Vous êtes le ticket numéro:</Text>
       <View className="bg-white p-5 mt-5 rounded-3xl active:scale-95 transfo">
         <View className="flex flex-row mb-8 items-center justify-center gap-4">
           <View
@@ -24,7 +24,7 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
           { ticket.service.name }
         </Text>
       </View>
-      <Text className="text-4xl text-center">Il y a 1 personne devant vous</Text>
+      <Text className="text-4xl text-center">Il y a X personne devant vous (WIP)</Text>
     </View>
   );
 }

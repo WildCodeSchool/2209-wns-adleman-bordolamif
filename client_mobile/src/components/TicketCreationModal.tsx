@@ -53,38 +53,42 @@ function TicketCreationModal(props: Props) {
     >
       <View>
         { !ticketToCreate && (
-          <View>
-            <Text>Confirmez-vous votre choix ?</Text>
+        <View className="flex items-center">
+          <Text className="text-center text-3xl">Confirmez-vous votre choix ?</Text>
+          <View className="flex flex-row mt-4 space-x-4">
             <Pressable
-              className="bg-red-500 w-[10rem] py-4 text-3xl nunito-bold text-white rounded-3xl active:scale-95"
-              onPress={() => setShowModal(!showModal)}
-            >
-              <Text>NON</Text>
-            </Pressable>
-            <Pressable
-              className="bg-green-500 w-[10rem] py-4 text-3xl nunito-bold text-white rounded-3xl active:scale-95"
+              className="flex items-center bg-green-500 w-28 py-4 rounded-3xl active:scale-95"
               onPress={handleConfirmService}
             >
-              <Text>OUI</Text>
+              <Text className="text-3xl nunito-bold text-white">OUI</Text>
+            </Pressable>
+            <Pressable
+              className="flex items-center bg-red-500 w-28 py-4 rounded-3xl active:scale-95"
+              onPress={() => setShowModal(!showModal)}
+            >
+              <Text className="text-3xl nunito-bold text-white">NON</Text>
             </Pressable>
           </View>
+        </View>
         ) }
         { ticketToCreate && (
-          <View>
-            <Text>Est-ce votre première fois ?</Text>
+        <View className="flex items-center">
+          <Text className="text-center text-3xl">Est-ce votre première fois ?</Text>
+          <View className="flex flex-row mt-4 space-x-4">
             <Pressable
-              className="bg-green-500 w-[10rem] py-4 text-3xl nunito-bold text-white rounded-3xl active:scale-95"
+              className="flex items-center bg-green-500 w-28 py-4 rounded-3xl active:scale-95"
               onPress={() => handleIsFirstTime(true)}
             >
-              <Text>OUI</Text>
+              <Text className="text-3xl nunito-bold text-white">OUI</Text>
             </Pressable>
             <Pressable
-              className="bg-red-500 w-[10rem] py-4 text-3xl nunito-bold text-white rounded-3xl active:scale-95"
+              className="flex items-center bg-red-500 w-28 py-4 rounded-3xl active:scale-95"
               onPress={() => handleIsFirstTime(false)}
             >
-              <Text>NON</Text>
+              <Text className="text-3xl nunito-bold text-white">NON</Text>
             </Pressable>
           </View>
+        </View>
         ) }
       </View>
     </Modal>

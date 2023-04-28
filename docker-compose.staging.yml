@@ -1,4 +1,4 @@
-name: WaitIt-staging
+name: waitit-staging
 services:
   db_staging:
     image: postgres:15-alpine
@@ -18,7 +18,7 @@ services:
       - 5433:5432
 
   server:
-    container_name: WaitIt-server-staging
+    container_name: waitit-server-staging
     depends_on:
       db_staging:
         condition: service_healthy
@@ -43,11 +43,11 @@ services:
       retries: 10
 
   client:
-    container_name: WaitIt-client-staging
+    container_name: waitit-client-staging
     image: joffreychevalier/waitit-client:staging
 
   nginx:
-    container_name: WaitIt-nginx-staging
+    container_name: waitit-nginx-staging
     image: nginx:1.21.3
     depends_on:
       client:
@@ -62,7 +62,7 @@ services:
       - ./logs:/var/log/nginx
 
   discord-notifier:
-    container_name: WaitIt-discord-notifier-staging
+    container_name: waitit-discord-notifier-staging
     image: scrip/discord-notifier
     depends_on:
       nginx:
