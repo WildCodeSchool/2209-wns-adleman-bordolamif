@@ -1,6 +1,13 @@
+import { StartEndDate } from '@utils/types/InputTypes';
 import { useState } from 'react';
 
-function DateTimePicker() {
+interface Props {
+  validateDateInterval: (dateInterval: StartEndDate)=> void
+
+}
+
+function DateTimePicker(props:Props) {
+  const { validateDateInterval } = props;
   const today = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -12,6 +19,13 @@ function DateTimePicker() {
 
   const [startDate, setStartDate] = useState(today());
   const [endDate, setEndDate] = useState(today());
+
+  const validateDates = () => {
+    validateDateInterval({
+      startDate,
+      endDate,
+    });
+  };
 
   return (
     <>
@@ -25,6 +39,8 @@ function DateTimePicker() {
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
       />
+      <button type="button" onClick={validateDates}>Valider</button>
+
     </>
   );
 }

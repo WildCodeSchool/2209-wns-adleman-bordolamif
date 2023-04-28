@@ -25,6 +25,7 @@ const start = async (): Promise<void> => {
   const httpServer = http.createServer(app);
 
   const schema = await buildSchema({
+    validate: { forbidUnknownValues: false },
     resolvers: [join(__dirname, '/resolvers/*.{js,ts}')],
     authChecker: async ({ context }: { context: ContextType }, roles = []) => {
       const { req } = context;

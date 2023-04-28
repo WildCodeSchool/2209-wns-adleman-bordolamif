@@ -10,7 +10,7 @@ import {
   Subscription,
 } from 'type-graphql';
 import Ticket from '../entity/Ticket';
-import { PartialTicketInput, TicketInput } from '../utils/types/InputTypes';
+import { PartialTicketInput, StartEndDate, TicketInput } from '../utils/types/InputTypes';
 import TicketController from '../controllers/TicketController';
 
 @Resolver(Ticket)
@@ -24,6 +24,13 @@ export class TicketResolver {
     @Arg('filter', { nullable: true }) filter?: string,
   ): Promise<Ticket[]> {
     return await TicketController.getAllTcikets(filter);
+  }
+
+  @Query(() => [Ticket])
+  async getAllTicketsBetweenTwoDates(
+    @Arg('data') data: StartEndDate,
+  ): Promise<Ticket[]> {
+    return await TicketController.getAllTicketsBetweenTwoDates(data);
   }
 
   @Query(() => [Ticket])
