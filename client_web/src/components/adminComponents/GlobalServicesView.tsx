@@ -1,4 +1,4 @@
-import WaitingTicketsByServicesChart from '@components/charts/WaitingTicketsByServicesChart';
+import TicketsByServicesChart from '@components/charts/TicketsByServicesChart';
 import ServiceIcon from '@components/icons/ServiceIcon';
 import UserIcon from '@components/icons/UserIcon';
 import { StatusEnum } from '@utils/enum/StatusEnum';
@@ -33,7 +33,7 @@ function GlobalServicesView(props: Props) {
     const chartData = Object.values(servicesData).map((serviceData) => ({
       name: serviceData.name,
       color: serviceData.color,
-      waitingTickets: serviceData.count,
+      ticketsNb: serviceData.count,
     }));
     return chartData;
   }
@@ -42,7 +42,8 @@ function GlobalServicesView(props: Props) {
     <div>
       <div className="flex flex-row">
         <div>
-          <WaitingTicketsByServicesChart chartData={computeDataForChart()} />
+          <p>Nombre total de tickets de la journée</p>
+          <TicketsByServicesChart chartData={computeDataForChart()} />
         </div>
         <table className="divide-y divide-gray-300">
           <thead>

@@ -7,25 +7,26 @@ interface Props {
   chartData: {
     name: string,
     color: string,
-    waitingTickets: number
+    ticketsNb: number
   }[]
 }
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function WaitingTicketsByServicesChart(props: Props) {
+function TicketsByServicesChart(props: Props) {
   const { chartData } = props;
 
   const data = {
     labels: chartData.map((element) => element.name),
     datasets: [{
       label: 'Tickets de la journée',
-      data: chartData.map((element) => element.waitingTickets),
+      data: chartData.map((element) => element.ticketsNb),
       backgroundColor: chartData.map((element) => element.color),
     }],
   };
 
   const options = {
+    responsive: true,
     plugins: {
       legend: {
         display: false,
@@ -36,4 +37,4 @@ function WaitingTicketsByServicesChart(props: Props) {
   return <Doughnut data={data} options={options} />;
 }
 
-export default WaitingTicketsByServicesChart;
+export default TicketsByServicesChart;
