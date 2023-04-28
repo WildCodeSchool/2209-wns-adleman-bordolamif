@@ -4,8 +4,12 @@ import {
   Ctx,
   Int,
   Mutation,
+  PubSub,
+  PubSubEngine,
   Query,
   Resolver,
+  Root,
+  Subscription,
 } from 'type-graphql';
 import User, { getSafeAttributes } from '../entity/User';
 import { loadEnv } from '../env';
@@ -99,8 +103,10 @@ export class UserResolver {
   async updateUser(
     @Arg('id', () => Int) id: number,
     @Arg('data') data: UserInput,
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUser(data, id);
+    await pubsub.publish('UpdatedUser', userToUpdate);
     return getSafeAttributes(userToUpdate);
   }
 
@@ -136,7 +142,15 @@ export class UserResolver {
     @Arg('data') data: UserConnexion,
   ): Promise<User> {
     const userToUpdate = await PasswordController.resetPassword(uuid, data);
-
     return getSafeAttributes(userToUpdate);
+  }
+
+  /** ***********************************
+                SUBSCRIPTION
+     ************************************ */
+
+  @Subscription({ topics: 'UpdatedUser' })
+  updatedUser(@Root() updatedUserPayload: User): User {
+    return updatedUserPayload;
   }
 }
