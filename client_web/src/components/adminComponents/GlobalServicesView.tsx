@@ -1,6 +1,7 @@
 import WaitingTicketsByServicesChart from '@components/charts/WaitingTicketsByServicesChart';
 import ServiceIcon from '@components/icons/ServiceIcon';
 import UserIcon from '@components/icons/UserIcon';
+import { StatusEnum } from '@utils/enum/StatusEnum';
 import { TicketData, UserData, WaitingRoomData } from '@utils/types/DataTypes';
 
 interface Props{
@@ -72,7 +73,7 @@ function GlobalServicesView(props: Props) {
                   </td>
                   <td className="px-3 py-2 ">
                     <div>{ticketList && ticketList.filter((ticket) => ticket.service.id
-                  === service.id).length}
+                  === service.id && ticket.status === StatusEnum.EN_ATTENTE).length}
                     </div>
                   </td>
                 </tr>

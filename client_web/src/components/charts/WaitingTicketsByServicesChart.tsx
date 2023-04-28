@@ -19,7 +19,7 @@ function WaitingTicketsByServicesChart(props: Props) {
   const data = {
     labels: chartData.map((element) => element.name),
     datasets: [{
-      label: 'Tickets en attente',
+      label: 'Tickets de la journée',
       data: chartData.map((element) => element.waitingTickets),
       backgroundColor: chartData.map((element) => element.color),
     }],

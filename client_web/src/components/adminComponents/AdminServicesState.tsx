@@ -35,8 +35,7 @@ function AdminServicesState() {
           <p>Tickets suspendus : {ticketList && ticketList.getAllTickets
             .filter((ticket:TicketData) => ticket.status === StatusEnum.AJOURNE).length}
           </p>
-          <p>Total : {ticketList && ticketList.getAllTickets
-            .filter((ticket:TicketData) => ticket.status !== StatusEnum.TRAITE).length}
+          <p>Total : {ticketList && ticketList.getAllTickets.length}
           </p>
         </div>
       </div>
