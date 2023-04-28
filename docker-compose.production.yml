@@ -1,4 +1,4 @@
-name: WaitIt-production
+name: waitit-production
 services:
   db_prod:
     image: postgres:15-alpine
@@ -18,7 +18,7 @@ services:
       - 5432:5432
 
   server:
-    container_name: WaitIt-server-prod
+    container_name: waitit-server-prod
     depends_on:
       db_prod:
         condition: service_healthy
@@ -43,11 +43,11 @@ services:
       retries: 10
 
   client:
-    container_name: WaitIt-client-prod
+    container_name: waitit-client-prod
     image: joffreychevalier/waitit-client
 
   nginx:
-    container_name: WaitIt-nginx-prod
+    container_name: waitit-nginx-prod
     image: nginx:1.21.3
     depends_on:
       client:
@@ -62,7 +62,7 @@ services:
       - ./logs:/var/log/nginx
 
   discord-notifier:
-    container_name: WaitIt-discord-notifier-prod
+    container_name: waitit-discord-notifier-prod
     image: scrip/discord-notifier
     depends_on:
       nginx:
