@@ -9,6 +9,8 @@ interface Props {
 function ServiceCard(props: Props) {
   const { service, handleOpenModal } = props;
 
+  const today = new Date();
+
   return (
     <button type="button" className="bg-white p-10 rounded-3xl drop-shadow-xl focus:scale-95" onClick={() => handleOpenModal(service)}>
       <div className="flex flex-row mb-8 items-center justify-center gap-4">
@@ -22,7 +24,10 @@ function ServiceCard(props: Props) {
       </div>
       <p className="text-xl nunito-bold">{'Tickets en attente : '}
         <span>
-          {service.tickets.filter((ticket) => ticket.status === StatusEnum.EN_ATTENTE).length}
+          {service.tickets.filter((ticket) => ticket.status === StatusEnum.EN_ATTENTE
+           && new Date(ticket.createdAt).getFullYear() === today.getFullYear()
+           && new Date(ticket.createdAt).getMonth() === today.getMonth()
+           && new Date(ticket.createdAt).getDate() === today.getDate()).length}
         </span>
       </p>
     </button>
