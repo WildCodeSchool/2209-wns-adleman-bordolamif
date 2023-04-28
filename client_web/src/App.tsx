@@ -45,11 +45,12 @@ function App() {
                 />
               )}
             >
-              <Route path="dashboard" element={<AdminPage />} />
+              <Route path="dashboard" element={<AdminPage />}>
+                <Route path="statistics" element={<AdminStatisticsPage />} />
+              </Route>
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
-              <Route path="statistics" element={<AdminStatisticsPage />} />
               <Route path="users" element={<AdminUsersPage />} />
               <Route path="myaccount" element={<MyAccountPage />} />
 

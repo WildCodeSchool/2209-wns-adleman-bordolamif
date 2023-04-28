@@ -53,15 +53,7 @@ function AdminMenu() {
               Tickets
             </div>
           </NavLink>
-          <NavLink
-            to="/admin/statistics"
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            <div className="f-format-menu">
-              <PresentationChartBarIcon className="w-7 mr-4" />
-              Statistiques
-            </div>
-          </NavLink>
+
           <NavLink
             to="/admin/users"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
