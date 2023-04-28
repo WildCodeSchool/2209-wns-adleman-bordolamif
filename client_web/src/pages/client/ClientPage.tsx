@@ -28,7 +28,7 @@ function ClientPage() {
     const { data } = await CreateTicket({ variables: { data: ticket } });
     setCreatedTicket(data.createTicket);
     setTimeout(() => setCreatedTicket(null), 15000);
-    refetchServicesList();
+    await refetchServicesList();
   };
 
   const handleOpenModal = (service: ServiceData) => {

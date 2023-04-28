@@ -15,6 +15,14 @@ const ServiceModel = {
   getMultipleServicesByIds: async (services:ServiceId[]) => await dataSource.getRepository(Service)
     .findBy({ id: In(services.map((service) => service.id)) }),
 
+  getServicesByWaitingRoomId: async (id: number) => await dataSource.getRepository(Service)
+    .find({
+      where: { waitingRoom: { id } },
+      relations: {
+        waitingRoom: true, tickets: true, users: true, currentUsers: true,
+      },
+    }),
+
   getOneServiceById: async (id: number) => await dataSource
     .getRepository(Service)
     .findOne({

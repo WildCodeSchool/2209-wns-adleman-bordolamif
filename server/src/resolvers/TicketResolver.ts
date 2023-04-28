@@ -1,13 +1,5 @@
 import {
-  Arg,
-  Int,
-  Mutation,
-  PubSub,
-  PubSubEngine,
-  Query,
-  Resolver,
-  Root,
-  Subscription,
+  Arg, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription,
 } from 'type-graphql';
 import Ticket from '../entity/Ticket';
 import { PartialTicketInput, TicketInput } from '../utils/types/InputTypes';
@@ -70,18 +62,26 @@ export class TicketResolver {
 
   @Mutation(() => Ticket)
   async partialTicketUpdate(
-    @Arg('id', () => Int) id: number,
-    @Arg('data') data: PartialTicketInput,
-    @PubSub() pubsub: PubSubEngine,
+      @Arg('id', () => Int) id: number,
+      @Arg('data') data: PartialTicketInput,
+      @PubSub() pubsub: PubSubEngine,
   ): Promise<Ticket> {
     const updatedTicket = await TicketController.partialTicketUpdate(data, id);
     await pubsub.publish('UpdatedTicket', updatedTicket);
     return updatedTicket;
   }
 
+  @Mutation(() => Boolean)
+  async sendNotification(
+      @Arg('id', () => Int) id: number,
+  ): Promise<boolean> {
+    const ticketToCall = await TicketController.sendNotification(id);
+    return ticketToCall;
+  }
+
   /** ***********************************
-     SUBSCRIPTION
-     ************************************ */
+   SUBSCRIPTION
+   ************************************ */
 
   @Subscription({ topics: 'NewTicket' })
   newTicket(@Root() newTicketPayload: Ticket): Ticket {

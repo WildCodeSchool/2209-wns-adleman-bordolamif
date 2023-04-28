@@ -138,6 +138,9 @@ export class TicketInput {
 
     @Field(() => ServiceId)
       service: ServiceId;
+
+    @Field({ nullable: true })
+      mobileToken?: string;
 }
 
 @InputType()
