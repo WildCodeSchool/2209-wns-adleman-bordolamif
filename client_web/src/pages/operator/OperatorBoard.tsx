@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import OperatorDashboard from '@components/operatorComponents/OperatorDashboard';
 import OperatorWaitingRoom from '@components/operatorComponents/OperatorWaitingRoom';
 import { PARTIAL_COUNTER_UPDATE } from '@graphQL/mutations/counterMutations';
-import { PARTIAL_TICKET_UPDATE } from '@graphQL/mutations/ticketMutations';
+import { PARTIAL_TICKET_UPDATE, SEND_NOTIFICATION } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_TICKETS_FOR_WAITING_ROOM } from '@graphQL/query/ticketQuery';
 import { GET_ALL_USERS } from '@graphQL/query/userQuery';
 import { GET_ONE_WAITINGROOM } from '@graphQL/query/waitingRoomQuery';
@@ -44,13 +44,14 @@ function OperatorBoard() {
 
   const [PartialTicketUpdate] = useMutation(PARTIAL_TICKET_UPDATE);
   const [PartialCounterUpdate] = useMutation(PARTIAL_COUNTER_UPDATE);
+  const [SendNotification] = useMutation(SEND_NOTIFICATION);
 
   const callNextTicket = async () => {
     const nextTicket = ticketsList.getAllTicketsForWaitingRoom
       .find((ticket: TicketData) => ticket.service.id
-      === userProfile!.currentService!.id && ticket.status === StatusEnum.EN_ATTENTE);
-
-    updateTicketAndCounter(nextTicket.id);
+            === userProfile!.currentService!.id && ticket.status === StatusEnum.EN_ATTENTE);
+    await SendNotification({ variables: { id: nextTicket.id } });
+    await updateTicketAndCounter(nextTicket.id);
   };
 
   const callSuspendedTicket = (id: number) => {

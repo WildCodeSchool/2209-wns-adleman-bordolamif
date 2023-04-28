@@ -3,7 +3,7 @@ import { RootStackParamList } from '../types/RootStackParamList';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 
-type TicketScreenRouteProp = NativeStackScreenProps< RootStackParamList, 'TicketScreen'>;
+type TicketScreenRouteProp = NativeStackScreenProps<RootStackParamList, 'TicketScreen'>;
 
 export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp) {
   const ticket = route.params.createdTicket;

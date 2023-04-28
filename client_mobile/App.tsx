@@ -8,8 +8,17 @@ import { ApolloProvider } from '@apollo/client';
 import client from './graphQL/client';
 import { StatusBar } from 'react-native';
 import TicketScreen from './src/screen/TicketScreen';
+import * as Notifications from 'expo-notifications';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
   return (

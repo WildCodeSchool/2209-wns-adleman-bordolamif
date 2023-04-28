@@ -42,6 +42,7 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN}
       DB_HOST: 'db'
       NODE_ENV: 'development'
       CHOKIDAR_USEPOLLING: 'true'

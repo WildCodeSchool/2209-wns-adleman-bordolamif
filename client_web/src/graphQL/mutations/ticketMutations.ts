@@ -72,7 +72,13 @@ mutation PartialTicketUpdate($data: PartialTicketInput!, $partialTicketUpdateId:
   }}`;
 
 export const DELETE_TICKET = gql`
-mutation DeleteTicket($deleteTicketId: Int!) {
-  deleteTicket(id: $deleteTicketId)
-}
+  mutation DeleteTicket($deleteTicketId: Int!) {
+    deleteTicket(id: $deleteTicketId)
+  }
+`;
+
+export const SEND_NOTIFICATION = gql`
+  mutation SendNotification($id: Int!) {
+    sendNotification(id: $id)
+  }
 `;

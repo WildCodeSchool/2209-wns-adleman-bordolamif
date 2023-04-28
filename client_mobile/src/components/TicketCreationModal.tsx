@@ -10,6 +10,7 @@ interface Props {
   setShowModal: (showModal: boolean) => void
   serviceTicketToCreate: Service
   handleCreateTicket: (ticket: TicketInput) => void
+  expoPushToken: string
 }
 
 function TicketCreationModal(props: Props) {
@@ -18,6 +19,7 @@ function TicketCreationModal(props: Props) {
     setShowModal,
     serviceTicketToCreate,
     handleCreateTicket,
+    expoPushToken,
   } = props;
 
   const [ticketToCreate, setTicketToCreate] = useState<TicketInput | null>();
@@ -26,6 +28,7 @@ function TicketCreationModal(props: Props) {
     setTicketToCreate({
       isFirstTime: false,
       service: { id: serviceTicketToCreate.id },
+      mobileToken: expoPushToken,
     });
   };
 
@@ -33,6 +36,7 @@ function TicketCreationModal(props: Props) {
     const ticketToSend = {
       isFirstTime,
       service: { id: serviceTicketToCreate.id },
+      mobileToken: expoPushToken,
     };
     await handleCreateTicket(ticketToSend);
     setTicketToCreate(null);

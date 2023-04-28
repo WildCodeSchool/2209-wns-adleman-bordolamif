@@ -11,6 +11,7 @@ export const CREATE_TICKET = gql`
             isFirstTime
             isReturned
             status
+            mobileToken
             user {
                 id
                 firstname
