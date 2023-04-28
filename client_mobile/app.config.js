@@ -13,6 +13,14 @@ export default {
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
+    plugins: [
+      [
+        'expo-barcode-scanner',
+        {
+          cameraPermission: 'Allow $(PRODUCT_NAME) to access camera.',
+        },
+      ],
+    ],
     updates: {
       fallbackToCacheTimeout: 0,
     },

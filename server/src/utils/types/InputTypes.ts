@@ -86,6 +86,42 @@ export class UserInput {
 }
 
 @InputType()
+export class PartialUserInput {
+    @Field({ nullable: true })
+    @MaxLength(100)
+      firstname?: string;
+
+    @Field({ nullable: true })
+    @MaxLength(100)
+      lastname?: string;
+
+    @Field({ nullable: true })
+    @MaxLength(100)
+    @IsEmail()
+      email?: string;
+
+    @Field({ nullable: true })
+      isSuspended?: boolean;
+
+    @Field({ nullable: true })
+    @MinLength(8)
+    @Matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+      password?: string;
+
+    @Field({ nullable: true })
+      role?: RoleEnum;
+
+    @Field(() => CounterId, { nullable: true })
+      counter?: CounterId | null;
+
+    @Field(() => [ServiceId], { nullable: true })
+      services?: ServiceId[];
+
+    @Field(() => ServiceId, { nullable: true })
+      currentService?: ServiceId | null;
+}
+
+@InputType()
 export class TicketInput {
   @Field({ nullable: true })
   @MaxLength(100)
@@ -102,6 +138,28 @@ export class TicketInput {
 
     @Field(() => ServiceId)
       service: ServiceId;
+
+    @Field({ nullable: true })
+      mobileToken?: string;
+}
+
+@InputType()
+export class PartialTicketInput {
+  @Field({ nullable: true })
+  @MaxLength(100)
+    name?: string;
+
+  @Field({ nullable: true })
+    status?: StatusEnum;
+
+  @Field({ nullable: true })
+    isFirstTime?: boolean;
+
+  @Field(() => UserId, { nullable: true })
+    user?: UserId;
+
+  @Field(() => ServiceId, { nullable: true })
+    service?: ServiceId;
 }
 
 @InputType()
@@ -128,6 +186,22 @@ export class CounterInput {
 
     @Field(() => TicketId, { nullable: true })
       ticket?: TicketId;
+}
+
+@InputType()
+export class PartialCounterInput {
+    @Field({ nullable: true })
+    @MaxLength(100)
+      name?: string;
+
+    @Field(() => WaitingRoomId, { nullable: true })
+      waitingRoom?: WaitingRoomId;
+
+    @Field(() => UserId, { nullable: true })
+      user?: UserId;
+
+    @Field(() => TicketId, { nullable: true })
+      ticket?: TicketId | null;
 }
 
 @InputType()

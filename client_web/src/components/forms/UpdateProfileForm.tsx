@@ -61,16 +61,16 @@ function UpdateProfileForm(props: Props) {
         <input placeholder="Prénom" {...register('firstname')} required className={inputClassName} />
         <input placeholder="Email" {...register('email')} required className={inputClassName} />
       </div>
-      <div className="flex">
+      <div className="flex gap-4">
         <button
-          className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
+          className="f-button-white-red"
           type="button"
           onClick={() => setModeToUpdate('')}
         >
           Annuler
         </button>
         <button
-          className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
+          className="f-button-white-green"
           type="submit"
         >
           Valider
