@@ -1,4 +1,4 @@
-name: WaitIt-production
+name: waitit-production
 services:
   db_prod:
     image: postgres:15-alpine
@@ -18,7 +18,7 @@ services:
       - 5432:5432
 
   server:
-    container_name: WaitIt-server-prod
+    container_name: waitit-server-prod
     depends_on:
       db_prod:
         condition: service_healthy
@@ -33,6 +33,7 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN}
       DB_HOST: 'db_prod'
       NODE_ENV: 'production'
     healthcheck:
@@ -42,11 +43,11 @@ services:
       retries: 10
 
   client:
-    container_name: WaitIt-client-prod
+    container_name: waitit-client-prod
     image: joffreychevalier/waitit-client
 
   nginx:
-    container_name: WaitIt-nginx-prod
+    container_name: waitit-nginx-prod
     image: nginx:1.21.3
     depends_on:
       client:
@@ -59,6 +60,17 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx
+
+  discord-notifier:
+    container_name: waitit-discord-notifier-prod
+    image: scrip/discord-notifier
+    depends_on:
+      nginx:
+        condition: service_started
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN:-}
+      - CHANNEL_ID=${CHANNEL_ID:-}
+    command: "npm run send-message 'La prod WaitIt à été mis à jour : https://adleman5.wns.wilders.dev'"
 
 volumes:
   db_prod:

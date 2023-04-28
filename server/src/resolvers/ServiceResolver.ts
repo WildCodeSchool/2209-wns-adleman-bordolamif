@@ -25,6 +25,11 @@ export class ServiceResolver {
     return await ServiceController.getOneServiceById(id);
   }
 
+  @Query(() => [Service])
+  async getServicesByWaitingRoomId(@Arg('id', () => Int) id: number): Promise<Service[]> {
+    return await ServiceController.getServicesByWaitingRoomId(id);
+  }
+
   /** ***********************************
                   MUTATION
    ************************************ */

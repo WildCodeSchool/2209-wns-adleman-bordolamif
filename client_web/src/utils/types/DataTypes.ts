@@ -46,7 +46,6 @@ export interface ServiceData extends Service {
     __typename: string;
     waitingRoom: WaitingRoom
     tickets: Ticket[];
-
   }
 
 export interface Counter {
@@ -62,8 +61,8 @@ export interface CounterData extends Counter {
 
 export interface UserData extends UserProfile{
   __typename: string;
-  counter: CounterData | null;
-  services: ServiceData[] | null;
+  counter: CounterData
+  services: ServiceData[]
   tickets: Ticket[];
   currentService?: Service | null
 
