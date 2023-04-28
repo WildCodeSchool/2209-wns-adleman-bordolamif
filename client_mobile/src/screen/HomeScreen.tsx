@@ -13,10 +13,7 @@ export default function HomeScreen({ navigation }: NavigationProps) {
         source={require('../../assets/background.jpg')}
         style={{ width: '100%', height: '100%' }}
       >
-        <View style={{
-          width: '100%', height: '100%', backgroundColor: 'black', opacity: 0.7, position: 'absolute',
-        }}
-        />
+        <View className="w-full h-full bg-black opacity-70 absolute" />
         <Text className="text-white font-bold text-5xl mt-32 ml-8">Bienvenue sur</Text>
         <View className="flex flex-row ml-8">
           <Text className="text-white font-bold text-6xl">Wait</Text>

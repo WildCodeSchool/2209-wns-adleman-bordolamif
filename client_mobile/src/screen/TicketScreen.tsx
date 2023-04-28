@@ -21,10 +21,10 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
           <Text className="text-3xl">{ ticket.name }</Text>
         </View>
         <Text className="text-xl text-center">
-          {ticket.service.name}
+          { ticket.service.name }
         </Text>
       </View>
-      <Text className="text-4xl text-center">Il y a personne devant vous</Text>
+      <Text className="text-4xl text-center">Il y a 1 personne devant vous</Text>
     </View>
   );
 }
