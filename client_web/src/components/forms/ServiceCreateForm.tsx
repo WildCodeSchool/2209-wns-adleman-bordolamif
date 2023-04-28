@@ -66,7 +66,7 @@ function ServiceCreateForm(props: Props) {
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center z-10">
             <p className="text-xl text-white">
               Couleur
             </p>
