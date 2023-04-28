@@ -40,27 +40,6 @@ mutation UpdateCounter($data: CounterInput!, $updateCounterId: Int!) {
 }
 `;
 
-export const PARTIAL_COUNTER_UPDATE = gql`
-mutation PartialCounterUpdate($data: PartialCounterInput!, $partialCounterUpdateId: Int!) {
-  partialCounterUpdate(data: $data, id: $partialCounterUpdateId) {
-        id
-    name
-    waitingRoom {
-      id
-      name
-    }
-    user {
-      id
-      firstname
-    }
-    ticket {
-      id
-      name
-    }
-  }
-}
-`;
-
 export const DELETE_COUNTER = gql`
 mutation DeleteCounter($deleteCounterId: Int!) {
   deleteCounter(id: $deleteCounterId)

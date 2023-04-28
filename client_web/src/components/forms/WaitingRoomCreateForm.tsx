@@ -37,14 +37,14 @@ function WaitingRoomCreateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="f-format-create-box flex-col">
-      <label className="f-label-name-white">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
+      <label className="flex flex-col mr-4">
         Nom de la salle d'attente
         <input
           placeholder="Ex: Salle d'attente 1"
           {...register('name')}
           required
-          className="f-input"
+          className="border rounded w-[15rem] py-2 px-4 text-gray-700 focus:outline-none mb-2"
         />
       </label>
       {servicesListLoading && <p>Loading...</p>}
@@ -53,16 +53,16 @@ function WaitingRoomCreateForm(props: Props) {
         servicesList={servicesList && servicesList.getAllServices}
         toggleCheckList={toggleWaitingRoomServices}
       />
-      <div className="f-choice-button-format items-end mt-2">
+      <div className="f-choice-button-format items-end">
         <button
-          className="f-button-white-red"
+          className="f-button-red"
           type="button"
           onClick={() => setIsCreateWaitingRoom(false)}
         >
           Annuler
         </button>
         <button
-          className="f-button-white-green"
+          className="f-button-green"
           type="submit"
         >
           Créer

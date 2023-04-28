@@ -24,7 +24,7 @@ const TicketModel = {
       user: true,
       counter: true,
     },
-    order: { createdAt: 'ASC' },
+    order: { createdAt: 'DESC' },
   }),
 
   getOneTicketById: async (id: number) => await

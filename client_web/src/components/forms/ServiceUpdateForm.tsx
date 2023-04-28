@@ -56,9 +56,9 @@ function ServiceUpdateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-100 rounded-2xl p-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="absolute z-20 left-1/3 top-1/3 flex shadow-xl mx-10 bg-gray-200 p-4 rounded-xl">
       <div>
-        <label className="flex flex-col text-xl">
+        <label className="flex flex-col">
           Nom du service
           <input
             placeholder="Ex: Radiologie"
@@ -67,7 +67,7 @@ function ServiceUpdateForm(props: Props) {
           />
         </label>
         <div className="flex flex-row justify-between">
-          <label className="flex flex-col text-xl">
+          <label className="flex flex-col">
             Acronyme
             <input
               placeholder="Ex: RDL"
@@ -75,8 +75,8 @@ function ServiceUpdateForm(props: Props) {
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>
-          <div className="flex flex-col justify-center items-center">
-            <p className="text-xl">
+          <div>
+            <p>
               Couleur
             </p>
             <ColorPicker
@@ -88,7 +88,7 @@ function ServiceUpdateForm(props: Props) {
       </div>
       <div className="ml-6">
         <div className="mb-10">
-          <p className="mb-2 text-xl">
+          <p className="mb-2">
             Salle d'attente
           </p>
           {waitingRoomsListLoading && <p>Chargement...</p>}

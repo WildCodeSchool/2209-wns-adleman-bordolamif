@@ -45,24 +45,6 @@ App will refresh automatically when you save a file.
 npm run test:docker
 ```
 
-## Save local database
-
-If you want to save your database from docker volume to your desktop, you can use this command :
-
-```sh
-npm save:docker-db
-```
-It will create a **"waitit-development_db.tar"** archive on your Desktop.
-
-## Import database
-
-If you want to import an archived database in yours, you need to run this command :
-
-### ⚠️ Important : The archive must be on your Desktop. ⚠️
-```sh
-npm run import:docker-db
-```
-
 ## ESlint config
 
 If you use VScode, install the ESlint extension which will allow you to choose it as the default code formatter.

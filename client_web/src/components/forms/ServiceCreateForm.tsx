@@ -47,9 +47,9 @@ function ServiceCreateForm(props: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="f-format-create-box">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex shadow-xl bg-gray-200 p-4 rounded-xl">
       <div>
-        <label className="f-label-name-white">
+        <label className="flex flex-col">
           Nom du service
           <input
             placeholder="Ex: Radiologie"
@@ -58,7 +58,7 @@ function ServiceCreateForm(props: Props) {
           />
         </label>
         <div className="flex flex-row justify-between">
-          <label className="f-label-name-white">
+          <label className="flex flex-col">
             Acronyme
             <input
               placeholder="Ex: RDL"
@@ -66,8 +66,8 @@ function ServiceCreateForm(props: Props) {
               {...register('acronym', { required: true, maxLength: 3 })}
             />
           </label>
-          <div className="flex flex-col justify-center items-center z-10">
-            <p className="text-xl text-white">
+          <div>
+            <p>
               Couleur
             </p>
             <ColorPicker
@@ -79,7 +79,7 @@ function ServiceCreateForm(props: Props) {
       </div>
       <div className="ml-6">
         <div className="mb-10">
-          <p className="mb-2 text-xl text-white">
+          <p className="mb-2">
             Salle d'attente
           </p>
           {waitingRoomsListLoading && <p>Chargement...</p>}
@@ -91,14 +91,14 @@ function ServiceCreateForm(props: Props) {
         </div>
         <div className="f-choice-button-format">
           <button
-            className="f-button-white-red"
+            className="f-button-red"
             type="button"
             onClick={() => setIsCreateService(false)}
           >
             Annuler
           </button>
           <button
-            className="f-button-white-green"
+            className="f-button-green"
             type="submit"
           >
             Créer

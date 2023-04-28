@@ -23,7 +23,7 @@ function TicketDetails(props: Props) {
       <button
         type="button"
         onClick={() => handleOpenModal(ticket)}
-        className="rounded-xl w-32 py-2 m-2 text-white nunito-bold text-xl hover:scale-105"
+        className="f-card-waitingroom"
         style={{ backgroundColor: `${ticket.service.color}` }}
       >
         <p>{ticket.name}</p>

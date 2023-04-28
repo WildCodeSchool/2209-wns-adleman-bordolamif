@@ -10,7 +10,7 @@ function WaitingTicketsByService(props:Props) {
   const { ticketsList, service } = props;
   return (
     <div>
-      <div className="bg-gray-200 m-1 p-4 rounded-2xl h-full w-80 drop-shadow">
+      <div className="bg-gray-300 m-1 p-4 rounded-2xl h-full w-80 drop-shadow">
         <h3 className="text-3xl nunito-bold text-center">{service.name}</h3>
         {ticketsList! && ticketsList.slice(0, 3).map(
           (ticket) => <TicketDetails key={ticket.id} ticket={ticket} />,

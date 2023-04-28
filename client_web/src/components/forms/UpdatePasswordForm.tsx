@@ -51,16 +51,16 @@ function UpdatePasswordForm(props: Props) {
         {watch('confirmPassword') !== watch('newPassword') && getValues('confirmPassword') ? (<p>Les nouveaux mots de passe ne sont pas identiques</p>) : null}
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex">
         <button
-          className="f-button-white-red"
+          className="p-2 mx-2 w-[5rem] bg-red-600 rounded text-white hover:bg-red-700"
           type="button"
           onClick={() => setModeToUpdate('')}
         >
           Annuler
         </button>
         <button
-          className="f-button-white-green"
+          className="p-2 mx-2 w-fit bg-green-600 rounded text-white hover:bg-green-700"
           type="submit"
         >
           Valider

@@ -65,7 +65,7 @@ function OperatorStartUpPage() {
     await UpdateUser({ variables: { data: userToSend, updateUserId: id } });
   };
 
-  if (userUpdateData! && !userUpdateError) setTimeout(() => navigate('/operator/dashboard'), 100);
+  if (userUpdateData! && !userUpdateError) navigate('/operator/dashboard');
 
   return (
     <div>

@@ -12,7 +12,7 @@ function TicketsList(props:Props) {
   } = props;
 
   return (
-    <div className="flex flex-wrap justify-start">
+    <div className="flex flex-wrap">
       {ticketsList && ticketsList! && ticketsList.map((ticket) => (
         <TicketDetails
           handleOpenModal={handleOpenModal}
