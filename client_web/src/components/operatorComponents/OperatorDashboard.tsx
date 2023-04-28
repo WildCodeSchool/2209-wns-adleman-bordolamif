@@ -56,11 +56,13 @@ function OperatorDashboard(props:Props) {
             )}
           />
           <div className="flex flex-col justify-between">
-            <OperatorsInService connectedUsersList={profile! && connectedUsersList!
+            <OperatorsInService connectedUsersList={profile!
+            && connectedUsersList!
                && connectedUsersList.filter((user) => user.id !== profile.id
+               && user.currentService!
                && user.currentService!.id === profile.currentService!.id)}
             />
-            <img className="w-[350px]" src={ManWithComputer} alt="WomanWithComputer" />
+            <img className="w-[350px]" src={ManWithComputer} alt="ManWithComputer" />
           </div>
         </div>
         <DashboardOverview

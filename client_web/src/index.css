@@ -66,7 +66,7 @@
     }
 
     .f-button-orange {
-        @apply flex flex-row ml-4 p-3 rounded-2xl bg-white text-lg text-orange-500 hover:text-orange-600 hover:bg-gray-100 drop-shadow;
+        @apply flex flex-row ml-4 p-3 rounded-2xl bg-white text-lg text-orange-500 hover:text-orange-600 hover:bg-gray-100 drop-shadow-xl;
     }
 
     .f-button-white-orange {
@@ -74,6 +74,10 @@
     }
 
     /* ------- text components ------- */
+
+    .f-account-props {
+        @apply text-xl nunito-bold mb-2 ml-4;
+    }
 
     .f-client-subtitle {
         @apply nunito-bold mb-8 text-2xl text-center;
@@ -187,6 +191,10 @@
 
     .f-format-creation {
         @apply flex flex-row items-center ml-8 mb-8 mt-8;
+    }
+
+    .f-format-account {
+        @apply flex flex-row items-center justify-between mx-8;
     }
 
     /* ------- icon components ------- */

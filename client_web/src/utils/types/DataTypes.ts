@@ -61,8 +61,8 @@ export interface CounterData extends Counter {
 
 export interface UserData extends UserProfile{
   __typename: string;
-  counter: CounterData;
-  services: ServiceData[];
+  counter: CounterData | null;
+  services: ServiceData[] | null;
   tickets: Ticket[];
   currentService?: Service | null
 
