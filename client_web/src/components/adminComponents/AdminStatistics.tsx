@@ -1,5 +1,4 @@
 import { useLazyQuery } from '@apollo/client';
-import AnnualChart from '@components/charts/AnnualChart';
 import AverageWaitingTimePerService from '@components/charts/AverageWaitingTimePerService';
 import TicketsByServicesChart from '@components/charts/TicketsByServicesChart';
 import TicketsPerDayChart from '@components/charts/TicketsPerDayChart';

@@ -2,7 +2,6 @@ import {
   HomeIcon,
   ComputerDesktopIcon,
   TicketIcon,
-  PresentationChartBarIcon,
   UserGroupIcon,
   ClipboardDocumentCheckIcon,
 } from '@heroicons/react/24/outline';
