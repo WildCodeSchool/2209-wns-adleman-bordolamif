@@ -1,4 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
+import AnnualChart from '@components/charts/AnnualChart';
 import AverageWaitingTimePerService from '@components/charts/AverageWaitingTimePerService';
 import TicketsByServicesChart from '@components/charts/TicketsByServicesChart';
 import TicketsPerDayChart from '@components/charts/TicketsPerDayChart';
@@ -138,39 +139,46 @@ function AdminStatistics() {
 
   return (
     <div>
-      <DateTimePicker validateDateInterval={validateDateInterval} />
-      {ticketList ? (
-        <div className="flex flex-col">
-          <div className="flex">
-            <div className="bg-orange-800 text-white rounded-2xl p-3 m-1">
-              <p>{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
-              <p>Tickets traités</p>
+      <div>
+        <DateTimePicker validateDateInterval={validateDateInterval} />
+        {ticketList ? (
+          <div className="flex flex-col">
+            <div className="flex">
+              <div className="bg-orange-800 text-white rounded-2xl p-3 m-1">
+                <p>{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
+                <p>Tickets traités</p>
+              </div>
+              <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
+                <p>{ticketList && averageWaitingTime()} minutes</p>
+                <p>Temps d'attente moyen</p>
+              </div>
+              <div className="bg-orange-700 text-white rounded-2xl p-3 m-1">
+                <p>{ticketList && mostPupularService()}</p>
+                <p>Service le plus fréquenté</p>
+              </div>
+              <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
+                <p>{ticketList && percentageOfReturnedTickets()} %</p>
+                <p>Tickets ajournés</p>
+              </div>
             </div>
-            <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
-              <p>{ticketList && averageWaitingTime()} minutes</p>
-              <p>Temps d'attente moyen</p>
+            <div>
+              <p>Nombre de ticket total</p>
+              <TicketsByServicesChart chartData={attendanceByService()} />
             </div>
-            <div className="bg-orange-700 text-white rounded-2xl p-3 m-1">
-              <p>{ticketList && mostPupularService()}</p>
-              <p>Service le plus fréquenté</p>
+            <div>
+              <TicketsPerDayChart chartData={ticketsPerDay()} />
             </div>
-            <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
-              <p>{ticketList && percentageOfReturnedTickets()} %</p>
-              <p>Tickets ajournés</p>
+            <div>
+              <AverageWaitingTimePerService chartData={averageWaitingTimePerService()} />
             </div>
           </div>
-          <div>
-            <p>Nombre de ticket total</p>
-            <TicketsByServicesChart chartData={attendanceByService()} />
-          </div>
-          <div>
-            <TicketsPerDayChart chartData={ticketsPerDay()} />
-          </div>
-          <div>
-            <AverageWaitingTimePerService chartData={averageWaitingTimePerService()} />
-          </div>
-        </div>
-      ) : <div>Veuillez selectionner la période à afficher</div>}
+        ) : <div>Veuillez selectionner la période à afficher</div>}
+      </div>
+      <div>
+        <div className="f-decoration-line-for-tab" />
+        <p>Récapitulatif annuel</p>
+        {/* <AnnualChart /> */}
+      </div>
     </div>
 
   );
