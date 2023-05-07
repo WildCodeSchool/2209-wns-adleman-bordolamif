@@ -585,7 +585,7 @@ describe('User Resolver', () => {
           };
           const counter = await dataSource.getRepository(Counter).save(dataCounter);
 
-          await client.mutate({
+          const result = await client.mutate({
             mutation: UPDATE_USER,
             variables: {
               data: {
@@ -598,7 +598,7 @@ describe('User Resolver', () => {
         } catch (e) {
           expect(e).toBeDefined();
           expect(e.graphQLErrors).toBeDefined();
-          expect(e.graphQLErrors[0].message).toMatch(/Could not find any entity of type "Counter" matching/);
+          expect(e.graphQLErrors[0].message).toMatch('Counter not found');
         }
       });
     });
