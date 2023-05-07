@@ -585,7 +585,7 @@ describe('User Resolver', () => {
           };
           const counter = await dataSource.getRepository(Counter).save(dataCounter);
 
-          const result = await client.mutate({
+          await client.mutate({
             mutation: UPDATE_USER,
             variables: {
               data: {
