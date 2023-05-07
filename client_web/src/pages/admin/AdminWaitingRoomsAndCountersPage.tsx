@@ -59,25 +59,33 @@ function AdminWaitingRoomsAndCountersPage() {
   };
 
   return (
-    <div>
+    <>
       <div className="f-title-format">
-        <h1 className="f-main-title">Gérer les salles d'attente</h1>
+        <h1 className="f-main-title">Gérer les salles d'attente et les guichets</h1>
         <div className="f-decoration-line" />
       </div>
-      <h2 className="f-under-title">Créer une salle d'attente</h2>
-      <div className="f-page-format">
-        <div className="flex flex-col items-center">
-          {!isCreateWaitingRoom
+      <p className="pl-6 text-lg">
+        Vous pouvez ici ajouter, modifier ou supprimer
+        les différentes salles d'attente et gérer leurs guichets associés.
+      </p>
+      <div className="f-format-creation">
+        <div className="f-format-adding">
+          <h2 className="f-button-text-white">Créer une salle d'attente</h2>
+          <div className="flex flex-row ml-8 mb-4 mx-4">
+            <div className="flex flex-col items-center">
+              {!isCreateWaitingRoom
         && (
           <button
             type="button"
-            className="f-button-green"
+            className="f-button-orange"
             onClick={() => setIsCreateWaitingRoom(true)}
           >
-            <PlusCircleIcon className="f-icon" />
-            Ajouter une salle d'attente
+            <PlusCircleIcon className="mr-2 w-7" />
+            Nouvelle salle d'attente
           </button>
         )}
+            </div>
+          </div>
           {isCreateWaitingRoom
       && (
         <WaitingRoomCreateForm
@@ -87,8 +95,8 @@ function AdminWaitingRoomsAndCountersPage() {
       )}
         </div>
       </div>
-      <h2 className="f-under-title">Salles d'attente et leur guichets</h2>
-      <div className="px-8 mx-">
+      <h2 className="f-title-for-list">Salles d'attente et leur guichets</h2>
+      <div className="px-8">
         <WaitingRoomsList
           waitingRoomsList={waitingRoomsList && waitingRoomsList.getAllWaitingRooms}
           handleUpdateCounter={handleUpdateCounter}
@@ -99,7 +107,7 @@ function AdminWaitingRoomsAndCountersPage() {
         />
         {waitingRoomsListLoading && <p>loading...</p>}
       </div>
-    </div>
+    </>
   );
 }
 export default AdminWaitingRoomsAndCountersPage;

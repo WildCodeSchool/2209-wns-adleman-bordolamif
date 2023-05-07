@@ -2,7 +2,7 @@ import {
   Arg, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import Counter from '../entity/Counter';
-import { CounterInput } from '../utils/types/InputTypes';
+import { CounterInput, PartialCounterInput } from '../utils/types/InputTypes';
 import CounterModel from '../models/CounterModel';
 import CounterController from '../controllers/CounterController';
 
@@ -46,4 +46,12 @@ export class CounterResolver {
     ): Promise<Counter> {
       return await CounterController.updateCounter(data, id);
     }
+
+    @Mutation(() => Counter)
+  async partialCounterUpdate(
+      @Arg('id', () => Int) id: number,
+      @Arg('data') data: PartialCounterInput,
+  ): Promise<Counter> {
+    return await CounterController.partialCounterUpdate(data, id);
+  }
 }

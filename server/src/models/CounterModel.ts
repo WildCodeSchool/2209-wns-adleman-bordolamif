@@ -23,10 +23,10 @@ const CounterModel = {
       },
     }),
   getOneArgCounter: async (id: number) => await dataSource.getRepository(Counter)
-    .findOneOrFail({ where: { id } }),
+    .findOne({ where: { id } }),
 
   getOneCounterByUserId: async (id: number) => await dataSource.getRepository(Counter)
-    .findOneOrFail({
+    .findOne({
       where: { user: { id } },
       relations: {
         waitingRoom: true,

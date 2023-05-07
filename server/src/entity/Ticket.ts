@@ -1,11 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
+  Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StatusEnum } from '../utils/enums/StatusEnum';
 import Counter from './Counter';
@@ -43,6 +38,10 @@ class Ticket {
     @Field()
     @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.EN_ATTENTE })
       status: StatusEnum;
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+      mobileToken?: string;
 
     @Field({ nullable: true })
     @Column({ nullable: true })

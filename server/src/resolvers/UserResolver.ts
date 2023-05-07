@@ -4,14 +4,19 @@ import {
   Ctx,
   Int,
   Mutation,
+  PubSub,
+  PubSubEngine,
   Query,
   Resolver,
+  Root,
+  Subscription,
 } from 'type-graphql';
 import User, { getSafeAttributes } from '../entity/User';
 import { loadEnv } from '../env';
 import { ContextType } from '../utils/interfaces';
 import {
   FirstUserLoginPassword,
+  PartialUserInput,
   UserConnexion,
   UserInput,
   UserUpdatePassword,
@@ -29,8 +34,8 @@ export class UserResolver {
      ************************************ */
 
   @Query(() => [User])
-  async getAllUsers(): Promise<User[]> {
-    const users = await UserController.getAllUsers();
+  async getAllUsers(@Arg('connected', { nullable: true })connected: boolean): Promise<User[]> {
+    const users = await UserController.getAllUsers(connected);
     return users.map((user) => getSafeAttributes(user));
   }
 
@@ -98,8 +103,10 @@ export class UserResolver {
   async updateUser(
     @Arg('id', () => Int) id: number,
     @Arg('data') data: UserInput,
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUser(data, id);
+    await pubsub.publish('UpdatedUser', userToUpdate);
     return getSafeAttributes(userToUpdate);
   }
 
@@ -109,6 +116,15 @@ export class UserResolver {
     @Arg('data') isSuspended: boolean,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUserSuspension(isSuspended, id);
+    return getSafeAttributes(userToUpdate);
+  }
+
+  @Mutation(() => User)
+  async partialUserUpdate(
+    @Arg('id', () => Int) id: number,
+    @Arg('data') data: PartialUserInput,
+  ): Promise<User> {
+    const userToUpdate = await UserController.partialUserUpdate(data, id);
     return getSafeAttributes(userToUpdate);
   }
 
@@ -126,7 +142,15 @@ export class UserResolver {
     @Arg('data') data: UserConnexion,
   ): Promise<User> {
     const userToUpdate = await PasswordController.resetPassword(uuid, data);
-
     return getSafeAttributes(userToUpdate);
+  }
+
+  /** ***********************************
+                SUBSCRIPTION
+     ************************************ */
+
+  @Subscription({ topics: 'UpdatedUser' })
+  updatedUser(@Root() updatedUserPayload: User): User {
+    return updatedUserPayload;
   }
 }

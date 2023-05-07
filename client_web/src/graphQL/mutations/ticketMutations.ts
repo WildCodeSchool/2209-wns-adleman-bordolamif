@@ -58,8 +58,27 @@ mutation UpdateTicket($data: TicketInput!, $updateTicketId: Int!) {
 }
 `;
 
+export const PARTIAL_TICKET_UPDATE = gql`
+mutation PartialTicketUpdate($data: PartialTicketInput!, $partialTicketUpdateId: Int!) {
+  partialTicketUpdate(data: $data, id: $partialTicketUpdateId) {
+    id
+    name
+    createdAt
+    calledAt
+    closedAt
+    isFirstTime
+    status
+    isReturned
+  }}`;
+
 export const DELETE_TICKET = gql`
-mutation DeleteTicket($deleteTicketId: Int!) {
-  deleteTicket(id: $deleteTicketId)
-}
+  mutation DeleteTicket($deleteTicketId: Int!) {
+    deleteTicket(id: $deleteTicketId)
+  }
+`;
+
+export const SEND_NOTIFICATION = gql`
+  mutation SendNotification($id: Int!) {
+    sendNotification(id: $id)
+  }
 `;
