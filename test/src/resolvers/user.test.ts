@@ -26,6 +26,14 @@ const operatorInput = {
   password: 'P4$$W0rd',
 };
 
+const operatorInputBis = {
+  role: 2,
+  lastname: 'UserBis',
+  firstname: 'OperatorBis',
+  email: 'operatorbis@test.fr',
+  password: 'P4$$W0rd',
+};
+
 const clientInput = {
   role: 3,
   lastname: 'User',
@@ -247,6 +255,9 @@ describe('User Resolver', () => {
         const res = await client.query({
           query: GET_ALL_USERS,
           fetchPolicy: 'no-cache',
+          variables: {
+            connected: false,
+          },
         });
 
         expect(res.data?.getAllUsers.length).toBe(2);
@@ -264,10 +275,53 @@ describe('User Resolver', () => {
         expect(res.data?.getAllUsers[1]).toHaveProperty('services', []);
       });
 
-      it('2. should get no user', async () => {
+      it('2. should get all connected users', async () => {
+        const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
+
+        const dataCounter = {
+          name: counterName,
+          waitingRoom: { id: waitingRoom.id },
+        };
+        const counter = await dataSource.getRepository(Counter).save(dataCounter);
+
+        const service = await dataSource.getRepository(Service).save(serviceInput);
+
+        await dataSource.getRepository(User).save(adminInput);
+
+        await dataSource.getRepository(User).save({
+          ...operatorInput,
+          counter: { id: counter.id },
+          services: [{ id: service.id }],
+          currentService: { id: service.id },
+        });
+
+        await dataSource.getRepository(User).save(operatorInputBis);
+
         const res = await client.query({
           query: GET_ALL_USERS,
           fetchPolicy: 'no-cache',
+          variables: {
+            connected: true,
+          },
+        });
+
+        expect(res.data?.getAllUsers.length).toBe(1);
+        expect(res.data?.getAllUsers[0]).toHaveProperty('id');
+        expect(res.data?.getAllUsers[0]).toHaveProperty('role', 2);
+        expect(res.data?.getAllUsers[0]).toHaveProperty('lastname', 'User');
+        expect(res.data?.getAllUsers[0]).toHaveProperty('firstname', 'Operator');
+        expect(res.data?.getAllUsers[0]).toHaveProperty('email', 'operator@test.fr');
+        expect(res.data?.getAllUsers[0].services[0]).toHaveProperty('name', 'Service1');
+        expect(res.data?.getAllUsers[0].currentService).toHaveProperty('name', 'Service1');
+      });
+
+      it('3. should get no user', async () => {
+        const res = await client.query({
+          query: GET_ALL_USERS,
+          fetchPolicy: 'no-cache',
+          variables: {
+            connected: false,
+          },
         });
         expect(res.data?.getAllUsers).toBeDefined();
         expect(res.data?.getAllUsers.length).toBe(0);
