@@ -3,7 +3,9 @@ import { it } from '@jest/globals';
 import client from '../apolloClient';
 import Service from '../../../server/src/entity/Service';
 import dataSource from '../../../server/src/db';
-import { CREATE_USER, DELETE_USER, UPDATE_USER } from '../graphQL/mutations/userMutations';
+import {
+  CREATE_USER, DELETE_USER, UPDATE_USER, UPDATE_USER_SUSPENSION,
+} from '../graphQL/mutations/userMutations';
 import { GET_ALL_USERS, GET_ONE_USER } from '../graphQL/query/userQuery';
 import User from '../../../server/src/entity/User';
 import WaitingRoom from '../../../server/src/entity/WaitingRoom';
@@ -717,6 +719,63 @@ describe('User Resolver', () => {
               deleteUserId: userToDelete.id + 1,
             },
           });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch('User not found');
+        }
+      });
+    });
+  });
+
+  describe('Update User suspension', () => {
+    describe('Success cases', () => {
+      it('1. suspend ans unsusped user', async () => {
+        const userToSuspend = await dataSource.getRepository(User).save(operatorInput);
+
+        const suspendRes = await client.query({
+          query: UPDATE_USER_SUSPENSION,
+          fetchPolicy: 'no-cache',
+          variables: {
+            data: true,
+            updateUserSuspensionId: userToSuspend.id,
+          },
+        });
+
+        const unsuspendRes = await client.query({
+          query: UPDATE_USER_SUSPENSION,
+          fetchPolicy: 'no-cache',
+          variables: {
+            data: false,
+            updateUserSuspensionId: userToSuspend.id,
+          },
+        });
+
+        expect(userToSuspend).toHaveProperty('isSuspended', false);
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('id');
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('role', 2);
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('lastname', 'User');
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('firstname', 'Operator');
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('email', 'operator@test.fr');
+        expect(suspendRes.data?.updateUserSuspension).toHaveProperty('isSuspended', true);
+        expect(unsuspendRes.data?.updateUserSuspension).toHaveProperty('isSuspended', false);
+      });
+    });
+    describe('Error cases', () => {
+      it('1.not found user', async () => {
+        try {
+          const userToSuspend = await dataSource.getRepository(User).save(operatorInput);
+
+          await client.query({
+            query: UPDATE_USER_SUSPENSION,
+            fetchPolicy: 'no-cache',
+            variables: {
+              data: true,
+              updateUserSuspensionId: userToSuspend.id + 1,
+            },
+          });
+
           expect(true).toBe(false);
         } catch (e) {
           expect(e).toBeDefined();

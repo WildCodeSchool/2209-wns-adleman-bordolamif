@@ -4,11 +4,57 @@ export const PROFILE = gql`
 query getProfile {
   profile{
     id
-    email
-    role
     firstname
     lastname
-    isFirstLogin
+    role
+    email
+    isFirstLogin  
+    isSuspended
+    counter {
+      id
+      name
+      ticket {
+        name
+        id
+        createdAt
+        calledAt
+        closedAt
+        isFirstTime
+        status
+        isReturned
+      }
+      waitingRoom {
+        name
+        id
+      }
+    }
+    services {
+      id
+      name
+      color
+      acronym
+      isOpen
+      waitingRoom {
+        id
+      }
+    }
+    tickets {
+      id
+      name
+      createdAt
+      calledAt
+      closedAt
+      isFirstTime
+      isReturned
+      status
+    }
+    currentService {
+      acronym
+      color
+      id
+      name
+      isOpen
+    }
   }
 }
 `;
@@ -64,6 +110,7 @@ query GetOneUser($getOneUserId: Int!) {
     role
     email
     isFirstLogin  
+    isSuspended
     counter {
       id
       name
