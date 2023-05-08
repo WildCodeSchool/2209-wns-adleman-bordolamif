@@ -14,6 +14,7 @@ const TicketModel = {
       user: true,
       counter: true,
     },
+    order: { createdAt: 'ASC' },
   }),
 
   getAllTicketsForWaitingRoom: async (searchCriterias: SearchCriterias) => await

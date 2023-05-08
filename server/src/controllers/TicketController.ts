@@ -34,7 +34,7 @@ const TicketController = {
   },
 
   getOneTicketById: async (id: number): Promise<Ticket> => {
-    const ticket = await TicketController.getOneTicketById(id);
+    const ticket = await TicketModel.getOneTicketById(id);
     if (ticket === null) throw new Error('Ticket not found');
     return ticket;
   },
