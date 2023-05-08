@@ -22,6 +22,7 @@ const TicketController = {
 
   getAllTicketsForWaitingRoom: async (waitingRoomId: number): Promise<Ticket[]> => {
     const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(waitingRoomId);
+    if (waitingRoom === null) throw new Error('Waiting room not found');
     const services = waitingRoom!.services!.map((service) => ({ id: service.id }));
     const dateFilter = dateFilterBuilder(DateFilterEnum.TODAY);
     const searchCriterias : SearchCriterias = {

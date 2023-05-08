@@ -237,23 +237,23 @@ describe('Ticket Resolver', () => {
           },
         });
 
-        expect(res.data?.getAllTickets.length).toBe(2);
-        expect(res.data?.getAllTickets[0]).toHaveProperty('id');
-        expect(res.data?.getAllTickets[0]).toHaveProperty('name', 'SV1-001');
-        expect(res.data?.getAllTickets[0]).toHaveProperty('createdAt');
-        expect(res.data?.getAllTickets[0]).toHaveProperty('calledAt', null);
-        expect(res.data?.getAllTickets[0]).toHaveProperty('isFirstTime', false);
-        expect(res.data?.getAllTickets[0]).toHaveProperty('isReturned', null);
-        expect(res.data?.getAllTickets[0]).toHaveProperty('status', 1);
-        expect(res.data?.getAllTickets[0].service).toHaveProperty('id', service.id);
-        expect(res.data?.getAllTickets[1]).toHaveProperty('id');
-        expect(res.data?.getAllTickets[1]).toHaveProperty('name', 'SV1-002');
-        expect(res.data?.getAllTickets[1]).toHaveProperty('createdAt');
-        expect(res.data?.getAllTickets[1]).toHaveProperty('calledAt', null);
-        expect(res.data?.getAllTickets[1]).toHaveProperty('isFirstTime', false);
-        expect(res.data?.getAllTickets[1]).toHaveProperty('isReturned', null);
-        expect(res.data?.getAllTickets[1]).toHaveProperty('status', 1);
-        expect(res.data?.getAllTickets[1].service).toHaveProperty('id', service.id);
+        expect(res.data?.getAllTicketsForWaitingRoom.length).toBe(2);
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('id');
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('name', 'SV1-001');
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('createdAt');
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('calledAt', null);
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('isFirstTime', false);
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('isReturned', null);
+        expect(res.data?.getAllTicketsForWaitingRoom[0]).toHaveProperty('status', 1);
+        expect(res.data?.getAllTicketsForWaitingRoom[0].service).toHaveProperty('id', service.id);
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('id');
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('name', 'SV1-002');
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('createdAt');
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('calledAt', null);
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('isFirstTime', false);
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('isReturned', null);
+        expect(res.data?.getAllTicketsForWaitingRoom[1]).toHaveProperty('status', 1);
+        expect(res.data?.getAllTicketsForWaitingRoom[1].service).toHaveProperty('id', service.id);
       });
       it('2. should get no ticket', async () => {
         const service = await dataSource.getRepository(Service).save(serviceInput);
@@ -280,8 +280,91 @@ describe('Ticket Resolver', () => {
           },
         });
 
-        expect(res.data?.getAllTickets).toBeDefined();
-        expect(res.data?.getAllTickets.length).toBe(0);
+        expect(res.data?.getAllTicketsForWaitingRoom).toBeDefined();
+        expect(res.data?.getAllTicketsForWaitingRoom.length).toBe(0);
+      });
+    });
+    describe('Error cases', () => {
+      it('1. should not work without id', async () => {
+        const service = await dataSource.getRepository(Service).save(serviceInput);
+        await dataSource.getRepository(WaitingRoom).save({
+          ...waitingRoomInput,
+          services: [{ id: service.id }],
+        });
+
+        const fakeService = await dataSource.getRepository(Service).save(fakeServiceInput);
+
+        for (let i = 0; i < 2; i += 1) {
+          await dataSource.getRepository(Ticket).save({
+            name: `SV1-00${i + 1}`,
+            isFirstTime: false,
+            service: { id: service.id },
+          });
+        }
+
+        for (let i = 0; i < 2; i += 1) {
+          await dataSource.getRepository(Ticket).save({
+            name: `SV2-00${i + 1}`,
+            isFirstTime: false,
+            service: { id: fakeService.id },
+          });
+        }
+
+        try {
+          await client.query({
+            query: GET_ALL_TICKETS_FOR_WAITING_ROOM,
+            fetchPolicy: 'no-cache',
+            variables: {
+              waitingRoomId: null,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch(
+            'Variable "$waitingRoomId" of non-null type "Int!" must not be null.',
+          );
+        }
+      });
+      it('2. should not found ticket with wrong id', async () => {
+        const service = await dataSource.getRepository(Service).save(serviceInput);
+        const waitingRoom = await dataSource.getRepository(WaitingRoom).save({
+          ...waitingRoomInput,
+          services: [{ id: service.id }],
+        });
+
+        const fakeService = await dataSource.getRepository(Service).save(fakeServiceInput);
+
+        for (let i = 0; i < 2; i += 1) {
+          await dataSource.getRepository(Ticket).save({
+            name: `SV1-00${i + 1}`,
+            isFirstTime: false,
+            service: { id: service.id },
+          });
+        }
+
+        for (let i = 0; i < 2; i += 1) {
+          await dataSource.getRepository(Ticket).save({
+            name: `SV2-00${i + 1}`,
+            isFirstTime: false,
+            service: { id: fakeService.id },
+          });
+        }
+        try {
+          await client.query({
+            query: GET_ALL_TICKETS_FOR_WAITING_ROOM,
+            fetchPolicy: 'no-cache',
+            variables: {
+              waitingRoomId: waitingRoom.id + 1,
+            },
+          });
+          expect(true).toBe(false);
+        } catch (e) {
+          expect(e).toBeDefined();
+          expect(e.graphQLErrors).toBeDefined();
+          expect(e.graphQLErrors[0].message).toMatch('Waiting room not found');
+        }
       });
     });
   });
