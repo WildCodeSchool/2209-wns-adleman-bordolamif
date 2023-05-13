@@ -4,8 +4,6 @@ import { describe, it } from '@jest/globals';
 import client from '../apolloClient';
 import Service from '../../../server/src/entity/Service';
 import dataSource from '../../../server/src/db';
-// import User from '../../../server/src/entity/User';
-// import Ticket from '../../../server/src/entity/Ticket';
 import WaitingRoom from '../../../server/src/entity/WaitingRoom';
 import { CREATE_SERVICE, DELETE_SERVICE, UPDATE_SERVICE } from '../graphQL/mutations/serviceMutations';
 import { GET_ALL_SERVICES, GET_ONE_SERVICE } from '../graphQL/query/serviceQuery';
