@@ -7,6 +7,7 @@ import { ServiceId } from '../utils/types/InputIdTypes';
 const ServiceModel = {
   getAllServices: async () => await dataSource.getRepository(Service)
     .find({
+      order: { id: 'ASC' },
       relations: {
         waitingRoom: true, tickets: true, users: true, currentUsers: true,
       },
