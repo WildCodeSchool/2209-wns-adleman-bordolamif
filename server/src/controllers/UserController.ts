@@ -3,6 +3,7 @@ import CounterModel from '../models/CounterModel';
 import ServiceModel from '../models/ServiceModel';
 import UserModel from '../models/UserModel';
 import { PartialUserInput, UserInput } from '../utils/types/InputTypes';
+import ServiceController from './ServiceController';
 
 const UserController = {
   getAllUsers: async (connected?: boolean): Promise<User[]> => {
@@ -54,6 +55,7 @@ const UserController = {
   },
 
   updateUser: async (data: UserInput, id: number) => {
+    const previousService = await ServiceModel.getOneServiceByCurrentUserId(id);
     await UserController.resetUserAssignments(id);
     const {
       firstname,
@@ -69,6 +71,7 @@ const UserController = {
     if (userToUpdate === null) {
       throw new Error('User not found');
     }
+    const currentServiceId = currentService ? currentService.id : null;
 
     userToUpdate.firstname = firstname;
     userToUpdate.lastname = lastname;
@@ -101,28 +104,19 @@ const UserController = {
     }
 
     if (currentService !== null && typeof currentService !== 'undefined') {
-      const serviceToUpdate = (await ServiceModel.getOneArgService(currentService.id)) || null;
-      serviceToUpdate.isOpen = true;
-      await ServiceModel.updateService(serviceToUpdate);
-      userToUpdate.currentService = serviceToUpdate;
+      userToUpdate.currentService = await ServiceModel.getOneArgService(currentService.id)
+       || null;
     } else {
-      if (userToUpdate.currentService !== null) {
-        const serviceToUpdate = (await ServiceModel.getOneServiceByCurrentUserId(id)) || null;
-
-        if (
-          serviceToUpdate!
-          && typeof serviceToUpdate.currentUsers !== 'undefined'
-          && serviceToUpdate!.currentUsers!.length === 1
-        ) {
-          serviceToUpdate.isOpen = false;
-          await ServiceModel.updateService(serviceToUpdate);
-        }
-      }
-
       userToUpdate.currentService = null;
     }
 
-    return await UserModel.updateUser(userToUpdate);
+    await UserModel.updateUser(userToUpdate);
+    await ServiceController.updateServicesIsOpenByCurrentUsers(
+      previousService?.id || null,
+      currentServiceId,
+    );
+
+    return await UserController.getOneUser(userToUpdate.id);
   },
 
   updateUserSuspension: async (isSuspended: boolean, id: number) => {
@@ -170,6 +164,7 @@ const UserController = {
       const serviceToUpdate = await ServiceModel.getOneServiceByCurrentUserId(
         id,
       );
+      if (serviceToUpdate === null) throw new Error('Service not found');
       serviceToUpdate.isOpen = false;
       await ServiceModel.updateService(serviceToUpdate);
     }
@@ -182,21 +177,25 @@ const UserController = {
     if (userToUpdate === null) throw new Error('User not found');
 
     const counterToUpade = userToUpdate.counter;
+    const serviceToUpdate = userToUpdate.currentService;
+
+    userToUpdate.counter = null;
+    userToUpdate.currentService = null;
+    await UserModel.updateUser(userToUpdate);
+
     if (counterToUpade !== null && typeof counterToUpade !== 'undefined') {
       counterToUpade!.user = undefined;
       await CounterModel.updateCounter(counterToUpade);
     }
-
-    const serviceToUpdate = userToUpdate.currentService;
     if (serviceToUpdate !== null && typeof serviceToUpdate !== 'undefined') {
       serviceToUpdate!.currentUsers = serviceToUpdate!.currentUsers?.filter(
         (user) => user.id === userToUpdate.id,
       );
       await ServiceModel.updateService(serviceToUpdate);
+      await ServiceController.updateServicesIsOpenByCurrentUsers(
+        serviceToUpdate.id,
+      );
     }
-    userToUpdate.counter = null;
-    userToUpdate.currentService = null;
-    await UserModel.updateUser(userToUpdate);
   },
 
   deleteUser: async (id: number) => {
