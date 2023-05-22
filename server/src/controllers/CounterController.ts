@@ -33,6 +33,10 @@ const CounterController = {
 
     counterToUpdate.name = data.name;
 
+    const waitingRoom = await WaitingRoomModel.getOneArgWaitingRoom(data.waitingRoom.id);
+    if (waitingRoom === null) { throw new Error('Waiting room not found'); }
+
+    counterToUpdate.waitingRoom = waitingRoom;
     if (data.user) {
       counterToUpdate.user = await UserModel.getOneArgUser(data.user.id);
       if (counterToUpdate.user === null) { throw new Error('User not found'); }
