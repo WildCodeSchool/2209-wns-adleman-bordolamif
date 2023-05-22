@@ -27,6 +27,7 @@ jobs:
           envkey_JWT_PRIVATE_KEY: "CECI_EST_UNE_CLE_PRIVEE"
           envkey_SERVER_HOST: "localhost"
           envkey_SERVER_PORT: 4000
+          envkey_EXPO_ACCESS_TOKEN: "CECI_EST_UN_TOKEN_EXPO"
           directory: ./
           file_name: .env
           fail_on_empty: false
