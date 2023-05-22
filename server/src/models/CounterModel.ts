@@ -4,6 +4,7 @@ import { NewCounterDto } from '../utils/dto';
 
 const CounterModel = {
   getAllCounters: async () => await dataSource.getRepository(Counter).find({
+    order: { id: 'ASC' },
     relations:
     {
       waitingRoom: true,

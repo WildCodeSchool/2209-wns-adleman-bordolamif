@@ -18,6 +18,7 @@ const TicketModel = {
       user: true,
       counter: true,
     },
+    order: { createdAt: 'ASC' },
   }),
 
   getAllTicketsBetweenTwoDates: async (dates: StartEndDate) => {

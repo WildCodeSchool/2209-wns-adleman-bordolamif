@@ -27,15 +27,10 @@ const TicketController = {
     dates: StartEndDate,
   ): Promise<Ticket[]> => await TicketModel.getAllTicketsBetweenTwoDates(dates),
 
-  getAllTicketsForWaitingRoom: async (
-    waitingRoomId: number,
-  ): Promise<Ticket[]> => {
-    const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(
-      waitingRoomId,
-    );
-    const services = waitingRoom!.services!.map((service) => ({
-      id: service.id,
-    }));
+  getAllTicketsForWaitingRoom: async (waitingRoomId: number): Promise<Ticket[]> => {
+    const waitingRoom = await WaitingRoomModel.getOneWaitingRoomById(waitingRoomId);
+    if (waitingRoom === null) throw new Error('Waiting room not found');
+    const services = waitingRoom!.services!.map((service) => ({ id: service.id }));
     const dateFilter = dateFilterBuilder(DateFilterEnum.TODAY);
     const searchCriterias: SearchCriterias = {
       service: services,
@@ -47,7 +42,7 @@ const TicketController = {
   },
 
   getOneTicketById: async (id: number): Promise<Ticket> => {
-    const ticket = await TicketController.getOneTicketById(id);
+    const ticket = await TicketModel.getOneTicketById(id);
     if (ticket === null) throw new Error('Ticket not found');
     return ticket;
   },
