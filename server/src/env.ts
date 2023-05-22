@@ -15,6 +15,7 @@ export const schema = {
   SERVER_HOST: String,
   SERVER_PORT: Number,
   DB_HOST: String,
+  EXPO_ACCESS_TOKEN: String,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
