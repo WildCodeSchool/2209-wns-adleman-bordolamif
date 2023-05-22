@@ -8,6 +8,7 @@ const UserModel = {
     if (connected) {
       return await dataSource.getRepository(User)
         .find({
+          order: { id: 'ASC' },
           where: { currentService: Not(IsNull()) },
           relations: {
             services: true, counter: true, tickets: true, currentService: true,
@@ -16,6 +17,7 @@ const UserModel = {
     }
     return await dataSource.getRepository(User)
       .find({
+        order: { id: 'ASC' },
         relations: {
           services: true, counter: true, tickets: true, currentService: true,
         },
