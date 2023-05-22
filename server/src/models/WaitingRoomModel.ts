@@ -4,7 +4,7 @@ import WaitingRoom from '../entity/WaitingRoom';
 
 const WaitingRoomModel = {
   getAllWaitingRooms: async () => await dataSource.getRepository(WaitingRoom)
-    .find({ relations: { services: true, counters: true } }),
+    .find({ order: { id: 'ASC' }, relations: { services: true, counters: true } }),
 
   getOneWaitingRoomById: async (id:number) => await dataSource
     .getRepository(WaitingRoom)
