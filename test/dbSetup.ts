@@ -9,8 +9,8 @@ async function clearDB() {
     'Ticket',
     'Counter',
     'User',
-    'WaitingRoom',
     'Service',
+    'WaitingRoom',
   ];
   const orderedEntities = entities.sort((a, b) => {
     const aIndex = entityOrder.indexOf(a.name);
