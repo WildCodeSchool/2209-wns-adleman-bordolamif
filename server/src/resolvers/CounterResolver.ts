@@ -3,7 +3,6 @@ import {
 } from 'type-graphql';
 import Counter from '../entity/Counter';
 import { CounterInput, PartialCounterInput } from '../utils/types/InputTypes';
-import CounterModel from '../models/CounterModel';
 import CounterController from '../controllers/CounterController';
 
 @Resolver(Counter)
@@ -14,7 +13,7 @@ export class CounterResolver {
 
     @Query(() => [Counter])
   async getAllCounters(): Promise<Counter[]> {
-    return await CounterModel.getAllCounters();
+    return await CounterController.getAllCounters();
   }
 
   @Query(() => Counter)
