@@ -63,3 +63,8 @@ export interface UserUpdatePassword {
   oldPassword: string;
   newPassword: string;
 }
+
+export interface StartEndDate {
+  startDate: string
+  endDate:string
+}

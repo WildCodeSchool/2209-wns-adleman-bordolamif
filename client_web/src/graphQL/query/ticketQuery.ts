@@ -29,6 +29,36 @@ query GetAllTickets($filter: String) {
 }
 `;
 
+export const GET_ALL_TICKETS_BETWEEN_TWO_DATES = gql`
+query GetAllTicketsBetweenTwoDates($data: StartEndDate!) {
+  getAllTicketsBetweenTwoDates(data: $data) {
+    id
+    name
+    createdAt
+    calledAt
+    closedAt
+    isFirstTime
+    status
+    isReturned
+    service {
+      id
+      name
+      acronym
+      isOpen
+      color
+      waitingRoom {
+        id
+        name
+      }
+    }
+    counter {
+      id
+      name
+    }
+  }
+}
+`;
+
 export const GET_ALL_TICKETS_FOR_WAITING_ROOM = gql`
 query GetAllTicketsForWaitingRoom($waitingRoomId: Int!) {
   getAllTicketsForWaitingRoom(waitingRoomId: $waitingRoomId) {
