@@ -24,6 +24,7 @@ import {
 import UserController from '../controllers/UserController';
 import PasswordController from '../controllers/PasswordController';
 import ConnexionController from '../controllers/ConnexionController';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 
 loadEnv();
 
@@ -55,7 +56,7 @@ export class UserResolver {
                   MUTATION
      ************************************ */
 
-  // @Authorized<RoleEnum>([1])
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserInput): Promise<User> {
     const newUser = await UserController.createUser(data);
@@ -79,7 +80,7 @@ export class UserResolver {
     return await ConnexionController.logout(id, ctx);
   }
 
-  // @Authorized<RoleEnum>([1])
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => Boolean)
   async deleteUser(@Arg('id', () => Int) id: number): Promise<boolean> {
     return await UserController.deleteUser(id);
@@ -110,6 +111,7 @@ export class UserResolver {
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => User)
   async updateUserSuspension(
     @Arg('id', () => Int) id: number,
