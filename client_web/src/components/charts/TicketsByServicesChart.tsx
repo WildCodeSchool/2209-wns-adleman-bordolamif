@@ -19,7 +19,7 @@ function TicketsByServicesChart(props: Props) {
   const data = {
     labels: chartData.map((element) => element.name),
     datasets: [{
-      label: 'Tickets de la journée',
+      label: ' Tickets de la journée ',
       data: chartData.map((element) => element.ticketsNb),
       backgroundColor: chartData.map((element) => element.color),
     }],

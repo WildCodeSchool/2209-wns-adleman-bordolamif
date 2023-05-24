@@ -28,20 +28,28 @@ function DateTimePicker(props:Props) {
   };
 
   return (
-    <>
+    <div className="mt-4 mr-8 flex flex-row gap-10 items-center justify-center">
       <input
+        className="f-input mt-2"
         type="date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
       />
       <input
+        className="f-input mt-2"
         type="date"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
       />
-      <button type="button" onClick={validateDates}>Valider</button>
+      <button
+        className="f-button-green"
+        type="button"
+        onClick={validateDates}
+      >
+        Valider
+      </button>
 
-    </>
+    </div>
   );
 }
 
