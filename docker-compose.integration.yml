@@ -66,6 +66,8 @@ services:
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
       EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN}
+      MJ_APIKEY_PUBLIC: ${MJ_APIKEY_PUBLIC}
+      MJ_APIKEY_PRIVATE: ${MJ_APIKEY_PRIVATE}
       DB_HOST: 'db_test'
     volumes:
       - ./server/src/entity:/server/src/entity
