@@ -80,8 +80,8 @@ export const UPDATE_USER_SUSPENSION = gql`
       email
       role
       isSuspended
+    }
   }
-}
 `;
 
 export const DELETE_USER = gql`
@@ -91,13 +91,17 @@ export const DELETE_USER = gql`
 `;
 
 export const UPDATE_USER_PASSWORD = gql`
-  mutation FirstLoginPassword(
-    $data: FirstUserLoginPassword!
-  ) {
+  mutation FirstLoginPassword($data: FirstUserLoginPassword!) {
     firstLoginPassword(data: $data) {
       email
       isFirstLogin
     }
+  }
+`;
+
+export const FORGOT_PASSWORD = gql`
+  mutation ForgotPassword($email: String!) {
+    forgotPassword(email: $email)
   }
 `;
 
