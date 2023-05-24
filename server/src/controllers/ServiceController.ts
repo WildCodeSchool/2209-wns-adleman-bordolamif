@@ -62,6 +62,29 @@ const ServiceController = {
 
     return await ServiceModel.updateService(ServiceToUpdate);
   },
+
+  updateServicesIsOpenByCurrentUsers: async (
+    previousServiceId:number | null,
+    currentServiceId?:number | null,
+  ) => {
+    if (previousServiceId) {
+      const previousService = await ServiceModel.getOneServiceById(previousServiceId);
+      if (previousService === null) throw new Error('Previous service not found');
+      if (typeof previousService?.currentUsers === 'undefined' || previousService?.currentUsers!.length === 0) {
+        previousService.isOpen = false;
+        await ServiceModel.updateService(previousService);
+      }
+    }
+    if (currentServiceId) {
+      const currentService = await ServiceModel.getOneServiceById(currentServiceId);
+      if (currentService === null) throw new Error('Current service not found');
+
+      if (typeof currentService?.currentUsers !== 'undefined' && currentService?.currentUsers!.length > 0) {
+        currentService.isOpen = true;
+        await ServiceModel.updateService(currentService);
+      }
+    }
+  },
 };
 
 export default ServiceController;

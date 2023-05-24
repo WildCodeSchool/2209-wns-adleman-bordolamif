@@ -79,7 +79,7 @@ class User {
   @Field(() => Service, { nullable: true })
   @ManyToOne(() => Service, (service: Service | null) => service?.currentUsers, {
     nullable: true,
-    cascade: true,
+    eager: true,
   })
     currentService?: Service | null;
 }

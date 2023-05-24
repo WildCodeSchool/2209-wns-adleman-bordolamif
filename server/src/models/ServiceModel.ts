@@ -34,7 +34,7 @@ const ServiceModel = {
     }),
 
   getOneServiceByCurrentUserId: async (id: number) => await dataSource.getRepository(Service)
-    .findOneOrFail({
+    .findOne({
       where: { currentUsers: { id } },
       relations: {
         waitingRoom: true, tickets: true, users: true, currentUsers: true,
