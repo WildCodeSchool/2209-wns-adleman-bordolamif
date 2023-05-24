@@ -64,9 +64,7 @@ function AuthForm(props: Props) {
           className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm"
         >
           <div className="flex flex-col items-center">
-            <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 nunito-bold text-3xl mb-8">
-              Connexion
-            </h2>
+            <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 f-bold3xl mb-8">Connexion</h2>
             <div className="relative">
               <AtSymbolIcon className="f-auth-icon" />
               <input

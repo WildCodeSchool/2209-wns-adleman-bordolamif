@@ -79,6 +79,14 @@
         @apply text-xl nunito-bold mb-2 ml-4;
     }
 
+    .f-bold3xl {
+        @apply nunito-bold text-3xl;
+    }
+
+    .f-text-left-services {
+        @apply px-3 py-2 text-left;
+    }
+
     .f-client-subtitle {
         @apply nunito-bold mb-8 text-2xl text-center;
     }
@@ -159,6 +167,14 @@
 
     .f-modal-format {
         @apply text-gray-700 flex justify-between;
+    }
+
+    .f-format-services {
+        @apply flex text-xl justify-around mt-4 mb-8;
+    }
+
+    .f-format-around-center {
+        @apply flex flex-row justify-around items-center;
     }
 
     .f-client-format-logo {
