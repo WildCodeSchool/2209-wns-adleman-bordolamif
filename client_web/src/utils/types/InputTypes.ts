@@ -1,6 +1,8 @@
 import { RoleEnum } from '@utils/enum/RoleEnum';
 import { StatusEnum } from '@utils/enum/StatusEnum';
-import { CounterId, ServiceId, UserId, WaitingRoomId } from './InputIdTypes';
+import {
+  CounterId, ServiceId, UserId, WaitingRoomId,
+} from './InputIdTypes';
 
 export interface UserInput {
   firstname: string;
