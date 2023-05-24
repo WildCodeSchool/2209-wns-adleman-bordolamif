@@ -75,11 +75,11 @@ function TvScreenPage() {
 
   return (
     <div className="flex flex-row min-h-screen">
-      { ticketsList && ticketsList! && (
+      { ticketsList && ticketsList! && waitingRoom! && (
       <CalledTicketByCounter
         ticketsList={ticketsList.getAllTicketsForWaitingRoom
           .filter(
-            (ticket:TicketData) => waitingRoom.getOneWaitingRoom.services.map(
+            (ticket:TicketData) => waitingRoom!.getOneWaitingRoom.services.map(
               (service:ServiceData) => service.id,
             ).includes(ticket.service.id)
             && ticket.status === StatusEnum.EN_TRAITEMENT
