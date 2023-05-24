@@ -18,6 +18,7 @@ import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
+import ResetPasswordPage from '@pages/ResetPasswordPage';
 import ForgotPasswordPage from '@pages/ForgotPasswordPage';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             />
           )}
         />
+        <Route path="/reset-password/:uuid" element={(<ResetPasswordPage />)} />
         <Route
           path="/forgot-password"
           element={(

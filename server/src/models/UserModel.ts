@@ -45,6 +45,10 @@ const UserModel = {
     .getRepository(User)
     .findOne({ where: { email } }),
 
+  getOneUserByResetPasswordToken: async (resetPasswordToken: string) => await dataSource
+    .getRepository(User)
+    .findOne({ where: { resetPasswordToken } }),
+
   getOneArgUser: async (id: number) => await
   dataSource.getRepository(User).findOneOrFail({ where: { id } }),
 
