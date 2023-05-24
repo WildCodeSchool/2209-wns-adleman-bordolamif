@@ -34,12 +34,14 @@ export class UserResolver {
                    QUERY
      ************************************ */
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Query(() => [User])
   async getAllUsers(@Arg('connected', { nullable: true })connected: boolean): Promise<User[]> {
     const users = await UserController.getAllUsers(connected);
     return users.map((user) => getSafeAttributes(user));
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Query(() => User)
   async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
     const user = await UserController.getOneUser(id);
@@ -72,6 +74,7 @@ export class UserResolver {
     return token;
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR, RoleEnum.CLIENT])
   @Mutation(() => String)
   async logout(
     @Arg('id', () => Int) id: number,
@@ -86,12 +89,14 @@ export class UserResolver {
     return await UserController.deleteUser(id);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async updatePassword(@Arg('data') data: UserUpdatePassword): Promise<User> {
     const userToUpdate = await PasswordController.updatePassword(data);
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async firstLoginPassword(
     @Arg('data') data: FirstUserLoginPassword,
@@ -100,6 +105,7 @@ export class UserResolver {
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async updateUser(
     @Arg('id', () => Int) id: number,
@@ -121,6 +127,7 @@ export class UserResolver {
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async partialUserUpdate(
     @Arg('id', () => Int) id: number,
@@ -151,6 +158,7 @@ export class UserResolver {
                 SUBSCRIPTION
      ************************************ */
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Subscription({ topics: 'UpdatedUser' })
   updatedUser(@Root() updatedUserPayload: User): User {
     return updatedUserPayload;

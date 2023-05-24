@@ -47,6 +47,7 @@ export class ServiceResolver {
     return await ServiceController.deleteService(id);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => Service)
   async updateService(
       @Arg('id', () => Int) id: number,

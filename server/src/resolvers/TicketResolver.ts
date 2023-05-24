@@ -58,6 +58,7 @@ export class TicketResolver {
     return await TicketController.deleteTicket(id);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('id', () => Int) id: number,
@@ -69,6 +70,7 @@ export class TicketResolver {
     return updatedTicket;
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => Ticket)
   async partialTicketUpdate(
       @Arg('id', () => Int) id: number,

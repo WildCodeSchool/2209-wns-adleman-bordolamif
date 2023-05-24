@@ -41,7 +41,8 @@ export class CounterResolver {
       return await CounterController.deleteCounter(id);
     }
 
-  @Mutation(() => Counter)
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
+    @Mutation(() => Counter)
     async updateCounter(
       @Arg('id', () => Int) id: number,
       @Arg('data') data: CounterInput,
@@ -49,11 +50,12 @@ export class CounterResolver {
       return await CounterController.updateCounter(data, id);
     }
 
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
     @Mutation(() => Counter)
-  async partialCounterUpdate(
+    async partialCounterUpdate(
       @Arg('id', () => Int) id: number,
       @Arg('data') data: PartialCounterInput,
-  ): Promise<Counter> {
-    return await CounterController.partialCounterUpdate(data, id);
-  }
+    ): Promise<Counter> {
+      return await CounterController.partialCounterUpdate(data, id);
+    }
 }
