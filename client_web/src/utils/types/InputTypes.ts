@@ -35,11 +35,11 @@ export interface CounterInput {
 }
 
 export interface ServiceInput {
-      name: string;
-      acronym: string;
-      isOpen: boolean;
-      color: string;
-      waitingRoom?: WaitingRoomId | null;
+  name: string;
+  acronym: string;
+  isOpen: boolean;
+  color: string;
+  waitingRoom?: WaitingRoomId | null;
 }
 
 export interface UserConnexion {
@@ -65,6 +65,10 @@ export interface UserUpdatePassword {
 }
 
 export interface StartEndDate {
-  startDate: string
-  endDate:string
+  startDate: string;
+  endDate: string;
+}
+
+export interface Email {
+  email: string;
 }
