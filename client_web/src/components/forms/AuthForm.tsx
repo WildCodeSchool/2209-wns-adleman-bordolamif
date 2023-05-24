@@ -2,16 +2,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserConnexion } from '@utils/types/InputTypes';
 import {
-  AtSymbolIcon, EyeIcon, EyeSlashIcon, LockClosedIcon,
+  AtSymbolIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  LockClosedIcon,
 } from '@heroicons/react/24/solid';
 import { ArrowRightCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import Loader from '@assets/Loader';
 import WomanWithCommputer from '../../assets/illustrations/WomanWithComputer.png';
+import { Link } from 'react-router-dom';
 
 interface Props {
-    onLogin: (formData:UserConnexion) => void,
-    error: string,
-    loading: boolean
+  onLogin: (formData: UserConnexion) => void;
+  error: string;
+  loading: boolean;
 }
 
 function AuthForm(props: Props) {
@@ -30,7 +34,8 @@ function AuthForm(props: Props) {
   };
 
   const iconProps = {
-    className: 'absolute transition-all duration-300 right-6 top-2 w-7 text-gray-500 hover:text-orange-600 cursor-pointer select-none',
+    className:
+      'absolute transition-all duration-300 right-6 top-2 w-7 text-gray-500 hover:text-orange-600 cursor-pointer select-none',
     onClick: () => setShowPassword(!showPassword),
   };
 
@@ -47,33 +52,47 @@ function AuthForm(props: Props) {
         <p className="text-xl">dans les établissements de santé</p>
       </div>
       <div>
-        <img className="w-[500px]" src={WomanWithCommputer} alt="WomanWithComputer" />
+        <img
+          className="w-[500px]"
+          src={WomanWithCommputer}
+          alt="WomanWithComputer"
+        />
       </div>
       <div>
-        <form onSubmit={handleSubmit(onLogin)} className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
+        <form
+          onSubmit={handleSubmit(onLogin)}
+          className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm"
+        >
           <div className="flex flex-col items-center">
             <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 f-bold3xl mb-8">Connexion</h2>
             <div className="relative">
               <AtSymbolIcon className="f-auth-icon" />
               <input
                 placeholder="Email"
-                {...register('email', { onChange: handleChangeEmail, value: emailValue })}
+                {...register('email', {
+                  onChange: handleChangeEmail,
+                  value: emailValue,
+                })}
                 className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-7"
               />
             </div>
-            <div className="relative">
+            <div className="relative mb-5">
               <LockClosedIcon className="f-auth-icon" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Mot de passe"
-                {...register('password', { onChange: handleChangePassword, value: passwordValue })}
-                className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-8"
+                {...register('password', {
+                  onChange: handleChangePassword,
+                  value: passwordValue,
+                })}
+                className="border rounded w-[20rem] py-2 pl-10 text-gray-700 focus:outline-none mb-5"
               />
               {showPassword ? (
                 <EyeIcon {...iconProps} />
               ) : (
                 <EyeSlashIcon {...iconProps} />
               )}
+              <Link to="/forgot-password">Mot de passe oublié ?</Link>
             </div>
             <button
               type="submit"
@@ -87,16 +106,14 @@ function AuthForm(props: Props) {
                   <ArrowRightCircleIcon className="absolute left-2 top-2 w-6" />
                 )}
               </div>
-              <p>
-                Se connecter
-              </p>
+              <p>Se connecter</p>
             </button>
             <div className="mt-4">
               {loading && (
-              <div className="flex flex-row justify-center items-center">
-                <div className="mr-4">Connexion...</div>
-                <Loader />
-              </div>
+                <div className="flex flex-row justify-center items-center">
+                  <div className="mr-4">Connexion...</div>
+                  <Loader />
+                </div>
               )}
               {error && <div className="f-error-message">{error}</div>}
             </div>
