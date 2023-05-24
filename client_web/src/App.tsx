@@ -18,7 +18,7 @@ import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
-import ForgotPasswordForm from '@components/forms/ForgotPasswordForm';
+import ForgotPasswordPage from '@pages/ForgotPasswordPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -38,7 +38,7 @@ function App() {
         <Route
           path="/forgot-password"
           element={(
-            <ForgotPasswordForm />
+            <ForgotPasswordPage />
           )}
         />
         {currentUser && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR
