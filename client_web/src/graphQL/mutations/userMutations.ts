@@ -101,6 +101,16 @@ export const UPDATE_USER_PASSWORD = gql`
   }
 `;
 
+export const RESET_PASSWORD = gql`
+mutation ResetPassword($password: String!, $uuid: String!) {
+  resetPassword(password: $password, uuid: $uuid) {
+    firstname
+    lastname
+    email
+  }
+}
+`;
+
 export const UPDATE_PASSWORD = gql`
   mutation UpdatePassword($data: UserUpdatePassword!) {
     updatePassword(data: $data) {
