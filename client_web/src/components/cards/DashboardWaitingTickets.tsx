@@ -10,7 +10,7 @@ function DashboardWaitingTickets(props:Props) {
   return (
     <>
       <h2 className="f-dashboard-titles">Tickets en attentes</h2>
-      {ticketsList! && ticketsList.slice(0, 4).map(
+      {ticketsList! && ticketsList.slice(0, 3).map(
         (ticket) => <TicketDetails key={ticket.id} ticket={ticket} />,
       )}
       {ticketsList! && ticketsList.length > 3
