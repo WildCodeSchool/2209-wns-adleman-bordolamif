@@ -6,21 +6,21 @@ import { ServiceId } from './types/InputIdTypes';
 import { StatusEnum } from './enums/StatusEnum';
 
 export interface ContextType {
-    req: express.Request;
-    res: express.Response;
-    currentUser?: User;
-    jwtPayload?: jwt.JwtPayload;
-  }
+  req: express.Request;
+  res: express.Response;
+  currentUser?: User;
+  jwtPayload?: jwt.JwtPayload;
+}
 
-  interface CreatedAtFilter {
-    createdAt : FindOperator<Date>
-   }
+interface CreatedAtFilter {
+  createdAt: FindOperator<Date>;
+}
 export interface SearchFilter {
-     where?: CreatedAtFilter;
-   }
+  where?: CreatedAtFilter;
+}
 
-export interface SearchCriterias{
-    service: ServiceId[],
-    status: FindOperator<StatusEnum>,
-    createdAt: FindOperator<Date> | undefined
-   }
+export interface SearchCriterias {
+  service: ServiceId[];
+  status: FindOperator<StatusEnum>;
+  createdAt: FindOperator<Date> | undefined;
+}

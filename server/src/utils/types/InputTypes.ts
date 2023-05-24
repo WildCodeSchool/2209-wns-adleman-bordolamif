@@ -224,3 +224,12 @@ export class ServiceInput {
     @Field(() => WaitingRoomId, { nullable: true })
       waitingRoom: WaitingRoomId | null;
 }
+
+@InputType()
+export class StartEndDate {
+  @Field()
+    startDate: string;
+
+  @Field()
+    endDate: string;
+}
