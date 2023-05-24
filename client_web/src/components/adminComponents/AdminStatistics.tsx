@@ -32,51 +32,58 @@ function AdminStatistics() {
         <DateTimePicker validateDateInterval={validateDateInterval} />
         {ticketList ? (
           <div className="flex flex-col">
-            <div className="flex">
-              <div className="bg-orange-800 text-white rounded-2xl p-3 m-1">
-                <p>{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
+            <div className="f-format-services">
+              <div className="bg-amber-100 text-black rounded-2xl p-5">
+                <p className="nunito-bold text-3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
                 <p>Tickets traités</p>
               </div>
-              <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
-                <p>{ticketList
+              <div className="bg-orange-100 text-black rounded-2xl p-5">
+                <p className="nunito-bold text-3xl text-orange-500">{ticketList
                 && averageWaitingTime(ticketList.getAllTicketsBetweenTwoDates)} minutes
                 </p>
                 <p>Temps d'attente moyen</p>
               </div>
-              <div className="bg-orange-700 text-white rounded-2xl p-3 m-1">
-                <p>{ticketList && mostPupularService(ticketList.getAllTicketsBetweenTwoDates)}</p>
+              <div className="bg-red-100 text-black rounded-2xl p-5">
+                <p className="nunito-bold text-3xl text-red-500">{ticketList && mostPupularService(ticketList.getAllTicketsBetweenTwoDates)}</p>
                 <p>Service le plus fréquenté</p>
               </div>
-              <div className="bg-orange-600 text-white rounded-2xl p-3 m-1">
-                <p>{ticketList
+              <div className="bg-lime-100 text-black rounded-2xl p-5">
+                <p className="nunito-bold text-3xl text-lime-500">{ticketList
                 && percentageOfReturnedTickets(ticketList.getAllTicketsBetweenTwoDates)} %
                 </p>
                 <p>Tickets ajournés</p>
               </div>
             </div>
-            <div>
-              <p>Nombre de ticket total</p>
-              <TicketsByServicesChart
-                chartData={attendanceByService(ticketList.getAllTicketsBetweenTwoDates)}
-              />
-            </div>
-            <div>
-              <TicketsPerDayChart
-                chartData={ticketsPerDay(dateInterval!, ticketList.getAllTicketsBetweenTwoDates)}
-              />
-            </div>
-            <div>
-              <AverageWaitingTimePerService
-                chartData={averageWaitingTimePerService(ticketList.getAllTicketsBetweenTwoDates)}
-              />
+            <div className="f-format-around-center">
+              <div className="flex flex-col">
+                <h3 className="ml-4">Nombre de ticket par jour</h3>
+                <div className="w-[120%]">
+                  <TicketsPerDayChart
+                    chartData={
+                      ticketsPerDay(dateInterval!, ticketList.getAllTicketsBetweenTwoDates)
+                    }
+                  />
+                </div>
+                <h3 className="ml-4 mt-4">Temps d'attente moyen par service en minutes</h3>
+                <div>
+                  <AverageWaitingTimePerService
+                    chartData={
+                      averageWaitingTimePerService(ticketList.getAllTicketsBetweenTwoDates)
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <h3>Passer la souris sur le diagramme pour en savoir plus</h3>
+                <div className="mt-4">
+                  <TicketsByServicesChart
+                    chartData={attendanceByService(ticketList.getAllTicketsBetweenTwoDates)}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        ) : <div>Veuillez selectionner la période à afficher</div>}
-      </div>
-      <div>
-        <div className="f-decoration-line-for-tab" />
-        <p>Récapitulatif annuel</p>
-        {/* <AnnualChart /> */}
+        ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}
       </div>
     </div>
 
