@@ -79,6 +79,10 @@
         @apply text-xl nunito-bold mb-2 ml-4;
     }
 
+    .f-bold3xl {
+        @apply nunito-bold text-3xl;
+    }
+
     .f-text-left-services {
         @apply px-3 py-2 text-left;
     }

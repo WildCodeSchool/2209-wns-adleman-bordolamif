@@ -34,21 +34,21 @@ function AdminStatistics() {
           <div className="flex flex-col">
             <div className="f-format-services">
               <div className="bg-amber-100 text-black rounded-2xl p-5">
-                <p className="nunito-bold text-3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
+                <p className="f-bold3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
                 <p>Tickets traités</p>
               </div>
               <div className="bg-orange-100 text-black rounded-2xl p-5">
-                <p className="nunito-bold text-3xl text-orange-500">{ticketList
+                <p className="f-bold3xl text-orange-500">{ticketList
                 && averageWaitingTime(ticketList.getAllTicketsBetweenTwoDates)} minutes
                 </p>
                 <p>Temps d'attente moyen</p>
               </div>
               <div className="bg-red-100 text-black rounded-2xl p-5">
-                <p className="nunito-bold text-3xl text-red-500">{ticketList && mostPupularService(ticketList.getAllTicketsBetweenTwoDates)}</p>
+                <p className="f-bold3xl text-red-500">{ticketList && mostPupularService(ticketList.getAllTicketsBetweenTwoDates)}</p>
                 <p>Service le plus fréquenté</p>
               </div>
               <div className="bg-lime-100 text-black rounded-2xl p-5">
-                <p className="nunito-bold text-3xl text-lime-500">{ticketList
+                <p className="f-bold3xl text-lime-500">{ticketList
                 && percentageOfReturnedTickets(ticketList.getAllTicketsBetweenTwoDates)} %
                 </p>
                 <p>Tickets ajournés</p>
