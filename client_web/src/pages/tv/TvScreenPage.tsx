@@ -8,7 +8,8 @@ import { GET_ONE_WAITINGROOM } from '@graphQL/query/waitingRoomQuery';
 import { StatusEnum } from '@utils/enum/StatusEnum';
 import DarkLogo from '@assets/DarkLogo';
 import { CREATED_TICKET, UPDATED_TICKET } from '@graphQL/subscriptions/ticketSubscriptions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { speak } from '@utils/speak';
 
 function TvScreenPage() {
   const { id } = useParams();
@@ -25,7 +26,10 @@ function TvScreenPage() {
   const { data: createdTicket } = useSubscription(CREATED_TICKET);
   const { data: updateData, loading: updateLoading } = useSubscription(UPDATED_TICKET);
 
+  const [newTicketUpdate, setNewTicketUpdate] = useState<TicketData>();
+
   useEffect(() => {
+    if (typeof createdTicket !== 'undefined' && createdTicket!.data.newTicket!) setNewTicketUpdate(createdTicket.data.newTicket);
     subscribeToMore({
       document: CREATED_TICKET,
       updateQuery: (prev, { subscriptionData }) => {
@@ -43,6 +47,7 @@ function TvScreenPage() {
 
   useEffect(() => {
     if (!updateLoading && updateData!) {
+      if (updateData.updatedTicket!) setNewTicketUpdate(updateData.updatedTicket);
       subscribeToMore({
         document: UPDATED_TICKET,
         updateQuery: (prev, { subscriptionData }) => {
@@ -62,13 +67,19 @@ function TvScreenPage() {
     }
   }, [updateData, id, subscribeToMore, updateLoading]);
 
+  useEffect(() => {
+    if (typeof newTicketUpdate !== 'undefined' && newTicketUpdate!.status === 3 && newTicketUpdate!.counter!) {
+      speak(`Le ticket ${newTicketUpdate!.name} est attendu au ${newTicketUpdate!.counter.name}`);
+    }
+  }, [newTicketUpdate]);
+
   return (
     <div className="flex flex-row min-h-screen">
-      { ticketsList && ticketsList! && (
+      { ticketsList && ticketsList! && waitingRoom! && (
       <CalledTicketByCounter
         ticketsList={ticketsList.getAllTicketsForWaitingRoom
           .filter(
-            (ticket:TicketData) => waitingRoom.getOneWaitingRoom.services.map(
+            (ticket:TicketData) => waitingRoom!.getOneWaitingRoom.services.map(
               (service:ServiceData) => service.id,
             ).includes(ticket.service.id)
             && ticket.status === StatusEnum.EN_TRAITEMENT

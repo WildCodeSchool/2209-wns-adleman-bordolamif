@@ -14,8 +14,9 @@ import { StatusEnum } from '../utils/enums/StatusEnum';
 import { SearchCriterias } from '../utils/interfaces';
 import { PartialTicketInput, StartEndDate, TicketInput } from '../utils/types/InputTypes';
 import { Expo } from 'expo-server-sdk';
+import { env } from '../env';
 
-const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
+const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN });
 
 const TicketController = {
   getAllTcikets: async (filter?: string): Promise<Ticket[]> => {
@@ -135,9 +136,9 @@ const TicketController = {
   sendNotification: async (id: number) => {
     const ticketToCall = await TicketModel.getOneTicketById(id);
     if (ticketToCall === null) throw new Error('Ticket not found');
-
     const { mobileToken } = ticketToCall;
-    if (mobileToken === null || !Expo.isExpoPushToken(mobileToken)) throw new Error('Mobile token not found');
+    if (mobileToken === null || typeof mobileToken === 'undefined') return true;
+    if (!Expo.isExpoPushToken(mobileToken)) throw new Error('Mobile token not found');
 
     await expo.sendPushNotificationsAsync(
       [{
