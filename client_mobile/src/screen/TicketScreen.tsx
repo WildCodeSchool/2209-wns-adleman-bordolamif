@@ -6,6 +6,7 @@ import { useQuery, useSubscription } from '@apollo/client';
 import { GET_ALL_TICKETS_FOR_SERVICE } from '../../graphQL/query/serviceQuery';
 import { UPDATED_TICKET_BY_SERVICE_ID } from '../../graphQL/subscription/ticketSubscription';
 import { TicketData } from '../types/DataTypes';
+import { StatusEnum } from '../../utils/enum/StatusEnum';
 
 type TicketScreenRouteProp = NativeStackScreenProps<RootStackParamList, 'TicketScreen'>;
 
@@ -14,7 +15,7 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
   const [currentTicket, setCurrentTicket] = useState<TicketData>(route.params.createdTicket);
   const [currentTicketServiceId, setCurrentTicketServiceId] = useState<number>();
 
-  const { data: ticketsList, refetch, subscribeToMore: subscribeToMoreTicket } = useQuery(
+  const { data: ticketsList } = useQuery(
     GET_ALL_TICKETS_FOR_SERVICE,
     {
       variables: {
@@ -25,7 +26,6 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
 
   const {
     data: updatedTicket,
-    loading: updateTicketLoading,
   } = useSubscription(
     UPDATED_TICKET_BY_SERVICE_ID,
     {
@@ -43,40 +43,48 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
   }, [currentTicket]);
 
   useEffect(() => {
-    setCurrentTicketIndex(ticketsList?.getAllTicketsForService.findIndex(
+    setCurrentTicketIndex(ticketsList! && ticketsList.getAllTicketsForService.filter(
+      (ticket: TicketData) => ticket.status === StatusEnum.EN_ATTENTE,
+    ).findIndex(
       (ticket: TicketData) => ticket.id === currentTicket.id,
     ));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketsList, subscribeToMoreTicket]);
+  }, [ticketsList]);
 
-  useEffect(() => {
-    if (!updateTicketLoading && updatedTicket!) {
-      subscribeToMoreTicket({
-        document: UPDATED_TICKET_BY_SERVICE_ID,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) return prev;
-          const ticketToUpdate = subscriptionData.data.updatedTicketByServiceId;
-
-          if (ticketToUpdate.id === currentTicket.id) setCurrentTicket(ticketToUpdate);
-
-          const newList = prev.getAllTicketsForService.map(
-            (ticket: TicketData) => (ticket.id === ticketToUpdate.id ? ticketToUpdate : ticket),
-          );
-
-          // eslint-disable-next-line no-restricted-syntax
-          console.log('|||===newList===>>', newList);
-
-          const filteredNewList = newList.filter((ticket: TicketData) => ticket.status === 1);
-
-          return {
-            ...prev,
-            getAllTicketsForService: filteredNewList,
-          };
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedTicket, subscribeToMoreTicket, updateTicketLoading]);
+  // useEffect(() => {
+  //   console.log(1);
+  //   if (!updateTicketLoading && updatedTicket!) {
+  //     console.log(2);
+  //     subscribeToMoreTicket({
+  //       document: UPDATED_TICKET_BY_SERVICE_ID,
+  //       updateQuery: (prev, { subscriptionData }) => {
+  //         console.log('sub', subscriptionData);
+  //         console.log(3);
+  //         if (!subscriptionData.data) return prev;
+  //
+  //         const ticketToUpdate = subscriptionData.data.updatedTicketByServiceId;
+  //
+  //         if (ticketToUpdate.id === currentTicket.id) setCurrentTicket(ticketToUpdate);
+  //
+  //         const newList = prev.getAllTicketsForService.map(
+  //           (ticket: TicketData) => (ticket.id === ticketToUpdate.id ? ticketToUpdate : ticket),
+  //         );
+  //
+  //         // eslint-disable-next-line no-restricted-syntax
+  //         console.log('|||===newList===>>', newList);
+  //
+  //         const filteredNewList = newList.filter(
+  //         (ticket: TicketData) => ticket.status === StatusEnum.EN_ATTENTE);
+  //
+  //         return {
+  //           ...prev,
+  //           getAllTicketsForService: filteredNewList,
+  //         };
+  //       },
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [updatedTicket, subscribeToMoreTicket, updateTicketLoading]);
 
   return (
     <View>
