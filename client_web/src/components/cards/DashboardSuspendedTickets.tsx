@@ -12,7 +12,7 @@ function DashboardSuspendedTickets(props:Props) {
   return (
     <div className="bg-gray-100 w-1/3 rounded-2xl">
       <h2 className="f-dashboard-titles">Tickets suspendus</h2>
-      {ticketsList! && ticketsList.slice(0, 4).map(
+      {ticketsList! && ticketsList.slice(0, 3).map(
         (ticket) => (
           <button
             disabled={profile.counter.ticket !== null}
