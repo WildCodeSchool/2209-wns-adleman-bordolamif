@@ -14,7 +14,7 @@ function DashboardWaitingTickets(props:Props) {
         (ticket) => <TicketDetails key={ticket.id} ticket={ticket} />,
       )}
       {ticketsList! && ticketsList.length > 3
-      && <p className="text-3xl mt-6 text-center"> + {ticketsList.length - 3} tickets</p>}
+      && <p className="text-3xl my-4 text-center"> + {ticketsList.length - 3} tickets</p>}
     </>
 
   );

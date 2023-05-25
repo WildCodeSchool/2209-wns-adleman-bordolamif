@@ -10,7 +10,7 @@ function OperatorsInService(props:Props) {
   return (
 
     <div className="rounded-2xl">
-      <h2 className="f-dashboard-titles text-center">Opérateurs sur le service</h2>
+      <h2 className="f-dashboard-titles">Opérateurs sur le service</h2>
       {connectedUsersList! && connectedUsersList.map((user) => (
         <div key={user.id} className="flex m-1 items-center">
           <UserIcon user={user} />

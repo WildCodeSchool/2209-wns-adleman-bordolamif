@@ -75,6 +75,10 @@
 
     /* ------- text components ------- */
 
+    .f-space4 {
+        @apply flex flex-col space-y-4 mt-4;
+    }
+
     .f-account-props {
         @apply text-xl nunito-bold mb-2 ml-4;
     }
@@ -127,6 +131,10 @@
         @apply text-2xl ml-6 mb-8;
     }
 
+    .f-xl-center {
+        @apply text-center text-xl;
+    }
+
     /* ------- input components ------- */
 
     .f-input {
@@ -164,6 +172,22 @@
     }
 
     /* ------- format components ------- */
+
+    .f-format-ope-dash {
+        @apply flex flex-col gap-4 bg-white rounded-2xl w-fit py-4 px-8;
+    }
+
+    .f-format-gray-rounded {
+        @apply bg-gray-100 p-4 my-4 rounded-3xl;
+    }
+
+    .f-format-gray {
+        @apply bg-gray-100 rounded-2xl;
+    }
+
+    .f-between {
+        @apply flex flex-col justify-between;
+    }
 
     .f-modal-format {
         @apply text-gray-700 flex justify-between;

@@ -19,7 +19,7 @@ function AdminServicesState() {
   };
 
   return (
-    <div className="flex flex-col space-y-4 mt-4">
+    <div className="f-space4">
       <div className="bg-gray-200 rounded-2xl flex flex-row p-3">
         <select className="f-select" name="waitingRoom" onChange={selectWaitingRoom}>
           <option value="all">Toutes les salles d'attentes</option>

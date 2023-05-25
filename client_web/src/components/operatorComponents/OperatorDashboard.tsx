@@ -32,7 +32,7 @@ function OperatorDashboard(props:Props) {
 
   return (
     <div>
-      <div className="flex flex-col space-y-4 mt-4">
+      <div className="f-space4">
         <OngoingUserTicket
           profile={profile}
           changeCurrentTicketStatus={changeCurrentTicketStatus}
@@ -55,14 +55,14 @@ function OperatorDashboard(props:Props) {
             && (ticket.status === StatusEnum.AJOURNE),
             )}
           />
-          <div className="flex flex-col justify-between">
+          <div className="f-between">
             <OperatorsInService connectedUsersList={profile!
             && connectedUsersList!
                && connectedUsersList.filter((user) => user.id !== profile.id
                && user.currentService!
                && user.currentService!.id === profile.currentService!.id)}
             />
-            <img className="w-[350px]" src={ManWithComputer} alt="ManWithComputer" />
+            <img className="w-[450px]" src={ManWithComputer} alt="ManWithComputer" />
           </div>
         </div>
         <DashboardOverview

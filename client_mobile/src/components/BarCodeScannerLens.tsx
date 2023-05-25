@@ -7,7 +7,7 @@ function BarCodeScannerLens() {
       <View style={styles.unfocusedContainer} />
       <View style={styles.middleContainer}>
         <View style={styles.unfocusedContainer} />
-        <View style={styles.focusedContainer} className="flex flex-col justify-between">
+        <View style={styles.focusedContainer} className="f-between">
           <View className="flex flex-row justify-between">
             <View style={styles.borderTopLeft} />
             <View style={styles.borderTopRight} />
