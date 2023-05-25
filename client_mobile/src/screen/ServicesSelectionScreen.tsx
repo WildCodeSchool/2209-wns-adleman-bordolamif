@@ -29,7 +29,7 @@ export default function ServicesSelectionScreen({
     loading: servicesListLoading,
     data: servicesList,
   } = useQuery(GET_SERVICES_BY_WAITING_ROOM, {
-    variables: { getServicesByWaitingRoomId: parseInt(route.params.waitingRoomId, 10) },
+    variables: { id: parseInt(route.params.waitingRoomId, 10) },
   });
 
   const [CreateTicket] = useMutation(CREATE_TICKET);

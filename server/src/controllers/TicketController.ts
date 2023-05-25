@@ -5,10 +5,7 @@ import TicketModel from '../models/TicketModel';
 import UserModel from '../models/UserModel';
 import WaitingRoomModel from '../models/WaitingRoomModel';
 import { dateFilterBuilder } from '../utils/builders/date';
-import {
-  ticketNameBuilder,
-  ticketStatusUpdater,
-} from '../utils/builders/ticket';
+import { ticketNameBuilder, ticketStatusUpdater } from '../utils/builders/ticket';
 import { DateFilterEnum } from '../utils/enums/DateFilterEnum';
 import { StatusEnum } from '../utils/enums/StatusEnum';
 import { SearchCriterias } from '../utils/interfaces';
@@ -40,6 +37,19 @@ const TicketController = {
     };
 
     return await TicketModel.getAllTicketsForWaitingRoom(searchCriterias);
+  },
+
+  getAllTicketsForService: async (serviceId: number): Promise<Ticket[]> => {
+    const service = await ServiceModel.getOneServiceById(serviceId);
+    if (service === null) throw new Error('Service not found');
+    const dateFilter = dateFilterBuilder(DateFilterEnum.TODAY);
+    const searchCriterias: SearchCriterias = {
+      service: [{ id: service.id }],
+      status: Not(StatusEnum.TRAITE),
+      createdAt: dateFilter?.where?.createdAt,
+    };
+
+    return await TicketModel.getAllTicketsForService(searchCriterias);
   },
 
   getOneTicketById: async (id: number): Promise<Ticket> => {
