@@ -8,6 +8,8 @@ import Counter from '../../../server/src/entity/Counter';
 import Service from '../../../server/src/entity/Service';
 import { CREATE_WAITINGROOM, DELETE_WAITINGROOM, UPDATE_WAITINGROOM } from '../graphQL/mutations/waitingRoomMutations';
 import { GET_ALL_WAITINGROOMS, GET_ONE_WAITINGROOM } from '../graphQL/query/waitingRoomQuery';
+import { RoleEnum } from '../../../server/src/utils/enums/RoleEnum';
+import { getJWTFor } from '../utils';
 
 const counterInput = { name: 'Counter1' };
 const updateInput = { name: 'Update' };
@@ -18,16 +20,24 @@ const serviceInput = {
   isOpen: false,
   color: '#ffffff',
 };
-
+const admin = {
+  firstname: 'test', lastname: 'test', email: 'admin@test.com', role: RoleEnum.ADMINISTRATEUR,
+};
 describe('WaitingRoom Resolver', () => {
   describe('Create waitingRoom', () => {
     describe('Success cases', () => {
       it('1. should create a waitingRoom', async () => {
+        const token = await getJWTFor(admin);
         const res = await client.mutate({
           mutation: CREATE_WAITINGROOM,
           variables: {
             data: {
               ...waitingRoomInput,
+            },
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           },
         });
@@ -184,6 +194,7 @@ describe('WaitingRoom Resolver', () => {
   describe('Update WaitingRoom', () => {
     describe('Success cases', () => {
       it('1. should update a waitingRoom', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoomToUpdate = await dataSource.getRepository(WaitingRoom).save(
           waitingRoomInput,
         );
@@ -194,6 +205,11 @@ describe('WaitingRoom Resolver', () => {
             data: { ...updateInput },
             updateWaitingRoomId: waitingRoomToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.updateWaitingRoom).toHaveProperty('id');
@@ -203,6 +219,7 @@ describe('WaitingRoom Resolver', () => {
       describe('Error cases', () => {
         it('1. should fail without id', async () => {
           try {
+            const token = await getJWTFor(admin);
             await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
             await client.mutate({
@@ -210,6 +227,11 @@ describe('WaitingRoom Resolver', () => {
               variables: {
                 data: { ...updateInput },
                 updateWaitingRoomId: null,
+              },
+              context: {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               },
             });
             expect(true).toBe(false);
@@ -223,6 +245,7 @@ describe('WaitingRoom Resolver', () => {
         });
         it('2. should throw a not found waitingRoom error', async () => {
           try {
+            const token = await getJWTFor(admin);
             const waitingRoomToUpdate = await dataSource.getRepository(WaitingRoom).save(
               waitingRoomInput,
             );
@@ -232,6 +255,11 @@ describe('WaitingRoom Resolver', () => {
               variables: {
                 data: { ...updateInput },
                 updateWaitingRoomId: waitingRoomToUpdate.id + 1,
+              },
+              context: {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               },
             });
             expect(true).toBe(false);
@@ -247,6 +275,7 @@ describe('WaitingRoom Resolver', () => {
   describe('Delete WaitingRoom', () => {
     describe('Success cases', () => {
       it('1. should delete a waitingRoom', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoomToDelete = await dataSource.getRepository(WaitingRoom).save(
           waitingRoomInput,
         );
@@ -256,6 +285,11 @@ describe('WaitingRoom Resolver', () => {
           variables: {
             deleteWaitingRoomId: waitingRoomToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteWaitingRoom', true);
       });
@@ -263,12 +297,18 @@ describe('WaitingRoom Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail whitout id', async () => {
         try {
+          const token = await getJWTFor(admin);
           await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
           await client.mutate({
             mutation: DELETE_WAITINGROOM,
             variables: {
               deleteWaitingRoomId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -282,6 +322,7 @@ describe('WaitingRoom Resolver', () => {
       });
       it('2. should throw a not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoomToDelete = await dataSource.getRepository(WaitingRoom).save(
             waitingRoomInput,
           );
@@ -290,6 +331,11 @@ describe('WaitingRoom Resolver', () => {
             mutation: DELETE_WAITINGROOM,
             variables: {
               deleteWaitingRoomId: waitingRoomToDelete.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);

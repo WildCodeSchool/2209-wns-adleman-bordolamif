@@ -9,6 +9,8 @@ import User from '../../../server/src/entity/User';
 import { GET_ALL_TICKETS, GET_ALL_TICKETS_FOR_WAITING_ROOM, GET_ONE_TICKET } from '../graphQL/query/ticketQuery';
 import Ticket from '../../../server/src/entity/Ticket';
 import WaitingRoom from '../../../server/src/entity/WaitingRoom';
+import { getJWTFor } from '../utils';
+import { RoleEnum } from '../../../server/src/utils/enums/RoleEnum';
 
 const serviceInput = {
   name: 'Service1',
@@ -43,7 +45,9 @@ const updateInput = {
 };
 
 const waitingRoomInput = { name: 'Wait1' };
-
+const admin = {
+  firstname: 'test', lastname: 'test', email: 'admin@test.com', role: RoleEnum.ADMINISTRATEUR,
+};
 describe('Ticket Resolver', () => {
   describe('Create Ticket', () => {
     describe('Success cases', () => {
@@ -478,6 +482,7 @@ describe('Ticket Resolver', () => {
   describe('Update Ticket', () => {
     describe('Success cases', () => {
       it('1. should update a ticket', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const ticketToUpdate = await dataSource.getRepository(Ticket).save({
@@ -491,6 +496,11 @@ describe('Ticket Resolver', () => {
             data: { ...updateInput, service: { id: service.id } },
             updateTicketId: ticketToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.updateTicket).toHaveProperty('id');
@@ -503,6 +513,7 @@ describe('Ticket Resolver', () => {
         expect(res.data?.updateTicket.service).toHaveProperty('id', service.id);
       });
       it('2. should add an user to a ticket', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const user:User = await dataSource.getRepository(User).save(clientInput);
@@ -517,6 +528,11 @@ describe('Ticket Resolver', () => {
           variables: {
             data: { ...updateInput, service: { id: service.id }, user: { id: user.id } },
             updateTicketId: ticketToUpdate.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -534,6 +550,7 @@ describe('Ticket Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail without id', async () => {
         try {
+          const token = await getJWTFor(admin);
           const service = await dataSource.getRepository(Service).save(serviceInput);
 
           await dataSource.getRepository(Ticket).save({
@@ -547,6 +564,11 @@ describe('Ticket Resolver', () => {
               data: { ...updateInput, service: { id: service.id } },
               updateTicketId: null,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -559,6 +581,7 @@ describe('Ticket Resolver', () => {
       });
       it('2. should throw a not found ticket error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const service = await dataSource.getRepository(Service).save(serviceInput);
 
           const ticketToUpdate = await dataSource.getRepository(Ticket).save({
@@ -571,6 +594,11 @@ describe('Ticket Resolver', () => {
               data: { ...updateInput, service: { id: service.id } },
               updateTicketId: ticketToUpdate.id + 1,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -581,6 +609,7 @@ describe('Ticket Resolver', () => {
       });
       it('3. should throw a not found service error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const service = await dataSource.getRepository(Service).save(serviceInput);
 
           const ticketToUpdate = await dataSource.getRepository(Ticket).save({
@@ -596,6 +625,11 @@ describe('Ticket Resolver', () => {
               },
               updateTicketId: ticketToUpdate.id,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -609,6 +643,7 @@ describe('Ticket Resolver', () => {
   describe('Delete Ticket', () => {
     describe('Success cases', () => {
       it('1. should delete a ticket', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const ticketToDelete = await dataSource.getRepository(Ticket).save({
@@ -620,10 +655,16 @@ describe('Ticket Resolver', () => {
           variables: {
             deleteTicketId: ticketToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteTicket', true);
       });
       it('2. should delete a ticket with an user', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
         const user:User = await dataSource.getRepository(User).save(clientInput);
 
@@ -638,6 +679,11 @@ describe('Ticket Resolver', () => {
           variables: {
             deleteTicketId: ticketToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteTicket', true);
       });
@@ -645,6 +691,7 @@ describe('Ticket Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail whitout id', async () => {
         try {
+          const token = await getJWTFor(admin);
           const service = await dataSource.getRepository(Service).save(serviceInput);
 
           await dataSource.getRepository(Ticket).save({
@@ -655,6 +702,11 @@ describe('Ticket Resolver', () => {
             mutation: DELETE_TICKET,
             variables: {
               deleteTicketId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -668,6 +720,7 @@ describe('Ticket Resolver', () => {
       });
       it('2. should throw a not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const service = await dataSource.getRepository(Service).save(serviceInput);
 
           const ticketToDelete = await dataSource.getRepository(Ticket).save({
@@ -678,6 +731,11 @@ describe('Ticket Resolver', () => {
             mutation: DELETE_TICKET,
             variables: {
               deleteTicketId: ticketToDelete.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
