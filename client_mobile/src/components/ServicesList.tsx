@@ -32,11 +32,15 @@ function ServicesList(props:Props) {
                 </View>
                 <Text className="text-3xl">{ item.name }</Text>
               </View>
-              <Text className="text-xl">
-                Tickets en attente: { item.tickets.filter(
-                (ticket: { status: number }) => ticket.status === StatusEnum.EN_ATTENTE,
-              ).length }
-              </Text>
+              <View className="flex flex-row justify-center">
+                <Text className="text-xl">
+                  Tickets en attente:
+                </Text>
+                <Text className="text-xl font-bold ml-2">{ item.tickets.filter(
+                  (ticket: { status: number }) => ticket.status === StatusEnum.EN_ATTENTE,
+                ).length }
+                </Text>
+              </View>
             </Pressable>
           );
         }

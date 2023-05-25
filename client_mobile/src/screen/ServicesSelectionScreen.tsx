@@ -69,8 +69,11 @@ export default function ServicesSelectionScreen({
 
   return (
     <View className="h-screen bg-[#e5e7eb]">
-      <Text className="text-center mt-6 text-xl">Merci de bien vouloir cliquer sur le service de votre
-        choix
+      <Text className="text-center mt-6 text-3xl">Merci de bien vouloir</Text>
+      <Text className="text-center text-3xl font-bold">
+        cliquer sur le service
+      </Text>
+      <Text className="text-center text-3xl"> de votre choix
       </Text>
       { servicesListLoading && (<Text>Chargement...</Text>) }
       { serviceTicketToCreate && (
