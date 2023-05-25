@@ -11,7 +11,7 @@ function CalledTicketByCounter(props:Props) {
     <div className="bg-gray-800 mx-4 mt-4 mb-20 pt-4 pl-6 pr-12 rounded-3xl drop-shadow">
       <h2 className="text-white text-center text-5xl mt-4 nunito-bold">Tickets appelés</h2>
       <p className="text-white text-center text-3xl my-8">Merci de vous rendre au guichet annoncé</p>
-      <div className="grid grid-cols-2 gap-10">
+      <div className="grid grid-cols-2 gap-10 bg-red-100">
         {ticketsList! && ticketsList.map(
           (ticket) => (
             <div
