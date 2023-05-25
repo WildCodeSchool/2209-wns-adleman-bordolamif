@@ -60,9 +60,9 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer theme={DefaultTheme}>
-        <StatusBar barStyle="light-content" backgroundColor="#f97316" />
+        <StatusBar hidden />
         <Stack.Navigator
-          screenOptions={{ headerShown: false }}
+          screenOptions={{ headerShown: false, navigationBarHidden: true }}
         >
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />

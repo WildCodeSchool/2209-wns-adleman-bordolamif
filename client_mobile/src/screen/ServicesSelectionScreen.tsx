@@ -12,6 +12,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Subscription } from 'expo-modules-core';
 import { registerForPushNotificationsAsync } from '../../utils/Notifications';
 import * as Notifications from 'expo-notifications';
+import BottomLogo from '../components/BottomLogo';
 
 type ServicesSelectionScreenProps = NativeStackScreenProps<RootStackParamList, 'ServicesSelectionScreen'>;
 
@@ -68,15 +69,19 @@ export default function ServicesSelectionScreen({
   }, []);
 
   return (
-    <View className="h-screen bg-[#e5e7eb]">
-      <Text className="text-center mt-6 text-3xl">Merci de bien vouloir</Text>
-      <Text className="text-center text-3xl font-bold">
-        cliquer sur le service
-      </Text>
-      <Text className="text-center text-3xl"> de votre choix
-      </Text>
-      { servicesListLoading && (<Text>Chargement...</Text>) }
-      { serviceTicketToCreate && (
+    <View className="h-full bg-[#e5e7eb]">
+      <View className="pb-24">
+        <Text className="text-center mt-6 text-3xl">Merci de bien vouloir</Text>
+        <Text className="text-center text-3xl font-bold">
+          cliquer sur le service
+        </Text>
+        <Text className="text-center text-3xl"> de votre choix
+        </Text>
+        { servicesListLoading && (<Text className="mt-32 text-center text-3xl">Chargement...</Text>) }
+        { !servicesListLoading && !servicesList && (
+        <Text className="mt-32 text-center text-3xl">Aucun service disponible</Text>
+        )}
+        { serviceTicketToCreate && (
         <TicketCreationModal
           showModal={showModal}
           setShowModal={setShowModal}
@@ -84,10 +89,12 @@ export default function ServicesSelectionScreen({
           handleCreateTicket={handleCreateTicket}
           expoPushToken={expoPushToken}
         />
-      ) }
-      { servicesList && (
+        ) }
+        { servicesList && (
         <ServicesList servicesList={servicesList} handleOpenModal={handleOpenModal} />
-      ) }
+        ) }
+      </View>
+      <BottomLogo color="dark" />
     </View>
   );
 }

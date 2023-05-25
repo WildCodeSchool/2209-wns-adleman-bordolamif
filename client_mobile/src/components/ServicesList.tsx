@@ -14,23 +14,29 @@ function ServicesList(props:Props) {
   const { servicesList, handleOpenModal } = props;
   return (
     <FlatList
-      className="flex flex-col p-5"
+      className="flex flex-col px-5 h-[85%]"
       data={servicesList.getServicesByWaitingRoomId}
       renderItem={({ item }) => {
         if (item.isOpen) {
           return (
             <Pressable
-              className="bg-white p-5 mt-5 rounded-3xl active:scale-95 transfo"
+              style={{
+                shadowColor: '#171717',
+                shadowOffset: { width: -2, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 3,
+              }}
+              className="bg-white p-4 my-4 rounded-3xl active:scale-95"
               onPress={() => handleOpenModal(item)}
             >
-              <View className="flex flex-row mb-8 items-center justify-center gap-4">
+              <View className="flex flex-row mb-4 items-center justify-start">
                 <View
-                  className="px-4 h-10 rounded-2xl text-white nunito-bold text-2xl flex items-center justify-center"
+                  className="px-4 py-2 mr-2 rounded-2xl text-white "
                   style={{ backgroundColor: `${item.color}` }}
                 >
-                  <Text>{ item.acronym }</Text>
+                  <Text className="text-white text-3xl">{ item.acronym }</Text>
                 </View>
-                <Text className="text-3xl">{ item.name }</Text>
+                <Text className="text-3xl font-bold">{ item.name }</Text>
               </View>
               <View className="flex flex-row justify-center">
                 <Text className="text-xl">

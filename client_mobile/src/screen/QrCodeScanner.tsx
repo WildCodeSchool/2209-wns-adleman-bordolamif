@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Pressable, StyleSheet, Text, View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AntDesign } from '@expo/vector-icons';
 import BarCodeScannerLens from '../components/BarCodeScannerLens';
+import BottomLogo from '../components/BottomLogo';
 
 type NavigationProps = NativeStackScreenProps<RootStackParamList, 'QrCodeScanner'>;
 
@@ -39,10 +38,11 @@ export default function QrCodeScanner({ navigation }: NavigationProps) {
       style={[StyleSheet.absoluteFillObject, styles.container]}
     >
       <Pressable
-        className="ml-6 mt-14"
+        className="ml-6 mt-14 flex flex-row items-center"
         onPress={() => navigation.goBack()}
       >
         <AntDesign name="left" size={28} color="white" />
+        <Text className="text-white text-2xl ml-2">Retour</Text>
       </Pressable>
       <BarCodeScannerLens />
       {scanned
@@ -58,13 +58,7 @@ export default function QrCodeScanner({ navigation }: NavigationProps) {
           && <Text style={styles.alertText}>Demande d'autorisation d'accées à la caméra</Text>}
       {!hasPermission
           && <Text style={styles.alertText}>L'application n'a pas accées à la caméra</Text>}
-      <View
-        className="absolute flex flex-row justify-center w-full"
-        style={{ top: 650 }}
-      >
-        <Text className="text-white font-bold text-5xl">Wait</Text>
-        <Text className="text-orange-500 text-5xl">it</Text>
-      </View>
+      <BottomLogo color="light" />
     </BarCodeScanner>
   );
 }

@@ -7,6 +7,7 @@ import { GET_ALL_TICKETS_FOR_SERVICE } from '../../graphQL/query/serviceQuery';
 import { UPDATED_TICKET_BY_SERVICE_ID } from '../../graphQL/subscription/ticketSubscription';
 import { TicketData } from '../types/DataTypes';
 import { StatusEnum } from '../../utils/enum/StatusEnum';
+import BottomLogo from '../components/BottomLogo';
 
 type TicketScreenRouteProp = NativeStackScreenProps<RootStackParamList, 'TicketScreen'>;
 
@@ -35,6 +36,8 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
       skip: !currentTicketServiceId,
     },
   );
+
+  const calledTicketId = updatedTicket?.updatedTicketByServiceId.id || null;
 
   useEffect(() => {
     if (currentTicket && currentTicket.service) {
@@ -87,23 +90,86 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
   // }, [updatedTicket, subscribeToMoreTicket, updateTicketLoading]);
 
   return (
-    <View>
-      <Text className="text-4xl text-center">Vous êtes le ticket numéro:</Text>
-      <View className="bg-white p-5 mt-5 rounded-3xl active:scale-95 transfo">
-        <View className="flex flex-row mb-8 items-center justify-center gap-4">
+    <View className="flex items-center">
+      <Text className="text-2xl text-center font-bold mt-16">Vous êtes le ticket numéro</Text>
+      <View className="bg-white p-4 my-10 rounded-xl">
+        <View className="flex flex-row mb-3 items-center">
           <View
-            className="px-4 h-10 rounded-2xl text-white nunito-bold text-2xl flex items-center justify-center"
+            className="px-4 py-2 mr-3 rounded-2xl text-white"
             style={{ backgroundColor: `${currentTicket.service.color}` }}
           >
-            <Text>{ currentTicket.service.acronym }</Text>
+            <Text className="text-white text-3xl">{ currentTicket.service.acronym }</Text>
           </View>
-          <Text className="text-3xl">{ currentTicket.name }</Text>
+          <Text className="text-5xl font-bold">{ currentTicket.name }</Text>
         </View>
-        <Text className="text-xl text-center">
+        <Text className="text-4xl font-semibold text-center">
           { currentTicket.service.name }
         </Text>
       </View>
-      <Text className="text-4xl text-center">{currentTicketIndex}</Text>
+      {
+        currentTicketIndex! > 3 && (
+          <View className="flex flex-col justify-center">
+            <View>
+              <Text className="text-5xl text-center">Il y a</Text>
+              <Text className="text-5xl text-center font-bold">{currentTicketIndex} <Text className="text-5xl text-center font-normal">personnes</Text></Text>
+              <Text className="text-5xl text-center">devant vous</Text>
+            </View>
+            <View className="bg-red-600 py-12 mt-20 w-screen rounded-b-[50px]">
+              <Text className="text-5xl font-bold text-white text-center">Ce n'est pas</Text>
+              <Text className="text-5xl font-bold text-white text-center">votre tour</Text>
+            </View>
+          </View>
+        )
+      }
+      {
+        currentTicketIndex! <= 3 && currentTicketIndex! >= 1 && (
+          <View className="flex flex-col items-center justify-center">
+            <View>
+              <Text className="text-5xl text-center">Il y a</Text>
+              <Text className="text-5xl text-center font-bold">{currentTicketIndex} <Text className="text-5xl text-center font-normal">{currentTicketIndex! === 1 ? 'personne' : 'personnes'}</Text></Text>
+              <Text className="text-5xl text-center">devant vous</Text>
+            </View>
+            <View className="bg-orange-500 py-12 mt-20 w-screen rounded-b-[50px]">
+              <Text className="text-5xl font-bold text-white text-center">C'est bientôt</Text>
+              <Text className="text-5xl font-bold text-white text-center">à vous</Text>
+            </View>
+          </View>
+        )
+      }
+      {
+        currentTicketIndex! === 0 && (
+          <View className="flex flex-col items-center justify-center">
+            <View>
+              <Text className="text-5xl text-center">Il n'y a</Text>
+              <Text className="text-5xl text-center">personne</Text>
+              <Text className="text-5xl text-center">devant vous</Text>
+            </View>
+            <View className="bg-green-500 py-12 mt-20 w-screen rounded-b-[50px]">
+              <Text className="text-5xl font-bold text-white text-center">Vous allez bientôt</Text>
+              <Text className="text-5xl font-bold text-white text-center">être appellé</Text>
+            </View>
+          </View>
+        )
+      }
+      {
+        currentTicket.id === calledTicketId && (
+          <View className="flex flex-col items-center justify-center">
+            <View>
+              <Text className="text-2xl font-bold text-center">Veuillez vous rendre au</Text>
+              <View className="bg-white py-4 px-5 mt-5 rounded-lg">
+                <Text className="text-6xl text-center font-bold">GUICHET{ updatedTicket?.updatedTicketByServiceId.counter.name }</Text>
+              </View>
+            </View>
+            <View className="bg-green-500 py-12 mt-20 w-screen rounded-b-[50px]">
+              <Text className="text-5xl font-bold text-white text-center">C'est à vous !</Text>
+              <Text className="text-5xl font-bold text-white text-center"> </Text>
+
+            </View>
+          </View>
+        )
+      }
+
+      <BottomLogo color="dark" />
     </View>
   );
 }

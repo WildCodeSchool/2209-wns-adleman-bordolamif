@@ -19,16 +19,18 @@ export default function HomeScreen({ navigation }: NavigationProps) {
           <Text className="text-white font-bold text-6xl">Wait</Text>
           <Text className="text-orange-500 text-6xl">it</Text>
           <Text className="text-white text-6xl">.</Text>
-
         </View>
         <View className="flex flex-col ml-8 mr-8 mt-10">
-          <Text className="text-xl text-white">
+          <Text className="text-2xl text-white">
             Grâce à l'application, générez votre e-ticket en scannant l'un des QR code
             disposés dans la salle d'attente.
           </Text>
-          <Text className="text-xl text-white mt-2">
+          <Text className="text-2xl text-white mt-2">
             Appuyez dès maintenant sur le
-            bouton et découvrez Waitit !
+            bouton et découvrez
+            <Text className="font-bold"> Wait</Text>
+            <Text className="text-orange-500 font-bold">it </Text>
+            !
           </Text>
         </View>
         <View className="flex justify-center items-center">
