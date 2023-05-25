@@ -93,15 +93,16 @@ function OperatorStartUpPage() {
       </div>
 
       <div className="bg-gray-100 p-4 my-4 rounded-3xl">
-        <h3>Sélectionnez votre guichet</h3>
+        <h3 className="text-2xl mb-4 ml-2">Sélectionnez votre guichet</h3>
         { waiTingRoomData && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col items-start">
             <select
               {...register('id')}
               defaultValue=""
+              className="f-input ml-4"
             >
-              <option value="">Mon guichet</option>
+              <option value="">---</option>
               {waiTingRoomData.getOneWaitingRoom.counters.map((counter:CounterData) => (
                 <option
                   key={counter.id}
@@ -113,15 +114,15 @@ function OperatorStartUpPage() {
             </select>
             <button
               type="submit"
-              className="f-button-green"
+              className="f-button-orange mt-4"
             >
               C'est parti !
             </button>
           </div>
         </form>
         )}
-        {userUpdateloading && <p>Prêt ?</p>}
-        {userUpdateError && <p>Une erreur est survenue</p>}
+        {userUpdateloading && <p className="text-center text-xl">Chargement du tableau de bord...</p>}
+        {userUpdateError && <p className="text-center text-xl text-red-500">Une erreur est survenue</p>}
 
       </div>
     </div>
