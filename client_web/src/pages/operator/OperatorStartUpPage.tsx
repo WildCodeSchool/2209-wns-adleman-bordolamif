@@ -10,6 +10,7 @@ import { UserInput } from '@utils/types/InputTypes';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import OperatorIllustration from '../../assets/illustrations/OperatorIllustration.png';
 
 function OperatorStartUpPage() {
   const { userProfile } = useUserProfile();
@@ -69,44 +70,60 @@ function OperatorStartUpPage() {
 
   return (
     <div>
-      <h2>Sélectionnez votre service</h2>
+      <div className="f-title-format">
+        <h1 className="f-main-title">Mise en service</h1>
+        <div className="f-decoration-line" />
+      </div>
 
-      <ServicesRadioList
-        radioChecked={selectedService}
-        servicesList={userProfile!.services}
-        toggleRadioList={toggleSelectedService}
-      />
-      <h3>Sélectionnez votre guichet</h3>
-
-      { waiTingRoomData && (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-start">
-          <select
-            {...register('id')}
-            defaultValue=""
-          >
-            <option value="">Mon guichet</option>
-            {waiTingRoomData.getOneWaitingRoom.counters.map((counter:CounterData) => (
-              <option
-                key={counter.id}
-                value={counter.id}
-                disabled={counter.user! && true}
-              >{counter.name}
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="f-button-green"
-          >
-            C'est parti !
-          </button>
+      <div className="flex flex-row mt-8 mb-12 items-center gap-16">
+        <img className="w-[350px]" src={OperatorIllustration} alt="OperatorIllustration" />
+        <div className="flex flex-col">
+          <h2 className="text-5xl nunito-bold mb-4">Bonjour,</h2>
+          <h2 className="text-4xl nunito-light">bienvenue sur votre page opérateur</h2>
         </div>
-      </form>
-      )}
-      {userUpdateloading && <p>Prêt ?</p>}
-      {userUpdateError && <p>Une erreur est survenue</p>}
+      </div>
 
+      <div className="bg-gray-100 p-4 my-4 rounded-3xl">
+        <h2 className="text-2xl mb-4 ml-2">Sélectionnez votre service</h2>
+        <ServicesRadioList
+          radioChecked={selectedService}
+          servicesList={userProfile!.services}
+          toggleRadioList={toggleSelectedService}
+        />
+      </div>
+
+      <div className="bg-gray-100 p-4 my-4 rounded-3xl">
+        <h3>Sélectionnez votre guichet</h3>
+        { waiTingRoomData && (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col items-start">
+            <select
+              {...register('id')}
+              defaultValue=""
+            >
+              <option value="">Mon guichet</option>
+              {waiTingRoomData.getOneWaitingRoom.counters.map((counter:CounterData) => (
+                <option
+                  key={counter.id}
+                  value={counter.id}
+                  disabled={counter.user! && true}
+                >{counter.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="f-button-green"
+            >
+              C'est parti !
+            </button>
+          </div>
+        </form>
+        )}
+        {userUpdateloading && <p>Prêt ?</p>}
+        {userUpdateError && <p>Une erreur est survenue</p>}
+
+      </div>
     </div>
   );
 }
