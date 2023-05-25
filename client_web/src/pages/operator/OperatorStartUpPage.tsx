@@ -83,7 +83,7 @@ function OperatorStartUpPage() {
         </div>
       </div>
 
-      <div className="bg-gray-100 p-4 my-4 rounded-3xl">
+      <div className="f-format-gray-rounded">
         <h2 className="text-2xl mb-4 ml-2">Sélectionnez votre service</h2>
         <ServicesRadioList
           radioChecked={selectedService}
@@ -92,7 +92,7 @@ function OperatorStartUpPage() {
         />
       </div>
 
-      <div className="bg-gray-100 p-4 my-4 rounded-3xl">
+      <div className="f-format-gray-rounded">
         <h3 className="text-2xl mb-4 ml-2">Sélectionnez votre guichet</h3>
         { waiTingRoomData && (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -121,8 +121,8 @@ function OperatorStartUpPage() {
           </div>
         </form>
         )}
-        {userUpdateloading && <p className="text-center text-xl">Chargement du tableau de bord...</p>}
-        {userUpdateError && <p className="text-center text-xl text-red-500">Une erreur est survenue</p>}
+        {userUpdateloading && <p className="f-xl-center">Chargement du tableau de bord...</p>}
+        {userUpdateError && <p className="f-xl-center text-red-500">Une erreur est survenue</p>}
 
       </div>
     </div>

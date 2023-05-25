@@ -31,9 +31,10 @@ function TicketDetails(props: Props) {
       )}
       {!handleOpenModal && (
         <div
-          className="f-card-waitingroom"
-          style={{ backgroundColor: `${ticket.service.color}` }}
-        ><p className="text-5xl">{ticket.name}</p>
+          className="f-card-waitingroom w-fit px-4 mx-auto drop-shadow-lg mb-4 bg-white"
+          style={{ color: `${ticket.service.color}` }}
+        >
+          <p className="text-4xl">{ticket.name}</p>
         </div>
       )}
     </>
