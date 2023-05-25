@@ -157,7 +157,7 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
             <View>
               <Text className="text-2xl font-bold text-center">Veuillez vous rendre au</Text>
               <View className="bg-white py-4 px-5 mt-5 rounded-lg">
-                <Text className="text-6xl text-center font-bold">GUICHET{ updatedTicket?.updatedTicketByServiceId.counter.name }</Text>
+                <Text className="text-6xl text-center font-bold">{ updatedTicket?.updatedTicketByServiceId.counter.name }</Text>
               </View>
             </View>
             <View className="bg-green-500 py-12 mt-20 w-screen rounded-b-[50px]">
