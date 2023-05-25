@@ -10,11 +10,11 @@ toggleRadioList: (service: ServiceData) => void;
 function ServicesRadioList(props: Props) {
   const { radioChecked, servicesList, toggleRadioList } = props;
   return (
-    <div className="flex flex-col">
+    <div className="grid grid-cols-3">
       {servicesList && servicesList.map((service: ServiceData) => (
-        <label key={service.id} className="inline-flex p-1">
+        <label key={service.id} className="flex flex-row gap-1 items-center p-2">
           <input
-            className="mr-2"
+            className="mr-2 ml-10"
             type="radio"
             value={service.id}
             name={service.name}
