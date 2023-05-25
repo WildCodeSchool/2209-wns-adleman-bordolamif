@@ -51,7 +51,7 @@ export default function QrCodeScanner({ navigation }: NavigationProps) {
           className="border-white border-2 rounded-xl mx-auto w-2/3"
           onPress={() => setScanned(false)}
         >
-          <Text className="py-4 text-white text-center text-xl">Appuyer pour scanner à nouveau</Text>
+          <Text className="py-4 text-white f-xl-center">Appuyer pour scanner à nouveau</Text>
         </Pressable>
         )}
       {hasPermission === null

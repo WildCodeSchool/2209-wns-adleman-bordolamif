@@ -40,21 +40,20 @@ function GlobalServicesView(props: Props) {
 
   return (
     <div>
-      <div className="flex flex-row">
-        <div>
-          <p>Nombre total de tickets de la journée</p>
+      <div className="f-format-around-center">
+        <div className="">
           <TicketsByServicesChart chartData={computeDataForChart()} />
         </div>
         <table className="divide-y divide-gray-300">
           <thead>
             <tr>
-              <th scope="col" className="px-3 py-2 text-left">
+              <th scope="col" className="f-text-left-services">
                 Mes services
               </th>
-              <th scope="col" className="px-3 py-2 text-left">
+              <th scope="col" className="f-text-left-services">
                 Status du service
               </th>
-              <th scope="col" className="px-3 py-2 text-left">
+              <th scope="col" className="f-text-left-services">
                 Tickets en attente
               </th>
             </tr>
@@ -69,7 +68,7 @@ function GlobalServicesView(props: Props) {
                       <div className="ml-2">{service.name}</div>
                     </div>
                   </td>
-                  <td className="px-3 py-2 ">
+                  <td className="px-4 py-2">
                     <div>{service.isOpen ? <p>Ouvert</p> : <p>Fermé</p>}</div>
                   </td>
                   <td className="px-3 py-2 ">

@@ -34,7 +34,7 @@ function WaitingRoomDetails(props: Props) {
   };
 
   return (
-    <div className="flex flex-col justify-between bg-gray-100 pb-3 px-3 rounded-xl my-1">
+    <div className="f-between bg-gray-100 pb-3 px-3 rounded-xl my-1">
       <div
         className="f-services-card-decoration"
         style={{

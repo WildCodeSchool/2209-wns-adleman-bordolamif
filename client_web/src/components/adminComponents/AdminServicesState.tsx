@@ -19,23 +19,23 @@ function AdminServicesState() {
   };
 
   return (
-    <div className="flex flex-col space-y-4 mt-4">
+    <div className="f-space4">
       <div className="bg-gray-200 rounded-2xl flex flex-row p-3">
-        <select name="waitingRoom" onChange={selectWaitingRoom}>
+        <select className="f-select" name="waitingRoom" onChange={selectWaitingRoom}>
           <option value="all">Toutes les salles d'attentes</option>
           {waitingRoomList
           && waitingRoomList.getAllWaitingRooms.map((waitingRoom:WaitingRoomData) => (
             <option key={waitingRoom.id} value={waitingRoom.id}>{waitingRoom.name}</option>
           ))}
         </select>
-        <div>
-          <p>Tickets en attente : {ticketList && ticketList.getAllTickets
+        <div className="text-xl flex flex-row items-center gap-20 ml-12">
+          <p><span className="nunito-bold">Tickets en attente :</span> {ticketList && ticketList.getAllTickets
             .filter((ticket:TicketData) => ticket.status === StatusEnum.EN_ATTENTE).length}
           </p>
-          <p>Tickets suspendus : {ticketList && ticketList.getAllTickets
+          <p><span className="nunito-bold">Tickets suspendus :</span> {ticketList && ticketList.getAllTickets
             .filter((ticket:TicketData) => ticket.status === StatusEnum.AJOURNE).length}
           </p>
-          <p>Total : {ticketList && ticketList.getAllTickets.length}
+          <p><span className="nunito-bold">Total :</span> {ticketList && ticketList.getAllTickets.length}
           </p>
         </div>
       </div>

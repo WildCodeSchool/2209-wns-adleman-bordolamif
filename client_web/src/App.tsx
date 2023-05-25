@@ -18,6 +18,8 @@ import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
+import ResetPasswordPage from '@pages/ResetPasswordPage';
+import ForgotPasswordPage from '@pages/ForgotPasswordPage';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -32,6 +34,13 @@ function App() {
               currentUser={currentUser! && currentUser.profile}
               client={client}
             />
+          )}
+        />
+        <Route path="/reset-password/:uuid" element={(<ResetPasswordPage />)} />
+        <Route
+          path="/forgot-password"
+          element={(
+            <ForgotPasswordPage />
           )}
         />
         {currentUser && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR

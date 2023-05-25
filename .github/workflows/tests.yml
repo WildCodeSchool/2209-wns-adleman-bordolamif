@@ -28,6 +28,8 @@ jobs:
           envkey_SERVER_HOST: "localhost"
           envkey_SERVER_PORT: 4000
           envkey_EXPO_ACCESS_TOKEN: "CECI_EST_UN_TOKEN_EXPO"
+          envkey_MJ_APIKEY_PUBLIC: "CECI_EST_UNE_CLE_MAILJET_PUBLIQUE"
+          envkey_MJ_APIKEY_PRIVATE: "CECI_EST_UNE_CLE_MAILJET_PUBLIQUE"
           directory: ./
           file_name: .env
           fail_on_empty: false

@@ -16,6 +16,8 @@ export const schema = {
   SERVER_PORT: Number,
   DB_HOST: String,
   EXPO_ACCESS_TOKEN: String,
+  MJ_APIKEY_PUBLIC: String,
+  MJ_APIKEY_PRIVATE: String,
 };
 
 // eslint-disable-next-line import/no-mutable-exports

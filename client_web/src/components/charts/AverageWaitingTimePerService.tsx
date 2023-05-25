@@ -32,9 +32,9 @@ function AverageWaitingTimePerService(props: Props) {
   const data = {
     labels: chartData.map((element) => element.name),
     datasets: [{
-      label: "Temps d'attente moyen",
       data: chartData.map((element) => element.waitingTime),
       backgroundColor: chartData.map((element) => element.color),
+      label: "Temps d'attente moyen",
     }],
   };
 

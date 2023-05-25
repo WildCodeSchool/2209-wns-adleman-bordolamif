@@ -1,14 +1,16 @@
 import { hashPassword, verifyPassword } from '../entity/User';
 import UserModel from '../models/UserModel';
-import { FirstUserLoginPassword, UserConnexion, UserUpdatePassword } from '../utils/types/InputTypes';
+import {
+  FirstUserLoginPassword,
+  UserUpdatePassword,
+} from '../utils/types/InputTypes';
 import { randomUUID } from 'crypto';
-import nodemailer from 'nodemailer';
 import { env, loadEnv } from '../env';
+import Mailjet from 'node-mailjet';
 
 loadEnv();
 
 const PasswordController = {
-
   updatePassword: async (data: UserUpdatePassword) => {
     const { email, oldPassword, newPassword } = data;
 
@@ -16,9 +18,11 @@ const PasswordController = {
 
     if (
       userToUpdate === null
-        || typeof userToUpdate.hashedPassword !== 'string'
-        || !(await verifyPassword(oldPassword, userToUpdate.hashedPassword))
-    ) { throw new Error('invalid credentials'); }
+      || typeof userToUpdate.hashedPassword !== 'string'
+      || !(await verifyPassword(oldPassword, userToUpdate.hashedPassword))
+    ) {
+      throw new Error('invalid credentials');
+    }
 
     const hashedPassword = await hashPassword(newPassword);
 
@@ -35,7 +39,9 @@ const PasswordController = {
     if (
       userToUpdate === null
       || typeof userToUpdate.hashedPassword !== 'string'
-    ) { throw new Error('invalid credentials'); }
+    ) {
+      throw new Error('invalid credentials');
+    }
 
     const hashedPassword = await hashPassword(newPassword);
 
@@ -45,7 +51,7 @@ const PasswordController = {
     return await UserModel.updateUser(userToUpdate);
   },
 
-  forgotPassword: async (email:string) => {
+  forgotPassword: async (email: string) => {
     const user = await UserModel.getOneUserByMail(email);
     if (user === null) throw new Error('User not found');
 
@@ -57,50 +63,70 @@ const PasswordController = {
 
     await UserModel.updateUser(user);
 
-    // eslint-disable-next-line no-constant-condition
-    if (env.NODE_ENV === 'development' || 'test') {
-      const testAccount = await nodemailer.createTestAccount();
+    const mailjet = Mailjet.apiConnect(
+      env.MJ_APIKEY_PUBLIC,
+      env.MJ_APIKEY_PRIVATE,
+    );
 
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
+    const request = mailjet.post('send', { version: 'v3.1' }).request({
+      Messages: [
+        {
+          From: {
+            Email: 'sandra.voisin@hotmail.fr',
+            Name: 'Sandra VOISIN',
+          },
+          To: [
+            {
+              Email: user.email,
+              Name: `${user.firstname} ${user.lastname}`,
+            },
+          ],
+          Subject: 'Wait It : Réinitialisez votre mot de passe',
+          TextPart:
+            `
+            Mot de passe oublié ?
+            
+            Bonjour,
+            Nous avons reçu une demande de modification de mot de passe pour votre compte ${user.email}.
+            Aucun changement n'a été effectué pour le moment.
+            Vous pouvez réinitialiser le mot de passe de votre compte en copiant le lien ci-dessous dans votre navigateur
+            http://localhost:3000/reset-password/${user.resetPasswordToken}
+            `,
+          HTMLPart:
+            `
+            <h1>Mot de passe oublié ?</h1>
+            <p>
+            Bonjour, <br />
+            Nous avons reçu une demande de modification de mot de passe pour votre compte ${user.email}.
+            Aucun changement n'a été effectué pour le moment. <br />
+            Vous pouvez réinitialiser le mot de passe de votre compte en cliquant sur le lien ci-dessous
+            </p>
+            <a href="http://localhost:3000/reset-password/${user.resetPasswordToken}">Réinitialiser mon mot de passe</a>!
+            `,
         },
-        tls: {
-          rejectUnauthorized: false,
-        },
+      ],
+    });
+
+    request
+      .then((result) => {
+        console.warn(result.body);
+      })
+      .catch((err) => {
+        console.warn(err, err.statusCode);
       });
-
-      const resetLink = `http://localhost:3000/resetPassword/${resetToken}`;
-      const mailOptions = {
-        from: 'email@example.com',
-        to: email,
-        subject: 'Réinitialisation de votre mot de passe',
-        text: `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`,
-      };
-      const info = await transporter.sendMail(mailOptions);
-      // eslint-disable-next-line no-restricted-syntax
-      console.log('mail available at : ', nodemailer.getTestMessageUrl(info));
-    }
   },
 
-  resetPassword: async (uuid: string, data: UserConnexion) => {
-    const { email, password } = data;
-
+  resetPassword: async (uuid: string, password: string) => {
     const dateNow = new Date(Date.now());
 
-    const userToUpdate = await UserModel.getOneUserByMail(email);
+    const userToUpdate = await UserModel.getOneUserByResetPasswordToken(uuid);
 
     if (
       userToUpdate === null
-    || typeof userToUpdate.hashedPassword !== 'string'
-    || uuid !== userToUpdate.resetPasswordToken
-    ) { throw new Error('invalid credentials'); }
-
-    if (userToUpdate.resetPasswordExpires && dateNow > userToUpdate.resetPasswordExpires) { throw new Error('Link to reset password has exired'); }
+      || (dateNow > userToUpdate.resetPasswordExpires!)
+    ) {
+      throw new Error('Link to reset password has exired');
+    }
 
     const hashedPassword = await hashPassword(password);
 

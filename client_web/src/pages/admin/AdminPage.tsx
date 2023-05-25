@@ -19,7 +19,7 @@ function AdminPage() {
             end
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            Etat des services
+            État des services
           </NavLink>
           <NavLink
             to="/admin/dashboard/statistics"

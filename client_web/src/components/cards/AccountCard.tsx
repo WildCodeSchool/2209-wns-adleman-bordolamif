@@ -21,7 +21,7 @@ function AccountCard(props: Props) {
   } = props;
 
   return (
-    <div className="bg-gray-100 p-4 my-4 rounded-3xl">
+    <div className="f-format-gray-rounded">
       <div className="flex justify-between px-2">
         { cardMode === PROFILE && (
           <div>

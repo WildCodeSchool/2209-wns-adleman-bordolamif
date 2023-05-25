@@ -136,13 +136,13 @@ export class UserResolver {
     return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
   }
 
-  @Mutation(() => User)
+  @Mutation(() => String)
   async resetPassword(
     @Arg('uuid', () => String) uuid: string,
-    @Arg('data') data: UserConnexion,
-  ): Promise<User> {
-    const userToUpdate = await PasswordController.resetPassword(uuid, data);
-    return getSafeAttributes(userToUpdate);
+    @Arg('password') password: string,
+  ): Promise<string> {
+    await PasswordController.resetPassword(uuid, password);
+    return 'Votre mot de passe a bien été mis à jour';
   }
 
   /** ***********************************
