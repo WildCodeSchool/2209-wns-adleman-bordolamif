@@ -1,15 +1,14 @@
 import { StatusEnum } from '@utils/enum/StatusEnum';
-import { ServiceData } from '@utils/types/DataTypes';
+import { ServiceData, TicketData } from '@utils/types/DataTypes';
 
 interface Props {
     service: ServiceData
+    ticketsList: TicketData[]
     handleOpenModal: (service: ServiceData) => void
 }
 
 function ServiceCard(props: Props) {
-  const { service, handleOpenModal } = props;
-
-  const today = new Date();
+  const { service, handleOpenModal, ticketsList } = props;
 
   return (
     <button type="button" className="bg-white p-10 rounded-3xl drop-shadow-xl focus:scale-95" onClick={() => handleOpenModal(service)}>
@@ -24,10 +23,8 @@ function ServiceCard(props: Props) {
       </div>
       <p className="text-xl nunito-bold">{'Tickets en attente : '}
         <span>
-          {service.tickets.filter((ticket) => ticket.status === StatusEnum.EN_ATTENTE
-           && new Date(ticket.createdAt).getFullYear() === today.getFullYear()
-           && new Date(ticket.createdAt).getMonth() === today.getMonth()
-           && new Date(ticket.createdAt).getDate() === today.getDate()).length}
+          {ticketsList.filter((ticket) => ticket.status === StatusEnum.EN_ATTENTE
+          && ticket.service.id === service.id).length}
         </span>
       </p>
     </button>

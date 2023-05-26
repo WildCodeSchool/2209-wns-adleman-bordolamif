@@ -1,6 +1,6 @@
 import ServiceCard from '@components/cards/ServiceCard';
 import ServiceIcon from '@components/icons/ServiceIcon';
-import { ServiceData } from '@utils/types/DataTypes';
+import { ServiceData, TicketData } from '@utils/types/DataTypes';
 import { ServiceInput } from '@utils/types/InputTypes';
 import ServiceDetails from '../details/ServiceDetails';
 
@@ -13,7 +13,7 @@ interface RequiredProps {
     handleUpdateService?: null | ((data: ServiceInput, id: number) => void)
     handleDeleteService?: null | ((id: number) => void)
     handleOpenModal?: null| ((service: ServiceData) => void)
-
+    ticketsList?: null | TicketData[]
   }
 
   interface Props extends RequiredProps, OptionalProps{}
@@ -22,11 +22,12 @@ const defaultProps: OptionalProps = {
   handleDeleteService: null,
   handleUpdateService: null,
   handleOpenModal: null,
+  ticketsList: null,
 };
 
 function ServicesList(props:Props) {
   const {
-    servicesList, handleUpdateService, handleDeleteService, handleOpenModal, mode,
+    servicesList, handleUpdateService, handleDeleteService, handleOpenModal, mode, ticketsList,
   } = props;
 
   return (
@@ -49,6 +50,7 @@ function ServicesList(props:Props) {
         )))
         || (mode === 'cards' && handleOpenModal && servicesList.map((service) => (
           <ServiceCard
+            ticketsList={ticketsList!}
             handleOpenModal={handleOpenModal}
             key={service.id}
             service={service}
