@@ -56,11 +56,12 @@ function OperatorBoard() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const ticketToAdd = subscriptionData.data.newTicket;
+        const isTicketAlreadyAdded = prev.getAllTicketsForWaitingRoom
+          .some((ticket: TicketData) => ticket.id === ticketToAdd.id);
+        if (isTicketAlreadyAdded) return prev;
         return {
           ...prev,
-          getAllTicketsForWaitingRoom: {
-            ...ticketsList.getAllTicketsForWaitingRoom, ticketToAdd,
-          },
+          getAllTicketsForWaitingRoom: [...prev.getAllTicketsForWaitingRoom, ticketToAdd],
         };
       },
     });
@@ -191,7 +192,7 @@ function OperatorBoard() {
         </div>
         <div className="f-decoration-line-for-tab" />
       </div>
-      {ticketsList! && (
+      {ticketsList && (
         <OperatorDashboard
           changeCurrentTicketStatus={changeCurrentTicketStatus}
           profile={userProfile!}
