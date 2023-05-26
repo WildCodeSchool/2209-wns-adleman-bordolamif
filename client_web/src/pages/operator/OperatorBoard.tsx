@@ -12,9 +12,12 @@ import { StatusEnum } from '@utils/enum/StatusEnum';
 import useModal from '@utils/hooks/UseModal';
 import { TicketData, UserData } from '@utils/types/DataTypes';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function OperatorBoard() {
   const { userProfile } = useUserProfile();
+  const waitingRoomId = userProfile?.counter?.waitingRoom?.id;
+
   const [treatedTicket, setTreatedTicket] = useState<string>('');
 
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -23,8 +26,8 @@ function OperatorBoard() {
     GET_ALL_TICKETS_FOR_WAITING_ROOM,
     {
       variables: {
-        waitingRoomId: userProfile?.counter!.waitingRoom.id,
-        skip: userProfile,
+        waitingRoomId,
+        skip: !waitingRoomId,
       },
     },
   );
@@ -33,8 +36,8 @@ function OperatorBoard() {
     GET_ONE_WAITINGROOM,
     {
       variables: {
-        getOneWaitingRoomId: userProfile?.counter!.waitingRoom.id,
-        skip: userProfile,
+        getOneWaitingRoomId: waitingRoomId,
+        skip: !waitingRoomId,
       },
     },
   );
@@ -192,7 +195,7 @@ function OperatorBoard() {
         </div>
         <div className="f-decoration-line-for-tab" />
       </div>
-      {ticketsList && (
+      {ticketsList ? (
         <OperatorDashboard
           changeCurrentTicketStatus={changeCurrentTicketStatus}
           profile={userProfile!}
@@ -206,6 +209,17 @@ function OperatorBoard() {
           treatedTicket={treatedTicket}
           callSuspendedTicket={callSuspendedTicket}
         />
+      ) : (
+        <div className="flex flex-col items-center">
+          <p className="text-gray-700 m-5">Merci de bien vouloir enregistrer votre guichet avant de commencer !</p>
+          <button className="f-button-orange w-2/5" type="button">
+            <Link
+              className="min-w-full"
+              to="/operator/startup"
+            >Enregistrer mon guichet
+            </Link>
+          </button>
+        </div>
       )}
 
     </>
