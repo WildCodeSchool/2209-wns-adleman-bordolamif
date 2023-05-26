@@ -2,14 +2,17 @@ import 'dotenv/config';
 
 export default {
   expo: {
-    name: 'client_mobile',
+    name: 'Wait-It',
     slug: 'client_mobile',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
+    notification: {
+      icon: './assets/icon.png',
+    },
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/icon.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -32,12 +35,12 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
+        foregroundImage: './assets/icon.png',
         backgroundColor: '#FFFFFF',
       },
     },
     web: {
-      favicon: './assets/favicon.png',
+      favicon: './assets/icon.png',
     },
   },
 };

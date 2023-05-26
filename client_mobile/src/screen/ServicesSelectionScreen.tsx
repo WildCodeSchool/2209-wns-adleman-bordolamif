@@ -81,6 +81,7 @@ export default function ServicesSelectionScreen({
         { !servicesListLoading && !servicesList && (
         <Text className="mt-32 text-center text-3xl">Aucun service disponible</Text>
         )}
+        <BottomLogo color="dark" />
         { serviceTicketToCreate && (
         <TicketCreationModal
           showModal={showModal}
@@ -94,7 +95,6 @@ export default function ServicesSelectionScreen({
         <ServicesList servicesList={servicesList} handleOpenModal={handleOpenModal} />
         ) }
       </View>
-      <BottomLogo color="dark" />
     </View>
   );
 }

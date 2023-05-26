@@ -46,6 +46,7 @@ export interface Ticket {
     isFirstTime: boolean;
     isReturned: boolean;
     status: StatusEnum;
+    mobileToken: string;
 }
 
 export interface ServicesByWaitingRoom {
@@ -57,4 +58,15 @@ export interface TicketData extends Ticket {
     service: Service
     user: UserProfile
     counter: Counter
+}
+
+export interface UpdatedTicketData {
+    updatedTicketByServiceId: {
+        counter: Counter;
+        createdAt: string;
+        id: number;
+        name: string;
+        service: Service;
+        status: StatusEnum;
+    }
 }

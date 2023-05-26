@@ -154,7 +154,8 @@ const TicketController = {
       [{
         to: mobileToken,
         sound: 'default',
-        title: 'Votre tour est arrivé',
+        title: '🙌 Votre tour est arrivé ! 🙌',
+        body: 'Fini l\'attente !! Revenez sur l\'application pour voir le guichet auquel vous rendre 😉',
       }],
     );
 

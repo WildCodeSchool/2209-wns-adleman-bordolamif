@@ -3,10 +3,45 @@ import {
   ImageBackground, Pressable, Text, View,
 } from 'react-native';
 import { RootStackParamList } from '../types/RootStackParamList';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_TICKETS_OF_THE_DAY } from '../../graphQL/query/ticketQuery';
+import { registerForPushNotificationsAsync } from '../../utils/Notifications';
+import { TicketData } from '../types/DataTypes';
+import { StatusEnum } from '../../utils/enum/StatusEnum';
 
 type NavigationProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 export default function HomeScreen({ navigation }: NavigationProps) {
+  const [expoPushToken, setExpoPushToken] = useState('');
+
+  const { data: todayTickets } = useQuery(GET_ALL_TICKETS_OF_THE_DAY, {
+    variables: { filter: 'today' },
+  });
+
+  const openTodayTickets = todayTickets! && todayTickets.getAllTickets.filter(
+    (ticket: TicketData) => ticket.status !== StatusEnum.TRAITE,
+  );
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token || ''));
+  }, []);
+
+  useEffect(() => {
+    let userTicket: TicketData | undefined;
+
+    if (openTodayTickets) {
+      userTicket = openTodayTickets.find(
+        (ticket: TicketData) => ticket.mobileToken === expoPushToken,
+      );
+    }
+
+    if (expoPushToken && userTicket) {
+      navigation.navigate('TicketScreen', { createdTicket: userTicket });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expoPushToken]);
+
   return (
     <View>
       <ImageBackground

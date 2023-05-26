@@ -4,16 +4,11 @@ import QrCodeScanner from './src/screen/QrCodeScanner';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './src/types/RootStackParamList';
-import {
-  ApolloClient, ApolloProvider, HttpLink, InMemoryCache, split,
-} from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { StatusBar } from 'react-native';
 import TicketScreen from './src/screen/TicketScreen';
 import * as Notifications from 'expo-notifications';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { GRAPHQL_API_URL, WEBSOCKET_URL } from '@env';
+import { client } from './graphQL/ApiLink';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,37 +18,6 @@ Notifications.setNotificationHandler({
     shouldPlaySound: true,
     shouldSetBadge: false,
   }),
-});
-
-const wsLink = new GraphQLWsLink(createClient({
-  url: WEBSOCKET_URL as string,
-}));
-
-const httpLink = new HttpLink({
-  uri: GRAPHQL_API_URL as string,
-  credentials: 'include',
-});
-
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition'
-      && definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
-
-const client = new ApolloClient({
-  link: splitLink,
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    query: {
-      fetchPolicy: 'cache-first',
-    },
-  },
 });
 
 export default function App() {
