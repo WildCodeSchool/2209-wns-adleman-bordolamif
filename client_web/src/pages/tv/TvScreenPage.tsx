@@ -29,17 +29,17 @@ function TvScreenPage() {
   const [newTicketUpdate, setNewTicketUpdate] = useState<TicketData>();
 
   useEffect(() => {
-    if (typeof createdTicket !== 'undefined' && createdTicket!.data.newTicket!) setNewTicketUpdate(createdTicket.data.newTicket);
     subscribeToMore({
       document: CREATED_TICKET,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
         const ticketToAdd = subscriptionData.data.newTicket;
+        const isTicketAlreadyAdded = prev.getAllTicketsForWaitingRoom
+          .some((ticket: TicketData) => ticket.id === ticketToAdd.id);
+        if (isTicketAlreadyAdded) return prev;
         return {
           ...prev,
-          getAllTicketsForWaitingRoom: {
-            ...ticketsList.getAllTicketsForWaitingRoom, ticketToAdd,
-          },
+          getAllTicketsForWaitingRoom: [...prev.getAllTicketsForWaitingRoom, ticketToAdd],
         };
       },
     });
