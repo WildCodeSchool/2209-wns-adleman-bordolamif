@@ -2,23 +2,26 @@ import { TicketData } from '@utils/types/DataTypes';
 
 interface RequiredProps {
   ticket: TicketData,
-
 }
 interface OptionalProps {
     handleOpenModal?: null | ((user:TicketData) => void)
+    mode?: string | null
 }
 
 interface Props extends RequiredProps, OptionalProps{}
 
 const defaultProps:OptionalProps = {
   handleOpenModal: null,
+  mode: null,
 };
 
 function TicketDetails(props: Props) {
-  const { ticket, handleOpenModal } = props;
+  const { ticket, handleOpenModal, mode } = props;
 
+  const TVSCREEN = 'tvscreen';
   return (
     <>
+
       {handleOpenModal && (
       <button
         type="button"
@@ -30,24 +33,29 @@ function TicketDetails(props: Props) {
       </button>
       )}
       {!handleOpenModal && (
-        <div
-          className="f-card-waitingroom w-fit px-4 mx-auto drop-shadow-lg mb-4 bg-white text-gray-700"
-        >
-          <div className="flex flex-row items-center">
+        mode === TVSCREEN
+          ? (
             <div
-              className="h-4 w-4 rounded-full"
+              className="f-card-waitingroom"
               style={{ backgroundColor: `${ticket.service.color}` }}
-            />
-            <p className="text-3xl text-black rounded-2xl ml-2">{ticket.name}</p>
-          </div>
-          {/* <div
-            className="w-2/3 h-2 rounded-full mx-auto absolute bottom-1 left-0 right-0"
-            style={{ backgroundColor: `${ticket.service.color}` }}
-          /> */}
-        </div>
+            ><p className="text-5xl">{ticket.name}</p>
+            </div>
+          )
+          : (
+            <div
+              className="f-card-waitingroom w-fit px-4 mx-auto drop-shadow-lg mb-4 bg-white text-gray-700"
+            >
+              <div className="flex flex-row items-center">
+                <div
+                  className="h-4 w-4 rounded-full"
+                  style={{ backgroundColor: `${ticket.service.color}` }}
+                />
+                <p className="text-3xl text-black rounded-2xl ml-2">{ticket.name}</p>
+              </div>
+            </div>
+          )
       )}
     </>
-
   );
 }
 
