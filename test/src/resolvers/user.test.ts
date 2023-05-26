@@ -11,6 +11,8 @@ import User from '../../../server/src/entity/User';
 import WaitingRoom from '../../../server/src/entity/WaitingRoom';
 import Counter from '../../../server/src/entity/Counter';
 import Ticket from '../../../server/src/entity/Ticket';
+import { RoleEnum } from '../../../server/src/utils/enums/RoleEnum';
+import { getJWTFor } from '../utils';
 
 const adminInput = {
   role: 1,
@@ -74,14 +76,23 @@ const updateInput = {
   email: 'updated@test.fr',
 };
 
+const admin = {
+  firstname: 'test', lastname: 'test', email: 'admin@test.com', role: RoleEnum.ADMINISTRATEUR,
+};
 describe('User Resolver', () => {
   describe('Create User', () => {
     describe('Success cases', () => {
       it('1. should create an admin user', async () => {
+        const token = await getJWTFor(admin);
         const res = await client.mutate({
           mutation: CREATE_USER,
           variables: {
             data: adminInput,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -94,10 +105,16 @@ describe('User Resolver', () => {
       });
 
       it('2. should create an operator user', async () => {
+        const token = await getJWTFor(admin);
         const res = await client.mutate({
           mutation: CREATE_USER,
           variables: {
             data: operatorInput,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -110,10 +127,16 @@ describe('User Resolver', () => {
       });
 
       it('3. should create a client user', async () => {
+        const token = await getJWTFor(admin);
         const userWithRoleResponse = await client.mutate({
           mutation: CREATE_USER,
           variables: {
             data: clientInput,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -121,6 +144,11 @@ describe('User Resolver', () => {
           mutation: CREATE_USER,
           variables: {
             data: clientInputWithoutRole,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -140,6 +168,7 @@ describe('User Resolver', () => {
       });
 
       it('4. should create an operator user with services', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const res = await client.mutate({
@@ -147,6 +176,11 @@ describe('User Resolver', () => {
           variables: {
             data: {
               ...operatorInput, services: [{ id: service.id }],
+            },
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           },
         });
@@ -163,6 +197,7 @@ describe('User Resolver', () => {
     describe('Error cases', () => {
       it('1. should throw a password required error', async () => {
         try {
+          const token = await getJWTFor(admin);
           await client.mutate({
             mutation: CREATE_USER,
             variables: {
@@ -171,6 +206,11 @@ describe('User Resolver', () => {
                 lastname: 'User',
                 firstname: 'John',
                 email: 'johnUser@test.fr',
+              },
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
             },
           });
@@ -184,16 +224,27 @@ describe('User Resolver', () => {
       });
       it('2. should throw an already exist error', async () => {
         try {
+          const token = await getJWTFor(admin);
           await client.mutate({
             mutation: CREATE_USER,
             variables: {
               data: operatorInput,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           await client.mutate({
             mutation: CREATE_USER,
             variables: {
               data: operatorInput,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -206,6 +257,7 @@ describe('User Resolver', () => {
       });
       it('3. should throw an error because of missing field', async () => {
         try {
+          const token = await getJWTFor(admin);
           await client.mutate({
             mutation: CREATE_USER,
             variables: {
@@ -214,6 +266,11 @@ describe('User Resolver', () => {
                 lastname: null,
                 firstname: 'John',
                 email: 'john@test.fr',
+              },
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
             },
           });
@@ -228,12 +285,18 @@ describe('User Resolver', () => {
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         try {
+          const token = await getJWTFor(admin);
           const serviceIdToAffect = service.id + 1;
           await client.mutate({
             mutation: CREATE_USER,
             variables: {
               data: {
                 ...operatorInput, services: [{ id: serviceIdToAffect }],
+              },
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
             },
           });
@@ -250,6 +313,7 @@ describe('User Resolver', () => {
   describe('Get All Users', () => {
     describe('Success cases', () => {
       it('1. should get all users', async () => {
+        const token = await getJWTFor(admin);
         await dataSource.getRepository(User).save(adminInput);
 
         await dataSource.getRepository(User).save(operatorInput);
@@ -260,24 +324,30 @@ describe('User Resolver', () => {
           variables: {
             connected: false,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
-        expect(res.data?.getAllUsers.length).toBe(2);
-        expect(res.data?.getAllUsers[0]).toHaveProperty('id');
-        expect(res.data?.getAllUsers[0]).toHaveProperty('role', 1);
-        expect(res.data?.getAllUsers[0]).toHaveProperty('lastname', 'User');
-        expect(res.data?.getAllUsers[0]).toHaveProperty('firstname', 'Admin');
-        expect(res.data?.getAllUsers[0]).toHaveProperty('email', 'admin@test.fr');
-        expect(res.data?.getAllUsers[0]).toHaveProperty('services', []);
+        expect(res.data?.getAllUsers.length).toBe(3);
         expect(res.data?.getAllUsers[1]).toHaveProperty('id');
-        expect(res.data?.getAllUsers[1]).toHaveProperty('role', 2);
+        expect(res.data?.getAllUsers[1]).toHaveProperty('role', 1);
         expect(res.data?.getAllUsers[1]).toHaveProperty('lastname', 'User');
-        expect(res.data?.getAllUsers[1]).toHaveProperty('firstname', 'Operator');
-        expect(res.data?.getAllUsers[1]).toHaveProperty('email', 'operator@test.fr');
+        expect(res.data?.getAllUsers[1]).toHaveProperty('firstname', 'Admin');
+        expect(res.data?.getAllUsers[1]).toHaveProperty('email', 'admin@test.fr');
         expect(res.data?.getAllUsers[1]).toHaveProperty('services', []);
+        expect(res.data?.getAllUsers[2]).toHaveProperty('id');
+        expect(res.data?.getAllUsers[2]).toHaveProperty('role', 2);
+        expect(res.data?.getAllUsers[2]).toHaveProperty('lastname', 'User');
+        expect(res.data?.getAllUsers[2]).toHaveProperty('firstname', 'Operator');
+        expect(res.data?.getAllUsers[2]).toHaveProperty('email', 'operator@test.fr');
+        expect(res.data?.getAllUsers[2]).toHaveProperty('services', []);
       });
 
       it('2. should get all connected users', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
         const dataCounter = {
@@ -305,6 +375,11 @@ describe('User Resolver', () => {
           variables: {
             connected: true,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.getAllUsers.length).toBe(1);
@@ -317,16 +392,22 @@ describe('User Resolver', () => {
         expect(res.data?.getAllUsers[0].currentService).toHaveProperty('name', 'Service1');
       });
 
-      it('3. should get no user', async () => {
+      it('3. should get a the single user doing the request', async () => {
+        const token = await getJWTFor(admin);
         const res = await client.query({
           query: GET_ALL_USERS,
           fetchPolicy: 'no-cache',
           variables: {
             connected: false,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data?.getAllUsers).toBeDefined();
-        expect(res.data?.getAllUsers.length).toBe(0);
+        expect(res.data?.getAllUsers.length).toBe(1);
       });
     });
   });
@@ -334,6 +415,7 @@ describe('User Resolver', () => {
   describe('Get One Users By Id', () => {
     describe('Success cases', () => {
       it('1. should get a user', async () => {
+        const token = await getJWTFor(admin);
         const firstUser:User = await dataSource.getRepository(User).save(operatorInput);
 
         const secondUser:User = await dataSource.getRepository(User).save(clientInput);
@@ -344,6 +426,11 @@ describe('User Resolver', () => {
           variables: {
             getOneUserId: firstUser.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         const secondUserResponse = await client.query({
@@ -351,6 +438,11 @@ describe('User Resolver', () => {
           fetchPolicy: 'no-cache',
           variables: {
             getOneUserId: secondUser.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -369,6 +461,7 @@ describe('User Resolver', () => {
         expect(secondUserResponse.data?.getOneUser).toHaveProperty('services', []);
       });
       it('2. should return an client with ticket values', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const clientUser:User = await dataSource.getRepository(User).save(clientInput);
@@ -387,6 +480,11 @@ describe('User Resolver', () => {
           variables: {
             getOneUserId: clientUser.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(clientResponse.data?.getOneUser).toHaveProperty('id');
@@ -397,6 +495,7 @@ describe('User Resolver', () => {
         expect(clientResponse.data?.getOneUser.tickets.length).toBeGreaterThan(0);
       });
       it('3. should return an operator with service and counter values', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
         const dataCounter = {
@@ -419,6 +518,11 @@ describe('User Resolver', () => {
           variables: {
             getOneUserId: operatorUser.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(operatorResponse.data?.getOneUser).toHaveProperty('id');
@@ -438,11 +542,17 @@ describe('User Resolver', () => {
         await dataSource.getRepository(User).save(clientInput);
 
         try {
+          const token = await getJWTFor(admin);
           await client.query({
             query: GET_ONE_USER,
             fetchPolicy: 'no-cache',
             variables: {
               getOneUserId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -455,6 +565,7 @@ describe('User Resolver', () => {
         }
       });
       it('2. should not found user with wrong id', async () => {
+        const token = await getJWTFor(admin);
         const user:User = await dataSource.getRepository(User).save(clientInput);
 
         try {
@@ -463,6 +574,11 @@ describe('User Resolver', () => {
             fetchPolicy: 'no-cache',
             variables: {
               getOneUserId: user.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -477,6 +593,7 @@ describe('User Resolver', () => {
   describe('Update User', () => {
     describe('Success cases', () => {
       it('1. should update an user', async () => {
+        const token = await getJWTFor(admin);
         const userToUpdate: User = await dataSource.getRepository(User).save(clientInput);
 
         const res = await client.mutate({
@@ -484,6 +601,11 @@ describe('User Resolver', () => {
           variables: {
             data: updateInput,
             updateUserId: userToUpdate.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -494,6 +616,7 @@ describe('User Resolver', () => {
         expect(res.data?.updateUser).toHaveProperty('email', 'updated@test.fr');
       });
       it('2. should add a service and a counter to an operator', async () => {
+        const token = await getJWTFor(admin);
         const userToUpdate: User = await dataSource.getRepository(User).save(operatorInput);
 
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
@@ -516,6 +639,11 @@ describe('User Resolver', () => {
             },
             updateUserId: userToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.updateUser).toHaveProperty('id');
@@ -530,6 +658,7 @@ describe('User Resolver', () => {
         expect(res.data?.updateUser.counter).toHaveProperty('name', 'Counter1');
       });
       it('3. should remove service and counter from operator', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
         const dataCounter = {
@@ -556,6 +685,11 @@ describe('User Resolver', () => {
             },
             updateUserId: userToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data?.updateUser).toHaveProperty('id');
         expect(res.data?.updateUser).toHaveProperty('role', 2);
@@ -569,6 +703,7 @@ describe('User Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail without id', async () => {
         try {
+          const token = await getJWTFor(admin);
           await dataSource.getRepository(User).save(clientInput);
 
           await client.mutate({
@@ -576,6 +711,11 @@ describe('User Resolver', () => {
             variables: {
               data: updateInput,
               updateUserId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -589,6 +729,7 @@ describe('User Resolver', () => {
       });
       it('2. should throw a not found user error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const userToUpdate: User = await dataSource.getRepository(User).save(clientInput);
 
           await client.mutate({
@@ -596,6 +737,11 @@ describe('User Resolver', () => {
             variables: {
               data: updateInput,
               updateUserId: userToUpdate.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -607,6 +753,7 @@ describe('User Resolver', () => {
       });
       it('3. should throw a not found service error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const userToUpdate: User = await dataSource.getRepository(User).save(operatorInput);
 
           const service = await dataSource.getRepository(Service).save(serviceInput);
@@ -619,6 +766,11 @@ describe('User Resolver', () => {
               },
               updateUserId: userToUpdate.id,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -629,6 +781,7 @@ describe('User Resolver', () => {
       });
       it('4. should throw a not found counter error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const userToUpdate: User = await dataSource.getRepository(User).save(clientInput);
 
           await dataSource.getRepository(Service).save(serviceInput);
@@ -649,6 +802,11 @@ describe('User Resolver', () => {
               },
               updateUserId: userToUpdate.id,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -662,6 +820,7 @@ describe('User Resolver', () => {
   describe('Delete User', () => {
     describe('Success cases', () => {
       it('1. should delete an user', async () => {
+        const token = await getJWTFor(admin);
         const userToDelete: User = await dataSource.getRepository(User).save(clientInput);
 
         const res = await client.mutate({
@@ -669,10 +828,16 @@ describe('User Resolver', () => {
           variables: {
             deleteUserId: userToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteUser', true);
       });
       it('2. should delete an user with service', async () => {
+        const token = await getJWTFor(admin);
         const service = await dataSource.getRepository(Service).save(serviceInput);
 
         const userToDelete:User = await dataSource.getRepository(User).save({
@@ -685,6 +850,11 @@ describe('User Resolver', () => {
           variables: {
             deleteUserId: userToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteUser', true);
       });
@@ -692,12 +862,18 @@ describe('User Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail whitout id', async () => {
         try {
+          const token = await getJWTFor(admin);
           await dataSource.getRepository(User).save(clientInput);
 
           await client.mutate({
             mutation: DELETE_USER,
             variables: {
               deleteUserId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -711,12 +887,18 @@ describe('User Resolver', () => {
       });
       it('2. should throw a not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const userToDelete: User = await dataSource.getRepository(User).save(clientInput);
 
           await client.mutate({
             mutation: DELETE_USER,
             variables: {
               deleteUserId: userToDelete.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -732,6 +914,7 @@ describe('User Resolver', () => {
   describe('Update User suspension', () => {
     describe('Success cases', () => {
       it('1. suspend ans unsusped user', async () => {
+        const token = await getJWTFor(admin);
         const userToSuspend = await dataSource.getRepository(User).save(operatorInput);
 
         const suspendRes = await client.query({
@@ -741,6 +924,11 @@ describe('User Resolver', () => {
             data: true,
             updateUserSuspensionId: userToSuspend.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         const unsuspendRes = await client.query({
@@ -749,6 +937,11 @@ describe('User Resolver', () => {
           variables: {
             data: false,
             updateUserSuspensionId: userToSuspend.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -765,6 +958,7 @@ describe('User Resolver', () => {
     describe('Error cases', () => {
       it('1.not found user', async () => {
         try {
+          const token = await getJWTFor(admin);
           const userToSuspend = await dataSource.getRepository(User).save(operatorInput);
 
           await client.query({
@@ -773,6 +967,11 @@ describe('User Resolver', () => {
             variables: {
               data: true,
               updateUserSuspensionId: userToSuspend.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
 

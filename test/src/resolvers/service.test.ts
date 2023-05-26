@@ -7,6 +7,8 @@ import dataSource from '../../../server/src/db';
 import WaitingRoom from '../../../server/src/entity/WaitingRoom';
 import { CREATE_SERVICE, DELETE_SERVICE, UPDATE_SERVICE } from '../graphQL/mutations/serviceMutations';
 import { GET_ALL_SERVICES, GET_ONE_SERVICE } from '../graphQL/query/serviceQuery';
+import { RoleEnum } from '../../../server/src/utils/enums/RoleEnum';
+import { getJWTFor } from '../utils';
 
 const firstServiceInput = {
   name: 'Service1',
@@ -30,11 +32,14 @@ const updateInput = {
 };
 
 const waitingRoomInput = { name: 'Wait1' };
-
+const admin = {
+  firstname: 'test', lastname: 'test', email: 'admin@test.com', role: RoleEnum.ADMINISTRATEUR,
+};
 describe('Service Resolver', () => {
   describe('Create Service', () => {
     describe('Success cases', () => {
       it('1. should create a ticket', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
 
         const res1 = await client.mutate({
@@ -44,6 +49,11 @@ describe('Service Resolver', () => {
               ...firstServiceInput,
             },
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         const res2 = await client.mutate({
           mutation: CREATE_SERVICE,
@@ -51,6 +61,11 @@ describe('Service Resolver', () => {
             data: {
               ...secondServiceInput,
               waitingRoom: { id: waitingRoom.id },
+            },
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           },
         });
@@ -71,12 +86,18 @@ describe('Service Resolver', () => {
     describe('Error cases', () => {
       it('1. should throw a waiting room not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           await client.mutate({
             mutation: CREATE_SERVICE,
             variables: {
               data: {
                 ...firstServiceInput,
                 waitingRoom: { id: 1 },
+              },
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
             },
           });
@@ -211,6 +232,7 @@ describe('Service Resolver', () => {
   describe('Update Service', () => {
     describe('Success cases', () => {
       it('1. should update a service', async () => {
+        const token = await getJWTFor(admin);
         const serviceToUpdate = await dataSource.getRepository(Service).save(firstServiceInput);
 
         const res = await client.mutate({
@@ -218,6 +240,11 @@ describe('Service Resolver', () => {
           variables: {
             data: { ...updateInput },
             updateServiceId: serviceToUpdate.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -228,6 +255,7 @@ describe('Service Resolver', () => {
         expect(res.data?.updateService).toHaveProperty('color', '#000000');
       });
       it('2. should add an user to a service', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
         const serviceToUpdate = await dataSource.getRepository(Service).save(firstServiceInput);
 
@@ -236,6 +264,11 @@ describe('Service Resolver', () => {
           variables: {
             data: { ...updateInput, waitingRoom: { id: waitingRoom.id } },
             updateServiceId: serviceToUpdate.id,
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         });
 
@@ -250,6 +283,7 @@ describe('Service Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail without id', async () => {
         try {
+          const token = await getJWTFor(admin);
           await dataSource.getRepository(Service).save(firstServiceInput);
 
           await client.mutate({
@@ -257,6 +291,11 @@ describe('Service Resolver', () => {
             variables: {
               data: { ...updateInput },
               updateServiceId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -270,6 +309,7 @@ describe('Service Resolver', () => {
       });
       it('2. should throw a not found service error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const serviceToUpdate = await dataSource.getRepository(Service).save(firstServiceInput);
 
           await client.mutate({
@@ -277,6 +317,11 @@ describe('Service Resolver', () => {
             variables: {
               data: { ...updateInput },
               updateServiceId: serviceToUpdate.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -288,6 +333,7 @@ describe('Service Resolver', () => {
       });
       it('3. should throw a not found waitingRoom error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           const serviceToUpdate = await dataSource.getRepository(Service).save(firstServiceInput);
 
@@ -298,6 +344,11 @@ describe('Service Resolver', () => {
                 ...updateInput, waitingRoom: { id: waitingRoom.id + 1 },
               },
               updateServiceId: serviceToUpdate.id,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -312,6 +363,7 @@ describe('Service Resolver', () => {
   describe('Delete Service', () => {
     describe('Success cases', () => {
       it('1. should delete a service', async () => {
+        const token = await getJWTFor(admin);
         const serviceToDelete = await dataSource.getRepository(Service).save(firstServiceInput);
 
         const res = await client.mutate({
@@ -319,10 +371,16 @@ describe('Service Resolver', () => {
           variables: {
             deleteServiceId: serviceToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteService', true);
       });
       it('2. should delete a service with a waitingRoom', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
         const serviceToDelete = await dataSource.getRepository(Service).save({
           ...firstServiceInput,
@@ -333,6 +391,11 @@ describe('Service Resolver', () => {
           variables: {
             deleteServiceId: serviceToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteService', true);
       });
@@ -340,12 +403,18 @@ describe('Service Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail whitout id', async () => {
         try {
+          const token = await getJWTFor(admin);
           await dataSource.getRepository(Service).save(firstServiceInput);
 
           await client.mutate({
             mutation: DELETE_SERVICE,
             variables: {
               deleteServiceId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -359,12 +428,18 @@ describe('Service Resolver', () => {
       });
       it('2. should throw a not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const serviceToDelete = await dataSource.getRepository(Service).save(firstServiceInput);
 
           await client.mutate({
             mutation: DELETE_SERVICE,
             variables: {
               deleteServiceId: serviceToDelete.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
