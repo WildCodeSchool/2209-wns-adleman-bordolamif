@@ -10,7 +10,7 @@ interface Props {
 function DashboardSuspendedTickets(props:Props) {
   const { ticketsList, callSuspendedTicket, profile } = props;
   return (
-    <div className="p-2">
+    <div className="p-2 rounded-2xl bg-gray-100 w-1/3">
       <h2 className="f-dashboard-titles">Tickets suspendus</h2>
       {ticketsList! && ticketsList.slice(0, 3).map(
         (ticket) => (

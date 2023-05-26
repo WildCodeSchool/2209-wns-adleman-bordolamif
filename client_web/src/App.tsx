@@ -18,6 +18,7 @@ import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
 import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
 import ResetPasswordPage from '@pages/ResetPasswordPage';
 import ForgotPasswordPage from '@pages/ForgotPasswordPage';
+import AdminStatistics from '@components/adminComponents/AdminStatistics';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -52,7 +53,9 @@ function App() {
                 />
               )}
             >
-              <Route path="dashboard" element={<AdminPage />} />
+              <Route path="dashboard" element={<AdminPage />}>
+                <Route path="statistics" element={<AdminStatistics />} />
+              </Route>
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
