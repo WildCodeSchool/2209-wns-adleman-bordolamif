@@ -1,14 +1,16 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import DarkLogo from '@assets/DarkLogo';
 import TicketDetails from '@components/details/TicketDetails';
 import ServicesList from '@components/lists/ServicesList';
 import TicketCreationModal from '@components/modals/TicketCreationModal';
 import { CREATE_TICKET } from '@graphQL/mutations/ticketMutations';
 import { GET_ALL_SERVICES } from '@graphQL/query/serviceQuery';
+import { GET_ALL_TICKETS } from '@graphQL/query/ticketQuery';
+import { CREATED_TICKET, UPDATED_TICKET } from '@graphQL/subscriptions/ticketSubscriptions';
 import useModal from '@utils/hooks/UseModal';
 import { ServiceData, TicketData } from '@utils/types/DataTypes';
 import { TicketInput } from '@utils/types/InputTypes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function ClientPage() {
   const {
@@ -17,7 +19,12 @@ function ClientPage() {
     refetch: refetchServicesList,
   } = useQuery(GET_ALL_SERVICES);
 
+  const { data: ticketsList, refetch: refetchTickets, subscribeToMore: subscribeToMoreTickets } = useQuery(GET_ALL_TICKETS, { variables: { filter: 'today' } });
+
   const [CreateTicket] = useMutation(CREATE_TICKET);
+
+  const { data: newTicket } = useSubscription(CREATED_TICKET);
+  const { data: updatedTicket, loading: updateTicketLoading } = useSubscription(UPDATED_TICKET);
 
   const { isModalOpen, openModal, closeModal } = useModal();
 
@@ -27,8 +34,9 @@ function ClientPage() {
   const handleCreateTicket = async (ticket: TicketInput) => {
     const { data } = await CreateTicket({ variables: { data: ticket } });
     setCreatedTicket(data.createTicket);
-    setTimeout(() => setCreatedTicket(null), 15000);
+    setTimeout(() => setCreatedTicket(null), 5000);
     await refetchServicesList();
+    await refetchTickets();
   };
 
   const handleOpenModal = (service: ServiceData) => {
@@ -40,6 +48,43 @@ function ClientPage() {
     closeModal();
   };
 
+  useEffect(() => {
+    subscribeToMoreTickets({
+      document: CREATED_TICKET,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const ticketToAdd = subscriptionData.data.newTicket;
+        const isTicketAlreadyAdded = prev.getAllTickets
+          .some((ticket: TicketData) => ticket.id === ticketToAdd.id);
+        if (isTicketAlreadyAdded) return prev;
+        return {
+          ...prev,
+          getAllTickets: [...prev.getAllTickets, ticketToAdd],
+        };
+      },
+    });
+  }, [newTicket, subscribeToMoreTickets, ticketsList]);
+
+  useEffect(() => {
+    if (!updateTicketLoading && updatedTicket!) {
+      subscribeToMoreTickets({
+        document: UPDATED_TICKET,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev;
+          const ticketToUpdate = subscriptionData.data.updatedTicket;
+
+          const newList = prev.getAllTickets.map(
+            (ticket: TicketData) => (ticket.id === ticketToUpdate.id ? ticketToUpdate : ticket),
+          );
+          return {
+            ...prev,
+            getAllTickets: newList,
+          };
+        },
+      });
+    }
+  }, [updatedTicket, subscribeToMoreTickets, updateTicketLoading]);
+
   return (
     <div>
       <h2 className="text-center mt-8 text-4xl nunito-bold">Bienvenue dans votre espace de santé</h2>
@@ -48,6 +93,7 @@ function ClientPage() {
 
       <div className="overflow-y-auto max-h-[38rem] pb-4">
         <ServicesList
+          ticketsList={ticketsList && ticketsList.getAllTickets}
           servicesList={servicesList && servicesList.getAllServices}
           mode="cards"
           handleOpenModal={handleOpenModal}
