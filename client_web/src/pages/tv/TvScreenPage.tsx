@@ -73,6 +73,7 @@ function TvScreenPage() {
     }
   }, [newTicketUpdate]);
 
+  const TVSCREEN = 'tvscreen';
   return (
     <div className="flex flex-row min-h-screen">
       { ticketsList && ticketsList! && waitingRoom! && (
@@ -85,6 +86,7 @@ function TvScreenPage() {
             && ticket.status === StatusEnum.EN_TRAITEMENT
             && ticket.counter !== null,
           )}
+        mode={TVSCREEN}
       />
       )}
       <div className="w-2/3 flex flex-col">
@@ -101,6 +103,7 @@ function TvScreenPage() {
                   .filter((ticket:TicketData) => ticket.service.id === service.id
                 && ticket.status !== StatusEnum.EN_TRAITEMENT)}
                 service={service}
+                mode={TVSCREEN}
               />
             ),
           )}

@@ -18,9 +18,13 @@ function Menu({ userProfile, client }: Props) {
   const [logout] = useMutation(LOGOUT);
   const navigate = useNavigate();
   const onLogout = async () => {
-    await logout({ variables: { logoutId: userProfile.id } });
-    await client.resetStore();
-    navigate('/');
+    try {
+      await logout({ variables: { logoutId: userProfile.id } });
+      await client.resetStore();
+      navigate('/');
+    } catch (error) {
+      navigate('/');
+    }
   };
 
   const activeStyle = {

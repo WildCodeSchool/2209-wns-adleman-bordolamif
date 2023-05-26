@@ -7,17 +7,23 @@ import WaitingRoom from '../../../server/src/entity/WaitingRoom';
 import { CREATE_COUNTER, DELETE_COUNTER, UPDATE_COUNTER } from '../graphQL/mutations/counterMutations';
 import { GET_ALL_COUNTERS, GET_ONE_COUNTER } from '../graphQL/query/counterQuery';
 import Counter from '../../../server/src/entity/Counter';
+import { getJWTFor } from '../utils';
+import { RoleEnum } from '../../../server/src/utils/enums/RoleEnum';
 
 const counterInput = { name: 'Counter1' };
 const updateInput = { name: 'Update' };
 const waitingRoomInput = { name: 'Wait1' };
 const updateWaitingRoomInput = { name: 'Update' };
+const admin = {
+  firstname: 'test', lastname: 'test', email: 'admin@test.com', role: RoleEnum.ADMINISTRATEUR,
+};
 
 describe('Counter Resolver', () => {
   describe('Create Counter', () => {
     describe('Success cases', () => {
-      it('1. should create a counter', async () => {
+      it('1. should create a counter when logged in as admin', async () => {
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
+        const token = await getJWTFor(admin);
 
         const res = await client.mutate({
           mutation: CREATE_COUNTER,
@@ -25,6 +31,11 @@ describe('Counter Resolver', () => {
             data: {
               ...counterInput,
               waitingRoom: { id: waitingRoom.id },
+            },
+          },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           },
         });
@@ -37,12 +48,18 @@ describe('Counter Resolver', () => {
     describe('Error cases', () => {
       it('1. should throw a waiting room not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           await client.mutate({
             mutation: CREATE_COUNTER,
             variables: {
               data: {
                 ...counterInput,
                 waitingRoom: { id: 1 },
+              },
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
             },
           });
@@ -164,7 +181,8 @@ describe('Counter Resolver', () => {
   });
   describe('Update Counter', () => {
     describe('Success cases', () => {
-      it('1. should update a counter', async () => {
+      it('1. should update a counter when logged in as admin', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
         const counterToUpdate = await dataSource.getRepository(Counter).save({
           ...counterInput,
@@ -176,6 +194,11 @@ describe('Counter Resolver', () => {
             data: { ...updateInput, waitingRoom: { id: waitingRoom.id } },
             updateCounterId: counterToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.updateCounter).toHaveProperty('id');
@@ -183,6 +206,7 @@ describe('Counter Resolver', () => {
         expect(res.data?.updateCounter.waitingRoom).toHaveProperty('id', waitingRoom.id);
       });
       it('2. should add a waitingRoom to a counter', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
         const waitingRoomBis = await dataSource.getRepository(WaitingRoom).save(
           updateWaitingRoomInput,
@@ -198,6 +222,11 @@ describe('Counter Resolver', () => {
             data: { ...counterInput, waitingRoom: { id: waitingRoomBis.id } },
             updateCounterId: counterToUpdate.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
 
         expect(res.data?.updateCounter).toHaveProperty('id');
@@ -208,6 +237,7 @@ describe('Counter Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail without id', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           await dataSource.getRepository(Counter).save({
             ...counterInput,
@@ -219,6 +249,11 @@ describe('Counter Resolver', () => {
             variables: {
               data: { ...updateInput, waitingRoom: { id: waitingRoom.id } },
               updateCounterId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -232,6 +267,7 @@ describe('Counter Resolver', () => {
       });
       it('2. should throw a not found service error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           const counterToUpdate = await dataSource.getRepository(Counter).save({
             ...counterInput,
@@ -243,6 +279,11 @@ describe('Counter Resolver', () => {
               data: { ...updateInput },
               updateCounterId: counterToUpdate.id + 1,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -253,6 +294,7 @@ describe('Counter Resolver', () => {
       });
       it('3. should throw a not found waitingRoom error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           const counterToUpdate = await dataSource.getRepository(Counter).save({
             ...counterInput,
@@ -267,6 +309,11 @@ describe('Counter Resolver', () => {
               },
               updateCounterId: counterToUpdate.id,
             },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           });
           expect(true).toBe(false);
         } catch (e) {
@@ -280,6 +327,7 @@ describe('Counter Resolver', () => {
   describe('Delete Counter', () => {
     describe('Success cases', () => {
       it('1. should delete a counter', async () => {
+        const token = await getJWTFor(admin);
         const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
         const counterToDelete = await dataSource.getRepository(Counter).save({
           ...counterInput,
@@ -291,6 +339,11 @@ describe('Counter Resolver', () => {
           variables: {
             deleteCounterId: counterToDelete.id,
           },
+          context: {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         });
         expect(res.data).toHaveProperty('deleteCounter', true);
       });
@@ -298,6 +351,7 @@ describe('Counter Resolver', () => {
     describe('Error cases', () => {
       it('1. should fail whitout id', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           await dataSource.getRepository(Counter).save({
             ...counterInput,
@@ -308,6 +362,11 @@ describe('Counter Resolver', () => {
             mutation: DELETE_COUNTER,
             variables: {
               deleteCounterId: null,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);
@@ -321,6 +380,7 @@ describe('Counter Resolver', () => {
       });
       it('2. should throw a not found error', async () => {
         try {
+          const token = await getJWTFor(admin);
           const waitingRoom = await dataSource.getRepository(WaitingRoom).save(waitingRoomInput);
           const counterToDelete = await dataSource.getRepository(Counter).save({
             ...counterInput,
@@ -330,6 +390,11 @@ describe('Counter Resolver', () => {
             mutation: DELETE_COUNTER,
             variables: {
               deleteCounterId: counterToDelete.id + 1,
+            },
+            context: {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             },
           });
           expect(true).toBe(false);

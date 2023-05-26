@@ -1,9 +1,10 @@
 import {
-  Arg, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription,
+  Arg, Authorized, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription,
 } from 'type-graphql';
 import Ticket from '../entity/Ticket';
 import { PartialTicketInput, StartEndDate, TicketInput } from '../utils/types/InputTypes';
 import TicketController from '../controllers/TicketController';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 
 @Resolver(Ticket)
 export class TicketResolver {
@@ -58,11 +59,13 @@ export class TicketResolver {
     return ticket;
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => Boolean)
   async deleteTicket(@Arg('id', () => Int) id: number): Promise<boolean> {
     return await TicketController.deleteTicket(id);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => Ticket)
   async updateTicket(
     @Arg('id', () => Int) id: number,
@@ -75,6 +78,7 @@ export class TicketResolver {
     return updatedTicket;
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => Ticket)
   async partialTicketUpdate(
       @Arg('id', () => Int) id: number,
