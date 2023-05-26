@@ -12,10 +12,8 @@ import { StatusEnum } from '@utils/enum/StatusEnum';
 import useModal from '@utils/hooks/UseModal';
 import { TicketData, UserData } from '@utils/types/DataTypes';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 function OperatorBoard() {
-  const location = useLocation();
   const { userProfile } = useUserProfile();
   const [treatedTicket, setTreatedTicket] = useState<string>('');
 
@@ -193,20 +191,20 @@ function OperatorBoard() {
         </div>
         <div className="f-decoration-line-for-tab" />
       </div>
-      {location.pathname === '/operator/dashboard' && (
-      <OperatorDashboard
-        changeCurrentTicketStatus={changeCurrentTicketStatus}
-        profile={userProfile!}
-        ticketsList={ticketsList! && ticketsList.getAllTicketsForWaitingRoom}
-        callNextTicket={callNextTicket}
-        waitingRoom={waitingRoom! && waitingRoom.getOneWaitingRoom}
-        connectedUsersList={connectedUsersList!
+      {ticketsList! && (
+        <OperatorDashboard
+          changeCurrentTicketStatus={changeCurrentTicketStatus}
+          profile={userProfile!}
+          ticketsList={ticketsList! && ticketsList.getAllTicketsForWaitingRoom}
+          callNextTicket={callNextTicket}
+          waitingRoom={waitingRoom! && waitingRoom.getOneWaitingRoom}
+          connectedUsersList={connectedUsersList!
           && connectedUsersList.getAllUsers}
-        isModalOpen={isModalOpen}
-        handleCloseModal={handleCloseModal}
-        treatedTicket={treatedTicket}
-        callSuspendedTicket={callSuspendedTicket}
-      />
+          isModalOpen={isModalOpen}
+          handleCloseModal={handleCloseModal}
+          treatedTicket={treatedTicket}
+          callSuspendedTicket={callSuspendedTicket}
+        />
       )}
 
     </>
