@@ -13,13 +13,12 @@ interface Props{
   ticketsList: TicketData[]
   waitingRoom: WaitingRoomData
   callSuspendedTicket: (id: number)=>void
-  callNextTicket: ()=>void
   connectedUsersList: UserData[]
 }
-function
-OperatorWaitingRoom(props: Props) {
+
+function OperatorWaitingRoom(props: Props) {
   const {
-    profile, ticketsList, waitingRoom, callSuspendedTicket, callNextTicket, connectedUsersList,
+    profile, ticketsList, waitingRoom, callSuspendedTicket, connectedUsersList,
   } = props;
   return (
     <div>
@@ -28,43 +27,50 @@ OperatorWaitingRoom(props: Props) {
           ticketsList={ticketsList! && ticketsList
             .filter((ticket:TicketData) => ticket.counter !== null)}
         />
-        {waitingRoom! && waitingRoom.services.filter(
-          (service) => service.id !== profile.currentService?.id,
-        ).map(
-          (service: Service) => (
-            <WaitingTicketsByService
-              key={service.id}
-              ticketsList={ticketsList! && ticketsList
-                .filter((ticket:TicketData) => ticket.service.id === service.id
+        <p className="text-3xl -mt-16">
+          Tickets restants : {ticketsList! && ticketsList
+          .filter((ticket:TicketData) => ticket.service.id === profile.currentService?.id
+                && ticket.status !== StatusEnum.EN_TRAITEMENT).length}
+        </p>
+        <div className="flex flex-row justify-center gap-4 mt-4 mb-8">
+          {waitingRoom! && waitingRoom.services.filter(
+            (service) => service.id !== profile.currentService?.id,
+          ).map(
+            (service: Service) => (
+              <WaitingTicketsByService
+                key={service.id}
+                ticketsList={ticketsList! && ticketsList
+                  .filter((ticket:TicketData) => ticket.service.id === service.id
                 && ticket.status !== StatusEnum.EN_TRAITEMENT)}
-              service={service}
-            />
-          ),
-        )}
+                service={service}
+              />
+            ),
+          )}
+        </div>
       </div>
       <div>
-        <p>Tickets restants : {ticketsList! && ticketsList
-          .filter((ticket:TicketData) => ticket.service.id === profile.currentService?.id
-          && ticket.status !== StatusEnum.EN_TRAITEMENT).length}
-        </p>
-        <div className="bg-gray-200 w-1/3 rounded-2xl">
-          <DashboardWaitingTickets
-            ticketsList={ticketsList! && ticketsList.filter(
-              (ticket) => ticket.service.id === profile!.currentService!.id
+        <div className="flex flex-row justify-center gap-20">
+          <div className="bg-gray-200 w-1/3 rounded-2xl">
+            <DashboardWaitingTickets
+              ticketsList={ticketsList! && ticketsList.filter(
+                (ticket) => ticket.service.id === profile!.currentService!.id
               && (ticket.status === StatusEnum.EN_ATTENTE),
-            )}
-          />
-        </div>
-        <DashboardSuspendedTickets
-          profile={profile!}
-          callSuspendedTicket={callSuspendedTicket}
-          ticketsList={ticketsList! && ticketsList.filter(
-            (ticket) => (ticket.service.id === profile!.currentService!.id)
+              )}
+            />
+          </div>
+          <div className="bg-gray-200 w-1/3 rounded-2xl">
+            <DashboardSuspendedTickets
+              profile={profile!}
+              callSuspendedTicket={callSuspendedTicket}
+              ticketsList={ticketsList! && ticketsList.filter(
+                (ticket) => (ticket.service.id === profile!.currentService!.id)
             && (ticket.status === StatusEnum.AJOURNE),
-          )}
-        />
-        {profile.counter.ticket ? <button disabled type="button" className="bg-gray-400 text-white rounded p-1 m-1">Ticket en cours de traitement</button> : <button onClick={callNextTicket} type="button" className="m-3 bg-green-500 rounded p-3">Appeler le prochain ticket</button>}
-        <OperatorsInService connectedUsersList={profile! && connectedUsersList!
+              )}
+            />
+          </div>
+        </div>
+        <OperatorsInService
+          connectedUsersList={profile! && connectedUsersList!
                && connectedUsersList.filter((user) => user.id !== profile.id
                && user.currentService!.id === profile.currentService!.id)}
         />
