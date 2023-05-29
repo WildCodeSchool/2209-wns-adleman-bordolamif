@@ -11,7 +11,7 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
   // Pour chaque ticket de la liste
   for (let i = 0; i < ticketsList.length; i += 1) {
     // Définition de la date
-    const date: string = ticketsList[i].createdAt!.toDateString().substring(0, 10);
+    const date: string = ticketsList[i].createdAt!.toDateString();
     // Définition du temps d'attente
     let waitingTime: number | null = null;
     if (ticketsList[i].closedAt!) {
@@ -24,16 +24,7 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
     // Si aucune donéee traitée ne correspond à cette date, créer une nouvelle entrée
     if (dateAlreadyTreatedIndex === -1) {
       const newDay: DailyStatsDatas = { date, total: 1, detail: [] };
-      const newServiceDetail: StatsDatasDetail = {
-        service: ticketsList[i].service.name,
-        number: 1,
-        mobileCount: ticketsList[i].mobileToken ? 1 : 0,
-        waitingTimeList: waitingTime! ? [waitingTime] : [],
-        suspendingCount: ticketsList[i].isReturned ? 1 : 0,
-        firstTimeCount: ticketsList[i].isFirstTime ? 1 : 0,
-      };
-
-      newDay.detail.push(newServiceDetail);
+      createStatsDatasDetail(ticketsList[i], newDay.detail, waitingTime);
       statsDatas.push(newDay);
     } else {
       // Sinon j'ajoute mon ticket au total des tickets du jour
@@ -43,40 +34,18 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
         .findIndex((item) => item.service === ticketsList[i].service.name);
       if (serviceAlreadyTreatedIndex === -1) {
         // Si aucune donnée n'a été traité pour ce service à cette date, créer l'entrée
-        const newServiceDetail: StatsDatasDetail = {
-          service: ticketsList[i].service.name,
-          number: 1,
-          mobileCount: ticketsList[i].mobileToken ? 1 : 0,
-          waitingTimeList: waitingTime! ? [waitingTime] : [],
-          suspendingCount: ticketsList[i].isReturned ? 1 : 0,
-          firstTimeCount: ticketsList[i].isFirstTime ? 1 : 0,
-        };
-        statsDatas[dateAlreadyTreatedIndex].detail.push(newServiceDetail);
+        createStatsDatasDetail(
+          ticketsList[i],
+          statsDatas[dateAlreadyTreatedIndex].detail,
+          waitingTime,
+        );
       } else {
         // Sinon j'ajoute les valeurs de mon ticket aux données brutes de la journée par service
-        statsDatas[dateAlreadyTreatedIndex]
-          .detail[serviceAlreadyTreatedIndex]
-          .number += 1;
-        if (ticketsList[i].mobileToken) {
-          statsDatas[dateAlreadyTreatedIndex]
-            .detail[serviceAlreadyTreatedIndex]
-            .mobileCount += 1;
-        }
-        if (waitingTime!) {
-          statsDatas[dateAlreadyTreatedIndex]
-            .detail[serviceAlreadyTreatedIndex]
-            .waitingTimeList.push(waitingTime);
-        }
-        if (ticketsList[i].isReturned) {
-          statsDatas[dateAlreadyTreatedIndex]
-            .detail[serviceAlreadyTreatedIndex]
-            .suspendingCount += 1;
-        }
-        if (ticketsList[i].isFirstTime) {
-          statsDatas[dateAlreadyTreatedIndex]
-            .detail[serviceAlreadyTreatedIndex]
-            .firstTimeCount += 1;
-        }
+        addToStatsDatasDetail(
+          ticketsList[i],
+          statsDatas[dateAlreadyTreatedIndex].detail[serviceAlreadyTreatedIndex],
+          waitingTime,
+        );
       }
     }
   }
@@ -89,15 +58,7 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
       detail: [],
     };
     dailyData.detail.forEach((serviceDetail) => {
-      const totalWaitingTime = serviceDetail.waitingTimeList.reduce((a, b) => a + b);
-      const newDetail: StatisticsDetail = {
-        service: serviceDetail.service,
-        number: serviceDetail.number,
-        mobileRate: serviceDetail.mobileCount / serviceDetail.number,
-        waitingTimeAverage: totalWaitingTime / serviceDetail.waitingTimeList.length,
-        returnedRate: serviceDetail.suspendingCount / serviceDetail.number,
-        firstTimeRate: serviceDetail.firstTimeCount / serviceDetail.number,
-      };
+      const newDetail = convertDetailDataToStats(serviceDetail);
       dailyStats.detail.push(newDetail);
     });
     stats.push(dailyStats);
@@ -105,4 +66,55 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
   // tri par ordre chronologique
   stats.sort((a, b) => a.date.localeCompare(b.date));
   return stats;
+};
+
+const createStatsDatasDetail = (
+  ticket: Ticket,
+  detailArray:StatsDatasDetail[],
+  waitingTime: number | null,
+) => {
+  const newServiceDetail: StatsDatasDetail = {
+    service: ticket.service.name,
+    number: 1,
+    mobileCount: ticket.mobileToken ? 1 : 0,
+    waitingTimeList: waitingTime! ? [waitingTime] : [],
+    suspendingCount: ticket.isReturned ? 1 : 0,
+    firstTimeCount: ticket.isFirstTime ? 1 : 0,
+  };
+
+  detailArray.push(newServiceDetail);
+};
+
+const addToStatsDatasDetail = (
+  ticket: Ticket,
+  detail:StatsDatasDetail,
+  waitingTime: number | null,
+) => {
+  detail.number += 1;
+
+  if (ticket.mobileToken) {
+    detail.mobileCount += 1;
+  }
+  if (waitingTime!) {
+    detail.waitingTimeList.push(waitingTime);
+  }
+  if (ticket.isReturned) {
+    detail.suspendingCount += 1;
+  }
+  if (ticket.isFirstTime) {
+    detail.firstTimeCount += 1;
+  }
+};
+
+const convertDetailDataToStats = (serviceDetail:StatsDatasDetail) => {
+  const totalWaitingTime = serviceDetail.waitingTimeList.reduce((a, b) => a + b);
+  const newDetail: StatisticsDetail = {
+    service: serviceDetail.service,
+    number: serviceDetail.number,
+    mobileRate: serviceDetail.mobileCount / serviceDetail.number,
+    waitingTimeAverage: totalWaitingTime / serviceDetail.waitingTimeList.length,
+    returnedRate: serviceDetail.suspendingCount / serviceDetail.number,
+    firstTimeRate: serviceDetail.firstTimeCount / serviceDetail.number,
+  };
+  return newDetail;
 };
