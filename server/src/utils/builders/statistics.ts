@@ -11,7 +11,7 @@ export const getDailyStatistics = (ticketsList: Ticket[]): DailyStatistics[] => 
   // Pour chaque ticket de la liste
   for (let i = 0; i < ticketsList.length; i += 1) {
     // Définition de la date
-    const date: string = ticketsList[i].createdAt!.toDateString();
+    const date: string = ticketsList[i].createdAt!.toISOString().substring(0, 10);
     // Définition du temps d'attente
     let waitingTime: number | null = null;
     if (ticketsList[i].closedAt!) {
