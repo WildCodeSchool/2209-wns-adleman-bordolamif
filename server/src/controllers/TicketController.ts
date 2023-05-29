@@ -4,7 +4,9 @@ import ServiceModel from '../models/ServiceModel';
 import TicketModel from '../models/TicketModel';
 import UserModel from '../models/UserModel';
 import WaitingRoomModel from '../models/WaitingRoomModel';
-import { dateFilterBuilder } from '../utils/builders/date';
+import {
+  dateFilterBuilder, getOneYearAgo, getYesterday,
+} from '../utils/builders/date';
 import {
   ticketNameBuilder,
   ticketStatusUpdater,
@@ -15,6 +17,8 @@ import { SearchCriterias } from '../utils/interfaces';
 import { PartialTicketInput, StartEndDate, TicketInput } from '../utils/types/InputTypes';
 import { Expo } from 'expo-server-sdk';
 import { env } from '../env';
+import { getDailyStatistics } from '../utils/builders/statistics';
+import { DailyStatistics } from '../utils/types/StatisticsType';
 
 const expo = new Expo({ accessToken: env.EXPO_ACCESS_TOKEN });
 
@@ -40,6 +44,17 @@ const TicketController = {
     };
 
     return await TicketModel.getAllTicketsForWaitingRoom(searchCriterias);
+  },
+
+  getLastYearStatistics: async (): Promise<DailyStatistics[]> => {
+    const last365days = {
+      startDate: getOneYearAgo().toDateString(),
+      // endDate: today.toDateString(),
+      endDate: getYesterday().toDateString(),
+    };
+    const ticketsList = await TicketModel.getAllTicketsBetweenTwoDates(last365days);
+
+    return getDailyStatistics(ticketsList);
   },
 
   getOneTicketById: async (id: number): Promise<Ticket> => {

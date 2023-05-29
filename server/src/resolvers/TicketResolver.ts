@@ -6,6 +6,8 @@ import { PartialTicketInput, StartEndDate, TicketInput } from '../utils/types/In
 import TicketController from '../controllers/TicketController';
 import { RoleEnum } from '../utils/enums/RoleEnum';
 
+import { DailyStatistics } from '../utils/types/StatisticsType';
+
 @Resolver(Ticket)
 export class TicketResolver {
   /** ***********************************
@@ -24,6 +26,11 @@ export class TicketResolver {
     @Arg('data') data: StartEndDate,
   ): Promise<Ticket[]> {
     return await TicketController.getAllTicketsBetweenTwoDates(data);
+  }
+
+  @Query(() => [DailyStatistics])
+  async getLastYearStatistics(): Promise<DailyStatistics[]> {
+    return await TicketController.getLastYearStatistics();
   }
 
   @Query(() => [Ticket])
