@@ -5,10 +5,10 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './src/types/RootStackParamList';
 import { ApolloProvider } from '@apollo/client';
-import client from './graphQL/client';
 import { StatusBar } from 'react-native';
 import TicketScreen from './src/screen/TicketScreen';
 import * as Notifications from 'expo-notifications';
+import { client } from './graphQL/ApiLink';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,9 +24,9 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer theme={DefaultTheme}>
-        <StatusBar barStyle="light-content" backgroundColor="#f97316" />
+        <StatusBar hidden />
         <Stack.Navigator
-          screenOptions={{ headerShown: false }}
+          screenOptions={{ headerShown: false, navigationBarHidden: true }}
         >
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />

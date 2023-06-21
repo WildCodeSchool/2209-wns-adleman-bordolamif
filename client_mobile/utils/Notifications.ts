@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
@@ -23,17 +24,14 @@ export async function registerForPushNotificationsAsync() {
     }
 
     if (finalStatus !== 'granted') {
-      // eslint-disable-next-line no-alert
       alert('Failed to get push token for push notification!');
       return;
     }
 
     token = (await Notifications.getExpoPushTokenAsync()).data;
   } else {
-    // eslint-disable-next-line no-alert
     alert('Must use physical device for Push Notifications');
   }
-
   // eslint-disable-next-line consistent-return
   return token;
 }
