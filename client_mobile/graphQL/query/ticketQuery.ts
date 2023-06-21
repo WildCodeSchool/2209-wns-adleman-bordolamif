@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_ALL_TICKETS_OF_THE_DAY = gql`
+export const GET_ALL_TICKETS = gql`
   query GetAllTickets($filter: String) {
   getAllTickets(filter: $filter) {
     id

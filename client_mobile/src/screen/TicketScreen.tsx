@@ -43,6 +43,19 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
 
   const calledTicketId = updatedTicket?.updatedTicketByServiceId.id || null;
 
+  const handleBackPress = () => {
+    Alert.alert(
+      'Vous partez ? 😢',
+      "Si vous quittez l'application, vous ne pourrez plus voir votre place dans la file d'attente. Restez avec nous et gardez un œil sur votre position ! 😉",
+      [
+        { text: '✅ Rester', style: 'cancel' },
+        { text: '❌ Quitter', onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false },
+    );
+    return true;
+  };
+
   useEffect(() => {
     if (currentTicket && currentTicket.service) {
       setCurrentTicketServiceId(currentTicket.service.id);
@@ -59,19 +72,6 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
   }, [ticketsList]);
 
   useEffect(() => {
-    const handleBackPress = () => {
-      Alert.alert(
-        'Vous partez ? 😢',
-        "Si vous quittez l'application, vous ne pourrez plus voir votre place dans la file d'attente. Restez avec nous et gardez un œil sur votre position ! 😉",
-        [
-          { text: '✅ Rester', style: 'cancel' },
-          { text: '❌ Quitter', onPress: () => BackHandler.exitApp() },
-        ],
-        { cancelable: false },
-      );
-      return true;
-    };
-
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
     return () => {

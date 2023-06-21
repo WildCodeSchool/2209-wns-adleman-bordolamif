@@ -5,7 +5,7 @@ import {
 import { RootStackParamList } from '../types/RootStackParamList';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_TICKETS_OF_THE_DAY } from '../../graphQL/query/ticketQuery';
+import { GET_ALL_TICKETS } from '../../graphQL/query/ticketQuery';
 import { registerForPushNotificationsAsync } from '../../utils/Notifications';
 import { TicketData } from '../types/DataTypes';
 import { StatusEnum } from '../../utils/enum/StatusEnum';
@@ -15,7 +15,7 @@ type NavigationProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 export default function HomeScreen({ navigation }: NavigationProps) {
   const [expoPushToken, setExpoPushToken] = useState('');
 
-  const { data: todayTickets } = useQuery(GET_ALL_TICKETS_OF_THE_DAY, {
+  const { data: todayTickets } = useQuery(GET_ALL_TICKETS, {
     variables: { filter: 'today' },
   });
 
