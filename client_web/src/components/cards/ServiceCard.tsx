@@ -24,7 +24,7 @@ function ServiceCard(props: Props) {
       <p className="text-xl nunito-bold">{'Tickets en attente : '}
         <span>
           {ticketsList.filter((ticket) => ticket.status === StatusEnum.EN_ATTENTE
-          && ticket.service.id === service.id).length}
+          && ticket.service.id === service.id).length || 0}
         </span>
       </p>
     </button>
