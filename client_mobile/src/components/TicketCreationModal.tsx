@@ -1,9 +1,11 @@
 import {
-  Modal, Pressable, Text, View,
+  Dimensions, Pressable, Text, View,
 } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { TicketInput } from '../types/InputTypes';
 import { Service } from '../types/DataTypes';
+import { ReactNativeModal } from 'react-native-modal';
+import BottomLogo from './BottomLogo';
 
 interface Props {
   showModal: boolean,
@@ -44,54 +46,72 @@ function TicketCreationModal(props: Props) {
   };
 
   return (
-    <Modal
-      animationType="fade"
-      visible={showModal}
-      onRequestClose={() => {
+    <ReactNativeModal
+      backdropOpacity={1}
+      backdropColor="#e5e7eb"
+      animationIn="zoomIn"
+      animationOut="zoomOut"
+      deviceHeight={Dimensions.get('window').height + 100}
+      coverScreen={false}
+      isVisible={showModal}
+      onBackButtonPress={() => {
         setShowModal(!showModal);
       }}
     >
-      <View>
+      <View className="w-full py-10">
         { !ticketToCreate && (
-        <View className="flex items-center">
-          <Text className="text-center text-3xl">Confirmez-vous votre choix ?</Text>
-          <View className="flex flex-row mt-4 space-x-4">
-            <Pressable
-              className="flex items-center bg-green-500 w-28 py-4 rounded-3xl active:scale-95"
-              onPress={handleConfirmService}
-            >
-              <Text className="text-3xl nunito-bold text-white">OUI</Text>
-            </Pressable>
-            <Pressable
-              className="flex items-center bg-red-500 w-28 py-4 rounded-3xl active:scale-95"
-              onPress={() => setShowModal(!showModal)}
-            >
-              <Text className="text-3xl nunito-bold text-white">NON</Text>
-            </Pressable>
+          <View className="h-full">
+            <Text className="text-3xl text-center mb-5">Vous avez sélectionné le service</Text>
+            <View className="bg-white w-full py-5 mt-4 mb-20 rounded-3xl">
+              <View className="flex flex-row items-center justify-center">
+                <View
+                  className="px-4 py-2 mr-3 rounded-2xl text-white"
+                  style={{ backgroundColor: `${serviceTicketToCreate.color}` }}
+                >
+                  <Text className="text-4xl text-white">{ serviceTicketToCreate.acronym }</Text>
+                </View>
+                <Text className="text-4xl font-bold">{ serviceTicketToCreate.name }</Text>
+              </View>
+            </View>
+            <Text className="text-center text-3xl font-bold mb-10">Confirmez-vous votre choix ?</Text>
+            <View className="items-center">
+              <Pressable
+                className="bg-orange-500 px-5 py-4 mb-10 rounded-full active:scale-95"
+                onPress={handleConfirmService}
+              >
+                <Text className="text-2xl text-center text-white">Oui, je confirme mon choix</Text>
+              </Pressable>
+              <Pressable
+                className="bg-gray-400 w-52 py-3 rounded-full active:scale-95"
+                onPress={() => setShowModal(!showModal)}
+              >
+                <Text className="text-2xl text-center text-white">Non</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
         ) }
         { ticketToCreate && (
-        <View className="flex items-center">
-          <Text className="text-center text-3xl">Est-ce votre première fois ?</Text>
-          <View className="flex flex-row mt-4 space-x-4">
-            <Pressable
-              className="flex items-center bg-green-500 w-28 py-4 rounded-3xl active:scale-95"
-              onPress={() => handleIsFirstTime(true)}
-            >
-              <Text className="text-3xl nunito-bold text-white">OUI</Text>
-            </Pressable>
-            <Pressable
-              className="flex items-center bg-red-500 w-28 py-4 rounded-3xl active:scale-95"
-              onPress={() => handleIsFirstTime(false)}
-            >
-              <Text className="text-3xl nunito-bold text-white">NON</Text>
-            </Pressable>
+          <View className="flex justify-center">
+            <Text className="text-center font-bold text-3xl mb-20">Est-ce votre premier rendez-vous ?</Text>
+            <View className="items-center">
+              <Pressable
+                className="bg-orange-500 w-5/6 py-4 mb-10 rounded-3xl shadow-xl active:scale-95"
+                onPress={() => handleIsFirstTime(true)}
+              >
+                <Text className="text-2xl text-center text-white">Oui, c'est mon premier rendez-vous</Text>
+              </Pressable>
+              <Pressable
+                className="bg-gray-400 w-52 py-3 rounded-full active:scale-95 shadow-xl"
+                onPress={() => handleIsFirstTime(false)}
+              >
+                <Text className="text-2xl text-center text-white">Non</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
         ) }
       </View>
-    </Modal>
+      <BottomLogo color="dark" />
+    </ReactNativeModal>
   );
 }
 
