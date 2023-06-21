@@ -107,12 +107,16 @@ const addToStatsDatasDetail = (
 };
 
 const convertDetailDataToStats = (serviceDetail:StatsDatasDetail) => {
-  const totalWaitingTime = serviceDetail.waitingTimeList.reduce((a, b) => a + b);
+  const totalWaitingTime = serviceDetail.waitingTimeList.length < 0
+    ? serviceDetail.waitingTimeList.reduce((a, b) => a + b)
+    : 0;
   const newDetail: StatisticsDetail = {
     service: serviceDetail.service,
     number: serviceDetail.number,
     mobileRate: serviceDetail.mobileCount / serviceDetail.number,
-    waitingTimeAverage: totalWaitingTime / serviceDetail.waitingTimeList.length,
+    waitingTimeAverage: totalWaitingTime > 0
+      ? totalWaitingTime / serviceDetail.waitingTimeList.length
+      : 0,
     returnedRate: serviceDetail.suspendingCount / serviceDetail.number,
     firstTimeRate: serviceDetail.firstTimeCount / serviceDetail.number,
   };

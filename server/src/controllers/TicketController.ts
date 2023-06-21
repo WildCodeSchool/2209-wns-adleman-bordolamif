@@ -49,7 +49,6 @@ const TicketController = {
   getLastYearStatistics: async (): Promise<DailyStatistics[]> => {
     const last365days = {
       startDate: getOneYearAgo().toDateString(),
-      // endDate: today.toDateString(),
       endDate: getYesterday().toDateString(),
     };
     const ticketsList = await TicketModel.getAllTicketsBetweenTwoDates(last365days);
