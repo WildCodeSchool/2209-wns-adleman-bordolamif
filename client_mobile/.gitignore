@@ -1,4 +1,3 @@
-%ProgramData%/
 node_modules/
 .expo/
 dist/
@@ -8,6 +7,7 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+*.uusver
 *.orig.*
 web-build/
 .env
