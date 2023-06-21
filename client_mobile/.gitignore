@@ -7,10 +7,10 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
-*.uusver
 *.orig.*
 web-build/
 .env
 
 # macOS
 .DS_Store
+/%ProgramData%/
