@@ -17,6 +17,7 @@ type TicketScreenRouteProp = NativeStackScreenProps<RootStackParamList, 'TicketS
 
 export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp) {
   const [currentTicketIndex, setCurrentTicketIndex] = useState<number>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentTicket, setCurrentTicket] = useState<TicketData>(route.params.createdTicket);
   const [currentTicketServiceId, setCurrentTicketServiceId] = useState<number>();
 

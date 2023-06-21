@@ -113,13 +113,14 @@ export class TicketResolver {
     return updatedTicketPayload;
   }
 
-@Subscription(() => Ticket, {
-  topics: ({ args }) => `UpdatedTicketForService_${args.id}`,
-  filter: ({ payload, args }) => payload.service.id === args.id,
-})
+  @Subscription(() => Ticket, {
+    topics: ({ args }) => `UpdatedTicketForService_${args.id}`,
+    filter: ({ payload, args }) => payload.service.id === args.id,
+  })
   updatedTicketByServiceId(
-  @Root() updatedTicketPayload: Ticket,
-  @Arg('id', () => Int) id: number,
+    @Root() updatedTicketPayload: Ticket,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Arg('id', () => Int) id: number,
   ): Ticket {
     return updatedTicketPayload;
   }
