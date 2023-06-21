@@ -1,4 +1,4 @@
-%ProgramData%
+%ProgramData%/
 node_modules/
 .expo/
 dist/
