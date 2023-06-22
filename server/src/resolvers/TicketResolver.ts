@@ -40,6 +40,13 @@ export class TicketResolver {
     return await TicketController.getAllTicketsForWaitingRoom(waitingRoomId);
   }
 
+  @Query(() => [Ticket])
+  async getAllTicketsForService(
+    @Arg('serviceId', () => Int) serviceId: number,
+  ): Promise<Ticket[]> {
+    return await TicketController.getAllTicketsForService(serviceId);
+  }
+
   @Query(() => Ticket)
   async getOneTicket(@Arg('id', () => Int) id: number): Promise<Ticket> {
     return await TicketController.getOneTicketById(id);
@@ -74,6 +81,7 @@ export class TicketResolver {
   ): Promise<Ticket> {
     const updatedTicket = await TicketController.updateTicket(data, id);
     await pubsub.publish('UpdatedTicket', updatedTicket);
+    await pubsub.publish(`UpdatedTicketForService_${updatedTicket.service.id}`, updatedTicket);
     return updatedTicket;
   }
 
@@ -86,6 +94,7 @@ export class TicketResolver {
   ): Promise<Ticket> {
     const updatedTicket = await TicketController.partialTicketUpdate(data, id);
     await pubsub.publish('UpdatedTicket', updatedTicket);
+    await pubsub.publish(`UpdatedTicketForService_${updatedTicket.service.id}`, updatedTicket);
     return updatedTicket;
   }
 
@@ -108,6 +117,18 @@ export class TicketResolver {
 
   @Subscription({ topics: 'UpdatedTicket' })
   updatedTicket(@Root() updatedTicketPayload: Ticket): Ticket {
+    return updatedTicketPayload;
+  }
+
+  @Subscription(() => Ticket, {
+    topics: ({ args }) => `UpdatedTicketForService_${args.id}`,
+    filter: ({ payload, args }) => payload.service.id === args.id,
+  })
+  updatedTicketByServiceId(
+    @Root() updatedTicketPayload: Ticket,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Arg('id', () => Int) id: number,
+  ): Ticket {
     return updatedTicketPayload;
   }
 }

@@ -3,10 +3,7 @@ import dataSource from '../db';
 import Ticket from '../entity/Ticket';
 import { endOfDay, startOfDay } from '../utils/builders/date';
 import { NewTicketDto } from '../utils/dto';
-import {
-  SearchCriterias,
-  SearchFilter,
-} from '../utils/interfaces';
+import { SearchCriterias, SearchFilter } from '../utils/interfaces';
 import { StartEndDate } from '../utils/types/InputTypes';
 
 const TicketModel = {
@@ -43,6 +40,18 @@ const TicketModel = {
   },
 
   getAllTicketsForWaitingRoom: async (
+    searchCriterias: SearchCriterias,
+  ) => await dataSource.getRepository(Ticket).find({
+    where: searchCriterias,
+    relations: {
+      service: true,
+      user: true,
+      counter: true,
+    },
+    order: { createdAt: 'ASC' },
+  }),
+
+  getAllTicketsForService: async (
     searchCriterias: SearchCriterias,
   ) => await dataSource.getRepository(Ticket).find({
     where: searchCriterias,

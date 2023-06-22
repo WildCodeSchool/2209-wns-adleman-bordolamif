@@ -56,6 +56,19 @@ const TicketController = {
     return getDailyStatistics(ticketsList);
   },
 
+  getAllTicketsForService: async (serviceId: number): Promise<Ticket[]> => {
+    const service = await ServiceModel.getOneServiceById(serviceId);
+    if (service === null) throw new Error('Service not found');
+    const dateFilter = dateFilterBuilder(DateFilterEnum.TODAY);
+    const searchCriterias: SearchCriterias = {
+      service: [{ id: service.id }],
+      status: Not(StatusEnum.TRAITE),
+      createdAt: dateFilter?.where?.createdAt,
+    };
+
+    return await TicketModel.getAllTicketsForService(searchCriterias);
+  },
+
   getOneTicketById: async (id: number): Promise<Ticket> => {
     const ticket = await TicketModel.getOneTicketById(id);
     if (ticket === null) throw new Error('Ticket not found');
@@ -158,7 +171,8 @@ const TicketController = {
       [{
         to: mobileToken,
         sound: 'default',
-        title: 'Votre tour est arrivé',
+        title: '🙌 Votre tour est arrivé ! 🙌',
+        body: 'Fini l\'attente !! Revenez sur l\'application pour voir le guichet auquel vous rendre 😉',
       }],
     );
 
