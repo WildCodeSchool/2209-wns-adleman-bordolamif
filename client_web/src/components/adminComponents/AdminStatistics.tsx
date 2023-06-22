@@ -1,9 +1,13 @@
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import AnnualChart from '@components/charts/AnnualChart';
 import AverageWaitingTimePerService from '@components/charts/AverageWaitingTimePerService';
 import TicketsByServicesChart from '@components/charts/TicketsByServicesChart';
 import TicketsPerDayChart from '@components/charts/TicketsPerDayChart';
 import DateTimePicker from '@components/utils/DateTimePicker';
-import { GET_ALL_TICKETS_BETWEEN_TWO_DATES } from '@graphQL/query/ticketQuery';
+import {
+  GET_ALL_TICKETS_BETWEEN_TWO_DATES,
+  GET_LAST_YEAR_STATISTICS,
+} from '@graphQL/query/ticketQuery';
 import {
   attendanceByService,
   averageWaitingTime,
@@ -14,6 +18,7 @@ import {
   transformDataForExcelDownload,
 } from '@utils/statistics/statFunctions';
 import { StartEndDate } from '@utils/types/InputTypes';
+import { DailyStatistics } from '@utils/types/StatisticsTypes';
 import { useState } from 'react';
 import { utils, writeFileXLSX } from 'xlsx';
 
@@ -22,7 +27,8 @@ function AdminStatistics() {
   const [getAllTicketsBetweenTwoDates, { data: ticketList }] = useLazyQuery(
     GET_ALL_TICKETS_BETWEEN_TWO_DATES,
   );
-
+  const { data: annualStatistics } = useQuery(GET_LAST_YEAR_STATISTICS);
+  const stats : DailyStatistics[] = annualStatistics && annualStatistics!.getLastYearStatistics;
   const validateDateInterval = (dates: StartEndDate) => {
     setDateInterval(dates);
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
@@ -44,7 +50,7 @@ function AdminStatistics() {
           <div className="flex flex-col">
             <button
               type="button"
-              className="f-button-green mt-2 ml-6"
+              className="f-button-green mt-2 ml-6 self-center"
               onClick={downloadExcel}
             >Télécharger les données de la période en format Excel
             </button>
@@ -98,6 +104,10 @@ function AdminStatistics() {
                 </div>
               </div>
             </div>
+            { annualStatistics!
+            && (
+            <AnnualChart annualStatistics={stats} />
+            ) }
           </div>
         ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}
       </div>
