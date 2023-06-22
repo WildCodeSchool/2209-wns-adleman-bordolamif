@@ -56,3 +56,14 @@ export const dateFilterBuilder = (filter?: string): SearchFilter | undefined => 
   }
   return searchFilter;
 };
+export const getYesterday = (): Date => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday;
+};
+
+export const getOneYearAgo = () => {
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  return oneYearAgo;
+};

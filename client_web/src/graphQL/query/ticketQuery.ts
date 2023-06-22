@@ -120,3 +120,20 @@ query GetOneTicket($getOneTicketId: Int!) {
   }
 }
 `;
+
+export const GET_LAST_YEAR_STATISTICS = gql`
+query GetLastYearStatistics {
+  getLastYearStatistics {
+    date
+    total
+    detail {
+      service
+      number
+      waitingTimeAverage
+      mobileRate
+      firstTimeRate
+      returnedRate
+    }
+  }
+}
+`;
