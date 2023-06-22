@@ -16,6 +16,9 @@ COPY tailwind.config.cjs ./
 COPY postcss.config.cjs ./
 COPY vite.config.ts ./
 
+ARG VITE_WEBSOCKET_URL
+ENV VITE_WEBSOCKET_URL ${VITE_WEBSOCKET_URL}
+
 RUN npm run build
 
 FROM nginx:alpine
