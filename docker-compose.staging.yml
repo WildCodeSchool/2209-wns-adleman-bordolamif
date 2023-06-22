@@ -47,6 +47,9 @@ services:
   client:
     container_name: waitit-client-staging
     image: joffreychevalier/waitit-client:staging
+    environment:
+      VITE_GRAPHQL_API_URL: ${VITE_GRAPHQL_API_URL}
+      VITE_WEBSOCKET_URL: ${VITE_WEBSOCKET_URL}
 
   nginx:
     container_name: waitit-nginx-staging
