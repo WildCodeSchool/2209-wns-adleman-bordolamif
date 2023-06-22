@@ -1,6 +1,26 @@
 import { TicketData } from '@utils/types/DataTypes';
 import { StartEndDate } from '@utils/types/InputTypes';
 
+export const transformDataForExcelDownload = (ticketList: TicketData[]) => ticketList
+  .map((ticket) => {
+    const waitingTimeInSeconds = ticket.calledAt
+      ? (new Date(ticket.calledAt).getTime() - new Date(ticket.createdAt).getTime()) / 1000
+      : null;
+    const processingTimeInSeconds = ticket.closedAt
+      ? (new Date(ticket.closedAt).getTime() - new Date(ticket.calledAt).getTime()) / 1000
+      : null;
+
+    return {
+      name: ticket.name,
+      createdAt: ticket.createdAt,
+      waitingTimeInSeconds,
+      processingTimeInSeconds,
+      isFirstTime: ticket.isFirstTime,
+      isReturned: ticket.isReturned,
+      ServiceName: ticket.service.name,
+    };
+  });
+
 export const averageWaitingTime = (ticketList: TicketData[]) => {
   let totalWaitingTime = 0;
   let numCalledTickets = 0;

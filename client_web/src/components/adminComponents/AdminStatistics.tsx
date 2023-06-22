@@ -11,9 +11,11 @@ import {
   mostPupularService,
   percentageOfReturnedTickets,
   ticketsPerDay,
+  transformDataForExcelDownload,
 } from '@utils/statistics/statFunctions';
 import { StartEndDate } from '@utils/types/InputTypes';
 import { useState } from 'react';
+import { utils, writeFileXLSX } from 'xlsx';
 
 function AdminStatistics() {
   const [dateInterval, setDateInterval] = useState<StartEndDate>();
@@ -26,12 +28,26 @@ function AdminStatistics() {
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
   };
 
+  const downloadExcel = () => {
+    const parsedData = transformDataForExcelDownload(ticketList.getAllTicketsBetweenTwoDates);
+    const ws = utils.json_to_sheet(parsedData);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, 'Data');
+    writeFileXLSX(wb, 'ticketStatistics.xlsx');
+  };
+
   return (
     <div>
       <div>
         <DateTimePicker validateDateInterval={validateDateInterval} />
         {ticketList ? (
           <div className="flex flex-col">
+            <button
+              type="button"
+              className="f-button-green mt-2 ml-6"
+              onClick={downloadExcel}
+            >Télécharger les données de la période en format Excel
+            </button>
             <div className="f-format-services">
               <div className="bg-amber-100 text-black rounded-2xl p-5">
                 <p className="f-bold3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
