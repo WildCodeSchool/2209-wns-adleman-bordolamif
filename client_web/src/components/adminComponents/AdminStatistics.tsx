@@ -1,4 +1,5 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
+import AnnualChart from '@components/charts/AnnualChart';
 import AverageWaitingTimePerService from '@components/charts/AverageWaitingTimePerService';
 import TicketsByServicesChart from '@components/charts/TicketsByServicesChart';
 import TicketsPerDayChart from '@components/charts/TicketsPerDayChart';
@@ -7,7 +8,6 @@ import {
   GET_ALL_TICKETS_BETWEEN_TWO_DATES,
   GET_LAST_YEAR_STATISTICS,
 } from '@graphQL/query/ticketQuery';
-import { getOneYearAgo, getYesterday } from '@utils/dates';
 import {
   attendanceByService,
   averageWaitingTime,
@@ -17,10 +17,8 @@ import {
   ticketsPerDay,
 } from '@utils/statistics/statFunctions';
 import { StartEndDate } from '@utils/types/InputTypes';
-import { DailyHeatmapStat, DailyStatistics } from '@utils/types/StatisticsTypes';
-
+import { DailyStatistics } from '@utils/types/StatisticsTypes';
 import { useState } from 'react';
-import CalendarHeatmap from 'react-calendar-heatmap';
 
 function AdminStatistics() {
   const [dateInterval, setDateInterval] = useState<StartEndDate>();
@@ -28,28 +26,11 @@ function AdminStatistics() {
     GET_ALL_TICKETS_BETWEEN_TWO_DATES,
   );
   const { data: annualStatistics } = useQuery(GET_LAST_YEAR_STATISTICS);
-
+  const stats : DailyStatistics[] = annualStatistics && annualStatistics!.getLastYearStatistics;
   const validateDateInterval = (dates: StartEndDate) => {
     setDateInterval(dates);
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
   };
-
-  const getCalendarCountColor = (day: DailyHeatmapStat) => {
-    if (day === null || !day) {
-      return 'color-github-0';
-    }
-    if (day.count < 10) {
-      return 'color-github-1';
-    }
-    if (day.count < 20) {
-      return 'color-github-2';
-    }
-    if (day.count < 50) {
-      return 'color-github-3';
-    }
-    return 'color-github-4';
-  };
-
   return (
     <div>
       <div>
@@ -108,23 +89,7 @@ function AdminStatistics() {
             </div>
             { annualStatistics!
             && (
-            <div>
-              <h2>Statistiques annuelles</h2>
-              <div className="max-w-4xl ">
-                <CalendarHeatmap
-                  startDate={getOneYearAgo()}
-                  endDate={getYesterday()}
-                  values={
-                    annualStatistics!.getLastYearStatistics.map(
-                      (day: DailyStatistics) => ({ date: day.date, count: day.total }),
-                    )
-                }
-                  classForValue={getCalendarCountColor}
-                  showWeekdayLabels
-                />
-
-              </div>
-            </div>
+            <AnnualChart annualStatistics={stats} />
             ) }
           </div>
         ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}

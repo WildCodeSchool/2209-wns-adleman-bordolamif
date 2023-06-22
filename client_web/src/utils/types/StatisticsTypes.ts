@@ -1,4 +1,4 @@
-interface StatisticsDetail {
+export interface StatisticsDetail {
       service: string;
       number: number;
       mobileRate: number;
@@ -10,6 +10,12 @@ interface StatisticsDetail {
 export interface DailyStatistics {
   date: string;
   total: number;
+  detail: StatisticsDetail[];
+}
+
+export interface TooltipValues {
+  date: string;
+  count: number;
   detail: StatisticsDetail[];
 }
 
