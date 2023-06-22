@@ -15,10 +15,12 @@ import {
   mostPupularService,
   percentageOfReturnedTickets,
   ticketsPerDay,
+  transformDataForExcelDownload,
 } from '@utils/statistics/statFunctions';
 import { StartEndDate } from '@utils/types/InputTypes';
 import { DailyStatistics } from '@utils/types/StatisticsTypes';
 import { useState } from 'react';
+import { utils, writeFileXLSX } from 'xlsx';
 
 function AdminStatistics() {
   const [dateInterval, setDateInterval] = useState<StartEndDate>();
@@ -31,6 +33,15 @@ function AdminStatistics() {
     setDateInterval(dates);
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
   };
+
+  const downloadExcel = () => {
+    const parsedData = transformDataForExcelDownload(ticketList.getAllTicketsBetweenTwoDates);
+    const ws = utils.json_to_sheet(parsedData);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, 'Data');
+    writeFileXLSX(wb, 'ticketStatistics.xlsx');
+  };
+
   return (
     <div>
       <div>
@@ -87,6 +98,12 @@ function AdminStatistics() {
                 </div>
               </div>
             </div>
+            <button
+              type="button"
+              className="f-button-green mt-2 ml-6 self-center"
+              onClick={downloadExcel}
+            >Télécharger les données de la période en format Excel
+            </button>
             { annualStatistics!
             && (
             <AnnualChart annualStatistics={stats} />
