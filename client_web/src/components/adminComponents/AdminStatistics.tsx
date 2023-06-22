@@ -48,6 +48,12 @@ function AdminStatistics() {
         <DateTimePicker validateDateInterval={validateDateInterval} />
         {ticketList ? (
           <div className="flex flex-col">
+            <button
+              type="button"
+              className="f-button-green mt-2 ml-6 self-center"
+              onClick={downloadExcel}
+            >Télécharger les données de la période en format Excel
+            </button>
             <div className="f-format-services">
               <div className="bg-amber-100 text-black rounded-2xl p-5">
                 <p className="f-bold3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
@@ -98,12 +104,6 @@ function AdminStatistics() {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              className="f-button-green mt-2 ml-6 self-center"
-              onClick={downloadExcel}
-            >Télécharger les données de la période en format Excel
-            </button>
             { annualStatistics!
             && (
             <AnnualChart annualStatistics={stats} />
