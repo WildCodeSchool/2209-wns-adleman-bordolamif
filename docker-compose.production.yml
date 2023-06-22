@@ -47,9 +47,6 @@ services:
   client:
     container_name: waitit-client-prod
     image: joffreychevalier/waitit-client
-    environment:
-      VITE_GRAPHQL_API_URL: ${VITE_GRAPHQL_API_URL}
-      VITE_WEBSOCKET_URL: ${VITE_WEBSOCKET_URL}
 
   nginx:
     container_name: waitit-nginx-prod
