@@ -16,8 +16,6 @@ import { ContextType } from './utils/interfaces';
 import UserModel from './models/UserModel';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import UserController from './controllers/UserController';
-import { generateRandomPassword } from './utils/builders/randomPassword';
 import { checkDefaultAdmin } from './utils/checkDefaultAdmin';
 
 loadEnv();
