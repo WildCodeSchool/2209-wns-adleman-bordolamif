@@ -32,7 +32,6 @@ function AdminStatistics() {
     setDateInterval(dates);
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
   };
-
   return (
     <div>
       <div>
