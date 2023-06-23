@@ -16,6 +16,7 @@ import { ContextType } from './utils/interfaces';
 import UserModel from './models/UserModel';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import { checkDefaultAdmin } from './utils/checkDefaultAdmin';
 
 loadEnv();
 
@@ -75,6 +76,9 @@ const start = async (): Promise<void> => {
   });
 
   await server.start();
+
+  // Check if default admin exists or create it in database if doesn't
+  checkDefaultAdmin();
 
   app.use(
     ['/', '/graphql'],
