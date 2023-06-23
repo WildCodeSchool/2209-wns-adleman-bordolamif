@@ -77,3 +77,15 @@ code and correct it yourself. An interface with the concerned errors will be dis
 locate them more easily.
 
 Once the correction is done, relaunch your commit.
+
+## Default admin 
+On app start the function checkDefaultAdmin checks in the database if it exist. If it doesn't it create one with random password. 
+To login the first time you have to use the forgottenPassword function. 
+
+## Create an admin 
+To create an admin user you have to go to localhost:4000
+Use the login mutation as an admin, copy the token that is returned
+Use the createUser mutation, complete the variables and in the Headers section add a new Header : 
+Header key = Authorization
+value = Bearer + " " + token
+Now you can create your admin 
