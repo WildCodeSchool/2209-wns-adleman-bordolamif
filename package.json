@@ -11,11 +11,11 @@
     "save:docker-db": "node echo \"[Initializing database save]\" -s 1 -b 100 -f 44 && dotenv -- cross-var docker run --rm -v waitit-development_db:/var/lib/postgresql/data -v %DB_SAVE_LOCATION%:/backup postgres:15-alpine tar czvf /backup/waitit-development_db.tar.gz /var/lib/postgresql/data && node echo \"Your local database has been save on your Desktop\" -f 92",
     "import:docker-db": "node echo \"[Initializing database import]\" -s 1 -b 100 -f 44 && docker-compose -f docker-compose.yml down && dotenv -- cross-var docker run --rm -v waitit-development_db:/var/lib/postgresql/data -v %DB_SAVE_LOCATION%:/backup postgres:15-alpine tar xzvf /backup/waitit-development_db.tar.gz && docker-compose -f docker-compose.yml up --build && node echo \"Your local database has been imported\" -f 92",
     "test:docker": "docker-compose -f docker-compose.integration.yml up --build --exit-code-from testrunner",
-    "start:prod": "docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml up --build",
+    "start:prod": "docker compose -f docker-compose.production.yml down && docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml --env-file .env.production up",
     "publish:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server && docker push joffreychevalier/waitit-server && cd ..",
     "publish:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client && docker push joffreychevalier/waitit-client && cd ..",
     "publish:all": "npm run publish:server && npm run publish:client",
-    "start:staging": "docker compose -f docker-compose.staging.yml pull && docker compose -f docker-compose.staging.yml up --build",
+    "start:staging": "docker compose -f docker-compose.staging.yml down && docker compose -f docker-compose.staging.yml pull && docker compose -f docker-compose.staging.yml --env-file .env.staging up",
     "publish-staging:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server:staging && docker push joffreychevalier/waitit-server:staging && cd ..",
     "publish-staging:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client:staging && docker push joffreychevalier/waitit-client:staging && cd ..",
     "publish-staging:all": "npm run publish-staging:server && npm run publish-staging:client"
