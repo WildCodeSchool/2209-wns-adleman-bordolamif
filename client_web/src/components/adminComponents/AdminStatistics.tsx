@@ -94,21 +94,21 @@ function AdminStatistics() {
                 </div>
               </div>
             </div>
-            { annualStatistics!
-            && (
-              <>
-                <AnnualChart annualStatistics={stats} />
-                <button
-                  type="button"
-                  className="f-button-green mt-2 ml-6 self-center"
-                  onClick={() => exportAnnualStats(stats)}
-                >Télécharger les données annuelles en format Excel
-                </button>
-              </>
-            ) }
           </div>
         ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}
       </div>
+      { annualStatistics!
+        && (
+          <>
+            <AnnualChart annualStatistics={stats} />
+            <button
+              type="button"
+              className="f-button-green mt-2 ml-6"
+              onClick={() => exportAnnualStats(stats)}
+            >Télécharger les données annuelles en format Excel
+            </button>
+          </>
+        ) }
     </div>
 
   );
