@@ -57,7 +57,7 @@ services:
     volumes:
       - ./client_web/src:/app/src
     environment:
-      VITE_GRAPHQL_API_URL: 'http://localhost:4000'
+      VITE_GRAPHQL_API_URL: ${VITE_GRAPHQL_API_URL}
       VITE_WEBSOCKET_URL: ${VITE_WEBSOCKET_URL}
       CHOKIDAR_USEPOLLING: 'true'
 
