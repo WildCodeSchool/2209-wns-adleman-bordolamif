@@ -8,6 +8,7 @@ import {
   GET_ALL_TICKETS_BETWEEN_TWO_DATES,
   GET_LAST_YEAR_STATISTICS,
 } from '@graphQL/query/ticketQuery';
+import { exportAnnualStats, exportPeriodTickets } from '@utils/excel';
 import {
   attendanceByService,
   averageWaitingTime,
@@ -15,12 +16,10 @@ import {
   mostPupularService,
   percentageOfReturnedTickets,
   ticketsPerDay,
-  transformDataForExcelDownload,
 } from '@utils/statistics/statFunctions';
 import { StartEndDate } from '@utils/types/InputTypes';
 import { DailyStatistics } from '@utils/types/StatisticsTypes';
 import { useState } from 'react';
-import { utils, writeFileXLSX } from 'xlsx';
 
 function AdminStatistics() {
   const [dateInterval, setDateInterval] = useState<StartEndDate>();
@@ -34,14 +33,6 @@ function AdminStatistics() {
     getAllTicketsBetweenTwoDates({ variables: { data: dates } });
   };
 
-  const downloadExcel = () => {
-    const parsedData = transformDataForExcelDownload(ticketList.getAllTicketsBetweenTwoDates);
-    const ws = utils.json_to_sheet(parsedData);
-    const wb = utils.book_new();
-    utils.book_append_sheet(wb, ws, 'Data');
-    writeFileXLSX(wb, 'ticketStatistics.xlsx');
-  };
-
   return (
     <div>
       <div>
@@ -51,7 +42,7 @@ function AdminStatistics() {
             <button
               type="button"
               className="f-button-green mt-2 ml-6 self-center"
-              onClick={downloadExcel}
+              onClick={() => exportPeriodTickets(ticketList.getAllTicketsBetweenTwoDates)}
             >Télécharger les données de la période en format Excel
             </button>
             <div className="f-format-services">
@@ -106,7 +97,15 @@ function AdminStatistics() {
             </div>
             { annualStatistics!
             && (
-            <AnnualChart annualStatistics={stats} />
+              <>
+                <AnnualChart annualStatistics={stats} />
+                <button
+                  type="button"
+                  className="f-button-green mt-2 ml-6 self-center"
+                  onClick={() => exportAnnualStats(stats)}
+                >Télécharger les données annuelles en format Excel
+                </button>
+              </>
             ) }
           </div>
         ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}
