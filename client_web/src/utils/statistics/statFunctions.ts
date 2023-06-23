@@ -1,5 +1,6 @@
 import { TicketData } from '@utils/types/DataTypes';
 import { StartEndDate } from '@utils/types/InputTypes';
+import { DailyStatistics, ServiceDailyStats } from '@utils/types/StatisticsTypes';
 
 export const transformDataForExcelDownload = (ticketList: TicketData[]) => ticketList
   .map((ticket) => {
@@ -136,4 +137,66 @@ export const averageWaitingTimePerService = (ticketList: TicketData[]) => {
     });
   }
   return chartData;
+};
+
+export const transformGlobalDataToServiceForExcel = (dailyStats: DailyStatistics[]):
+ServiceDailyStats[][] => {
+  const result:ServiceDailyStats[][] = [];
+  for (let i = 0; i < dailyStats.length; i += 1) {
+    const { date } = dailyStats[i];
+    for (let j = 0; j < dailyStats[i].detail.length; j += 1) {
+      const serviceStat:ServiceDailyStats = { date, ...dailyStats[i].detail[j] };
+      if (result.length === 0
+        || result.every(
+          (subArray) => subArray.some((item) => item.service !== serviceStat.service),
+        )) {
+        result.push([serviceStat]);
+      } else {
+        const index = result.findIndex((stat) => stat[0].service === serviceStat.service);
+        result[index].push(serviceStat);
+      }
+    }
+  }
+
+  for (let i = 0; i < result.length; i += 1) {
+    const subArray = result[i];
+    const averagedStats: ServiceDailyStats = subArray.reduce((acc, curr) => {
+      acc.number = (acc.number || 0) + curr.number;
+      acc.mobileRate = (acc.mobileRate || 0) + curr.mobileRate;
+      acc.waitingTimeAverage = (acc.waitingTimeAverage || 0) + curr.waitingTimeAverage;
+      acc.returnedRate = (acc.returnedRate || 0) + curr.returnedRate;
+      acc.firstTimeRate = (acc.firstTimeRate || 0) + curr.firstTimeRate;
+      return acc;
+    }, {} as ServiceDailyStats);
+
+    const totalCount = subArray.length;
+    averagedStats.number /= totalCount;
+    averagedStats.mobileRate /= totalCount;
+    averagedStats.waitingTimeAverage /= totalCount;
+    averagedStats.returnedRate /= totalCount;
+    averagedStats.firstTimeRate /= totalCount;
+
+    averagedStats.service = 'Moyenne';
+
+    result[i].push(averagedStats);
+  }
+  return result;
+};
+
+export const removeDetailFromDailyStats = (dailyStats: DailyStatistics[]) => {
+  const result = dailyStats.map(
+    (stat) => {
+      const { date, total } = stat;
+      return { date, total };
+    },
+  );
+  const averagedStats = result.reduce((acc, curr) => {
+    acc.total = (acc.total || 0) + curr.total;
+    return acc;
+  }, {} as DailyStatistics);
+
+  averagedStats.total /= result.length;
+  averagedStats.date = 'Moyenne';
+  result.push(averagedStats);
+  return result;
 };
