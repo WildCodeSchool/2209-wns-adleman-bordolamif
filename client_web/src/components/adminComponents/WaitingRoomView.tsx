@@ -14,14 +14,14 @@ function WaitingRoomView(props: Props) {
   return (
     <div>
       {waitingRoom.services.map((service) => (
-        <div className="bg-gray-200 rounded-2xl m-2 p-2" key={service.id}>
-          <div className="flex flex-row items-center">
+        <div className="f-format-view" key={service.id}>
+          <div className="flex flex-row items-center mb-2">
             <ServiceIcon service={service} />
-            <p className="ml-1">{service.name}</p>
+            <p className="ml-2 text-2xl nunito-bold">{service.name}</p>
           </div>
           <div className="flex flex-row">
-            <div className="bg-white rounded m-1 p-1">
-              <p>Etat du service</p>
+            <div className="rounded p-1 text-sm pr-4">
+              <p className="nunito-bold text-lg">Etat du service</p>
               <p>Tickets en attente : {ticketList && ticketList
                 .filter((ticket:TicketData) => ticket.status
               === StatusEnum.EN_ATTENTE && ticket.service.id === service.id).length}
@@ -39,7 +39,7 @@ function WaitingRoomView(props: Props) {
                 === service.id).length}
               </p>
             </div>
-            <div className="bg-white rounded">
+            <div className="bg-white rounded-xl w-[52rem]">
               <OperatorsInService connectedUsersList={connectedUsersList
                 && connectedUsersList.filter((user) => user.currentService?.id
                 === service.id)}
