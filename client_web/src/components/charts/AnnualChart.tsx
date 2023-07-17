@@ -16,18 +16,18 @@ function AnnualChart(props: Props) {
 
   const getCalendarCountColor = (day: DailyHeatmapStat) => {
     if (day === null || !day) {
-      return 'color-github-0';
+      return 'color-0';
+    }
+    if (day.count < 6) {
+      return 'color-1';
+    }
+    if (day.count < 7) {
+      return 'color-2';
     }
     if (day.count < 10) {
-      return 'color-github-1';
+      return 'color-3';
     }
-    if (day.count < 20) {
-      return 'color-github-2';
-    }
-    if (day.count < 50) {
-      return 'color-github-3';
-    }
-    return 'color-github-4';
+    return 'color-4';
   };
 
   const handleMouseMove:MouseEventHandler<HTMLDivElement> = (event) => {
@@ -38,9 +38,9 @@ function AnnualChart(props: Props) {
 
   return (
     <div>
-      <h2>Statistiques annuelles</h2>
+      <h2 className="ml-16 mb-2 mt-4">Statistiques annuelles</h2>
       <div
-        className="max-w-4xl "
+        className="max-w-4xl mx-auto"
         onMouseMove={handleMouseMove}
       >
         <CalendarHeatmap

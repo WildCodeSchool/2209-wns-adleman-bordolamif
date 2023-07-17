@@ -14,7 +14,7 @@ function OperatorsInService(props:Props) {
       {connectedUsersList! && connectedUsersList.map((user) => (
         <div key={user.id} className="flex m-1 items-center">
           <UserIcon user={user} />
-          <p className="ml-1">- Guichet {user.counter!.name}</p>
+          <p className="ml-1">- {user.counter!.name}</p>
         </div>
       ))}
     </div>
