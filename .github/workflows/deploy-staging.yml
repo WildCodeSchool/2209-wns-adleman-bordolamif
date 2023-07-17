@@ -87,6 +87,8 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:client_web"
+          secret-files: |
+            "VITE_WEBSOCKET_URL=${{ vars.VITE_WEBSOCKET_URL_STAGING }}"
           file: "Dockerfile.production"
           tags: ${{ vars.DOCKERHUB_USERNAME }}/waitit-client:staging
 
