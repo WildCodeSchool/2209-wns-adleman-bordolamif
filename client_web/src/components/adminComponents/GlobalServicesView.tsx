@@ -82,8 +82,8 @@ function GlobalServicesView(props: Props) {
         </table>
       </div>
       <p>Opérateurs en poste : </p>
-      <div className="bg-gray-200 rounded-2xl p-3">
-        <div className="bg-white rounded p-3">
+      <div className="f-format-view">
+        <div className="bg-white rounded-xl p-3">
           {connectedUsersList && connectedUsersList
             .map((user) => (<UserIcon key={user.id} user={user} />))}
         </div>
