@@ -51,6 +51,7 @@ function AdminStatistics() {
               </div>
               <div className="bg-orange-100 text-black rounded-2xl p-5">
                 <p className="f-bold3xl text-orange-500">{ticketList
+                && ticketList.getAllTicketsBetweenTwoDates.length
                 && averageWaitingTime(ticketList.getAllTicketsBetweenTwoDates)} minutes
                 </p>
                 <p>Temps d'attente moyen</p>
@@ -61,7 +62,9 @@ function AdminStatistics() {
               </div>
               <div className="bg-lime-100 text-black rounded-2xl p-5">
                 <p className="f-bold3xl text-lime-500">{ticketList
-                && percentageOfReturnedTickets(ticketList.getAllTicketsBetweenTwoDates)} %
+                && ticketList.getAllTicketsBetweenTwoDates.length
+                && percentageOfReturnedTickets(ticketList
+                  .getAllTicketsBetweenTwoDates)} %
                 </p>
                 <p>Tickets ajournés</p>
               </div>

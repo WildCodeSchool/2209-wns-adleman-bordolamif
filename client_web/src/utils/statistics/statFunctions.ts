@@ -45,8 +45,9 @@ export const mostPupularService = (ticketList: TicketData[]) => {
     serviceCounts[serviceName] += 1;
   });
   const maxServiceCount = Math.max(...Object.values(serviceCounts));
-  return Object.keys(serviceCounts)
+  const service = Object.keys(serviceCounts)
     .find((serviceName) => serviceCounts[serviceName] === maxServiceCount);
+  return service || 'Aucun';
 };
 
 export const percentageOfReturnedTickets = (ticketList: TicketData[]) => {
