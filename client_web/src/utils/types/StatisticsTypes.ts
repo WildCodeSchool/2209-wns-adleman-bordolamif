@@ -23,3 +23,7 @@ export interface DailyHeatmapStat {
   date: string;
   count: number
 }
+
+export interface ServiceDailyStats extends StatisticsDetail {
+  date: string;
+}
