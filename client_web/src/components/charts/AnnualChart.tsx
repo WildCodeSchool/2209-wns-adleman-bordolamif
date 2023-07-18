@@ -1,3 +1,4 @@
+import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import { getOneYearAgo, getYesterday } from '@utils/dates';
 import {
   DailyHeatmapStat, DailyStatistics, StatisticsDetail, TooltipValues,
@@ -31,16 +32,16 @@ function AnnualChart(props: Props) {
   };
 
   const handleMouseMove:MouseEventHandler<HTMLDivElement> = (event) => {
-    const x = event.clientX;
-    const y = event.clientY + 250;
+    const x = event.clientX + 4;
+    const y = event.clientY - 10;
     setTooltipPosition({ x, y });
   };
 
   return (
     <div>
-      <h2 className="ml-16 mb-2 mt-4">Statistiques annuelles</h2>
+      <h2 className="ml-8 mb-4 mt-6 text-2xl">Récapitulatif annuel</h2>
       <div
-        className="max-w-4xl mx-auto"
+        className="max-w-4xl mx-auto w-screen"
         onMouseMove={handleMouseMove}
       >
         <CalendarHeatmap
@@ -72,16 +73,19 @@ function AnnualChart(props: Props) {
       {tooltipContent!
     && (
     <div
-      className="absolute bg-black text-white left-0 top-0"
+      className="absolute flex flex-row items-start"
       style={{ left: tooltipPosition.x, top: tooltipPosition.y }}
     >
-      <h2>{tooltipContent.date}</h2>
-      <h3>Total : {tooltipContent.count}</h3>
-      {tooltipContent.detail.map((serviceStat:StatisticsDetail) => (
-        <div key={serviceStat.service}>
-          <p>{serviceStat.service} : {serviceStat.number}</p>
-        </div>
-      ))}
+      <ChevronLeftIcon className="w-6 text-gray-800" />
+      <div className=" bg-gray-800 text-white p-2 rounded-lg">
+        <h2 className="nunito-bold">{tooltipContent.date}</h2>
+        <h3>Total : {tooltipContent.count}</h3>
+        {tooltipContent.detail.map((serviceStat:StatisticsDetail) => (
+          <div key={serviceStat.service}>
+            <p>{serviceStat.service} : {serviceStat.number}</p>
+          </div>
+        ))}
+      </div>
     </div>
 )}
     </div>
