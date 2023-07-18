@@ -13,11 +13,11 @@
     "test:docker": "docker-compose -f docker-compose.integration.yml up --build --exit-code-from testrunner",
     "start:prod": "docker compose -f docker-compose.production.yml down && docker compose -f docker-compose.production.yml pull && docker compose -f docker-compose.production.yml --env-file .env.production up",
     "publish:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server && docker push joffreychevalier/waitit-server && cd ..",
-    "publish:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client && docker push joffreychevalier/waitit-client && cd ..",
+    "publish:client": "cd client_web && dotenv -- cross-var docker build --build-arg VITE_WEBSOCKET_URL=%VITE_WEBSOCKET_URL_PRODUCTION% docker build -f Dockerfile.production . -t joffreychevalier/waitit-client && docker push joffreychevalier/waitit-client && cd ..",
     "publish:all": "npm run publish:server && npm run publish:client",
     "start:staging": "docker compose -f docker-compose.staging.yml down && docker compose -f docker-compose.staging.yml pull && docker compose -f docker-compose.staging.yml --env-file .env.staging up",
     "publish-staging:server": "cd server && docker build -f Dockerfile.production . -t joffreychevalier/waitit-server:staging && docker push joffreychevalier/waitit-server:staging && cd ..",
-    "publish-staging:client": "cd client_web && docker build -f Dockerfile.production . -t joffreychevalier/waitit-client:staging && docker push joffreychevalier/waitit-client:staging && cd ..",
+    "publish-staging:client": "cd client_web && dotenv -- cross-var docker build --build-arg VITE_WEBSOCKET_URL=%VITE_WEBSOCKET_URL_STAGING% -f Dockerfile.staging . -t joffreychevalier/waitit-client:staging && docker push joffreychevalier/waitit-client:staging && cd ..",
     "publish-staging:all": "npm run publish-staging:server && npm run publish-staging:client"
   },
   "author": "Joffrey Chevalier",
