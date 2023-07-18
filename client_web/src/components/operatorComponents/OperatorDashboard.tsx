@@ -7,7 +7,6 @@ import { StatusEnum } from '@utils/enum/StatusEnum';
 import {
   TicketData, UserData, WaitingRoomData,
 } from '@utils/types/DataTypes';
-import ManWithComputer from '../../assets/illustrations/ManWithComputer.png';
 
 interface Props{
   profile: UserData | null
@@ -62,7 +61,6 @@ function OperatorDashboard(props:Props) {
                && user.currentService!
                && user.currentService!.id === profile.currentService!.id)}
             />
-            <img className="w-[450px]" src={ManWithComputer} alt="ManWithComputer" />
           </div>
         </div>
         <DashboardOverview
