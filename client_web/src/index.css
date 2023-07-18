@@ -73,6 +73,10 @@
         @apply flex flex-row bg-white border border-orange-500 nunito-bold text-orange-500 hover:bg-gray-100 py-2 px-4 drop-shadow rounded-xl w-fit mt-8 mx-auto;
     }
 
+    .f-button-statistics {
+        @apply flex flex-row bg-white border border-orange-500 nunito-bold text-orange-500 hover:bg-orange-500 hover:text-white py-2 px-4 drop-shadow rounded-xl mb-2 items-center;
+    }
+
     /* ------- text components ------- */
 
     .f-space4 {
@@ -169,6 +173,10 @@
 
     .f-modal-window {
         @apply bg-white drop-shadow-xl rounded-3xl w-[30rem] h-[20rem] border-2 flex flex-col justify-center items-center;
+    }
+
+    .f-hub-colors {
+        @apply text-black rounded-2xl p-5;
     }
 
     /* ------- format components ------- */
