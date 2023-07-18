@@ -8,6 +8,7 @@ import {
   GET_ALL_TICKETS_BETWEEN_TWO_DATES,
   GET_LAST_YEAR_STATISTICS,
 } from '@graphQL/query/ticketQuery';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { exportAnnualStats, exportPeriodTickets } from '@utils/excel';
 import {
   attendanceByService,
@@ -34,33 +35,44 @@ function AdminStatistics() {
   };
   return (
     <div>
+      { annualStatistics!
+        && (
+          <>
+            <AnnualChart annualStatistics={stats} />
+            <div className="flex flex-col items-end mr-8 mb-2">
+              <button
+                type="button"
+                className="f-button-statistics"
+                onClick={() => exportAnnualStats(stats)}
+              >
+                <ArrowDownTrayIcon className="w-5 mr-4" />
+                Télécharger les données annuelles en format Excel
+              </button>
+            </div>
+          </>
+        ) }
+      <div className="h-[2px] w-2/3 bg-gray-400 mx-auto my-8" />
       <div>
         <DateTimePicker validateDateInterval={validateDateInterval} />
         {ticketList ? (
-          <div className="flex flex-col">
-            <button
-              type="button"
-              className="f-button-green mt-2 ml-6 self-center"
-              onClick={() => exportPeriodTickets(ticketList.getAllTicketsBetweenTwoDates)}
-            >Télécharger les données de la période en format Excel
-            </button>
+          <div className="flex flex-col mt-6">
             <div className="f-format-services">
-              <div className="bg-amber-100 text-black rounded-2xl p-5">
+              <div className="f-hub-colors bg-amber-100">
                 <p className="f-bold3xl text-amber-500">{ticketList && ticketList.getAllTicketsBetweenTwoDates.length}</p>
                 <p>Tickets traités</p>
               </div>
-              <div className="bg-orange-100 text-black rounded-2xl p-5">
+              <div className="f-hub-colors bg-orange-100">
                 <p className="f-bold3xl text-orange-500">{ticketList
                 && ticketList.getAllTicketsBetweenTwoDates.length
                 && averageWaitingTime(ticketList.getAllTicketsBetweenTwoDates)} minutes
                 </p>
                 <p>Temps d'attente moyen</p>
               </div>
-              <div className="bg-red-100 text-black rounded-2xl p-5">
+              <div className="f-hub-colors bg-red-100">
                 <p className="f-bold3xl text-red-500">{ticketList && mostPupularService(ticketList.getAllTicketsBetweenTwoDates)}</p>
                 <p>Service le plus fréquenté</p>
               </div>
-              <div className="bg-lime-100 text-black rounded-2xl p-5">
+              <div className="f-hub-colors bg-lime-100">
                 <p className="f-bold3xl text-lime-500">{ticketList
                 && ticketList.getAllTicketsBetweenTwoDates.length
                 && percentageOfReturnedTickets(ticketList
@@ -97,23 +109,20 @@ function AdminStatistics() {
                 </div>
               </div>
             </div>
+            <div className="flex flex-col items-end mt-4">
+              <button
+                type="button"
+                className="f-button-statistics"
+                onClick={() => exportPeriodTickets(ticketList.getAllTicketsBetweenTwoDates)}
+              >
+                <ArrowDownTrayIcon className="w-5 mr-4" />
+                Télécharger les données de la période en format Excel
+              </button>
+            </div>
           </div>
-        ) : <div className="text-center mt-2 mb-2">Veuillez selectionner la période à afficher</div>}
+        ) : <div className="text-center mt-2 mb-2 text-xl">Veuillez selectionner la période à afficher</div>}
       </div>
-      { annualStatistics!
-        && (
-          <>
-            <AnnualChart annualStatistics={stats} />
-            <button
-              type="button"
-              className="f-button-green mt-2 ml-6"
-              onClick={() => exportAnnualStats(stats)}
-            >Télécharger les données annuelles en format Excel
-            </button>
-          </>
-        ) }
     </div>
-
   );
 }
 export default AdminStatistics;
