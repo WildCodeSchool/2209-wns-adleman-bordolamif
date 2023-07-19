@@ -24,7 +24,7 @@ function AdminServicesState() {
         <select className="f-select" name="waitingRoom" onChange={selectWaitingRoom}>
           <option value="all">Toutes les salles d'attentes</option>
           {waitingRoomList
-          && waitingRoomList.getAllWaitingRooms.map((waitingRoom:WaitingRoomData) => (
+          && waitingRoomList.getAllWaitingRooms!.map((waitingRoom:WaitingRoomData) => (
             <option key={waitingRoom.id} value={waitingRoom.id}>{waitingRoom.name}</option>
           ))}
         </select>
