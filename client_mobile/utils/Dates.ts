@@ -1,3 +1,9 @@
-export const today = new Date();
+export const isToday = (date:Date) => {
+  const today = new Date();
 
-export const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  if (today.getFullYear() === date.getFullYear()
+    && today.getMonth() === date.getMonth()
+    && today.getDate() === date.getDate()
+  ) return true;
+  return false;
+};
