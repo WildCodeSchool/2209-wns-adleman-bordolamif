@@ -26,7 +26,7 @@ function ServiceDetails(props: Props) {
         style={{ backgroundColor: `${service.color}` }}
       />
       <div className="flex flex-row justify-between mb-2">
-        <div className="nunito-bold pl-3 pb-1 text-xl">
+        <div className="nunito-bold pl-3 pb-1 text-lg">
           <h2>{service.name}</h2>
         </div>
         {!isUpdateService

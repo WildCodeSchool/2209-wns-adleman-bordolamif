@@ -12,7 +12,7 @@ export default new ApolloClient({
     },
   },
   link: createHttpLink({
-    uri: env.GRAPHQL_API_URL as string,
+    uri: env.GRAPHQL_API_URL,
     credentials: 'include',
   }),
 });

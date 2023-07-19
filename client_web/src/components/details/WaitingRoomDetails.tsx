@@ -42,7 +42,7 @@ function WaitingRoomDetails(props: Props) {
         }}
       />
       <div className="flex flex-col mb-4">
-        <div className="flex flex-row justify-between nunito-bold pl-2 pb-1 text-xl">
+        <div className="flex flex-row justify-between nunito-bold pl-2 pb-1 text-lg">
           <h2 className="mr-4">{waitingRoom.name}</h2>
           {!isUpdateWaitingRoom
           && (
@@ -96,7 +96,7 @@ function WaitingRoomDetails(props: Props) {
         : (
           <button
             type="button"
-            className="f-button-white-green"
+            className="f-button-green"
             onClick={() => setIsCreateCounter(true)}
           >
             <PlusCircleIcon className="w-6 mr-2 hover:animate-pulse" />

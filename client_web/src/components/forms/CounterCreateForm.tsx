@@ -32,14 +32,14 @@ function CounterCreateForm(props: Props) {
       />
       <div className="f-choice-button-format">
         <button
-          className="f-button-white-red"
+          className="f-button-red"
           type="button"
           onClick={() => setIsCreateCounter(false)}
         >
           Annuler
         </button>
         <button
-          className="f-button-white-green"
+          className="f-button-green"
           type="submit"
         >
           Appliquer

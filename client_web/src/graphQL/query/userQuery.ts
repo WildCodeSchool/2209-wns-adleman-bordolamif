@@ -13,20 +13,6 @@ query getProfile {
     counter {
       id
       name
-      ticket {
-        name
-        id
-        createdAt
-        calledAt
-        closedAt
-        isFirstTime
-        status
-        isReturned
-      }
-      waitingRoom {
-        name
-        id
-      }
     }
     services {
       id
@@ -60,8 +46,8 @@ query getProfile {
 `;
 
 export const GET_ALL_USERS = gql`
-query GetAllUsers($connected: Boolean) {
-  getAllUsers(connected: $connected) {
+query GetAllUsers {
+  getAllUsers {
     id
     firstname
     lastname
