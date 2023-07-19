@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { StatusEnum } from '../../utils/enum/StatusEnum';
 import { Service, ServicesByWaitingRoom } from '../types/DataTypes';
+import { isToday } from '../../utils/Dates';
 
 interface Props {
     servicesList: ServicesByWaitingRoom
@@ -12,17 +13,6 @@ interface Props {
 }
 function ServicesList(props:Props) {
   const { servicesList, handleOpenModal } = props;
-
-  const isToday = (stringDate:string) => {
-    const today = new Date();
-    const date = new Date(stringDate);
-
-    if (today.getFullYear() === date.getFullYear()
-      && today.getMonth() === date.getMonth()
-      && today.getDate() === date.getDate()
-    ) return true;
-    return false;
-  };
 
   return (
     <FlatList
