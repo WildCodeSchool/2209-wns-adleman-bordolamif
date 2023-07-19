@@ -26,6 +26,9 @@ jobs:
           envkey_CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4000"
           envkey_SERVER_HOST: "localhost"
           envkey_SERVER_PORT: 4000
+          envkey_EXPO_ACCESS_TOKEN: "CECI_EST_UN_TOKEN_EXPO"
+          envkey_MJ_APIKEY_PUBLIC: "CECI_EST_UNE_CLE_MAILJET_PUBLIQUE"
+          envkey_MJ_APIKEY_PRIVATE: "CECI_EST_UNE_CLE_MAILJET_PUBLIQUE"
           directory: ./
           file_name: .env
           fail_on_empty: false
@@ -84,6 +87,8 @@ jobs:
         with:
           push: true
           context: "{{defaultContext}}:client_web"
+          build-args: |
+            "VITE_WEBSOCKET_URL=${{ vars.VITE_WEBSOCKET_URL_PRODUCTION }}"
           file: "Dockerfile.production"
           tags: ${{ vars.DOCKERHUB_USERNAME }}/waitit-client
 

@@ -14,6 +14,9 @@ import cookie from 'cookie';
 import { buildSchema } from 'type-graphql';
 import { ContextType } from './utils/interfaces';
 import UserModel from './models/UserModel';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+import { checkDefaultAdmin } from './utils/checkDefaultAdmin';
 
 loadEnv();
 
@@ -23,6 +26,7 @@ const start = async (): Promise<void> => {
   const httpServer = http.createServer(app);
 
   const schema = await buildSchema({
+    validate: { forbidUnknownValues: false },
     resolvers: [join(__dirname, '/resolvers/*.{js,ts}')],
     authChecker: async ({ context }: { context: ContextType }, roles = []) => {
       const { req } = context;
@@ -44,15 +48,37 @@ const start = async (): Promise<void> => {
     },
   });
 
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/subscriptions',
+  });
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const serverCleanup = useServer({ schema }, wsServer);
+
   const server = new ApolloServer<ContextType>({
     schema,
     csrfPrevention: true,
     cache: 'bounded',
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
   });
 
   await server.start();
+
+  // Check if default admin exists or create it in database if doesn't
+  checkDefaultAdmin();
 
   app.use(
     ['/', '/graphql'],
@@ -69,9 +95,7 @@ const start = async (): Promise<void> => {
   const port = env.SERVER_PORT ?? 4000;
 
   // eslint-disable-next-line no-restricted-syntax
-  httpServer.listen({ port }, () => console.log(
-    `🚀 Server ready at http://${env.SERVER_HOST}:${port}`,
-  ));
+  httpServer.listen({ port }, () => console.log(`🚀 Server ready at http://${env.SERVER_HOST}:${port}`));
 };
 
 start().catch(console.error);

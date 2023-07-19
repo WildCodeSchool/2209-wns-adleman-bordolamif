@@ -29,7 +29,7 @@ const WaitingRoomController = {
 
     const waitingRoomToUpdate = await WaitingRoomModel.getOneWaitingRoomById(id);
 
-    if (waitingRoomToUpdate === null) { throw new Error('User not found'); }
+    if (waitingRoomToUpdate === null) { throw new Error('WaitingRoom not found'); }
 
     waitingRoomToUpdate.name = name;
     waitingRoomToUpdate.services = await Promise.all(services?.map(

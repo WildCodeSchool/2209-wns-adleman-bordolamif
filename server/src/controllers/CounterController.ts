@@ -3,7 +3,7 @@ import CounterModel from '../models/CounterModel';
 import TicketModel from '../models/TicketModel';
 import UserModel from '../models/UserModel';
 import WaitingRoomModel from '../models/WaitingRoomModel';
-import { CounterInput } from '../utils/types/InputTypes';
+import { CounterInput, PartialCounterInput } from '../utils/types/InputTypes';
 
 const CounterController = {
   getAllCounters: async (): Promise<Counter[]> => await CounterModel.getAllCounters(),
@@ -33,6 +33,10 @@ const CounterController = {
 
     counterToUpdate.name = data.name;
 
+    const waitingRoom = await WaitingRoomModel.getOneArgWaitingRoom(data.waitingRoom.id);
+    if (waitingRoom === null) { throw new Error('Waiting room not found'); }
+
+    counterToUpdate.waitingRoom = waitingRoom;
     if (data.user) {
       counterToUpdate.user = await UserModel.getOneArgUser(data.user.id);
       if (counterToUpdate.user === null) { throw new Error('User not found'); }
@@ -45,6 +49,35 @@ const CounterController = {
       if (counterToUpdate.ticket === null) { throw new Error('Ticket not found'); }
     } else {
       counterToUpdate.ticket = data.ticket;
+    }
+
+    return await CounterModel.updateCounter(counterToUpdate);
+  },
+
+  partialCounterUpdate: async (data:PartialCounterInput, id:number): Promise<Counter> => {
+    const counterToUpdate = await CounterModel.getOneCounterById(id);
+    if (counterToUpdate === null) { throw new Error('Counter not found'); }
+
+    counterToUpdate.name = data.name ?? counterToUpdate.name;
+
+    if (data.user) {
+      counterToUpdate.user = await UserModel.getOneArgUser(data.user.id);
+      if (counterToUpdate.user === null) { throw new Error('User not found'); }
+    }
+
+    if (data.waitingRoom) {
+      counterToUpdate.waitingRoom = await
+      WaitingRoomModel.getOneArgWaitingRoom(data.waitingRoom.id);
+      if (counterToUpdate.waitingRoom === null) { throw new Error('WaitingRoom not found'); }
+    }
+
+    if (data.ticket) {
+      if (data.ticket.id === 0) {
+        counterToUpdate.ticket = null;
+      } else {
+        counterToUpdate.ticket = await TicketModel.getOneArgTicket(data.ticket.id);
+        if (counterToUpdate.ticket === null) { throw new Error('Ticket not found'); }
+      }
     }
 
     return await CounterModel.updateCounter(counterToUpdate);

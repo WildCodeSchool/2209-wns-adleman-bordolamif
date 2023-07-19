@@ -21,19 +21,19 @@ function AccountCard(props: Props) {
   } = props;
 
   return (
-    <div className="bg-gray-200 p-4 my-2 rounded">
-      <div className="flex bg-gray-200 justify-between px-2">
-        {cardMode === PROFILE && (
-        <div>
-          <h2>Mes informations personnelles</h2>
-          <p>Nom: {profile.lastname}</p>
-          <p>Prénom: {profile.firstname}</p>
-          <p> Email: {profile.email}</p>
-        </div>
+    <div className="f-format-gray-rounded">
+      <div className="flex justify-between px-2">
+        { cardMode === PROFILE && (
+          <div>
+            <h2 className="text-2xl mb-8">Mes informations personnelles</h2>
+            <p className="f-account-props">Nom : <span className="nunito-regular">{profile.lastname}</span></p>
+            <p className="f-account-props">Prénom : <span className="nunito-regular">{profile.firstname}</span></p>
+            <p className="f-account-props">Email : <span className="nunito-regular">{profile.email}</span></p>
+          </div>
         )}
         { cardMode === PASSWORD && (
         <div>
-          <h2>Mon mot de passe</h2>
+          <h2 className="text-2xl mb-8">Mon mot de passe</h2>
         </div>
         )}
         {((modeToUpdate !== PROFILE && cardMode === PROFILE)
@@ -41,6 +41,7 @@ function AccountCard(props: Props) {
         && (
         <div>
           <button
+            className="f-button-orange"
             type="button"
             onClick={() => setModeToUpdate(cardMode)}
           >

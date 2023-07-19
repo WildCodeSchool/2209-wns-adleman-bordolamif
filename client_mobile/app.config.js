@@ -2,17 +2,28 @@ import 'dotenv/config';
 
 export default {
   expo: {
-    name: 'client_mobile',
+    name: 'Wait-It',
     slug: 'client_mobile',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
+    notification: {
+      icon: './assets/icon.png',
+    },
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/icon.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
+    plugins: [
+      [
+        'expo-barcode-scanner',
+        {
+          cameraPermission: 'Allow $(PRODUCT_NAME) to access camera.',
+        },
+      ],
+    ],
     updates: {
       fallbackToCacheTimeout: 0,
     },
@@ -24,15 +35,12 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
+        foregroundImage: './assets/icon.png',
         backgroundColor: '#FFFFFF',
       },
     },
     web: {
-      favicon: './assets/favicon.png',
-    },
-    extra: {
-      GRAPHQL_API_URL: process.env.GRAPHQL_API_URL || 'http://localhost:4000',
+      favicon: './assets/icon.png',
     },
   },
 };

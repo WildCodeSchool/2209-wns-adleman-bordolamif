@@ -1,5 +1,8 @@
+import { TicketData } from './DataTypes';
+
 export type RootStackParamList = {
     HomeScreen: undefined;
     QrCodeScanner: undefined;
-    LoginScreen: undefined;
+    ServicesSelectionScreen: { waitingRoomId:string };
+    TicketScreen: { createdTicket:TicketData };
 };

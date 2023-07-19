@@ -18,9 +18,13 @@ function Menu({ userProfile, client }: Props) {
   const [logout] = useMutation(LOGOUT);
   const navigate = useNavigate();
   const onLogout = async () => {
-    await logout({ variables: { logoutId: userProfile.id } });
-    await client.resetStore();
-    navigate('/');
+    try {
+      await logout({ variables: { logoutId: userProfile.id } });
+      await client.resetStore();
+      navigate('/');
+    } catch (error) {
+      navigate('/');
+    }
   };
 
   const activeStyle = {
@@ -37,7 +41,7 @@ function Menu({ userProfile, client }: Props) {
   }
 
   return (
-    <div className="fixed flex flex-col justify-between h-screen">
+    <div className="fixed f-between h-screen">
       <div className="pl-2 py-6 w-[15rem]">
         {userProfile.role === RoleEnum.ADMINISTRATEUR && (
           <div>

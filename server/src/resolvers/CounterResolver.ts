@@ -1,10 +1,10 @@
 import {
-  Arg, Int, Mutation, Query, Resolver,
+  Arg, Authorized, Int, Mutation, Query, Resolver,
 } from 'type-graphql';
 import Counter from '../entity/Counter';
-import { CounterInput } from '../utils/types/InputTypes';
-import CounterModel from '../models/CounterModel';
+import { CounterInput, PartialCounterInput } from '../utils/types/InputTypes';
 import CounterController from '../controllers/CounterController';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 
 @Resolver(Counter)
 export class CounterResolver {
@@ -14,7 +14,7 @@ export class CounterResolver {
 
     @Query(() => [Counter])
   async getAllCounters(): Promise<Counter[]> {
-    return await CounterModel.getAllCounters();
+    return await CounterController.getAllCounters();
   }
 
   @Query(() => Counter)
@@ -27,11 +27,13 @@ export class CounterResolver {
      MUTATION
      ************************************ */
 
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
     @Mutation(() => Counter)
   async createCounter(@Arg('data') data: CounterInput): Promise<Counter> {
     return await CounterController.createCounter(data);
   }
 
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
     @Mutation(() => Boolean)
     async deleteCounter(
         @Arg('id', () => Int) id: number,
@@ -39,11 +41,21 @@ export class CounterResolver {
       return await CounterController.deleteCounter(id);
     }
 
-  @Mutation(() => Counter)
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
+    @Mutation(() => Counter)
     async updateCounter(
       @Arg('id', () => Int) id: number,
       @Arg('data') data: CounterInput,
     ): Promise<Counter> {
       return await CounterController.updateCounter(data, id);
+    }
+
+    @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
+    @Mutation(() => Counter)
+    async partialCounterUpdate(
+      @Arg('id', () => Int) id: number,
+      @Arg('data') data: PartialCounterInput,
+    ): Promise<Counter> {
+      return await CounterController.partialCounterUpdate(data, id);
     }
 }

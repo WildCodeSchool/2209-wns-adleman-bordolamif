@@ -41,40 +41,47 @@ function AdminServicesPage() {
         <h1 className="f-main-title">Gérer mes services</h1>
         <div className="f-decoration-line" />
       </div>
-      <div>
-        <h2 className="f-under-title">Créer un service</h2>
-        <div className="f-page-format">
-          <div className="flex flex-col items-center">
-            {!isCreateService
+      <p className="pl-6 text-lg">
+        Vous pouvez ici ajouter, modifier ou supprimer
+        les différents services liés à votre compte.
+      </p>
+      <div className="f-format-creation">
+        <div className="f-format-adding">
+          <h2 className="f-button-text-white">Créer un service</h2>
+          <div className="flex flex-row ml-8 mb-4 mx-4">
+            <div className="flex flex-col items-center">
+              {!isCreateService
         && (
           <button
             type="button"
-            className="f-button-green"
+            className="f-button-orange"
             onClick={() => setIsCreateService(true)}
           >
-            <PlusCircleIcon className="f-icon" />
+            <PlusCircleIcon className="mr-2 w-7" />
             Ajouter un service
           </button>
         )}
-            {isCreateService
+            </div>
+          </div>
+          {isCreateService
       && (
       <ServiceCreateForm
         setIsCreateService={setIsCreateService}
         handleCreateService={handleCreateService}
       />
       )}
-          </div>
         </div>
-        <h2 className="f-under-title">Mes services</h2>
-        <div className="px-8">
-          <ServicesList
-            servicesList={servicesList && servicesList.getAllServices}
-            handleUpdateService={handleUpdateService}
-            handleDeleteService={handleDeleteService}
-            mode="details"
-          />
-          {servicesListLoading && <p>Chargement...</p>}
-        </div>
+
+      </div>
+      <h2 className="f-title-for-list">Mes services</h2>
+      <div className="px-8">
+        <ServicesList
+          servicesList={servicesList && servicesList.getAllServices}
+          handleUpdateService={handleUpdateService}
+          handleDeleteService={handleDeleteService}
+          mode="details"
+        />
+        {servicesListLoading && <p>Chargement...</p>}
       </div>
     </>
   );

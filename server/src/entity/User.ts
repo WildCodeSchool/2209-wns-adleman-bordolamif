@@ -77,7 +77,10 @@ class User {
     services?: Service[];
 
   @Field(() => Service, { nullable: true })
-  @ManyToOne(() => Service, (service: Service | null) => service?.currentUsers)
+  @ManyToOne(() => Service, (service: Service | null) => service?.currentUsers, {
+    nullable: true,
+    eager: true,
+  })
     currentService?: Service | null;
 }
 

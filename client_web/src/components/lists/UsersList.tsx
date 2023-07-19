@@ -15,6 +15,8 @@ function UsersList(props:Props) {
   return (
     <div>
       {usersList! && usersList.map((user) => (
+        user.role === 2
+        && (
         <UserDetails
           key={user.id}
           user={user}
@@ -22,6 +24,7 @@ function UsersList(props:Props) {
           handleUpdateUserSuspension={handleUpdateUserSuspension}
           handleDeleteUser={handleDeleteUser}
         />
+        )
       ))}
     </div>
   );

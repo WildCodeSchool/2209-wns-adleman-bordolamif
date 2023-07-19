@@ -5,9 +5,23 @@ import db from '../server/src/db';
 // https://github.com/typeorm/typeorm/issues/2978#issuecomment-730596460
 async function clearDB() {
   const entities = db.entityMetadatas;
-  return Promise.all(
-    entities.map((entity) => db.getRepository(entity.name).delete({})),
-  );
+  const entityOrder = [
+    'Ticket',
+    'Counter',
+    'User',
+    'Service',
+    'WaitingRoom',
+  ];
+  const orderedEntities = entities.sort((a, b) => {
+    const aIndex = entityOrder.indexOf(a.name);
+    const bIndex = entityOrder.indexOf(b.name);
+    return aIndex - bIndex;
+  });
+  for (const entity of orderedEntities) {
+    // eslint-disable-next-line no-await-in-loop
+    await db.getRepository(entity.name).delete({});
+  }
+  return Promise.resolve();
 }
 
 // init db before all tests

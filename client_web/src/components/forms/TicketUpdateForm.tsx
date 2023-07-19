@@ -32,13 +32,16 @@ function TicketUpdateForm(props : Props) {
   };
 
   return (
-    <div className="flex h-full justify-center items-center">
+    <div className="flex justify-center items-center">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center">
-          <p>{ticketToUpdate.service.name}</p>
-          <ServiceIcon service={ticketToUpdate.service} />
-          <p>{ticketToUpdate.name}</p>
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-row items-center justify-center gap-4">
+            <ServiceIcon service={ticketToUpdate.service} />
+            <p className="text-4xl nunito-bold">{ticketToUpdate.service.name}</p>
+          </div>
+          <p className="text-center mb-4">{ticketToUpdate.name}</p>
           <select
+            className="f-select"
             {...register('status')}
             defaultValue={
               StatusObjectEnum.find((stat) => stat.key === ticketToUpdate.status)
@@ -50,12 +53,21 @@ function TicketUpdateForm(props : Props) {
               <option key={stat.key} value={stat.key}>{stat.name}</option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="f-button-green"
-          >
-            Enregistrer
-          </button>
+          <div className="flex flex-row items-center gap-8 mt-4">
+            <button
+              type="submit"
+              className="f-button-green"
+            >
+              Enregistrer
+            </button>
+            <button
+              type="button"
+              className="f-button-red"
+              onClick={() => handleCloseModal()}
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </form>
     </div>

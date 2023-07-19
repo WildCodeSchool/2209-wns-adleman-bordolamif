@@ -1,7 +1,7 @@
 services:
   db_test:
-    image: postgres:15.0-alpine
-    container_name: WaitIt-db-test
+    image: postgres:15-alpine
+    container_name: waitit-db-test
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,7 +17,7 @@ services:
       - 5432:5432
 
   backend:
-    container_name: WaitIt-backend
+    container_name: waitit-backend
     depends_on:
       db_test:
         condition: service_healthy
@@ -36,6 +36,9 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN}
+      MJ_APIKEY_PUBLIC: ${MJ_APIKEY_PUBLIC}
+      MJ_APIKEY_PRIVATE: ${MJ_APIKEY_PRIVATE}
       DB_HOST: 'db_test'
       NODE_ENV: 'test'
     healthcheck:
@@ -45,7 +48,7 @@ services:
       retries: 10
 
   testrunner:
-    container_name: WaitIt-testrunner
+    container_name: waitit-testrunner
     build:
       context: .
       dockerfile: ./test/Dockerfile
@@ -62,6 +65,9 @@ services:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       SERVER_HOST: ${SERVER_HOST}
       SERVER_PORT: ${SERVER_PORT}
+      EXPO_ACCESS_TOKEN: ${EXPO_ACCESS_TOKEN}
+      MJ_APIKEY_PUBLIC: ${MJ_APIKEY_PUBLIC}
+      MJ_APIKEY_PRIVATE: ${MJ_APIKEY_PRIVATE}
       DB_HOST: 'db_test'
     volumes:
       - ./server/src/entity:/server/src/entity

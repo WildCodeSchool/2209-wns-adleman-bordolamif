@@ -13,27 +13,28 @@ function UserDetails(props: Props) {
   } = props;
 
   return (
-    <div className="flex flex-row justify-between mb-2">
-      <p>{user.firstname}</p>
-      <p>{user.lastname}</p>
-      <p>{user.email}</p>
+    <div className="grid grid-cols-6 items-center mb-4">
+      <p className="text-xl nunito-bold">{user.firstname}</p>
+      <p className="text-xl nunito-bold">{user.lastname}</p>
+      <p className="text-sm">{user.email}</p>
       <button
         type="button"
         onClick={() => handleUpdateUserSuspension(!user.isSuspended, user.id)}
-        className={user.isSuspended ? 'f-button-red' : 'f-button-green'}
-      >Suspendu: {user.isSuspended ? 'oui' : 'non'}
+        className="nunito-bold cursor-pointer ml-10 bg-gray-100 hover:bg-gray-200 drop-shadow p-2 rounded-2xl"
+      >
+        Suspendu : {user.isSuspended ? '✅' : '❌'}
       </button>
       <button
         type="button"
         onClick={() => handleOpenModal(user)}
-        className="f-button-green"
+        className="f-button-green ml-16"
       >
         Modifier
       </button>
       <button
         type="button"
         onClick={() => handleDeleteUser(user.id)}
-        className="f-button-red"
+        className="f-button-red ml-8"
       >
         Supprimer
       </button>

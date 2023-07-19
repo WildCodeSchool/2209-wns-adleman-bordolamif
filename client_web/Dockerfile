@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm i
+RUN ["npm", "install"]
 
 COPY public ./public
 COPY index.html ./
@@ -16,7 +16,4 @@ COPY tailwind.config.cjs ./
 COPY postcss.config.cjs ./
 COPY vite.config.ts ./
 
-ARG VITE_GRAPHQL_API_URL
-ENV VITE_GRAPHQL_API_URL ${VITE_GRAPHQL_API_URL}
-
-CMD npm start
+CMD ["npm", "start"]

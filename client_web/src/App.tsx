@@ -6,7 +6,6 @@ import AuthPage from '@pages/AuthPage';
 import AdminPage from '@pages/admin/AdminPage';
 import OperatorBoard from '@pages/operator/OperatorBoard';
 import AdminWaitingRoomsAndCountersPage from '@pages/admin/AdminWaitingRoomsAndCountersPage';
-import AdminStatisticsPage from '@pages/admin/AdminStatisticsPage';
 import AdminUsersPage from '@pages/admin/AdminUsersPage';
 import AdminServicesPage from '@pages/admin/AdminServicesPage';
 import AdminTicketsPage from '@pages/admin/AdminTicketsPage';
@@ -16,8 +15,10 @@ import { RoleEnum } from '@utils/enum/RoleEnum';
 import TvScreenPage from '@pages/tv/TvScreenPage';
 import MyAccountPage from '@pages/MyAccountPage';
 import TvScreenHomePage from '@pages/tv/TvScreenHomePage';
-import MyWaitingRoomPage from '@pages/operator/OperatorMyWaitingRoomPage';
 import OperatorStartUpPage from '@pages/operator/OperatorStartUpPage';
+import ResetPasswordPage from '@pages/ResetPasswordPage';
+import ForgotPasswordPage from '@pages/ForgotPasswordPage';
+import AdminStatistics from '@components/adminComponents/AdminStatistics';
 
 function App() {
   const { data: currentUser, client } = useQuery(PROFILE, { errorPolicy: 'ignore' });
@@ -34,6 +35,13 @@ function App() {
             />
           )}
         />
+        <Route path="/reset-password/:uuid" element={(<ResetPasswordPage />)} />
+        <Route
+          path="/forgot-password"
+          element={(
+            <ForgotPasswordPage />
+          )}
+        />
         {currentUser && currentUser!.profile.role === RoleEnum.ADMINISTRATEUR
           && (
             <Route
@@ -45,11 +53,12 @@ function App() {
                 />
               )}
             >
-              <Route path="dashboard" element={<AdminPage />} />
+              <Route path="dashboard" element={<AdminPage />}>
+                <Route path="statistics" element={<AdminStatistics />} />
+              </Route>
               <Route path="services" element={<AdminServicesPage />} />
               <Route path="tickets" element={<AdminTicketsPage />} />
               <Route path="waitingroomsandcounters" element={<AdminWaitingRoomsAndCountersPage />} />
-              <Route path="statistics" element={<AdminStatisticsPage />} />
               <Route path="users" element={<AdminUsersPage />} />
               <Route path="myaccount" element={<MyAccountPage />} />
 
@@ -69,9 +78,7 @@ function App() {
               )}
             >
               <Route path="startup" element={<OperatorStartUpPage />} />
-              <Route path="dashboard" element={<OperatorBoard />}>
-                <Route path="mywaitingroom" element={<MyWaitingRoomPage />} />
-              </Route>
+              <Route path="dashboard" element={<OperatorBoard />} />
               <Route path="myaccount" element={<MyAccountPage />} />
 
             </Route>

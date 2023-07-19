@@ -4,14 +4,19 @@ import {
   Ctx,
   Int,
   Mutation,
+  PubSub,
+  PubSubEngine,
   Query,
   Resolver,
+  Root,
+  Subscription,
 } from 'type-graphql';
 import User, { getSafeAttributes } from '../entity/User';
 import { loadEnv } from '../env';
 import { ContextType } from '../utils/interfaces';
 import {
   FirstUserLoginPassword,
+  PartialUserInput,
   UserConnexion,
   UserInput,
   UserUpdatePassword,
@@ -19,6 +24,7 @@ import {
 import UserController from '../controllers/UserController';
 import PasswordController from '../controllers/PasswordController';
 import ConnexionController from '../controllers/ConnexionController';
+import { RoleEnum } from '../utils/enums/RoleEnum';
 
 loadEnv();
 
@@ -28,12 +34,14 @@ export class UserResolver {
                    QUERY
      ************************************ */
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Query(() => [User])
-  async getAllUsers(): Promise<User[]> {
-    const users = await UserController.getAllUsers();
+  async getAllUsers(@Arg('connected', { nullable: true })connected: boolean): Promise<User[]> {
+    const users = await UserController.getAllUsers(connected);
     return users.map((user) => getSafeAttributes(user));
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Query(() => User)
   async getOneUser(@Arg('id', () => Int) id: number): Promise<User> {
     const user = await UserController.getOneUser(id);
@@ -50,7 +58,7 @@ export class UserResolver {
                   MUTATION
      ************************************ */
 
-  // @Authorized<RoleEnum>([1])
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserInput): Promise<User> {
     const newUser = await UserController.createUser(data);
@@ -66,6 +74,7 @@ export class UserResolver {
     return token;
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR, RoleEnum.CLIENT])
   @Mutation(() => String)
   async logout(
     @Arg('id', () => Int) id: number,
@@ -74,18 +83,20 @@ export class UserResolver {
     return await ConnexionController.logout(id, ctx);
   }
 
-  // @Authorized<RoleEnum>([1])
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => Boolean)
   async deleteUser(@Arg('id', () => Int) id: number): Promise<boolean> {
     return await UserController.deleteUser(id);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async updatePassword(@Arg('data') data: UserUpdatePassword): Promise<User> {
     const userToUpdate = await PasswordController.updatePassword(data);
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async firstLoginPassword(
     @Arg('data') data: FirstUserLoginPassword,
@@ -94,21 +105,35 @@ export class UserResolver {
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
   @Mutation(() => User)
   async updateUser(
     @Arg('id', () => Int) id: number,
     @Arg('data') data: UserInput,
+    @PubSub() pubsub: PubSubEngine,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUser(data, id);
+    await pubsub.publish('UpdatedUser', userToUpdate);
     return getSafeAttributes(userToUpdate);
   }
 
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR])
   @Mutation(() => User)
   async updateUserSuspension(
     @Arg('id', () => Int) id: number,
     @Arg('data') isSuspended: boolean,
   ): Promise<User> {
     const userToUpdate = await UserController.updateUserSuspension(isSuspended, id);
+    return getSafeAttributes(userToUpdate);
+  }
+
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
+  @Mutation(() => User)
+  async partialUserUpdate(
+    @Arg('id', () => Int) id: number,
+    @Arg('data') data: PartialUserInput,
+  ): Promise<User> {
+    const userToUpdate = await UserController.partialUserUpdate(data, id);
     return getSafeAttributes(userToUpdate);
   }
 
@@ -120,13 +145,22 @@ export class UserResolver {
     return 'Un email vous a été envoyé pour réinitialiser votre mot de passe';
   }
 
-  @Mutation(() => User)
+  @Mutation(() => String)
   async resetPassword(
     @Arg('uuid', () => String) uuid: string,
-    @Arg('data') data: UserConnexion,
-  ): Promise<User> {
-    const userToUpdate = await PasswordController.resetPassword(uuid, data);
+    @Arg('password') password: string,
+  ): Promise<string> {
+    await PasswordController.resetPassword(uuid, password);
+    return 'Votre mot de passe a bien été mis à jour';
+  }
 
-    return getSafeAttributes(userToUpdate);
+  /** ***********************************
+                SUBSCRIPTION
+     ************************************ */
+
+  @Authorized<RoleEnum>([RoleEnum.ADMINISTRATEUR, RoleEnum.OPERATEUR])
+  @Subscription({ topics: 'UpdatedUser' })
+  updatedUser(@Root() updatedUserPayload: User): User {
+    return updatedUserPayload;
   }
 }

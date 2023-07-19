@@ -4,6 +4,7 @@ import { NewCounterDto } from '../utils/dto';
 
 const CounterModel = {
   getAllCounters: async () => await dataSource.getRepository(Counter).find({
+    order: { id: 'ASC' },
     relations:
     {
       waitingRoom: true,
@@ -23,10 +24,10 @@ const CounterModel = {
       },
     }),
   getOneArgCounter: async (id: number) => await dataSource.getRepository(Counter)
-    .findOneOrFail({ where: { id } }),
+    .findOne({ where: { id } }),
 
   getOneCounterByUserId: async (id: number) => await dataSource.getRepository(Counter)
-    .findOneOrFail({
+    .findOne({
       where: { user: { id } },
       relations: {
         waitingRoom: true,
