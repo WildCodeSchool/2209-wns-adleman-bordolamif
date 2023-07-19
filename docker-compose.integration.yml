@@ -1,7 +1,7 @@
 services:
   db_test:
-    image: postgres:15-alpine
-    container_name: waitit-db-test
+    image: postgres:15.0-alpine
+    container_name: WaitIt-db-test
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,7 +17,7 @@ services:
       - 5432:5432
 
   backend:
-    container_name: waitit-backend
+    container_name: WaitIt-backend
     depends_on:
       db_test:
         condition: service_healthy
@@ -45,7 +45,7 @@ services:
       retries: 10
 
   testrunner:
-    container_name: waitit-testrunner
+    container_name: WaitIt-testrunner
     build:
       context: .
       dockerfile: ./test/Dockerfile

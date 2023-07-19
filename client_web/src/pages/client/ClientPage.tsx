@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import DarkLogo from '@assets/DarkLogo';
 import TicketDetails from '@components/details/TicketDetails';
 import ServicesList from '@components/lists/ServicesList';
 import TicketCreationModal from '@components/modals/TicketCreationModal';
@@ -28,7 +27,7 @@ function ClientPage() {
     const { data } = await CreateTicket({ variables: { data: ticket } });
     setCreatedTicket(data.createTicket);
     setTimeout(() => setCreatedTicket(null), 15000);
-    await refetchServicesList();
+    refetchServicesList();
   };
 
   const handleOpenModal = (service: ServiceData) => {
@@ -42,17 +41,16 @@ function ClientPage() {
 
   return (
     <div>
-      <h2 className="text-center mt-8 text-4xl nunito-bold">Bienvenue dans votre espace de santé</h2>
-      <p className="text-center mt-6 mb-2 text-3xl">Merci de bien vouloir cliquer sur le <span className="nunito-bold">service de votre choix</span></p>
+      <h1>Merci de bien vouloir cliquer sur le service de votre choix</h1>
       {servicesListLoading && <p>Chargement ...</p>}
 
-      <div className="overflow-y-auto max-h-[38rem] pb-4">
-        <ServicesList
-          servicesList={servicesList && servicesList.getAllServices}
-          mode="cards"
-          handleOpenModal={handleOpenModal}
-        />
-      </div>
+      <ServicesList
+        servicesList={servicesList && servicesList.getAllServices}
+        mode="cards"
+        handleOpenModal={handleOpenModal}
+
+      />
+
       {serviceTicketToCreate && (
         <TicketCreationModal
           serviceTicketToCreate={serviceTicketToCreate}
@@ -63,25 +61,15 @@ function ClientPage() {
       )}
       {createdTicket && (
         <div className="absolute flex flex-col left-0 top-0 h-screen w-screen bg-white items-center justify-center">
-          <p className="nunito-bold mb-8 text-2xl text-center">Votre ticket est le numéro : </p>
+          <p>Votre ticket est le numéro : </p>
           <TicketDetails ticket={createdTicket} />
-          <p className="mt-8 text-2xl text-center">Rendez-vous en salle d'attente :
-            <span className="ml-2 nunito-bold">{serviceTicketToCreate?.waitingRoom?.name}</span>
-          </p>
-          <p className="nunito-bold text-4xl text-center mt-8 mb-32">Merci de récupérer votre ticket papier</p>
-          <button
-            className="underline"
-            type="button"
-            onClick={() => setCreatedTicket(null)}
-          >
-            Retour à la page d'accueil
-          </button>
-          <div className="f-client-format-logo">
-            <DarkLogo />
-          </div>
+          <p>Rendez-vous en salle d'attente : {serviceTicketToCreate?.waitingRoom?.name}</p>
+          <p>Merci de récupérer votre ticket papier</p>
+          <button type="button" onClick={() => setCreatedTicket(null)}>Retour à la page d'accueil</button>
         </div>
       )}
     </div>
+
   );
 }
 export default ClientPage;

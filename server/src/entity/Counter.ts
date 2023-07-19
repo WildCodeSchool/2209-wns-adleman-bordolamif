@@ -34,7 +34,7 @@ class Counter {
   @Field(() => Ticket, { nullable: true })
   @OneToOne(() => Ticket, (ticket: Ticket | null) => ticket?.counter, { nullable: true })
   @JoinColumn()
-    ticket?: Ticket | null;
+    ticket?: Ticket;
 }
 
 export default Counter;

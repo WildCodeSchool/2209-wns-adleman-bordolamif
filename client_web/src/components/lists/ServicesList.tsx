@@ -30,7 +30,7 @@ function ServicesList(props:Props) {
   } = props;
 
   return (
-    <div className="grid grid-cols-3 gap-8 mx-10 mt-8">
+    <div className="grid grid-cols-3 gap-8">
       {servicesList && servicesList!
       && (
         (mode === 'details' && handleDeleteService && handleUpdateService && servicesList.map((service) => (

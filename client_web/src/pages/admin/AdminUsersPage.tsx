@@ -62,29 +62,27 @@ function AdminUsersPage() {
         <div className="f-decoration-line" />
       </div>
       {usersListLoading && <p>loading...</p>}
-      <div className="ml-8">
-        <UsersList
-          usersList={usersList && usersList.getAllUsers}
-          handleOpenModal={handleOpenModal}
-          handleUpdateUserSuspension={handleUpdateUserSuspension}
-          handleDeleteUser={handleDeleteUser}
-        />
-        <button
-          type="button"
-          onClick={() => handleOpenModal(null)}
-          className="f-button-white-orange"
-        >
-          <PlusCircleIcon className="f-icon" />
-          Ajouter un opérateur
-        </button>
-        <UserModal
-          userToUpdate={userToUpdate}
-          isModalOpen={isModalOpen}
-          handleCreateUser={handleCreateUser}
-          handleUpdateUser={handleUpdateUser}
-          handleCloseModal={handleCloseModal}
-        />
-      </div>
+      <UsersList
+        usersList={usersList && usersList.getAllUsers}
+        handleOpenModal={handleOpenModal}
+        handleUpdateUserSuspension={handleUpdateUserSuspension}
+        handleDeleteUser={handleDeleteUser}
+      />
+      <button
+        type="button"
+        onClick={() => handleOpenModal(null)}
+        className="f-button-green"
+      >
+        <PlusCircleIcon className="f-icon" />
+        Ajouter un opérateur
+      </button>
+      <UserModal
+        userToUpdate={userToUpdate}
+        isModalOpen={isModalOpen}
+        handleCreateUser={handleCreateUser}
+        handleUpdateUser={handleUpdateUser}
+        handleCloseModal={handleCloseModal}
+      />
     </div>
   );
 }

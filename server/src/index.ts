@@ -14,8 +14,6 @@ import cookie from 'cookie';
 import { buildSchema } from 'type-graphql';
 import { ContextType } from './utils/interfaces';
 import UserModel from './models/UserModel';
-import { WebSocketServer } from 'ws';
-import { useServer } from 'graphql-ws/lib/use/ws';
 
 loadEnv();
 
@@ -46,31 +44,12 @@ const start = async (): Promise<void> => {
     },
   });
 
-  const wsServer = new WebSocketServer({
-    server: httpServer,
-    path: '/subscriptions',
-  });
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const serverCleanup = useServer({ schema }, wsServer);
-
   const server = new ApolloServer<ContextType>({
     schema,
     csrfPrevention: true,
     cache: 'bounded',
-    plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageLocalDefault({ embed: true }),
-      {
-        async serverWillStart() {
-          return {
-            async drainServer() {
-              await serverCleanup.dispose();
-            },
-          };
-        },
-      },
-    ],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginLandingPageLocalDefault({ embed: true })],
   });
 
   await server.start();
@@ -90,7 +69,9 @@ const start = async (): Promise<void> => {
   const port = env.SERVER_PORT ?? 4000;
 
   // eslint-disable-next-line no-restricted-syntax
-  httpServer.listen({ port }, () => console.log(`🚀 Server ready at http://${env.SERVER_HOST}:${port}`));
+  httpServer.listen({ port }, () => console.log(
+    `🚀 Server ready at http://${env.SERVER_HOST}:${port}`,
+  ));
 };
 
 start().catch(console.error);
