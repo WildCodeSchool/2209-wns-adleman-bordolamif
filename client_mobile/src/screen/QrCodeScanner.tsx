@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import {
+  Alert, Pressable, StyleSheet, Text,
+} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { RootStackParamList } from '../types/RootStackParamList';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -27,6 +29,18 @@ export default function QrCodeScanner({ navigation }: NavigationProps) {
 
     if (!data) {
       return console.warn('No data found');
+    }
+
+    if (Number.isNaN(parseInt(data, 10))) {
+      Alert.alert(
+        'QR code invalide',
+        "Merci de scanner le QR code présent dans votre salle d'attente.",
+        [
+          { text: 'OK', style: 'cancel' },
+        ],
+        { cancelable: false },
+      );
+      return console.warn('Not a valid qr code');
     }
 
     return navigation.navigate('ServicesSelectionScreen', { waitingRoomId: data });
