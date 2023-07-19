@@ -11,6 +11,7 @@ export const GET_SERVICES_BY_WAITING_ROOM = gql`
             tickets {
                 id
                 status
+                createdAt
             }
         }
     }
