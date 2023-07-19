@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { StatusEnum } from '../../utils/enum/StatusEnum';
 import { Service, ServicesByWaitingRoom } from '../types/DataTypes';
+import { startOfDay } from '../../utils/Dates';
 
 interface Props {
     servicesList: ServicesByWaitingRoom
@@ -43,7 +44,8 @@ function ServicesList(props:Props) {
                   Tickets en attente:
                 </Text>
                 <Text className="text-xl font-bold ml-2">{ item.tickets.filter(
-                  (ticket: { status: number }) => ticket.status === StatusEnum.EN_ATTENTE,
+                  (ticket: { status: number, createdAt: Date }) => ticket.createdAt > startOfDay
+                  && ticket.status === StatusEnum.EN_ATTENTE,
                 ).length }
                 </Text>
               </View>

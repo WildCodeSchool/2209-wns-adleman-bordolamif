@@ -33,6 +33,7 @@ export interface Service {
             __typename: string,
             id: number,
             status: number,
+            createdAt: Date
         }
     ]
 }
