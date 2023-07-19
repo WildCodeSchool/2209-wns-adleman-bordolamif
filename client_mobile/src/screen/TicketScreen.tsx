@@ -15,7 +15,7 @@ import WaitingInformationsCard from '../components/WaitingInformationsCard';
 
 type TicketScreenRouteProp = NativeStackScreenProps<RootStackParamList, 'TicketScreen'>;
 
-export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp) {
+export default function ServicesSelectionScreen({ route, navigation }: TicketScreenRouteProp) {
   const [currentTicketIndex, setCurrentTicketIndex] = useState<number>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentTicket, setCurrentTicket] = useState<TicketData>(route.params.createdTicket);
@@ -29,6 +29,10 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
       },
     },
   );
+
+  const handleGoToHomePage = () => {
+    navigation.navigate('HomeScreen');
+  };
 
   const {
     data: updatedTicket,
@@ -71,7 +75,6 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
     ));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticketsList]);
-
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
@@ -89,6 +92,7 @@ export default function ServicesSelectionScreen({ route }: TicketScreenRouteProp
         currentTicket={currentTicket}
         calledTicketId={calledTicketId}
         updatedTicket={updatedTicket}
+        handleGoToHomePage={handleGoToHomePage}
       />
       <BottomLogo color="dark" />
     </View>
