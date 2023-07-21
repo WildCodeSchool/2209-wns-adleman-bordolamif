@@ -55,7 +55,9 @@ function OperatorDashboard(props:Props) {
             )}
           />
           <div className="f-between">
-            <OperatorsInService connectedUsersList={profile!
+            <OperatorsInService
+              mode="operator"
+              connectedUsersList={profile!
             && connectedUsersList!
                && connectedUsersList.filter((user) => user.id !== profile.id
                && user.currentService!
