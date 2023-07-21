@@ -8,10 +8,11 @@ interface Props {
 
 function OperatorsInService(props:Props) {
   const { connectedUsersList } = props;
+
   return (
 
     <div className="rounded-2xl">
-      {connectedUsersList!
+      {connectedUsersList! && connectedUsersList.length < 0
         ? (
           <>
             <h2 className="mt-6 text-2xl">Opérateurs sur le service</h2>
@@ -22,7 +23,7 @@ function OperatorsInService(props:Props) {
               </div>
             ))}
           </>
-          )
+        )
         : <img className="w-[450px]" src={ManWithComputer} alt="ManWithComputer" />}
     </div>
   );

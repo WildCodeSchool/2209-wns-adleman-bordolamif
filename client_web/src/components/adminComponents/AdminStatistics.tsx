@@ -39,13 +39,13 @@ function AdminStatistics() {
         && (
           <>
             <AnnualChart annualStatistics={stats} />
-            <div className="flex flex-col items-end mr-8 mb-2">
+            <div className="flex flex-col items-end mr-8 mb-2 z-0">
               <button
                 type="button"
                 className="f-button-statistics"
                 onClick={() => exportAnnualStats(stats)}
               >
-                <ArrowDownTrayIcon className="w-5 mr-4" />
+                <ArrowDownTrayIcon className="w-5 mr-4 -z-10" />
                 Télécharger les données annuelles en format Excel
               </button>
             </div>

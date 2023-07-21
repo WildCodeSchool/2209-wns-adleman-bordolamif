@@ -38,10 +38,10 @@ function AnnualChart(props: Props) {
   };
 
   return (
-    <div>
-      <h2 className="ml-8 mb-4 mt-6 text-2xl">Récapitulatif annuel</h2>
+    <div className="z-50">
+      <h2 className="ml-8 mb-4 mt-6 text-2xl ">Récapitulatif annuel</h2>
       <div
-        className="max-w-4xl mx-auto w-screen"
+        className="max-w-4xl mx-auto w-screen z-50"
         onMouseMove={handleMouseMove}
       >
         <CalendarHeatmap
@@ -73,7 +73,7 @@ function AnnualChart(props: Props) {
       {tooltipContent!
     && (
     <div
-      className="absolute flex flex-row items-start"
+      className="absolute flex flex-row items-start z-50"
       style={{ left: tooltipPosition.x, top: tooltipPosition.y }}
     >
       <ChevronLeftIcon className="w-6 text-gray-800" />
