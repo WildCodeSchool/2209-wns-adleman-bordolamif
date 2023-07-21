@@ -2,17 +2,26 @@ import UserIcon from '@components/icons/UserIcon';
 import { UserData } from '@utils/types/DataTypes';
 import ManWithComputer from '../../assets/illustrations/ManWithComputer.png';
 
-interface Props {
-    connectedUsersList: UserData[]
+interface RequiredProps {
+  connectedUsersList: UserData[]
+}
+interface OptionalProps {
+mode?: string | null
 }
 
+interface Props extends RequiredProps, OptionalProps{}
+
+const defaultProps:OptionalProps = {
+  mode: null,
+};
+
 function OperatorsInService(props:Props) {
-  const { connectedUsersList } = props;
+  const { connectedUsersList, mode } = props;
 
   return (
 
     <div className="rounded-2xl">
-      {connectedUsersList! && connectedUsersList.length < 0
+      {connectedUsersList! && connectedUsersList.length > 0
         ? (
           <>
             <h2 className="mt-6 text-2xl">Opérateurs sur le service</h2>
@@ -24,9 +33,11 @@ function OperatorsInService(props:Props) {
             ))}
           </>
         )
-        : <img className="w-[450px]" src={ManWithComputer} alt="ManWithComputer" />}
+        : mode! && <img className="w-[450px]" src={ManWithComputer} alt="ManWithComputer" />}
     </div>
   );
 }
+
+OperatorsInService.defaultProps = defaultProps;
 
 export default OperatorsInService;
