@@ -21,11 +21,11 @@ export default function ServicesSelectionScreen({ route, navigation }: TicketScr
   const [currentTicket, setCurrentTicket] = useState<TicketData>(route.params.createdTicket);
   const [currentTicketServiceId, setCurrentTicketServiceId] = useState<number>();
 
-  const { data: ticketsList } = useQuery(
+  const { data: ticketsList, refetch: refetchTicketsList } = useQuery(
     GET_ALL_TICKETS_FOR_SERVICE,
     {
       variables: {
-        serviceId: currentTicket.service.id,
+        serviceId: currentTicket ! && currentTicket.service.id,
       },
     },
   );
@@ -68,13 +68,16 @@ export default function ServicesSelectionScreen({ route, navigation }: TicketScr
   }, [currentTicket]);
 
   useEffect(() => {
-    setCurrentTicketIndex(ticketsList! && ticketsList.getAllTicketsForService.filter(
-      (ticket: TicketData) => ticket.status === StatusEnum.EN_ATTENTE,
-    ).findIndex(
-      (ticket: TicketData) => ticket.id === currentTicket.id,
-    ));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketsList]);
+    if (ticketsList! && ticketsList.getAllTicketsForService) {
+      const newIndex = ticketsList.getAllTicketsForService.findIndex(
+        (ticket: TicketData) => ticket.status === StatusEnum.EN_ATTENTE
+        && ticket.id === currentTicket.id,
+      );
+      setCurrentTicketIndex(newIndex);
+      refetchTicketsList();
+    }
+  }, [ticketsList, currentTicket, refetchTicketsList]);
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
